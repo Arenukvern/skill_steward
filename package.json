@@ -11,6 +11,7 @@
     "validate:json": "node scripts/validate-skills.mjs --json",
     "list": "node scripts/list-skills.mjs",
     "docs:check": "node node_modules/@docs.page/cli/dist/cli.js check",
+    "steward:analyze": "cd packages/steward_cli && dart pub get && dart analyze --fatal-infos",
     "steward:validate": "cd packages/steward_cli && dart pub get && dart run :steward validate",
     "steward:list": "cd packages/steward_cli && dart pub get && dart run :steward list",
     "changeset": "changeset",

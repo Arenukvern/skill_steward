@@ -10,5 +10,9 @@ dependencies:
   args: ^2.6.0
   path: ^1.9.0
 
+dev_dependencies:
+  lints: ^6.0.0
+  xsoulspace_lints: ^0.1.2
+
 executables:
   steward: steward

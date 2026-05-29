@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:path/path.dart' as p;
 
 /// Walks upward from [start] until `skills.sh.json` is found.
-String findRepoRoot(Directory start) {
+String findRepoRoot(final Directory start) {
   var dir = start.absolute;
   while (true) {
     if (File(p.join(dir.path, 'skills.sh.json')).existsSync()) {
@@ -12,7 +12,7 @@ String findRepoRoot(Directory start) {
     final parent = dir.parent;
     if (parent.path == dir.path) {
       throw StateError(
-        'Not inside an Skill Steward repo (missing skills.sh.json).',
+        'Not inside a Skill Steward repo (missing skills.sh.json).',
       );
     }
     dir = parent;

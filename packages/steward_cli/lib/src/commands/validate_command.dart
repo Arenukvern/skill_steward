@@ -19,8 +19,9 @@ class ValidateCommand extends Command<void> {
     final root = findRepoRoot(Directory.current);
     final runner = await PackageRunner.resolve();
     if (runner == null) {
-      stderr.writeln('steward validate: pnpm or npm not found on PATH.');
-      stderr.writeln('Install Node 18+ and pnpm, or run: pnpm run validate');
+      stderr
+        ..writeln('steward validate: pnpm or npm not found on PATH.')
+        ..writeln('Install Node 18+ and pnpm, or run: pnpm run validate');
       exit(1);
     }
 

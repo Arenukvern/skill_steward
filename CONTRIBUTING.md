@@ -9,7 +9,7 @@ Read [DX_FAQ.md](DX_FAQ.md) for commands; [DESIGN_FAQ.md](DESIGN_FAQ.md) for wha
 1. Fork and clone the repo.
 2. Copy the template: `templates/skill/` → `skills/your-skill-name/`.
 3. Edit `SKILL.md` (frontmatter + instructions).
-4. Run `pnpm run steward:validate` (or `pnpm run validate`).
+4. Run `pnpm run steward:analyze` and `pnpm run steward:validate` (or `pnpm run validate`).
 5. Update `skills.sh.json` and `README.md`.
 6. If the PR changes consumer-facing surfaces, run `pnpm changeset` and commit the generated `.changeset/*.md` ([ADR 0009](docs/decisions/0009-adopt-changesets-for-repo-releases.md)).
 7. Open a pull request.
@@ -23,6 +23,7 @@ Read [DX_FAQ.md](DX_FAQ.md) for commands; [DESIGN_FAQ.md](DESIGN_FAQ.md) for wha
 
 ## Pull request checklist
 
+- [ ] `pnpm run steward:analyze` passes (same as CI)
 - [ ] `pnpm run steward:validate` passes (same as CI)
 - [ ] Changeset added when required (or PR title `[skip changeset]` with justification)
 - [ ] `pnpm run docs:check` passes (if you changed `docs/` or `docs.json`)

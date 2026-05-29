@@ -7,7 +7,7 @@ Canonical peer layout from [flutter_harness RELATED_REPOS](https://github.com/Ar
 ```text
 ~/mcp/
   mcp_flutter/
-  agentkit/
+  agentkit/                     # IntentCall product (folder until rename)
   flutter_harness/
   flutter_visual_reconstruct/   # not flutter_visual_reconstruction
   flutter_mcp_video/            # skills/docs; optional LFS
@@ -20,7 +20,7 @@ Canonical peer layout from [flutter_harness RELATED_REPOS](https://github.com/Ar
 flutter_mcp_video → flutter_harness → mcp_flutter (toolkit packages)
                          ↓
               flutter_visual_reconstruct (compare / guild)
-agentkit ← extracted platform (consumes / integrates via mcp_flutter CI)
+IntentCall (`agentkit/`) ← extracted platform (consumes / integrates via mcp_flutter CI)
 skill_steward → meta skills only (no runtime dep on above)
 ```
 
@@ -35,7 +35,7 @@ dependency_overrides:
   # … match example in repo
 ```
 
-**mcp_flutter** — `pubspec.yaml` workspace may path-override `agentkit_*` during Phase 7 dev.
+**mcp_flutter** — `pubspec.yaml` workspace may path-override `intentcall_*` during Phase 7 dev.
 
 ## Dogfood warm path (integration smoke)
 
@@ -49,10 +49,10 @@ dependency_overrides:
 | Repo | Before merge |
 |------|----------------|
 | mcp_flutter | `make check-contracts` |
-| agentkit | `make test` / `make analyze` |
+| IntentCall (`agentkit/`) | `make test` / `make analyze` |
 | flutter_harness | `make check` or `dart test` + fixture script |
 | flutter_visual_reconstruct | `dart test`, `dart run … guild validate` |
-| skill_steward | `pnpm run steward:validate`, `pnpm run docs:check` |
+| skill_steward | `pnpm run steward:analyze`, `pnpm run steward:validate`, `pnpm run docs:check` |
 
 ## Cross-install docs
 

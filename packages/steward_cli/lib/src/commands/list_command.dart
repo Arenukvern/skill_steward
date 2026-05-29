@@ -18,8 +18,9 @@ class ListCommand extends Command<void> {
     final root = findRepoRoot(Directory.current);
     final runner = await PackageRunner.resolve();
     if (runner == null) {
-      stderr.writeln('steward list: pnpm or npm not found on PATH.');
-      stderr.writeln('Install Node 18+ and pnpm, or run: pnpm run list');
+      stderr
+        ..writeln('steward list: pnpm or npm not found on PATH.')
+        ..writeln('Install Node 18+ and pnpm, or run: pnpm run list');
       exit(1);
     }
 

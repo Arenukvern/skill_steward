@@ -32,6 +32,10 @@ jobs:
         working-directory: packages/steward_cli
         run: dart pub get
 
+      - name: Analyze steward_cli (xsoulspace_lints)
+        working-directory: packages/steward_cli
+        run: dart analyze --fatal-infos
+
       - name: Validate skills (steward CLI)
         working-directory: packages/steward_cli
         run: dart run :steward validate

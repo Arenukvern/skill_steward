@@ -8,10 +8,22 @@
       "languageVersion": "3.3"
     },
     {
+      "name": "lints",
+      "rootUri": "file:///Users/anton/.pub-cache/hosted/pub.dev/lints-6.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.8"
+    },
+    {
       "name": "path",
       "rootUri": "file:///Users/anton/.pub-cache/hosted/pub.dev/path-1.9.1",
       "packageUri": "lib/",
       "languageVersion": "3.4"
+    },
+    {
+      "name": "xsoulspace_lints",
+      "rootUri": "file:///Users/anton/.pub-cache/hosted/pub.dev/xsoulspace_lints-0.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.8"
     },
     {
       "name": "steward_cli",

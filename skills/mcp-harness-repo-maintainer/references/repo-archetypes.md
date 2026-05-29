@@ -8,7 +8,7 @@ Classification for `~/mcp/*` and similar agentic monorepos.
 
 | | **A Product MCP** | **B Platform** | **C CLI harness** | **D Visual sidecar** | **E Meta steward** |
 |---|-------------------|----------------|-------------------|----------------------|------------------|
-| **Example** | mcp_flutter | agentkit | flutter_harness | flutter_visual_reconstruct | skill_steward |
+| **Example** | mcp_flutter | IntentCall (`agentkit/`) | flutter_harness | flutter_visual_reconstruct | skill_steward |
 | **Primary ship unit** | Plugin + MCP binary | Pub packages | HS CLI + fixtures | Profiles + compare CLI | SKILL.md packages |
 | **MCP server in-repo** | Yes | Adapter pkg only | No (consumes toolkit) | No | No |
 | **plugin/mcp.json** | Yes | No | No | No | No |
@@ -30,7 +30,7 @@ Does the repo expose an MCP server agents call in chat?
     Yes, HS/Maestro → C (flutter_harness)
     Yes, pixels/profiles only → D (flutter_visual_reconstruct)
   Yes → Does it publish multi-package SDK for others?
-    Yes → B (agentkit) + integration test in A
+    Yes → B (IntentCall) + integration test in A
     No → A (mcp_flutter-style product MCP)
 ```
 

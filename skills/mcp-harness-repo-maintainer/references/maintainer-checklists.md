@@ -13,12 +13,12 @@ Copy the section for your archetype before a release or large PR.
 - [ ] Binaries attached on tag (`release.yml`)
 - [ ] Optional: `make macos-validate-runtime`, dogfood eval
 
-## B — agentkit (platform)
+## B — IntentCall (platform, `~/mcp/agentkit`)
 
 - [ ] `dart analyze` / `make test` on all packages
 - [ ] `publish_all.sh --dry-run` before publish train
 - [ ] Public API/schema tests updated
-- [ ] mcp_flutter `check-agentkit-integration` green on integration PR
+- [ ] mcp_flutter `check-intentcall-integration` green on integration PR
 - [ ] PRE_RELEASE / PUBLISHING docs match actual publish order
 
 ## C — flutter_harness
@@ -40,6 +40,7 @@ Copy the section for your archetype before a release or large PR.
 
 ## E — skill_steward
 
+- [ ] `pnpm run steward:analyze` (`packages/steward_cli`, xsoulspace_lints)
 - [ ] `pnpm run steward:validate`
 - [ ] `pnpm run docs:check` if `docs/` or `docs.json` touched
 - [ ] `skills.sh.json` + README skill table

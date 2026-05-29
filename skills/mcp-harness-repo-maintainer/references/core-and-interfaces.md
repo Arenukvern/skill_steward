@@ -20,7 +20,7 @@
                     │  • domain logic & invariants        │
                     │  • schema / contract validation     │
                     │  • registries (tools, capabilities) │
-                    │  • shared models (agentkit, packages) │
+                    │  • shared models (IntentCall, packages) │
                     └──────────────┬──────────────────────┘
                                    │
                     ┌──────────────▼──────────────────────┐
@@ -54,20 +54,20 @@ Divergence is a **bug**. New feature workflow:
 | Repo | CLI (thin) | MCP (thin) | Core (thick) |
 |------|------------|------------|--------------|
 | **mcp_flutter** | `flutter-mcp-toolkit` (`doctor`, `exec`, `validate-runtime`) | `flutter-mcp-toolkit-server` `fmt_*` tools | `packages/core`, `server_capability_*`, registry |
-| **agentkit** | catalog `exec` commands | `agentkit_mcp` adapter | `agentkit_core`, `agentkit_schema` |
+| **IntentCall** (`~/mcp/agentkit`) | catalog `exec` commands | `intentcall_mcp` adapter | `intentcall_core`, `intentcall_schema` |
 | **flutter_harness** | `flutter_harness` lint/run/consume | (none—by design) | HS engine, adapters, app registry |
 | **flutter_visual_reconstruct** | `compare`, `deconstruct`, `guild validate` | (none—by design) | profile engine, verdict pipeline |
-| **skill_steward** | `steward validate` / `steward list` | (future meta index) | `scripts/validate-skills.mjs` today; Dart core later |
+| **skill_steward** | `steward validate` / `steward list` | (future meta index) | `scripts/validate-skills.mjs`; `steward_cli` + xsoulspace_lints |
 
 Repos without MCP still use the **CLI → core** split; MCP is optional second adapter.
 
-## agentkit pattern (explicit)
+## IntentCall pattern (explicit)
 
 ```text
-agentkit_schema   → contracts (Tier A validation)
-agentkit_core     → registry, invoke, domain types
-agentkit_mcp      → MCP wire adapter only
-CLI               → CommandCatalog → agentkit_core
+intentcall_schema   → contracts (Tier A validation)
+intentcall_core     → registry, invoke, domain types
+intentcall_mcp      → MCP wire adapter only
+CLI                 → CommandCatalog → intentcall_core
 ```
 
 ## Anti-patterns

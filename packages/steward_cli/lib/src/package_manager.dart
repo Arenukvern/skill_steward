@@ -7,7 +7,7 @@ class PackageRunner {
   final String executable;
   final String kind; // `pnpm` | `npm`
 
-  List<String> runArgs(String script) => ['run', script];
+  List<String> runArgs(final String script) => ['run', script];
 
   static Future<PackageRunner?> resolve() async {
     for (final kind in ['pnpm', 'npm']) {

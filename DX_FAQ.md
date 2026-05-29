@@ -12,6 +12,7 @@ PLAN HYGIENE (any format) → docs/start_here/executable-plans.mdx
 DOCS SITE              → https://docs.page/arenukvern/skill_steward · docs.json + docs/
 DOCS CI                → pnpm run docs:check  (@docs.page/cli)
 INSTALL for users      → npx skills add arenukvern/skill_steward
+ANALYZE steward_cli    → pnpm run steward:analyze  (xsoulspace_lints; CI on PR)
 VALIDATE before PR     → pnpm run steward:validate  (CI uses dart run :steward validate)
 CITE / EVAL SKILLS     → skill-source-citations, skill-eval-improve
 STEWARD CLI              → packages/steward_cli/README.md  (ADR 0007)
@@ -23,6 +24,7 @@ PLUGINS (hooks)        → plugins/README.md  (not via npx skills)
 
 ```bash
 pnpm install          # packageManager: pnpm@9 (see package.json)
+pnpm run steward:analyze
 pnpm run steward:validate
 ```
 
@@ -75,6 +77,7 @@ pnpm run list              # skill names + descriptions
 
 # Dart meta CLI (same gates; delegates to pnpm/npm run in v1)
 cd packages/steward_cli && dart pub get
+dart analyze --fatal-infos
 dart run :steward validate
 dart run :steward list
 ```
@@ -149,7 +152,7 @@ Skip (maintainer only) → PR title contains [skip changeset]
 ```text
 Agent-first culture     → skill harness-engineering-culture
 OpenAI principles       → skills/harness-engineering-culture/references/harness-principles.md
-CLI+MCP dual surface    → references/cli-mcp-pattern.md (mcp_flutter / agentkit)
+CLI+MCP dual surface    → references/cli-mcp-pattern.md (mcp_flutter / IntentCall)
 Compose Skill Steward skills    → skills/harness-engineering-culture/references/steward-composition.md
 ```
 

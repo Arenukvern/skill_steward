@@ -10,7 +10,20 @@
         "args",
         "path"
       ],
-      "devDependencies": []
+      "devDependencies": [
+        "lints",
+        "xsoulspace_lints"
+      ]
+    },
+    {
+      "name": "xsoulspace_lints",
+      "version": "0.1.2",
+      "dependencies": []
+    },
+    {
+      "name": "lints",
+      "version": "6.1.0",
+      "dependencies": []
     },
     {
       "name": "path",

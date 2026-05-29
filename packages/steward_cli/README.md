@@ -14,9 +14,12 @@ Meta harness CLI for [Skill Steward](https://github.com/arenukvern/skill_steward
 ```bash
 cd packages/steward_cli
 dart pub get
+dart analyze --fatal-infos   # xsoulspace_lints (library.yaml)
 dart run :steward validate
 dart run :steward list
 ```
+
+From repo root: `pnpm run steward:analyze`
 
 Global install (optional):
 

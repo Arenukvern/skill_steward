@@ -1,0 +1,10 @@
+# Skill Steward meta CLI — shared analyzer config (xsoulspace_lints).
+include: package:xsoulspace_lints/library.yaml
+
+analyzer:
+  language:
+    strict-casts: true
+  errors:
+    lines_longer_than_80_chars: ignore
+    public_member_api_docs: ignore
+    unnecessary_library_directive: ignore
