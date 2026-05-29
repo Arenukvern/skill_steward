@@ -9,7 +9,7 @@
 
 **Specification:** [ADR 0004 — plugin packaging and install paths](../docs/decisions/0004-plugin-packaging-and-install-path.md)
 
-**Scaffold:** [`_template/`](_template/)
+**Scaffold:** [`templates/plugin/`](../templates/plugin/)
 
 **Shipped:**
 

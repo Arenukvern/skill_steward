@@ -125,6 +125,7 @@ npx skills add arenukvern/skill_steward --skill harness-engineering-culture
 - [harness-principles.md](references/harness-principles.md) — OpenAI article distilled
 - [cli-mcp-pattern.md](references/cli-mcp-pattern.md) — Dual surface, shared core
 - [steward-composition.md](references/steward-composition.md) — Which Skill Steward skill when
+- [preferred-tooling.md](references/preferred-tooling.md) — Language and task runner choices for harness CLIs (Dart + Justfile default, guidance for other ~/mcp repos)
 
 ## Sources
 

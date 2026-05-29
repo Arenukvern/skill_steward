@@ -1,45 +1,61 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
 
-import '../package_manager.dart';
 import '../repo_root.dart';
+import '../validation/skill_validator.dart' show validateAllSkills;
 
-/// Runs skill validation (Node validator + Tier 1 rule-based evals).
+/// Runs skill validation using the Dart implementation (post hardcut from Node).
 class ValidateCommand extends Command<void> {
+  ValidateCommand() {
+    argParser.addFlag(
+      'json',
+      help: 'Output results as JSON.',
+    );
+  }
+
   @override
   final name = 'validate';
 
   @override
-  final description =
-      'Validate all skills (pnpm/npm run validate + eval for Tier 1).';
-
-  static const _scripts = ['validate', 'eval'];
+  final description = 'Validate all skills.';
 
   @override
   Future<void> run() async {
+    final asJson = argResults!['json'] as bool;
+
     final root = findRepoRoot(Directory.current);
-    final runner = await PackageRunner.resolve();
-    if (runner == null) {
-      stderr
-        ..writeln('steward validate: pnpm or npm not found on PATH.')
-        ..writeln('Install Node 18+ and pnpm, or run: pnpm run validate && pnpm run eval');
-      exit(1);
+    final skillsDir = '$root/skills';
+
+    final report = await validateAllSkills(skillsDir);
+
+    if (asJson) {
+      final json = const JsonEncoder.withIndent('  ').convert(report.toJson());
+      stdout.writeln(json);
+    } else {
+      for (final r in report.skills) {
+        final icon = r.isValid ? '✓' : '✗';
+        stdout.writeln('$icon ${r.dirName}');
+        for (final e in r.errors) {
+          stdout.writeln('    error: $e');
+        }
+        for (final w in r.warnings) {
+          stdout.writeln('    warn:  $w');
+        }
+      }
+      for (final w in report.registryWarnings) {
+        stdout.writeln('warn: $w');
+      }
+      stdout.writeln();
+      final failed = report.failed.length;
+      stdout.writeln(
+        failed == 0
+            ? 'Validated ${report.skills.length} skill(s).'
+            : '$failed skill(s) failed validation.',
+      );
     }
 
-    for (final script in _scripts) {
-      stdout.writeln('steward validate: pnpm run $script');
-      final result = await Process.start(
-        runner.executable,
-        runner.runArgs(script),
-        workingDirectory: root,
-        mode: ProcessStartMode.inheritStdio,
-      );
-      final code = await result.exitCode;
-      if (code != 0) {
-        stderr.writeln('steward validate: failed at pnpm run $script (exit $code)');
-        exit(code);
-      }
-    }
+    exit(report.ok ? 0 : 1);
   }
 }
