@@ -12,6 +12,7 @@ PLAN HYGIENE (any format) → docs/start_here/executable-plans.mdx
 DOCS SITE              → https://docs.page/arenukvern/skill_steward · docs.json + docs/
 DOCS CI                → pnpm run docs:check  (@docs.page/cli)
 INSTALL for users      → npx skills add arenukvern/skill_steward
+UPDATE installed       → this file (Updating installed skills)
 ANALYZE steward_cli    → pnpm run steward:analyze  (xsoulspace_lints; CI on PR)
 VALIDATE before PR     → pnpm run steward:validate  (validate + eval; same as CI)
 CITE / EVAL SKILLS     → skill-source-citations, skill-eval-improve
@@ -49,6 +50,59 @@ npx skills add . --list
 ```
 
 **Note:** Hooks/plugins are **not** installed by `npx skills` on Cursor—see `plugins/README.md` and [ADR 0004](docs/decisions/0004-plugin-packaging-and-install-path.md).
+
+## 🔄 Updating installed skills
+
+After Skill Steward merges to `main`, consumers refresh installed `SKILL.md` files with [vercel-labs/skills](https://github.com/vercel-labs/skills) (`npx skills`). Installed paths depend on agent (e.g. `.cursor/skills/`, `.agents/skills/`); see [AGENTS.md](AGENTS.md).
+
+```bash
+# List what is installed (project)
+npx skills list
+
+# List global installs
+npx skills list -g
+
+# Update all installed skills (project; non-interactive)
+npx skills update -y
+
+# Update global installs only
+npx skills update -g -y
+
+# Update project installs only
+npx skills update -p -y
+
+# Update one skill by directory name (from `skills list`)
+npx skills update north-star-governance -y
+npx skills update create-skill -y
+```
+
+**Re-add from GitHub** (same as install; overwrites/refreshes from `arenukvern/skill_steward`):
+
+```bash
+# All meta-skills
+npx skills add arenukvern/skill_steward -y
+
+# One skill
+npx skills add arenukvern/skill_steward --skill adr-records -y
+
+# Target agents, project scope
+npx skills add arenukvern/skill_steward -a cursor -a claude-code -y
+
+# Global reinstall
+npx skills add arenukvern/skill_steward -g -y
+```
+
+**When to use which**
+
+| Goal | Command |
+|------|---------|
+| Routine sync after upstream changes | `npx skills update -y` |
+| Only global skills | `npx skills update -g -y` |
+| One skill you use heavily | `npx skills update <skill-name> -y` |
+| Force full marketplace refresh | `npx skills add arenukvern/skill_steward -y` |
+| Pin to a branch or local clone | `npx skills add <path-or-url> --skill <name> -y` |
+
+**Not covered by `npx skills`:** Cursor hook plugins — [plugins/README.md](plugins/README.md).
 
 ## 🏗️ Add a skill (maintainers)
 

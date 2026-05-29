@@ -55,6 +55,48 @@ Discover on [skills.sh](https://skills.sh) or:
 npx skills find steward
 ```
 
+## Updating installed skills
+
+Skills install as copies or symlinks under agent directories (for example `.cursor/skills/` or `.agents/skills/`). When **Skill Steward** changes on GitHub, refresh your install with the [skills CLI](https://github.com/vercel-labs/skills):
+
+```bash
+# Update every Skill Steward skill you have installed (project scope)
+npx skills update -y
+
+# Update only global installs
+npx skills update -g -y
+
+# Update only project-scoped installs
+npx skills update -p -y
+
+# Update one skill by name (as shown in `npx skills list`)
+npx skills update north-star-governance -y
+```
+
+Re-install from GitHub when you want a clean pull of the whole marketplace or a single skill:
+
+```bash
+# Refresh all meta-skills from main
+npx skills add arenukvern/skill_steward -y
+
+# Refresh one skill
+npx skills add arenukvern/skill_steward --skill harness-engineering-culture -y
+
+# Same, but only for Cursor in this repo
+npx skills add arenukvern/skill_steward -a cursor -y
+```
+
+See what is installed before updating:
+
+```bash
+npx skills list
+npx skills list -g
+```
+
+**Note:** `npx skills update` tracks the source you installed from (GitHub `main` by default). It does not run Skill Steward’s `pnpm run validate`—that is for [contributors](CONTRIBUTING.md). Hooks under `plugins/` are separate; see [plugins/README.md](plugins/README.md).
+
+More commands: [DX_FAQ.md](DX_FAQ.md) (section **Updating installed skills**).
+
 ## What belongs here
 
 Meta and process capabilities only — [inclusion criteria](docs/decisions/0001-repository-purpose-as-skills-meta-layer.md#inclusion-criteria-what-belongs-in-skill-steward). Domain skills live in other repositories.
