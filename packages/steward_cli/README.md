@@ -6,7 +6,7 @@ Meta harness CLI for [Skill Steward](https://github.com/arenukvern/skill_steward
 
 | Command | Purpose |
 |---------|---------|
-| `steward validate` | Run skill validation (`pnpm run validate`) |
+| `steward validate` | Run `pnpm run validate` then `pnpm run eval` (Tier 1 cases) |
 | `steward list` | List skills (`pnpm run list`) |
 
 ## Development

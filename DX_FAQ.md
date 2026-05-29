@@ -13,7 +13,7 @@ DOCS SITE              → https://docs.page/arenukvern/skill_steward · docs.js
 DOCS CI                → pnpm run docs:check  (@docs.page/cli)
 INSTALL for users      → npx skills add arenukvern/skill_steward
 ANALYZE steward_cli    → pnpm run steward:analyze  (xsoulspace_lints; CI on PR)
-VALIDATE before PR     → pnpm run steward:validate  (CI uses dart run :steward validate)
+VALIDATE before PR     → pnpm run steward:validate  (validate + eval; same as CI)
 CITE / EVAL SKILLS     → skill-source-citations, skill-eval-improve
 EVAL CI (Tier 1)       → pnpm run eval · evals/cases/*.yaml · ADR 0011
 STEWARD CLI              → packages/steward_cli/README.md  (ADR 0007)

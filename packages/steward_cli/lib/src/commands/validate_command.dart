@@ -5,14 +5,16 @@ import 'package:args/command_runner.dart';
 import '../package_manager.dart';
 import '../repo_root.dart';
 
-/// Runs skill validation (Node validator today; Dart-native later).
+/// Runs skill validation (Node validator + Tier 1 rule-based evals).
 class ValidateCommand extends Command<void> {
   @override
   final name = 'validate';
 
   @override
   final description =
-      'Validate all skills under skills/ (delegates to pnpm/npm run validate).';
+      'Validate all skills (pnpm/npm run validate + eval for Tier 1).';
+
+  static const _scripts = ['validate', 'eval'];
 
   @override
   Future<void> run() async {
@@ -21,16 +23,23 @@ class ValidateCommand extends Command<void> {
     if (runner == null) {
       stderr
         ..writeln('steward validate: pnpm or npm not found on PATH.')
-        ..writeln('Install Node 18+ and pnpm, or run: pnpm run validate');
+        ..writeln('Install Node 18+ and pnpm, or run: pnpm run validate && pnpm run eval');
       exit(1);
     }
 
-    final result = await Process.start(
-      runner.executable,
-      runner.runArgs('validate'),
-      workingDirectory: root,
-      mode: ProcessStartMode.inheritStdio,
-    );
-    exit(await result.exitCode);
+    for (final script in _scripts) {
+      stdout.writeln('steward validate: pnpm run $script');
+      final result = await Process.start(
+        runner.executable,
+        runner.runArgs(script),
+        workingDirectory: root,
+        mode: ProcessStartMode.inheritStdio,
+      );
+      final code = await result.exitCode;
+      if (code != 0) {
+        stderr.writeln('steward validate: failed at pnpm run $script (exit $code)');
+        exit(code);
+      }
+    }
   }
 }

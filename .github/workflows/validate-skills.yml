@@ -34,10 +34,7 @@ jobs:
         working-directory: packages/steward_cli
         run: dart analyze --fatal-infos
 
-      - name: Rule-based evals (Tier 1 skills)
-        run: pnpm run eval
-
-      - name: Validate skills (steward CLI)
+      - name: Validate skills (steward CLI — validate + eval)
         working-directory: packages/steward_cli
         run: dart run :steward validate
 

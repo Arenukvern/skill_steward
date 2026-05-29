@@ -5,10 +5,10 @@
  */
 
 import { readdir, readFile, stat } from "node:fs/promises";
-import { join, basename } from "node:path";
+import { basename, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parse as parseYaml } from "yaml";
-import { TIER1_SKILLS, TIER1_MIN_CASES } from "./eval-tiers.mjs";
+import { TIER1_MIN_CASES, TIER1_SKILLS } from "./eval-tiers.mjs";
 
 const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 const SKILLS_DIR = join(ROOT, "skills");
@@ -139,14 +139,14 @@ async function runCaseRules(skillPath, caseObj) {
         break;
       }
       case "description_includes_any":
-        if (!includesAny(description, /** @type {string[]} */ (rule.terms))) {
+        if (!includesAny(description, /** @type {string[]} */(rule.terms))) {
           errors.push(
             `description_includes_any failed: need one of [${rule.terms.join(", ")}]`
           );
         }
         break;
       case "description_excludes_all":
-        if (!excludesAll(description, /** @type {string[]} */ (rule.terms))) {
+        if (!excludesAll(description, /** @type {string[]} */(rule.terms))) {
           errors.push(
             `description_excludes_all failed: must not include [${rule.terms.join(", ")}]`
           );
@@ -163,7 +163,7 @@ async function runCaseRules(skillPath, caseObj) {
             break;
           }
         }
-        if (!includesAny(target, /** @type {string[]} */ (rule.terms))) {
+        if (!includesAny(target, /** @type {string[]} */(rule.terms))) {
           errors.push(
             `body_includes_any failed (${rel}): need one of [${rule.terms.join(", ")}]`
           );
@@ -181,7 +181,7 @@ async function runCaseRules(skillPath, caseObj) {
             break;
           }
         }
-        if (!excludesAll(target, /** @type {string[]} */ (rule.terms))) {
+        if (!excludesAll(target, /** @type {string[]} */(rule.terms))) {
           errors.push(
             `body_excludes_all failed (${rel}): must not include [${rule.terms.join(", ")}]`
           );
@@ -274,7 +274,7 @@ async function evalSkill(skillName) {
     }
 
     total++;
-    const ruleErrors = await runCaseRules(skillPath, /** @type {Record<string, unknown>} */ (caseObj));
+    const ruleErrors = await runCaseRules(skillPath, /** @type {Record<string, unknown>} */(caseObj));
     if (ruleErrors.length) {
       errors.push(`${caseObj.id}: ${ruleErrors.join("; ")}`);
     } else {
