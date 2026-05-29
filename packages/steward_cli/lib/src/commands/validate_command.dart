@@ -8,18 +8,18 @@ import '../validation/skill_validator.dart' show validateAllSkills;
 
 /// Runs skill validation using the Dart implementation (post hardcut from Node).
 class ValidateCommand extends Command<void> {
-  @override
-  final name = 'validate';
-
-  @override
-  final description = 'Validate all skills.';
-
   ValidateCommand() {
     argParser.addFlag(
       'json',
       help: 'Output results as JSON.',
     );
   }
+
+  @override
+  final name = 'validate';
+
+  @override
+  final description = 'Validate all skills.';
 
   @override
   Future<void> run() async {
@@ -47,7 +47,7 @@ class ValidateCommand extends Command<void> {
       for (final w in report.registryWarnings) {
         stdout.writeln('warn: $w');
       }
-      stdout.writeln('');
+      stdout.writeln();
       final failed = report.failed.length;
       stdout.writeln(
         failed == 0
