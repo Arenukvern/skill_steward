@@ -15,3 +15,4 @@ This repository records architecturally significant decisions using [MADR](https
 | [0008](0008-adopt-skill-steward-product-name.md) | accepted | Adopt Skill Steward as the public product name | 2026-05-29 |
 | [0009](0009-adopt-changesets-for-repo-releases.md) | accepted | Adopt Changesets for repo release notes | 2026-05-29 |
 | [0010](0010-binary-releases-for-product-harness-not-meta-steward.md) | accepted | Binary releases for product harness; not Skill Steward | 2026-05-29 |
+| [0011](0011-tiered-skill-evals-and-rule-based-ci.md) | accepted | Tiered skill evals; rule-based CI (no LLM judge) | 2026-05-29 |

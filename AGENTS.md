@@ -40,6 +40,7 @@ npx skills add arenukvern/skill_steward --skill north-star-governance
 | `harness-engineering-culture` | CLI/MCP harness, agent-first culture |
 | `release-changelog-harness` | Release/changelog tooling per ecosystem (Changesets, Melos, …) |
 | `create-skill` | New skill under `skills/` |
+| `skill-eval-improve` | Tiered evals, `evals/cases/*.yaml`, improve loops ([ADR 0011](docs/decisions/0011-tiered-skill-evals-and-rule-based-ci.md)) |
 | `skill-spec-review` | Audit SKILL.md before merge |
 | `faq-driven-docs` | DESIGN_FAQ + DX_FAQ |
 | `adr-records` | New ADR in `docs/decisions/` |
@@ -49,7 +50,7 @@ npx skills add arenukvern/skill_steward --skill north-star-governance
 ## Add or change a skill (checklist)
 
 1. `skills/{name}/SKILL.md` — `name` == directory; see [STANDARDS](docs/STANDARDS.md).
-2. `pnpm run validate`
+2. `pnpm run validate` (Tier 1: also `pnpm run eval`)
 3. `skills.sh.json` + [README](README.md) table
 4. No secrets; no domain tutorials
 

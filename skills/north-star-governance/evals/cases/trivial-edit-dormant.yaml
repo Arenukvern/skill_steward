@@ -1,0 +1,12 @@
+id: north-star-trivial-dormant
+skill: north-star-governance
+routing: should_not_trigger
+input: "Fix a single typo in README punctuation only"
+rules:
+  - kind: file_exists
+    path: references/evals.md
+  - kind: description_excludes_all
+    terms: ["weather forecast", "kubernetes cluster"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["AGENTS.md", "plan hygiene"]

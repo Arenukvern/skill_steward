@@ -15,6 +15,7 @@ INSTALL for users      → npx skills add arenukvern/skill_steward
 ANALYZE steward_cli    → pnpm run steward:analyze  (xsoulspace_lints; CI on PR)
 VALIDATE before PR     → pnpm run steward:validate  (CI uses dart run :steward validate)
 CITE / EVAL SKILLS     → skill-source-citations, skill-eval-improve
+EVAL CI (Tier 1)       → pnpm run eval · evals/cases/*.yaml · ADR 0011
 STEWARD CLI              → packages/steward_cli/README.md  (ADR 0007)
 RELEASE / CHANGELOG    → this file (Release desk) · ADR 0009 · ADR 0010 · skill release-changelog-harness
 PLUGINS (hooks)        → plugins/README.md  (not via npx skills)
@@ -73,6 +74,8 @@ pnpm run validate
 ```bash
 pnpm run validate          # all skills under skills/
 pnpm run validate:json     # machine-readable report
+pnpm run eval              # Tier 1 rule-based cases (ADR 0011)
+pnpm run eval:json
 pnpm run list              # skill names + descriptions
 
 # Dart meta CLI (same gates; delegates to pnpm/npm run in v1)

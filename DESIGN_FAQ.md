@@ -37,6 +37,9 @@ A: **Release legibility**—structured `.changeset/*.md` in PRs and `CHANGELOG.m
 **Q: Why doesn’t Skill Steward ship binaries like mcp_flutter?**  
 A: **Different primary artifact.** Consumers install **skills** with `npx skills add arenukvern/skill_steward` (no full clone). `steward_cli` validates the **in-repo** `skills/` tree and delegates to Node—useful for maintainers with a checkout, not a standalone product binary. Product harness repos (mcp_flutter) should ship Release tarballs + `install.sh`. [ADR 0010](docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.md) · skill `release-changelog-harness` → `references/binary-release-contract.md`.
 
+**Q: How are skills evaluated (Microsoft / Google / Codex style)?**  
+A: **Tiered:** Tier-1 charter skills require `evals/cases/*.yaml` + `pnpm run eval` (rule-based, no LLM in CI). Behavioral suites and judges stay offline (`references/evals.md`, plugin-eval, SkillOpt loop). Design language from [Chrome evals](https://developer.chrome.com/docs/ai/evals/design). [ADR 0011](docs/decisions/0011-tiered-skill-evals-and-rule-based-ci.md) · skill `skill-eval-improve`.
+
 ## Documentation
 
 **Q: Why ADRs in `docs/decisions/`?**  

@@ -1,0 +1,12 @@
+id: harness-culture-trigger
+skill: harness-engineering-culture
+routing: should_trigger
+input: "Design a thin CLI and MCP that share the same core contracts for our agent harness"
+rules:
+  - kind: file_exists
+    path: references/evals.md
+  - kind: description_includes_any
+    terms: ["harness", "CLI", "MCP", "mechanical"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["harness-engineering", "mechanical gates"]

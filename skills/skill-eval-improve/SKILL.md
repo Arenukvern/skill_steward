@@ -1,11 +1,15 @@
 ---
 name: skill-eval-improve
-description: Improves Agent Skills via validate → plugin-eval → prompt evals → bounded SKILL.md edits with held-out gates. Use when tuning one skill's quality or routing—not for bulk repo validate or automated SkillOpt training.
+description: Improves Agent Skills via validate → rule-based eval cases → plugin-eval → prompt evals → bounded edits with held-out gates. Use when tuning skill quality, routing, or adopting Chrome/Microsoft eval tiers—not for bulk validate-only or SkillOpt automation.
 license: MIT
 metadata:
   author: skill-steward
-  version: "1.0.1"
+  version: "1.1.0"
   category: marketplace
+paths:
+  - "skills/**/evals/**"
+  - "scripts/eval-skill.mjs"
+  - "scripts/eval-tiers.mjs"
 ---
 
 # Skill eval & improve
@@ -32,6 +36,7 @@ Cursor scope (optional): activate when editing under `skills/**` or `scripts/val
 | Layer | Expert | Tool / method | Cost |
 |-------|--------|---------------|------|
 | **0 — Gate** | Lint | `pnpm run validate`, `skill-spec-review` | seconds |
+| **0b — Rules** | Routing/docs SSOT | `pnpm run eval` (Tier 1 YAML cases) | seconds |
 | **1 — Static** | Structure | Codex `plugin-eval analyze` (if available) | seconds |
 | **2 — Human** | Behavior | 3–5 prompts with/without skill | minutes |
 | **3 — Measured** | Usage | `plugin-eval benchmark` + `measurement-plan` | minutes–hours |
@@ -47,6 +52,27 @@ pnpm run validate:json   # CI / automation
 ```
 
 Fix all `error:` lines. Treat `warn:` (missing `sources.md`, long SKILL.md) seriously.
+
+## Eval tiers ([ADR 0011](../../docs/decisions/0011-tiered-skill-evals-and-rule-based-ci.md))
+
+| Tier | Skills | CI |
+|------|--------|-----|
+| **1** | `north-star-governance`, `harness-engineering-culture`, `mcp-harness-repo-maintainer`, `create-skill` | `pnpm run eval` + validate |
+| **2** | All others | `pnpm run validate` |
+
+Tier 1 requires `evals/cases/*.yaml` (≥2) + `references/evals.md`. Schema: [eval-case-schema.md](references/eval-case-schema.md).
+
+## Layer 0b — Rule-based cases (Tier 1 CI)
+
+```bash
+pnpm run eval
+pnpm run eval -- --skill north-star-governance
+pnpm run eval:json
+```
+
+**Chrome eval design** (failure modes, rubrics, objective vs judge): [references/chrome-eval-design.md](references/chrome-eval-design.md).
+
+**CI does not** run LLM judges. Subjective quality stays in `references/evals.md` (layer 2+).
 
 ## Layer 1 — Codex plugin-eval (local)
 
@@ -76,7 +102,7 @@ Details: [references/plugin-eval.md](references/plugin-eval.md).
 1. Write **3–5 representative user prompts** (should trigger + should not trigger).
 2. Run agent **without** skill → record failures.
 3. Run **with** skill → record improvements and new failures.
-4. Store prompts in `references/evals.md` (not in SKILL.md body).
+4. Mirror prompts in `evals/cases/*.yaml` (CI rules) and `references/evals.md` (behavior log).
 
 Split ~60% train (edit against) / 40% held-out (gate acceptance)—mirrors SkillOpt selection gate.
 
@@ -117,6 +143,7 @@ Related: [SkillLens](https://microsoft.github.io/SkillOpt/) (model-generated ski
 ```
 - [ ] sources.md cites plugin-eval + SkillOpt if used
 - [ ] pnpm run validate
+- [ ] Tier 1: `pnpm run eval` + cases updated
 - [ ] plugin-eval analyze (optional)
 - [ ] 3+ prompt evals documented in references/evals.md
 - [ ] Bounded edit applied; held-out improved
@@ -138,6 +165,8 @@ Related: [SkillLens](https://microsoft.github.io/SkillOpt/) (model-generated ski
 - Self-editing without held-out prompts (overfit)
 - Claims without `references/sources.md` rows
 - Evaluating only with static analyze—never running real prompts
+- LLM judge in CI (flake, cost) — offline only per [ADR 0011](../../docs/decisions/0011-tiered-skill-evals-and-rule-based-ci.md)
+- Passing `pnpm run eval` and claiming agent behavior is proven
 
 ## Related skills
 

@@ -26,7 +26,16 @@ skill-name/
 
 ### Citations (skill_steward)
 
-Every skill must include **`references/sources.md`** listing URLs for specs, papers, and reference repos used. Update when research changes. Skill: `skill-source-citations`. Evaluations: optional `references/evals.md` per `skill-eval-improve`.
+Every skill must include **`references/sources.md`** listing URLs for specs, papers, and reference repos used. Update when research changes. Skill: `skill-source-citations`.
+
+### Eval tiers ([ADR 0011](decisions/0011-tiered-skill-evals-and-rule-based-ci.md))
+
+| Tier | Skills | Required |
+|------|--------|----------|
+| **1 — Behavioral** | `north-star-governance`, `harness-engineering-culture`, `mcp-harness-repo-maintainer`, `create-skill` | `references/evals.md` + ≥2 files in `evals/cases/*.yaml`; `pnpm run eval` passes |
+| **2 — Structural** | All other skills under `skills/` | `pnpm run validate`; optional `evals.md` when behavior-critical |
+
+Case schema: [eval-case-schema.md](../skills/skill-eval-improve/references/eval-case-schema.md). Skill: `skill-eval-improve`.
 
 ## SKILL.md
 
@@ -101,6 +110,7 @@ Before merging:
 - [ ] `description` includes trigger phrases
 - [ ] No `README.md` inside skill folder (agents ignore it; use `references/` instead)
 - [ ] `pnpm run validate` passes
+- [ ] **Tier 1 only:** `pnpm run eval` passes; `evals/cases/` updated if routing/description changed
 - [ ] Skill listed in `skills.sh.json` and root `README.md`
 - [ ] No secrets, API keys, or machine-specific absolute paths
 
@@ -112,4 +122,10 @@ uv tool install skills-ref
 skills-ref validate ./skills/my-skill
 ```
 
-This repo ships `scripts/validate-skills.mjs` for CI without Python.
+This repo ships `scripts/validate-skills.mjs` and `scripts/eval-skill.mjs` (Tier 1 rule-based cases) for CI without Python.
+
+```bash
+pnpm run validate    # all skills — structure
+pnpm run eval        # Tier 1 — evals/cases/*.yaml rules only
+pnpm run eval:json   # machine-readable output
+```

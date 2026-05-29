@@ -60,7 +60,8 @@ Review a skill package before merge or publish to skills.sh.
 - [ ] Skill id in `skills.sh.json`
 - [ ] Row in root `README.md` table
 - [ ] `pnpm run validate` passes (no `sources.md` warning)
-- [ ] Behavior-critical skills: `references/evals.md` or plugin-eval note ([skill-eval-improve](../skill-eval-improve/SKILL.md))
+- [ ] **Tier 1** (`north-star-governance`, `harness-engineering-culture`, `mcp-harness-repo-maintainer`, `create-skill`): `evals/cases/*.yaml` + `pnpm run eval` ([ADR 0011](../../docs/decisions/0011-tiered-skill-evals-and-rule-based-ci.md))
+- [ ] Other behavior-critical skills: `references/evals.md` or plugin-eval note ([skill-eval-improve](../skill-eval-improve/SKILL.md))
 
 ## Output format
 

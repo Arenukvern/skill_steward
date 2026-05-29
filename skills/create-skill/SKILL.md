@@ -26,11 +26,12 @@ Add a new installable skill package under `skills/` in the Skill Steward marketp
 4. **Write description** — one block covering *what* and *when* (trigger phrases users say).
 5. **Cite sources** — create `references/sources.md` from `templates/skill/references/sources.md`; add rows for every spec/repo/paper used ([skill-source-citations](../skill-source-citations/SKILL.md)).
 6. **Write body** — numbered steps, examples, output format; keep under 500 lines.
-7. **Optional** — `references/evals.md` for prompt suites ([skill-eval-improve](../skill-eval-improve/references/evals-template.md)); `scripts/`, `assets/`.
-8. **Register skill**:
+7. **Evals** — Tier 1 skills (see [STANDARDS](../../docs/STANDARDS.md)): `references/evals.md` + ≥2 `evals/cases/*.yaml` ([eval-case-schema](../skill-eval-improve/references/eval-case-schema.md)). Others: optional `evals.md`.
+8. **Optional** — `scripts/`, `assets/`.
+9. **Register skill**:
    - Add skill id to `skills.sh.json` under the right grouping
    - Add row to root `README.md` skill table
-9. **Validate** — run `pnpm run validate` from repo root; fix all errors and citation warnings.
+10. **Validate** — `pnpm run validate`; Tier 1 also `pnpm run eval`.
 
 ## Frontmatter template
 
