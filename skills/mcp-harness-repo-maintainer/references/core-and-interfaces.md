@@ -1,6 +1,6 @@
 # Core vs interfaces (reference)
 
-**Canonical pattern for the `~/mcp/` family:** MCP and CLI are **thin agent-facing interfaces** (APIs). **Core** holds domain logic, schemas, and orchestration. Adapters translate; they do not own business rules.
+**Canonical pattern for the `<workspace>/` sibling family:** MCP and CLI are **thin agent-facing interfaces** (APIs). **Core** holds domain logic, schemas, and orchestration. Adapters translate; they do not own business rules.
 
 ## Layer diagram
 
@@ -54,10 +54,10 @@ Divergence is a **bug**. New feature workflow:
 | Repo | CLI (thin) | MCP (thin) | Core (thick) |
 |------|------------|------------|--------------|
 | **mcp_flutter** | `flutter-mcp-toolkit` (`doctor`, `exec`, `validate-runtime`) | `flutter-mcp-toolkit-server` `fmt_*` tools | `packages/core`, `server_capability_*`, registry |
-| **IntentCall** (`~/mcp/agentkit`) | catalog `exec` commands | `intentcall_mcp` adapter | `intentcall_core`, `intentcall_schema` |
+| **IntentCall** (`agentkit/`) | catalog `exec` commands | `intentcall_mcp` adapter | `intentcall_core`, `intentcall_schema` |
 | **flutter_harness** | `flutter_harness` lint/run/consume | (none—by design) | HS engine, adapters, app registry |
 | **flutter_visual_reconstruct** | `compare`, `deconstruct`, `guild validate` | (none—by design) | profile engine, verdict pipeline |
-| **skill_steward** | `steward validate` / `steward list` | (future meta index) | `scripts/validate-skills.mjs`; `steward_cli` + xsoulspace_lints |
+| **skill_steward** | `steward validate` / `steward list` / `steward eval` | (future meta index) | `packages/steward_cli` (Dart) |
 
 Repos without MCP still use the **CLI → core** split; MCP is optional second adapter.
 
@@ -81,7 +81,7 @@ CLI                 → CommandCatalog → intentcall_core
 
 Guild’s **product** is skills/docs, not a domain core—but the same shape applies:
 
-- **Core:** validation rules (`scripts/validate-skills.mjs`, future Dart parser)
+- **Core:** validation rules (`packages/steward_cli` — Dart; `steward validate` / `steward eval`)
 - **CLI:** `steward validate` (thin wrapper)
 - **MCP:** future skill-index server—thin over same validators
 

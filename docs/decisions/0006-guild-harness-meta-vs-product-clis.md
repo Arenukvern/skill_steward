@@ -38,7 +38,7 @@ Chosen option: **"C. Skill Steward meta CLI (+ future meta MCP); products own do
 |-------|------------|--------------------|---------------------|
 | **Meta harness** | `skill_steward` | `steward validate`, `steward list`; future MCP skill index | `harness-engineering-culture`, `north-star-governance`, … |
 | **Product harness** | `mcp_flutter`, app repos | `flutter-mcp-toolkit`, `flutter-mcp-toolkit-server`, `fmt_*` | Install Guild skills via `npx skills` |
-| **Library** | IntentCall (`~/mcp/agentkit`) | Schema, registry adapters (`intentcall_*`) | Consumers integrate |
+| **Library** | IntentCall (`agentkit/`) | Schema, registry adapters (`intentcall_*`) | Consumers integrate |
 
 **Guild teaches:**
 

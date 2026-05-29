@@ -1,17 +1,17 @@
-# Sibling layout (`~/mcp/`) (reference)
+# Sibling layout (reference)
 
 Canonical peer layout from [flutter_harness RELATED_REPOS](https://github.com/Arenukvern/flutter_harness/blob/main/docs/RELATED_REPOS.md).
 
 ## Directory
 
 ```text
-~/mcp/
+<workspace>/
   mcp_flutter/
   agentkit/                     # IntentCall (github.com/Arenukvern/intentcall)
   flutter_harness/
   flutter_visual_reconstruct/   # not flutter_visual_reconstruction
   flutter_mcp_video/            # skills/docs; optional LFS
-  agent_guild/                  # local clone of skill_steward (GitHub: skill_steward)
+  skill_steward/                # local clone of skill_steward (GitHub: skill_steward)
 ```
 
 ## Dependency direction
@@ -52,7 +52,7 @@ dependency_overrides:
 | IntentCall (`agentkit/`) | `make test` / `make analyze` |
 | flutter_harness | `make check` or `dart test` + fixture script |
 | flutter_visual_reconstruct | `dart test`, `dart run … guild validate` |
-| agent_guild (skill_steward) | `pnpm run steward:analyze`, `pnpm run steward:validate`, `pnpm run docs:check` |
+| agent_guild (skill_steward) | `pnpm run validate`, `pnpm run docs:check` |
 
 ## Cross-install docs
 

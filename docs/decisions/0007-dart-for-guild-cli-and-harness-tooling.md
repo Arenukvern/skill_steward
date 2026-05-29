@@ -19,7 +19,7 @@ Skill Steward needs a **meta harness** in-repo: at minimum a CLI for `validate` 
 * **Maintainer capacity** — No bandwidth to maintain Rust toolchains and target binaries in-repo (Rust toolchains and incremental artifacts consume substantial disk space on dev machines).
 * **Type safety & durability** — Dart analyzer + strong typing for CLI argument handling and future schema validation; aligns with IntentCall / mcp_flutter quality bar.
 * **Compact tooling** — Single `dart pub get` in `packages/steward_cli`; no separate Rustup/cargo cache.
-* **Stack alignment** — mcp_flutter and IntentCall (`~/mcp/agentkit`) are Dart; future meta MCP can share patterns (`dart_mcp`, schema packages) when phase 2 lands.
+* **Stack alignment** — mcp_flutter and IntentCall (`agentkit/`) are Dart; future meta MCP can share patterns (`dart_mcp`, schema packages) when phase 2 lands.
 * **Pragmatic bootstrap** — v1 CLI may delegate to existing Node validator via `Process.run` while Dart command surface stabilizes.
 
 ## Considered Options

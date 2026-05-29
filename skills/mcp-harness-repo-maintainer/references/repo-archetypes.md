@@ -1,6 +1,6 @@
 # Repo archetypes (reference)
 
-Classification for `~/mcp/*` and similar agentic monorepos.
+Classification for sibling agentic monorepos.
 
 **Shared shape:** CLI and MCP (when present) are **thin**; **core** holds logic. See [core-and-interfaces.md](core-and-interfaces.md).
 

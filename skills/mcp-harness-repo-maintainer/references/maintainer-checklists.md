@@ -13,7 +13,7 @@ Copy the section for your archetype before a release or large PR.
 - [ ] Binaries attached on tag (`release.yml`)
 - [ ] Optional: `make macos-validate-runtime`, dogfood eval
 
-## B — IntentCall (platform, `~/mcp/agentkit`)
+## B — IntentCall (`agentkit/`)
 
 - [ ] `dart analyze` / `make test` on all packages
 - [ ] `publish_all.sh --dry-run` before publish train
