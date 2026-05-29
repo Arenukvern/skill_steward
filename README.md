@@ -142,7 +142,9 @@ skill_steward/              # GitHub: Arenukvern/skill_steward
 ├── packages/steward_cli/       # Dart `steward` CLI — validate, list
 ├── plugins/
 │   └── steward-validate-on-save/
-├── templates/skill/
+├── templates/
+│   ├── skill/
+│   └── plugin/
 ├── skills.sh.json
 ├── CHANGELOG.md              # Generated via Changesets (ADR 0009)
 ├── .changeset/               # PR-time release notes

@@ -80,7 +80,10 @@ plugins/
     install.mjs       # optional — idempotent merge installer
     rules/            # optional — .mdc templates
     commands/         # optional — command templates
-  _template/          # scaffold for new plugins (not published)
+
+templates/
+  skill/              # scaffold for new skills (used by create-skill)
+  plugin/             # scaffold for new plugins (moved from plugins/_template/)
 ```
 
 **Canonical skills remain in** `skills/{skill-id}/`. A plugin lists them:
@@ -138,7 +141,7 @@ Implement after manifest schema stabilizes; until then `plugins/README.md` point
 * This ADR supersedes the open action in ADR 0001 (“follow-up ADR when `plugins/` layout defined”).
 * `plugins/README.md` links here.
 * New plugins require `plugin.yaml` + README with install table (skills CLI vs hooks).
-* No SKILL.md duplication under `plugins/` except `_template` scaffolding.
+* No SKILL.md duplication under `plugins/`. Plugin scaffolding lives at `templates/plugin/`.
 
 ## Pros and Cons of the Options
 
