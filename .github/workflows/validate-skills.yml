@@ -34,9 +34,17 @@ jobs:
         working-directory: packages/steward_cli
         run: dart analyze --fatal-infos
 
-      - name: Validate skills (steward CLI — validate + eval)
+      - name: Unit tests (steward_cli)
+        working-directory: packages/steward_cli
+        run: dart test
+
+      - name: Validate skills
         working-directory: packages/steward_cli
         run: dart run :steward validate
+
+      - name: Eval skills (Tier-1 rule-based)
+        working-directory: packages/steward_cli
+        run: dart run :steward eval
 
       - name: List skills (steward CLI smoke)
         working-directory: packages/steward_cli
