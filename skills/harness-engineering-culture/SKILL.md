@@ -4,7 +4,7 @@ description: Develops agent-first engineering culture via harness design—CLI a
 license: MIT
 metadata:
   author: skill-steward
-  version: "1.0.0"
+  version: "1.1.0"
   category: harness
 paths:
   - "AGENTS.md"
@@ -25,16 +25,18 @@ Local patterns: [mcp_flutter CLI vs MCP](https://github.com/Arenukvern/mcp_flutt
 ## Core beliefs
 
 1. **Missing capability → harness gap** — When an agent fails, ask what is not *legible* or *enforceable*, then add CLI command, MCP tool, linter, or skill—not “try harder.”
-2. **CLI + MCP = thin interfaces; core = logic** — MCP and CLI are agent-facing APIs only. Domain logic, schemas, and registries live in **core** packages; both surfaces call the same entrypoints. CLI for CI/`doctor`/contracts; MCP for chat. Divergence is a bug ([core pattern](https://github.com/arenukvern/skill_steward/blob/main/skills/mcp-harness-repo-maintainer/references/core-and-interfaces.md)).
-3. **Docs are the system of record** — Versioned markdown in git; Slack/docs outside repo are invisible to agents. `AGENTS.md` is a **map** (~100 lines), not an encyclopedia.
-4. **Mechanical enforcement** — Linters, `make check-*`, `pnpm run validate`, schema validation at boundaries—error messages teach the agent how to fix.
-5. **Progressive disclosure** — Router → ADR / DESIGN_FAQ (why) → DX_FAQ (how) → skills (procedures) → code (behavior SSOT).
+2. **Ambiguous design → decision checkpoint** — Before coding a fork (CLI vs MCP split, new tool surface, schema shape), use `adr-records` layer 0 ([decision checkpoints](../adr-records/references/decision-checkpoints.md)); record `accepted` ADR after agreement—not drive-by architecture.
+3. **CLI + MCP = thin interfaces; core = logic** — MCP and CLI are agent-facing APIs only. Domain logic, schemas, and registries live in **core** packages; both surfaces call the same entrypoints. CLI for CI/`doctor`/contracts; MCP for chat. Divergence is a bug ([core pattern](https://github.com/arenukvern/skill_steward/blob/main/skills/mcp-harness-repo-maintainer/references/core-and-interfaces.md)).
+4. **Docs are the system of record** — Versioned markdown in git; Slack/docs outside repo are invisible to agents. `AGENTS.md` is a **map** (~100 lines), not an encyclopedia.
+5. **Mechanical enforcement** — Linters, `make check-*`, `pnpm run validate`, schema validation at boundaries—error messages teach the agent how to fix.
+6. **Progressive disclosure** — Router → ADR / DESIGN_FAQ (why) → DX_FAQ (how) → skills (procedures) → code (behavior SSOT).
 
 ## Skill Steward skill stack (use together)
 
 | Phase | Skill | Action |
 |-------|--------|--------|
 | Charter / why | `concept-doc-store`, `adr-records` | ADR for harness boundaries; NORTH_STAR / router |
+| Design fork (during work) | `adr-records` | Checkpoint brief before coding ([decision-checkpoints](../adr-records/references/decision-checkpoints.md)) |
 | Releases | `release-changelog-harness` | Ecosystem Changesets / Melos / release-plz; DX_FAQ + CI gates |
 | Package knowledge | `faq-driven-docs` | DESIGN_FAQ + DX_FAQ per module |
 | Ship a procedure | `create-skill`, `skill-spec-review` | Agent-invokable workflow in `SKILL.md` |
@@ -101,6 +103,7 @@ Article pattern: [FAQ-driven development](https://dev.to/arenukvern/faq-driven-d
 - Docs that paraphrase code instead of linking
 - Domain tutorials in Skill Steward (wrong repo—meta harness only)
 - Relying on vector search instead of structured docs + `skills find`
+- Implementing architectural forks without `adr-records` checkpoint or accepted ADR
 
 ## Checklist before claiming “harness ready”
 
@@ -108,7 +111,7 @@ Article pattern: [FAQ-driven development](https://dev.to/arenukvern/faq-driven-d
 - [ ] CLI command exists for CI/gates (or documented why not)
 - [ ] MCP tool shares schema/validation with CLI (if MCP applies)
 - [ ] Failure messages say how to remediate
-- [ ] ADR or DESIGN_FAQ explains why split exists
+- [ ] Design forks were checkpointed (`adr-records`); ADR or DESIGN_FAQ explains why split exists
 - [ ] Skill Steward `pnpm run validate` passes if skills changed
 
 ## Install

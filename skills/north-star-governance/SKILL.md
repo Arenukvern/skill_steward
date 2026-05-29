@@ -4,7 +4,7 @@ description: Maintains docs/NORTH_STAR.md, wires AGENTS.md as a short agent map,
 license: MIT
 metadata:
   author: skill-steward
-  version: "1.0.0"
+  version: "1.1.0"
   category: governance
 paths:
   - "docs/NORTH_STAR.md"
@@ -23,7 +23,27 @@ Keep Skill Steward **legible**: charter in one place, `AGENTS.md` as a **map**, 
 - Updating repo scope, boundaries, or success criteria
 - Rewiring `AGENTS.md` or `docs.json` sidebar
 - Creating or closing plans, roadmaps, todos in-repo
+- **Before large or ambiguous work** — scope + design checkpoints ([`adr-records`](../adr-records/SKILL.md))
 - After a milestone: “where should this knowledge live?”
+
+## Before large work (scope + decisions)
+
+Run this spine **before** a multi-file feature, new integration, or repo reshape:
+
+```text
+1. North Star — still in scope? (own / do-not-own)
+2. adr-records — any trigger T1–T8? → decision brief or proposed ADR
+3. harness-engineering-culture — thin CLI/MCP, mechanical gate planned?
+4. Implement — only after checkpoint answered or waived by user
+5. Close — extract to ADR/FAQ/code; delete plan scratch
+```
+
+| Signal | Action |
+|--------|--------|
+| Touches charter or “do not own” | Stop; North Star diff + ADR if accepted |
+| 2+ valid designs | `adr-records` checkpoint brief; do not code yet |
+| User asked “key design decisions” | `adr-records` layer 0 ([decision-checkpoints](../adr-records/references/decision-checkpoints.md)) |
+| Small, ADR-covered change | Proceed; link existing ADR in PR |
 
 ## Canonical files
 
@@ -99,7 +119,8 @@ Update `github` URL in `docs.json` when remote is known.
 
 | Task | Also use |
 |------|----------|
-| ADR from decision | `adr-records` |
+| Design fork before/during work | `adr-records` — [decision checkpoints](../adr-records/references/decision-checkpoints.md) |
+| ADR after decision | `adr-records` — MADR workflow |
 | FAQ updates | `faq-driven-docs` |
 | Doc lattice | `concept-doc-store` |
 | Harness / CLI culture | `harness-engineering-culture` |

@@ -5,7 +5,7 @@
 1. **north-star-governance** — charter, AGENTS map, plan hygiene (extract & remove)
 2. **harness-engineering-culture** — frame CLI/MCP/docs approach
 3. **release-changelog-harness** — when versioning/publish legibility matters (Changesets, etc.)
-4. **adr-records** — ADR for harness boundary (e.g. CLI-only gate vs MCP exposure)
+4. **adr-records** — decision checkpoint on forks, then ADR for harness boundary (e.g. CLI-only gate vs MCP exposure)
 5. **concept-doc-store** — router, NORTH_STAR, doc lattice in product repo
 6. **faq-driven-docs** — DESIGN_FAQ (why doctor exists) + DX_FAQ (how to run CLI)
 7. **create-skill** — skill for agents using your harness (`flutter-mcp`, etc.)
