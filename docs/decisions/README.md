@@ -13,3 +13,4 @@ This repository records architecturally significant decisions using [MADR](https
 | [0006](0006-guild-harness-meta-vs-product-clis.md) | accepted | Guild teaches harness meta; products own CLIs | 2026-05-29 |
 | [0007](0007-dart-for-guild-cli-and-harness-tooling.md) | accepted | Dart for Guild CLI and harness tooling | 2026-05-29 |
 | [0008](0008-adopt-skill-steward-product-name.md) | accepted | Adopt Skill Steward as the public product name | 2026-05-29 |
+| [0009](0009-adopt-changesets-for-repo-releases.md) | accepted | Adopt Changesets for repo release notes | 2026-05-29 |

@@ -1,10 +1,10 @@
 {
   "roots": [
-    "guild_cli"
+    "steward_cli"
   ],
   "packages": [
     {
-      "name": "guild_cli",
+      "name": "steward_cli",
       "version": "0.1.0",
       "dependencies": [
         "args",

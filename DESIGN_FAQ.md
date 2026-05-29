@@ -31,6 +31,9 @@ A: Research and external knowledge must survive beyond one chat—links are prov
 **Q: Why keep each skill small and focused?**  
 A: Agents load name + description first; bloated skills waste context. One outcome per skill; depth in `references/` or separate skills.
 
+**Q: Why Changesets for a skills repo that is not an npm product?**  
+A: **Release legibility**—structured `.changeset/*.md` in PRs and `CHANGELOG.md` in git so humans and agents know what shipped at each repo version. Skills themselves are not semver’d; the root `skill-steward` package version tags the repository. [ADR 0009](docs/decisions/0009-adopt-changesets-for-repo-releases.md) · skill `release-changelog-harness`.
+
 ## Documentation
 
 **Q: Why ADRs in `docs/decisions/`?**  

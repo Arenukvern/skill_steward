@@ -5,27 +5,28 @@ import 'package:args/command_runner.dart';
 import '../package_manager.dart';
 import '../repo_root.dart';
 
-/// Lists installable skills (delegates to pnpm/npm run list).
-class ListCommand extends Command<void> {
+/// Runs skill validation (Node validator today; Dart-native later).
+class ValidateCommand extends Command<void> {
   @override
-  final name = 'list';
+  final name = 'validate';
 
   @override
-  final description = 'List skills in skills/ (delegates to pnpm/npm run list).';
+  final description =
+      'Validate all skills under skills/ (delegates to pnpm/npm run validate).';
 
   @override
   Future<void> run() async {
     final root = findRepoRoot(Directory.current);
     final runner = await PackageRunner.resolve();
     if (runner == null) {
-      stderr.writeln('guild list: pnpm or npm not found on PATH.');
-      stderr.writeln('Install Node 18+ and pnpm, or run: pnpm run list');
+      stderr.writeln('steward validate: pnpm or npm not found on PATH.');
+      stderr.writeln('Install Node 18+ and pnpm, or run: pnpm run validate');
       exit(1);
     }
 
     final result = await Process.start(
       runner.executable,
-      runner.runArgs('list'),
+      runner.runArgs('validate'),
       workingDirectory: root,
       mode: ProcessStartMode.inheritStdio,
     );

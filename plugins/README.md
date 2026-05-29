@@ -15,6 +15,6 @@
 
 | Plugin | Purpose |
 |--------|---------|
-| [guild-validate-on-save](guild-validate-on-save/) | Cursor `afterFileEdit` → validate when `skills/**/SKILL.md` changes (wired in [`.cursor/hooks.json`](../.cursor/hooks.json)) |
+| [steward-validate-on-save](steward-validate-on-save/) | Cursor `afterFileEdit` → validate when `skills/**/SKILL.md` changes (wired in [`.cursor/hooks.json`](../.cursor/hooks.json)) |
 
-**Planned:** `guild-faq-reminder` (ADR 0004).
+**Planned:** `steward-faq-reminder` (ADR 0004).

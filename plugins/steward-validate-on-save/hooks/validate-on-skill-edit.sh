@@ -22,11 +22,11 @@ cd "$ROOT"
 
 SOURCES="skills/${SKILL_DIR}/references/sources.md"
 if [[ ! -f "$SOURCES" ]]; then
-  echo "guild-validate-on-save: warn — missing ${SOURCES} (see skill-source-citations)" >&2
+  echo "steward-validate-on-save: warn — missing ${SOURCES} (see skill-source-citations)" >&2
 fi
 
-if command -v dart >/dev/null 2>&1 && [[ -f packages/guild_cli/pubspec.yaml ]]; then
-  (cd packages/guild_cli && dart run :guild validate) 2>/dev/null && exit 0
+if command -v dart >/dev/null 2>&1 && [[ -f packages/steward_cli/pubspec.yaml ]]; then
+  (cd packages/steward_cli && dart run :steward validate) 2>/dev/null && exit 0
 fi
 
 if command -v pnpm >/dev/null 2>&1 && [[ -f package.json ]]; then
@@ -39,5 +39,5 @@ if command -v npm >/dev/null 2>&1 && [[ -f package.json ]]; then
   exit $?
 fi
 
-echo "guild-validate-on-save: need dart, pnpm, or npm to validate" >&2
+echo "steward-validate-on-save: need dart, pnpm, or npm to validate" >&2
 exit 1

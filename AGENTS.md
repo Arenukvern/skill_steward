@@ -10,7 +10,7 @@ You are in **Skill Steward**: a meta-layer for the Agent Skills ecosystem. Read 
 |---------|------|
 | **Charter, scope, boundaries** | [docs/NORTH_STAR.md](docs/NORTH_STAR.md) |
 | **Why** (standing decisions) | [DESIGN_FAQ.md](DESIGN_FAQ.md) · [docs/decisions/](docs/decisions/) |
-| **How** (install, validate, contribute) | [DX_FAQ.md](DX_FAQ.md) |
+| **How** (install, validate, contribute, release) | [DX_FAQ.md](DX_FAQ.md) |
 | **Full doc index** | [docs/start_here/docs_map.mdx](docs/start_here/docs_map.mdx) |
 | **Plan hygiene** | [docs/start_here/executable-plans.mdx](docs/start_here/executable-plans.mdx) — any format; extract & remove when done |
 | **Which FAQ to edit** | [.cursor/rules/faq_usage.mdc](.cursor/rules/faq_usage.mdc) |
@@ -38,6 +38,7 @@ npx skills add arenukvern/skill_steward --skill north-star-governance
 |-------|----------|
 | `north-star-governance` | Charter, AGENTS map, plan lifecycle, docs.json |
 | `harness-engineering-culture` | CLI/MCP harness, agent-first culture |
+| `release-changelog-harness` | Release/changelog tooling per ecosystem (Changesets, Melos, …) |
 | `create-skill` | New skill under `skills/` |
 | `skill-spec-review` | Audit SKILL.md before merge |
 | `faq-driven-docs` | DESIGN_FAQ + DX_FAQ |

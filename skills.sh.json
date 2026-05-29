@@ -27,6 +27,7 @@
       "description": "Agent-first engineering culture—CLI, MCP, contracts, and docs as system of record.",
       "skills": [
         "harness-engineering-culture",
+        "release-changelog-harness",
         "north-star-governance",
         "mcp-harness-repo-maintainer"
       ]

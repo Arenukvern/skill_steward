@@ -1,4 +1,4 @@
-name: guild_cli
+name: steward_cli
 description: Meta harness CLI for Skill Steward — validate and list skills.
 version: 0.1.0
 repository: https://github.com/arenukvern/skill_steward
@@ -11,4 +11,4 @@ dependencies:
   path: ^1.9.0
 
 executables:
-  guild: guild
+  steward: steward

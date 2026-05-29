@@ -54,7 +54,7 @@ Read [repo-archetypes.md](references/repo-archetypes.md) for the full matrix. Ro
 | **B — Platform libs** | `agentkit` | Dart packages, adapters (MCP/WebMCP/native), publish order | Shippable plugin tree, dogfood app |
 | **C — CLI harness** | `flutter_harness` | HS v1/v2, app registry, fixture lint/run | MCP server binary, marketplace manifests |
 | **D — Visual sidecar** | `flutter_visual_reconstruct` | `profiles/*.yaml`, compare/deconstruct CLI | VM/MCP, dynamic registry |
-| **E — Meta steward** | `skill_steward` | `skills/`, `plugins/`, `guild validate`, docs.page | Product MCP, domain `fmt_*` |
+| **E — Meta steward** | `skill_steward` | `skills/`, `plugins/`, `steward validate`, docs.page | Product MCP, domain `fmt_*` |
 | **F — Security/Ops** | all remotes | OAuth gateway, token brokering, tool schema stability | Feature code |
 
 **Rule:** One repo = one North Star. Cross-repo deps flow **down** the graph (see [sibling-layout.md](references/sibling-layout.md)), never circular.
@@ -122,9 +122,9 @@ Product-specific depth: [mcp_flutter maintainer skill](https://github.com/Arenuk
 ## Archetype E — Meta steward (skill_steward)
 
 - **Core:** validators (`scripts/validate-skills.mjs`; Dart parser later).
-- **CLI:** `packages/guild_cli` — thin `guild validate` / `guild list`.
+- **CLI:** `packages/steward_cli` — thin `steward validate` / `steward list`.
 - **MCP:** deferred meta index—must stay thin over same validators.
-- **Skills** in `skills/`; **plugins** for hooks only (`plugins/guild-validate-on-save`).
+- **Skills** in `skills/`; **plugins** for hooks only (`plugins/steward-validate-on-save`).
 - No `mcp.json`, no `fmt_*` product tools—teach harness **culture**, not Flutter debug.
 - Cross-promote product installs in docs; own `arenukvern/skill_steward` on skills.sh.
 

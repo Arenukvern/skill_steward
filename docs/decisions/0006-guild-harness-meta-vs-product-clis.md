@@ -16,7 +16,7 @@ Contributors asked to formalize the split so Skill Steward does not grow a secon
 
 ## Decision Drivers
 
-* **Clear ownership** — Users install Guild for meta-skills; products for domain/runtime tooling.
+* **Clear ownership** — Users install Skill Steward for meta-skills; products for domain/runtime tooling.
 * **Avoid confusion** — `npx skills add skill_steward` must not imply a debug MCP server ships here.
 * **Teach by example** — Guild may ship a **small meta CLI** (validate, list skills) as reference harness, not a general automation platform.
 * **Cross-promotion** — Product docs may recommend Skill Steward meta-skills (e.g. `harness-engineering-culture`) without merging repos.
@@ -36,7 +36,7 @@ Chosen option: **"C. Skill Steward meta CLI (+ future meta MCP); products own do
 
 | Layer | Repository | CLI / MCP examples | Guild skill support |
 |-------|------------|--------------------|---------------------|
-| **Meta harness** | `skill_steward` | `guild validate`, `guild list`; future MCP skill index | `harness-engineering-culture`, `north-star-governance`, … |
+| **Meta harness** | `skill_steward` | `steward validate`, `steward list`; future MCP skill index | `harness-engineering-culture`, `north-star-governance`, … |
 | **Product harness** | `mcp_flutter`, app repos | `flutter-mcp-toolkit`, `flutter-mcp-toolkit-server`, `fmt_*` | Install Guild skills via `npx skills` |
 | **Library** | `agentkit` | Schema, registry adapters | Consumers integrate |
 
@@ -65,7 +65,7 @@ for contributors building or maintaining **product** harnesses.
 
 * Good, because scope stays defensible in review.
 * Good, because mcp_flutter remains the reference **product** harness; Guild is reference **meta** harness.
-* Bad, because two CLIs in a contributor’s head—mitigated by naming (`guild` vs `flutter-mcp-toolkit`).
+* Bad, because two CLIs in a contributor’s head—mitigated by naming (`steward` vs `flutter-mcp-toolkit`).
 * Neutral, because meta MCP is deferred to phase 2 ([ADR 0007](0007-dart-for-guild-cli-and-harness-tooling.md)).
 
 ## Pros and Cons of the Options

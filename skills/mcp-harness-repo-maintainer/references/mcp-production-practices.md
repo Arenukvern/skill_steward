@@ -10,7 +10,7 @@ Synthesis from [Model Context Protocol](https://modelcontextprotocol.io/), field
 | **Tool catalog** | Treat schemas as a **public API**—additive changes, explicit `version`, stable names (`fmt_*` prefix in mcp_flutter). |
 | **Long operations** | Return job id immediately; expose progress via resource or polling tool. |
 | **Community vs custom** | Generic servers (filesystem, git) for horizontal ops; **your** domain in **your** server—never patch community servers with private endpoints. |
-| **CLI parity** | MCP tools call **core**; CLI subcommands call the **same core** for CI (`doctor`, `validate-runtime`, `guild validate`). Adapters stay thin. |
+| **CLI parity** | MCP tools call **core**; CLI subcommands call the **same core** for CI (e.g. `doctor`, `validate-runtime` on product repos; `steward validate` on Skill Steward). Adapters stay thin. |
 
 ## Transport
 

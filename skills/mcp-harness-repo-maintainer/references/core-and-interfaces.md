@@ -57,7 +57,7 @@ Divergence is a **bug**. New feature workflow:
 | **agentkit** | catalog `exec` commands | `agentkit_mcp` adapter | `agentkit_core`, `agentkit_schema` |
 | **flutter_harness** | `flutter_harness` lint/run/consume | (none—by design) | HS engine, adapters, app registry |
 | **flutter_visual_reconstruct** | `compare`, `deconstruct`, `guild validate` | (none—by design) | profile engine, verdict pipeline |
-| **skill_steward** | `guild validate` / `guild list` | (future meta index) | `scripts/validate-skills.mjs` today; Dart core later |
+| **skill_steward** | `steward validate` / `steward list` | (future meta index) | `scripts/validate-skills.mjs` today; Dart core later |
 
 Repos without MCP still use the **CLI → core** split; MCP is optional second adapter.
 
@@ -82,7 +82,7 @@ CLI               → CommandCatalog → agentkit_core
 Guild’s **product** is skills/docs, not a domain core—but the same shape applies:
 
 - **Core:** validation rules (`scripts/validate-skills.mjs`, future Dart parser)
-- **CLI:** `guild validate` (thin wrapper)
+- **CLI:** `steward validate` (thin wrapper)
 - **MCP:** future skill-index server—thin over same validators
 
 Do not put marketplace or harness **philosophy** in CLI code; keep it in skills and ADRs.

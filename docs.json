@@ -124,6 +124,10 @@
         {
           "title": "0008 — Skill Steward product name",
           "href": "/decisions/0008-adopt-skill-steward-product-name"
+        },
+        {
+          "title": "0009 — Changesets for releases",
+          "href": "/decisions/0009-adopt-changesets-for-repo-releases"
         }
       ]
     },

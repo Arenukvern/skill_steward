@@ -74,6 +74,7 @@ Meta and process capabilities only — [inclusion criteria](docs/decisions/0001-
 | [concept-doc-store](skills/concept-doc-store/)                     | Vectorless doc lattice (router, ADRs, concepts)—link to code for behavior; [mcp_flutter](https://github.com/Arenukvern/mcp_flutter)-style.                                 |
 | [multi-agent-handoff](skills/multi-agent-handoff/)                 | Plan handoffs between specialized agents.                                                                                                                                  |
 | [harness-engineering-culture](skills/harness-engineering-culture/) | Agent-first harness design—CLI/MCP, mechanical gates, docs map ([OpenAI harness engineering](https://openai.com/index/harness-engineering/)).                              |
+| [release-changelog-harness](skills/release-changelog-harness/) | Ecosystem-native release/changelog tooling (Changesets, Melos, release-plz)—legible versions for humans and agents.                                                          |
 | [mcp-harness-repo-maintainer](skills/mcp-harness-repo-maintainer/) | Maintain MCP/harness repos (mcp_flutter, agentkit, flutter_harness)—archetypes, contract gates, sibling layout.                                                            |
 | [north-star-governance](skills/north-star-governance/)             | North Star charter, AGENTS.md map, plan hygiene (any format), docs.page wiring.                                                                                            |
 
@@ -95,11 +96,13 @@ skill_steward/              # GitHub: Arenukvern/skill_steward
 ├── docs/decisions/           # ADRs (incl. product name ADR 0008)
 ├── docs/GITHUB_PROFILE.md    # Bio + profile README copy
 ├── skills/                   # Meta-skills only
-├── packages/guild_cli/       # Dart `guild` CLI — validate, list (rename TBD)
+├── packages/steward_cli/       # Dart `steward` CLI — validate, list
 ├── plugins/
-│   └── guild-validate-on-save/
+│   └── steward-validate-on-save/
 ├── templates/skill/
 ├── skills.sh.json
+├── CHANGELOG.md              # Generated via Changesets (ADR 0009)
+├── .changeset/               # PR-time release notes
 ├── AGENTS.md
 └── scripts/validate-skills.mjs
 ```
@@ -116,13 +119,13 @@ skill_steward/              # GitHub: Arenukvern/skill_steward
 
 ```bash
 pnpm install
-pnpm run guild:validate
+pnpm run steward:validate
 ```
 
 Dart CLI directly ([ADR 0006](docs/decisions/0006-guild-harness-meta-vs-product-clis.md) / [0007](docs/decisions/0007-dart-for-guild-cli-and-harness-tooling.md)):
 
 ```bash
-cd packages/guild_cli && dart pub get && dart run :guild validate
+cd packages/steward_cli && dart pub get && dart run :steward validate
 ```
 
 Cursor validates `skills/**/SKILL.md` on save via `[.cursor/hooks.json](.cursor/hooks.json)`.

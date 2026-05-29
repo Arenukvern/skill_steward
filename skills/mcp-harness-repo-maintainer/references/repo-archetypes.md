@@ -14,7 +14,7 @@ Classification for `~/mcp/*` and similar agentic monorepos.
 | **plugin/mcp.json** | Yes | No | No | No | No |
 | **init \<agent\>** | Yes (`flutter-mcp-toolkit`) | No | No | No | No |
 | **Marketplace manifests** | .cursor + .claude + .codex | Rare | Optional skills only | No | N/A (skills.sh) |
-| **Contract CI** | `make check-contracts` | analyze + publish dry-run | HS fixture scripts | `dart test` + profile lint | `pnpm run guild:validate` |
+| **Contract CI** | `make check-contracts` | analyze + publish dry-run | HS fixture scripts | `dart test` + profile lint | `pnpm run steward:validate` |
 | **Dogfood app** | flutter_test_app | via mcp_flutter | harness/examples | goldens only | N/A |
 | **ADR location** | decisions/ + docs/decisions | minimal | decisions/ | decisions/ | docs/decisions/ |
 | **Superpowers /specs** | docs/superpowers/ | PRE_RELEASE docs | plans/, specs/ | specs/, plans/ | exec-plans optional scratch |

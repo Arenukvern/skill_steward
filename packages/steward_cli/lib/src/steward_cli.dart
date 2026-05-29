@@ -6,12 +6,12 @@ import 'commands/list_command.dart';
 import 'commands/validate_command.dart';
 import 'repo_root.dart';
 
-/// Entry point for the `guild` meta harness CLI.
-class GuildCli {
+/// Entry point for the `steward` meta harness CLI.
+class StewardCli {
   /// Runs [args] and exits with the command status code.
   void run(List<String> args) {
     final runner = CommandRunner<void>(
-      'guild',
+      'steward',
       'Skill Steward meta harness — validate and list skills.',
     )
       ..addCommand(ValidateCommand())

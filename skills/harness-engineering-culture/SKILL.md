@@ -35,6 +35,7 @@ Local patterns: [mcp_flutter CLI vs MCP](https://github.com/Arenukvern/mcp_flutt
 | Phase | Skill | Action |
 |-------|--------|--------|
 | Charter / why | `concept-doc-store`, `adr-records` | ADR for harness boundaries; NORTH_STAR / router |
+| Releases | `release-changelog-harness` | Ecosystem Changesets / Melos / release-plz; DX_FAQ + CI gates |
 | Package knowledge | `faq-driven-docs` | DESIGN_FAQ + DX_FAQ per module |
 | Ship a procedure | `create-skill`, `skill-spec-review` | Agent-invokable workflow in `SKILL.md` |
 | Multi-agent work | `multi-agent-handoff` | HANDOFF.md between implementer / closer |

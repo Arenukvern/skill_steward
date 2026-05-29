@@ -56,7 +56,7 @@ Discovery also reads `.claude-plugin/plugin.json` and `.claude-plugin/marketplac
 | Codex | `codex` | agent-specific under `~/.codex/` |
 | Copilot, Windsurf, Cline, … | see `npx skills --help` | per CLI table |
 
-**Hooks:** supported on Claude Code, Cline, Kiro—not Cursor via `npx skills`. Cursor hooks need `.cursor/hooks.json` ([Guild example](../../plugins/guild-validate-on-save/)).
+**Hooks:** supported on Claude Code, Cline, Kiro—not Cursor via `npx skills`. Cursor hooks need `.cursor/hooks.json` ([Skill Steward example](../../plugins/steward-validate-on-save/)).
 
 ## Cross-agent install matrix (plugins)
 
@@ -121,7 +121,7 @@ Canonical skills stay in `skills/`. See [plugins/_template/](../../plugins/_temp
 2. **Secrets** — never commit tokens; document `GITHUB_TOKEN` / `GITLAB_TOKEN` for Claude auto-update on private marketplaces.
 3. **Install docs** — one README block per channel (skills CLI vs Claude `/plugin` vs Cursor dashboard).
 4. **Versioning** — bump `version` in plugin manifest per release; skills use git SHA via `npx skills update`.
-5. **CI** — validate skills (`pnpm run validate` / `dart run :guild validate` in Guild); product repos add contract tests.
+5. **CI** — validate skills (`pnpm run validate` / `dart run :steward validate` in Skill Steward); product repos add contract tests.
 6. **Scope** — project install (committed `.agents/skills/`) vs `-g` global; document team norm.
 
 ## Skill Steward vs product repo
@@ -129,8 +129,8 @@ Canonical skills stay in `skills/`. See [plugins/_template/](../../plugins/_temp
 | Concern | Skill Steward | Product (e.g. mcp_flutter) |
 |---------|-------------|------------------------------|
 | Skills | Meta only (`create-skill`, `adr-records`, …) | Domain + MCP skills |
-| Plugins | Meta hooks (`guild-validate-on-save`) | Full bundle: MCP + skills + init |
-| CLI | `guild validate` | `flutter-mcp-toolkit init <agent>` |
+| Plugins | Meta hooks (`steward-validate-on-save`) | Full bundle: MCP + skills + init |
+| CLI | `steward validate` | `flutter-mcp-toolkit init <agent>` |
 | Marketplace | Public Git + skills.sh | Claude/Codex git + Cursor submit + Smithery |
 
 Do not put product MCP servers in Guild. Cross-promote: `npx skills add arenukvern/skill_steward --skill harness-engineering-culture`.

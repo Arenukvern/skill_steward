@@ -11,14 +11,18 @@
     "validate:json": "node scripts/validate-skills.mjs --json",
     "list": "node scripts/list-skills.mjs",
     "docs:check": "node node_modules/@docs.page/cli/dist/cli.js check",
-    "guild:validate": "cd packages/guild_cli && dart pub get && dart run :guild validate",
-    "guild:list": "cd packages/guild_cli && dart pub get && dart run :guild list"
+    "steward:validate": "cd packages/steward_cli && dart pub get && dart run :steward validate",
+    "steward:list": "cd packages/steward_cli && dart pub get && dart run :steward list",
+    "changeset": "changeset",
+    "changeset:version": "changeset version",
+    "changeset:status": "changeset status"
   },
   "engines": {
     "node": ">=18",
     "pnpm": ">=9"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.29.0",
     "@docs.page/cli": "^1.0.3"
   }
 }

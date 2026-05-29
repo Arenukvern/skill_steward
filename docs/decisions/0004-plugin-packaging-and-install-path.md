@@ -87,7 +87,7 @@ plugins/
 
 ```yaml
 # plugin.yaml (illustrative)
-id: guild-validate-on-save
+id: steward-validate-on-save
 version: "0.1.0"
 description: Run skill validation after SKILL.md edits
 skills:
@@ -115,8 +115,8 @@ targets:
 
 | Plugin id | Purpose | Wiring |
 |-----------|---------|--------|
-| `guild-validate-on-save` | Run `pnpm run validate` when `skills/**/SKILL.md` changes | Cursor `afterFileEdit` |
-| `guild-faq-reminder` | Nudge FAQ updates when architecture files change | Cursor `afterFileEdit` + skill `faq-driven-docs` |
+| `steward-validate-on-save` | Run `pnpm run validate` when `skills/**/SKILL.md` changes | Cursor `afterFileEdit` |
+| `steward-faq-reminder` | Nudge FAQ updates when architecture files change | Cursor `afterFileEdit` + skill `faq-driven-docs` |
 
 Implement after manifest schema stabilizes; until then `plugins/README.md` points here.
 

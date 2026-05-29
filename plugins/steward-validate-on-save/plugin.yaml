@@ -1,0 +1,4 @@
+id: steward-validate-on-save
+name: Steward validate on save
+version: 0.1.0
+description: Cursor afterFileEdit hook — run skill validation when SKILL.md changes.

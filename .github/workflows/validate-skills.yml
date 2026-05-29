@@ -28,17 +28,17 @@ jobs:
         with:
           sdk: stable
 
-      - name: Dart pub get (guild_cli)
-        working-directory: packages/guild_cli
+      - name: Dart pub get (steward_cli)
+        working-directory: packages/steward_cli
         run: dart pub get
 
-      - name: Validate skills (guild CLI)
-        working-directory: packages/guild_cli
-        run: dart run :guild validate
+      - name: Validate skills (steward CLI)
+        working-directory: packages/steward_cli
+        run: dart run :steward validate
 
-      - name: List skills (guild CLI smoke)
-        working-directory: packages/guild_cli
-        run: dart run :guild list
+      - name: List skills (steward CLI smoke)
+        working-directory: packages/steward_cli
+        run: dart run :steward list
 
       - name: Validate skills.sh.json schema reference
         run: node -e "JSON.parse(require('fs').readFileSync('skills.sh.json','utf8'))"

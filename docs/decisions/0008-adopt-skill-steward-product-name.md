@@ -47,14 +47,14 @@ Chosen option: **"Skill Steward"** as the **public product name**, with GitHub r
 * Good, because the name matches [ADR 0001](0001-repository-purpose-as-skills-meta-layer.md) intent (meta-layer) and the maintainer credo.
 * Good, because it pairs naturally with **mcp_flutter** (runtime harness) in public bios and README without a third “guild” narrative.
 * Neutral, because **historical** ADRs and ADR titles may still say “Agent Guild”; consumer-facing copy uses Skill Steward ([ADR 0008](0008-adopt-skill-steward-product-name.md)).
-* Neutral, because internal identifiers (`guild_cli`, `guild-validate-on-save`, directory `packages/guild_cli`) may stay for a later rename; behavior unchanged.
+* Neutral, because ADR filenames and historical “guild” wording in older ADRs remain for traceability.
 
 ### Follow-up
 
 | Item | Action |
 |------|--------|
 | Public surfaces | Done — `docs.json`, skills.sh, install footers, docs.page slug |
-| `packages/guild_cli` binary name | Optional later rename (e.g. `steward`); not part of this ADR |
+| Meta harness CLI | Done — `packages/steward_cli`, `steward validate` / `steward list`, `steward-validate-on-save` |
 | ADR 0001 title | Historical; superseded in meaning by this ADR for **naming** only |
 
 ## Links

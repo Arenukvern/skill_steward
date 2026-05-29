@@ -40,7 +40,7 @@ Copy the section for your archetype before a release or large PR.
 
 ## E — skill_steward
 
-- [ ] `pnpm run guild:validate`
+- [ ] `pnpm run steward:validate`
 - [ ] `pnpm run docs:check` if `docs/` or `docs.json` touched
 - [ ] `skills.sh.json` + README skill table
 - [ ] No product MCP, no domain skills

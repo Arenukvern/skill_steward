@@ -52,7 +52,7 @@ dependency_overrides:
 | agentkit | `make test` / `make analyze` |
 | flutter_harness | `make check` or `dart test` + fixture script |
 | flutter_visual_reconstruct | `dart test`, `dart run … guild validate` |
-| skill_steward | `pnpm run guild:validate`, `pnpm run docs:check` |
+| skill_steward | `pnpm run steward:validate`, `pnpm run docs:check` |
 
 ## Cross-install docs
 

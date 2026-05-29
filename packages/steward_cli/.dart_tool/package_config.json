@@ -14,7 +14,7 @@
       "languageVersion": "3.4"
     },
     {
-      "name": "guild_cli",
+      "name": "steward_cli",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "3.5"
