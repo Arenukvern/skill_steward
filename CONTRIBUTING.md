@@ -4,8 +4,10 @@ Thank you for adding skills to the marketplace.
 
 ## Quick start
 
+Read [DX_FAQ.md](DX_FAQ.md) for commands; [DESIGN_FAQ.md](DESIGN_FAQ.md) for what belongs in Guild.
+
 1. Fork and clone the repo.
-2. Copy the template: `skills/_template/` → `skills/your-skill-name/`.
+2. Copy the template: `templates/skill/` → `skills/your-skill-name/`.
 3. Edit `SKILL.md` (frontmatter + instructions).
 4. Run `npm run validate`.
 5. Update `skills.sh.json` and `README.md`.

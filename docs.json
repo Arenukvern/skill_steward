@@ -1,0 +1,142 @@
+{
+  "$schema": "https://docs.page/schema.json",
+  "name": "Agent Guild",
+  "description": "Meta-skills marketplace for the Agent Skills ecosystem—manage skills, ADRs, FAQ-driven docs, and agent-first harness culture.",
+  "github": "https://github.com/arenukvern/agent_guild",
+  "theme": {
+    "defaultTheme": "system"
+  },
+  "header": {
+    "showName": true,
+    "showThemeToggle": true,
+    "showGitHubCard": true,
+    "links": [
+      {
+        "title": "GitHub",
+        "href": "https://github.com/arenukvern/agent_guild"
+      },
+      {
+        "title": "skills.sh",
+        "href": "https://skills.sh"
+      },
+      {
+        "title": "Install",
+        "href": "https://github.com/arenukvern/agent_guild#install",
+        "cta": true
+      }
+    ]
+  },
+  "anchors": [
+    {
+      "icon": "github",
+      "title": "GitHub",
+      "href": "https://github.com/arenukvern/agent_guild"
+    },
+    {
+      "icon": "book-open",
+      "title": "Agent Skills",
+      "href": "https://agentskills.io/"
+    }
+  ],
+  "seo": {
+    "noindex": false
+  },
+  "variables": {
+    "repo": "https://github.com/arenukvern/agent_guild",
+    "skills_cli": "https://github.com/vercel-labs/skills"
+  },
+  "content": {
+    "headerDepth": 3,
+    "automaticallyInferNextPrevious": true,
+    "showPageTitle": true
+  },
+  "sidebar": [
+    {
+      "group": "Start Here",
+      "pages": [
+        {
+          "title": "Overview",
+          "href": "/"
+        },
+        {
+          "title": "North Star",
+          "href": "/NORTH_STAR"
+        },
+        {
+          "title": "Docs Map",
+          "href": "/start_here/docs_map"
+        },
+        {
+          "title": "Executable Plans",
+          "href": "/start_here/executable-plans"
+        }
+      ]
+    },
+    {
+      "group": "Decisions",
+      "pages": [
+        {
+          "title": "Index",
+          "href": "/decisions/README"
+        },
+        {
+          "title": "0000 — Use ADRs",
+          "href": "/decisions/0000-use-markdown-architectural-decision-records"
+        },
+        {
+          "title": "0001 — Meta-layer purpose",
+          "href": "/decisions/0001-repository-purpose-as-skills-meta-layer"
+        },
+        {
+          "title": "0002 — FAQ-driven docs",
+          "href": "/decisions/0002-adopt-faq-driven-documentation"
+        },
+        {
+          "title": "0003 — Concept doc store",
+          "href": "/decisions/0003-concept-doc-store-lattice"
+        },
+        {
+          "title": "0004 — Plugins vs skills",
+          "href": "/decisions/0004-plugin-packaging-and-install-path"
+        },
+        {
+          "title": "0005 — Executable plans + docs.page",
+          "href": "/decisions/0005-executable-plans-and-docs-page"
+        },
+        {
+          "title": "0006 — Guild meta vs product CLIs",
+          "href": "/decisions/0006-guild-harness-meta-vs-product-clis"
+        },
+        {
+          "title": "0007 — Dart for Guild CLI",
+          "href": "/decisions/0007-dart-for-guild-cli-and-harness-tooling"
+        }
+      ]
+    },
+    {
+      "group": "Repo Root (GitHub)",
+      "pages": [
+        {
+          "title": "README",
+          "href": "https://github.com/arenukvern/agent_guild/blob/main/README.md"
+        },
+        {
+          "title": "AGENTS.md",
+          "href": "https://github.com/arenukvern/agent_guild/blob/main/AGENTS.md"
+        },
+        {
+          "title": "DESIGN_FAQ",
+          "href": "https://github.com/arenukvern/agent_guild/blob/main/DESIGN_FAQ.md"
+        },
+        {
+          "title": "DX_FAQ",
+          "href": "https://github.com/arenukvern/agent_guild/blob/main/DX_FAQ.md"
+        },
+        {
+          "title": "STANDARDS",
+          "href": "https://github.com/arenukvern/agent_guild/blob/main/docs/STANDARDS.md"
+        }
+      ]
+    }
+  ]
+}

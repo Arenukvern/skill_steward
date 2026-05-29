@@ -1,0 +1,41 @@
+# Executable plans (ephemeral only)
+
+Plans, todos, and roadmaps in Agent Guild are **work orders**, not permanent documentation.
+
+## Rule
+
+When work is **done**, the plan must **collapse** into durable artifacts and the ephemeral plan **removed or archived**:
+
+| Outcome type | Land in |
+|--------------|---------|
+| Strategic choice, trade-off | [ADR](../decisions/README) |
+| Standing why / how | [DESIGN_FAQ.md](https://github.com/arenukvern/agent_guild/blob/main/DESIGN_FAQ.md) / [DX_FAQ.md](https://github.com/arenukvern/agent_guild/blob/main/DX_FAQ.md) |
+| Behavior, gates, automation | Code, CI, CLI, MCP, `plugins/` |
+| Repeatable agent procedure | `skills/{name}/SKILL.md` |
+| Charter / scope change | [North Star](../NORTH_STAR) + ADR if significant |
+
+**Do not** leave implemented checklists in `docs/plans/`, `TODO.md`, or roadmaps—they become lies.
+
+## Allowed temporary artifacts
+
+- Short-lived branch notes in PR description
+- Active program folders **only** while work is in flight, with a named owner and exit criteria (see mcp_flutter `docs/superpowers/` pattern for large repos—not required in Guild until needed)
+- GitHub Issues / Projects for tracking (outside repo truth)
+
+## Agent workflow
+
+1. Read [North Star](../NORTH_STAR) before starting multi-step work.
+2. If a plan file is needed, put it under `docs/exec-plans/active/` with a date prefix and link from the PR.
+3. On merge: extract ADR/FAQ/code/skill updates; **delete** the active plan or move one paragraph to ADR “Notes”.
+4. Update [docs_map](docs_map) only if navigation changed.
+
+## Anti-patterns
+
+- Roadmap.md with months of completed items unchecked
+- Duplicate “plan” and ADR saying the same thing
+- Superpowers-style archived plans executed as if current (Guild has no archive until we run a program)
+
+## Related
+
+- Skill: `north-star-governance`
+- [ADR 0005 — executable plans and docs.page](../decisions/0005-executable-plans-and-docs-page.md)

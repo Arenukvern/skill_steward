@@ -1,0 +1,73 @@
+---
+status: accepted
+date: 2026-05-29
+decision-makers: Agent Guild maintainers
+consulted:
+informed:
+---
+
+# Use Markdown Architectural Decision Records
+
+## Context and Problem Statement
+
+Agent Guild is a long-lived repository whose purpose and boundaries will evolve. We need a durable, version-controlled record of *why* the repo exists and how it is shaped—not only *what* is in `skills/` today.
+
+How should we document significant decisions in this repository?
+
+## Decision Drivers
+
+* Decisions must live in git next to the code and skills they affect.
+* Format should align with the open [adr.github.io](https://adr.github.io/) ecosystem.
+* Contributors and AI agents should be able to read and update records without proprietary tools.
+* The repo already ships an `adr-records` skill; dogfooding that format reduces drift.
+
+## Considered Options
+
+* **MADR in `docs/decisions/`** — Markdown files with YAML frontmatter, numbered `NNNN-title.md`.
+* **Nygard-style ADRs in `doc/adr/`** — Minimal Context / Decision / Consequences only.
+* **Wiki or Notion** — External documentation outside the repo.
+* **No formal decision log** — Rely on README and PR descriptions only.
+
+## Decision Outcome
+
+Chosen option: **"MADR in `docs/decisions/`"**, because it matches adr.github.io conventions, supports status and supersession, and is the format taught by our own `adr-records` skill.
+
+### Consequences
+
+* Good, because decisions are reviewable in PRs and discoverable under `docs/decisions/`.
+* Good, because agents and humans share one canonical narrative for repo direction.
+* Bad, because ADRs require maintenance when direction changes (acceptable trade-off).
+* Neutral, because domain-specific skills may still live in other repos; this log only governs Agent Guild itself.
+
+### Confirmation
+
+* `docs/decisions/README.md` indexes all ADRs.
+* New strategic changes add or supersede ADRs rather than only editing README prose.
+
+## Pros and Cons of the Options
+
+### MADR in `docs/decisions/`
+
+* Good, because structured sections (options, consequences) force explicit trade-offs.
+* Good, because interoperable with industry practice and skills.sh tooling culture.
+* Bad, because slightly more ceremony than Nygard for tiny decisions.
+
+### Nygard-style only
+
+* Good, because minimal overhead.
+* Bad, because weaker guidance for documenting rejected alternatives.
+
+### Wiki or Notion
+
+* Good, because non-developers can edit easily.
+* Bad, because decoupled from git history and agent context in the repo.
+
+### No formal decision log
+
+* Good, because zero process cost.
+* Bad, because README drifts; intent behind the repo becomes ambiguous over time.
+
+## More Information
+
+* [docs/STANDARDS.md](../STANDARDS.md) — Agent Skills packaging rules for this repo.
+* [skills/adr-records/](../../skills/adr-records/) — Skill for authoring ADRs in any repository.

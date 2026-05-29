@@ -66,5 +66,5 @@ Create or update `HANDOFF.md` (or a section in the task issue) with:
 ## Install
 
 ```bash
-npx skills add <owner>/agent_guild --skill multi-agent-handoff
+npx skills add arenukvern/agent_guild --skill multi-agent-handoff
 ```

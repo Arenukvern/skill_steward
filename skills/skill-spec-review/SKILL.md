@@ -86,5 +86,5 @@ Report as:
 ## Install
 
 ```bash
-npx skills add <owner>/agent_guild --skill skill-spec-review
+npx skills add arenukvern/agent_guild --skill skill-spec-review
 ```

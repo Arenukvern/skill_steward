@@ -22,7 +22,7 @@ Add a new installable skill package under `skills/` in the Agent Guild marketpla
 
 1. **Choose a name** — `kebab-case`, 1–64 chars, matches Agent Skills rules (see `docs/STANDARDS.md`).
 2. **Create directory** — `skills/{name}/` (directory name must equal `name` in frontmatter).
-3. **Copy template** — from `skills/_template/SKILL.md`; replace placeholders.
+3. **Copy template** — from `templates/skill/SKILL.md`; replace placeholders.
 4. **Write description** — one block covering *what* and *when* (trigger phrases users say).
 5. **Write body** — numbered steps, examples, output format; keep under 500 lines.
 6. **Optional folders** — `scripts/`, `references/`, `assets/` as needed.
@@ -65,5 +65,5 @@ disable-model-invocation: false
 ## Install (end users)
 
 ```bash
-npx skills add <owner>/agent_guild --skill create-skill
+npx skills add arenukvern/agent_guild --skill create-skill
 ```

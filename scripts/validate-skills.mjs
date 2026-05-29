@@ -13,8 +13,6 @@ const SKILLS_DIR = join(ROOT, "skills");
 const JSON_OUT = process.argv.includes("--json");
 
 const NAME_RE = /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
-const SKIP_DIRS = new Set(["_template"]);
-
 /** @param {string} dir */
 async function isDirectory(dir) {
   try {
@@ -131,7 +129,7 @@ async function loadSkillsShIds() {
 async function main() {
   const entries = await readdir(SKILLS_DIR, { withFileTypes: true });
   const skillDirs = entries
-    .filter((e) => e.isDirectory() && !SKIP_DIRS.has(e.name) && !e.name.startsWith("."))
+    .filter((e) => e.isDirectory() && !e.name.startsWith("."))
     .map((e) => e.name);
 
   const results = [];

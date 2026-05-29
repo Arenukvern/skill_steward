@@ -30,5 +30,5 @@ Describe how to format the final response.
 ## Install
 
 ```bash
-npx skills add <owner>/agent_guild --skill your-skill-name
+npx skills add arenukvern/agent_guild --skill your-skill-name
 ```

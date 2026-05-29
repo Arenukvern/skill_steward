@@ -11,6 +11,23 @@
       ]
     },
     {
+      "title": "Documentation",
+      "description": "Architecture knowledge and decision logs aligned with adr.github.io.",
+      "skills": [
+        "adr-records",
+        "faq-driven-docs",
+        "concept-doc-store"
+      ]
+    },
+    {
+      "title": "Harness",
+      "description": "Agent-first engineering culture—CLI, MCP, contracts, and docs as system of record.",
+      "skills": [
+        "harness-engineering-culture",
+        "north-star-governance"
+      ]
+    },
+    {
       "title": "Multi-agent",
       "description": "Patterns for coordinating multiple AI agents on shared work.",
       "skills": [

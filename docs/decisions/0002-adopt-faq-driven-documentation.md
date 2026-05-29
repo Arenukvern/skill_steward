@@ -1,0 +1,98 @@
+---
+status: accepted
+date: 2026-05-29
+decision-makers: Agent Guild maintainers
+consulted:
+informed:
+---
+
+# Adopt FAQ-driven documentation (DESIGN_FAQ + DX_FAQ)
+
+## Context and Problem Statement
+
+Traditional specs and READMEs in agent-assisted repos tend to **bloat** (examples, duplicated rules, stale paragraphs) while agents and humans actually think in **questions**: why was X chosen, how do I do Y?
+
+Agent Guild’s charter ([ADR 0001](0001-repository-purpose-as-skills-meta-layer.md)) is a meta-layer for **managing skills and improving processes**. Documentation format is part of that process surface—not domain recipes.
+
+Maintainer practice in [ecsly](https://github.com/) (reference) uses paired `DESIGN_FAQ.md` (why) and `DX_FAQ.md` (how), Cursor rules (`faq_usage.mdc`), and commands (`update-faq`, `use-faq-diagram`, `update-faq-packages`). The approach is articulated publicly as **FAQ-driven development**:
+
+**[FAQ-driven development — or new old way to write docs / rules / prompts](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl)** (Anton Arenukvern, DEV Community).
+
+How should Agent Guild document itself and teach agents to document other repositories?
+
+## Decision Drivers
+
+* **Compression**: Q&A forces one essential question and a short answer—maintainable for humans and agents.
+* **Separation of concerns**: WHY (design) vs HOW (usage) must not duplicate.
+* **Agent-native**: Matches `.cursor/rules`, skills, and ADRs; searchable and linkable per question.
+* **Continuous improvement**: Easy to add/update one Q&A when code changes vs rewriting chapters.
+* **Cross-repo skill**: Guild ships a portable `faq-driven-docs` skill, not ecsly-specific prose.
+
+## Considered Options
+
+* **Long-form docs only** — `docs/` guides, Diátaxis, classic wiki.
+* **ADRs only** — No standing FAQ; every question becomes a numbered decision file.
+* **Single FAQ file** — One `FAQ.md` mixing why and how.
+* **FAQ-driven pair (DESIGN_FAQ + DX_FAQ) + agent wiring** — ecsly-style split, optional Memory Palace for DX, Cursor rule/commands.
+
+## Decision Outcome
+
+Chosen option: **"FAQ-driven pair (DESIGN_FAQ + DX_FAQ) + agent wiring"**, because it matches proven maintainer workflow, the linked article’s thesis, and Agent Guild’s process-improvement mission.
+
+### Consequences
+
+* Good, because contributors and agents have a clear update path after code changes.
+* Good, because `faq-driven-docs` skill encodes ecsly-derived patterns without copying domain content.
+* Good, because article link gives external rationale for adopters outside this repo.
+* Bad, because discipline required—teams may slip back into long prose in FAQ files.
+* Bad, because Memory Palace DX format needs learning curve for new packages.
+* Neutral, because ADRs remain for strategic/repo-level decisions; FAQs hold operational why/how detail.
+
+### Confirmation
+
+* Skill `skills/faq-driven-docs/` published with references and Cursor templates.
+* New repos/packages created via skill checklist include both FAQs where applicable.
+* Strategic alignment cited in [ADR 0001](0001-repository-purpose-as-skills-meta-layer.md) documentation practices.
+
+## Format rules (normative for Guild-adopted repos)
+
+| Artifact | Role |
+|----------|------|
+| `DESIGN_FAQ.md` | **Why** — 2–3 sentence answers, trade-offs, boundaries |
+| `DX_FAQ.md` | **How** — API patterns; Memory Palace for large surfaces |
+| `.cursor/rules/faq_usage.mdc` | Routes agents to the correct FAQ |
+| `.cursor/commands/update-faq.md` | Post-change sync; concise, codebase-verified |
+| ADRs | Charter and cross-cutting decisions; **link** to FAQs for detail |
+
+**No duplication** between DESIGN and DX; parent FAQs **route** to child package FAQs in monorepos.
+
+## Pros and Cons of the Options
+
+### Long-form docs only
+
+* Good, because familiar to technical writers.
+* Bad, because high drift rate and poor agent retrieval in practice.
+
+### ADRs only
+
+* Good, because strong audit trail per decision.
+* Bad, because too heavy for everyday API/how knowledge.
+
+### Single FAQ
+
+* Good, because one file to find.
+* Bad, because why/how mix confuses updates and agent routing.
+
+### FAQ-driven pair + agent wiring
+
+* Good, because compressive, linkable, matches FDD article and ecsly reference.
+* Good, because ships as installable guild skill.
+* Bad, because two files to maintain (mitigated by update-faq command habit).
+
+## More Information
+
+* **FAQ-driven development (article):** https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl
+* **Skill:** [skills/faq-driven-docs/](../../skills/faq-driven-docs/)
+* **Reference implementation (structure):** ecsly — `core_packages/ecs/DESIGN_FAQ.md`, `DX_FAQ.md`, `plugins/*/DESIGN_FAQ.md`, `.cursor/rules/faq_usage.mdc`
+* **Related ADR:** [0001 — repository purpose](0001-repository-purpose-as-skills-meta-layer.md)
+* **Y-Statement:** In the context of fast-moving agent-assisted codebases, facing doc bloat and stale specs, we decided for **paired DESIGN/DX FAQs with agent rules and commands** to achieve **compressible, queryable documentation**, accepting **discipline to keep answers short**.

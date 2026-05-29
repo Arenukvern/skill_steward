@@ -1,0 +1,15 @@
+# Agent Guild plugin manifest (v1 draft — see ADR 0004)
+id: your-plugin-id
+version: "0.1.0"
+description: One line — what wiring this bundle adds beyond skills alone.
+
+# Skills already in repo skills/ — installed separately via npx skills
+skills:
+  - skill-spec-review
+
+targets:
+  cursor:
+    hooks:
+      - event: afterFileEdit
+        script: hooks/example.sh
+        # matcher: "Write"   # optional — see Cursor hooks docs

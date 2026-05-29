@@ -1,0 +1,31 @@
+import 'dart:io';
+
+import 'package:args/command_runner.dart';
+
+import 'commands/list_command.dart';
+import 'commands/validate_command.dart';
+import 'repo_root.dart';
+
+/// Entry point for the `guild` meta harness CLI.
+class GuildCli {
+  /// Runs [args] and exits with the command status code.
+  void run(List<String> args) {
+    final runner = CommandRunner<void>(
+      'guild',
+      'Agent Guild meta harness — validate and list skills.',
+    )
+      ..addCommand(ValidateCommand())
+      ..addCommand(ListCommand());
+
+    try {
+      runner.run(args);
+    } on UsageException catch (e) {
+      stderr.writeln(e);
+      stderr.writeln(runner.usage);
+      exit(64);
+    }
+  }
+}
+
+/// Repository root containing `skills/` and `skills.sh.json`.
+String repoRootFromCwd() => findRepoRoot(Directory.current);

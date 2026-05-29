@@ -69,16 +69,16 @@ skill-name/
 
 ```bash
 # All skills
-npx skills add <owner>/agent_guild
+npx skills add arenukvern/agent_guild
 
 # One skill
-npx skills add <owner>/agent_guild --skill create-skill
+npx skills add arenukvern/agent_guild --skill create-skill
 
 # List without installing
-npx skills add <owner>/agent_guild --list
+npx skills add arenukvern/agent_guild --list
 
 # Agents: cursor, claude-code, codex, windsurf, github-copilot, …
-npx skills add <owner>/agent_guild -a cursor -y
+npx skills add arenukvern/agent_guild -a cursor -y
 ```
 
 ### Install scopes
