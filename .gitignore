@@ -1,0 +1,12 @@
+node_modules/
+.DS_Store
+*.log
+.env
+.env.*
+!.env.example
+.agents/
+.cursor/skills/
+.claude/skills/
+.codex/skills/
+dist/
+coverage/

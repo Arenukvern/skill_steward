@@ -1,0 +1,21 @@
+{
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "notGrouped": "bottom",
+  "groupings": [
+    {
+      "title": "Marketplace",
+      "description": "Authoring, reviewing, and publishing skills for the Agent Guild marketplace.",
+      "skills": [
+        "create-skill",
+        "skill-spec-review"
+      ]
+    },
+    {
+      "title": "Multi-agent",
+      "description": "Patterns for coordinating multiple AI agents on shared work.",
+      "skills": [
+        "multi-agent-handoff"
+      ]
+    }
+  ]
+}

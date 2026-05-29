@@ -1,0 +1,16 @@
+{
+  "name": "agent-guild",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cross-agent skills marketplace (Cursor, Claude Code, Codex, npx skills)",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "validate": "node scripts/validate-skills.mjs",
+    "validate:json": "node scripts/validate-skills.mjs --json",
+    "list": "node scripts/list-skills.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
