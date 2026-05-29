@@ -1,8 +1,8 @@
 {
   "$schema": "https://docs.page/schema.json",
-  "name": "Agent Guild",
-  "description": "Meta-skills marketplace for the Agent Skills ecosystem—manage skills, ADRs, FAQ-driven docs, and agent-first harness culture.",
-  "github": "https://github.com/arenukvern/agent_guild",
+  "name": "Skill Steward",
+  "description": "Meta skills for the Agent Skills ecosystem—validate, govern, document SKILL.md packages, ADRs, FAQ-driven docs, and harness culture.",
+  "github": "https://github.com/arenukvern/skill_steward",
   "theme": {
     "defaultTheme": "system"
   },
@@ -13,7 +13,7 @@
     "links": [
       {
         "title": "GitHub",
-        "href": "https://github.com/arenukvern/agent_guild"
+        "href": "https://github.com/arenukvern/skill_steward"
       },
       {
         "title": "skills.sh",
@@ -21,7 +21,7 @@
       },
       {
         "title": "Install",
-        "href": "https://github.com/arenukvern/agent_guild#install",
+        "href": "https://github.com/arenukvern/skill_steward#install",
         "cta": true
       }
     ]
@@ -30,7 +30,7 @@
     {
       "icon": "github",
       "title": "GitHub",
-      "href": "https://github.com/arenukvern/agent_guild"
+      "href": "https://github.com/arenukvern/skill_steward"
     },
     {
       "icon": "book-open",
@@ -42,7 +42,8 @@
     "noindex": false
   },
   "variables": {
-    "repo": "https://github.com/arenukvern/agent_guild",
+    "repo": "https://github.com/arenukvern/skill_steward",
+    "docs": "https://docs.page/arenukvern/skill_steward",
     "skills_cli": "https://github.com/vercel-labs/skills"
   },
   "content": {
@@ -67,8 +68,17 @@
           "href": "/start_here/docs_map"
         },
         {
-          "title": "Executable Plans",
+          "title": "Plan hygiene (extract & remove)",
           "href": "/start_here/executable-plans"
+        }
+      ]
+    },
+    {
+      "group": "Contributing",
+      "pages": [
+        {
+          "title": "Enable docs.page",
+          "href": "/contributing/enable_docs_page"
         }
       ]
     },
@@ -100,16 +110,24 @@
           "href": "/decisions/0004-plugin-packaging-and-install-path"
         },
         {
-          "title": "0005 — Executable plans + docs.page",
+          "title": "0005 — Plan hygiene + docs.page",
           "href": "/decisions/0005-executable-plans-and-docs-page"
         },
         {
-          "title": "0006 — Guild meta vs product CLIs",
+          "title": "0006 — Meta harness vs product CLIs",
           "href": "/decisions/0006-guild-harness-meta-vs-product-clis"
         },
         {
-          "title": "0007 — Dart for Guild CLI",
+          "title": "0007 — Dart for meta CLI",
           "href": "/decisions/0007-dart-for-guild-cli-and-harness-tooling"
+        },
+        {
+          "title": "0008 — Skill Steward product name",
+          "href": "/decisions/0008-adopt-skill-steward-product-name"
+        },
+        {
+          "title": "0009 — Changesets for releases",
+          "href": "/decisions/0009-adopt-changesets-for-repo-releases"
         }
       ]
     },
@@ -118,23 +136,23 @@
       "pages": [
         {
           "title": "README",
-          "href": "https://github.com/arenukvern/agent_guild/blob/main/README.md"
+          "href": "https://github.com/arenukvern/skill_steward/blob/main/README.md"
         },
         {
           "title": "AGENTS.md",
-          "href": "https://github.com/arenukvern/agent_guild/blob/main/AGENTS.md"
+          "href": "https://github.com/arenukvern/skill_steward/blob/main/AGENTS.md"
         },
         {
           "title": "DESIGN_FAQ",
-          "href": "https://github.com/arenukvern/agent_guild/blob/main/DESIGN_FAQ.md"
+          "href": "https://github.com/arenukvern/skill_steward/blob/main/DESIGN_FAQ.md"
         },
         {
           "title": "DX_FAQ",
-          "href": "https://github.com/arenukvern/agent_guild/blob/main/DX_FAQ.md"
+          "href": "https://github.com/arenukvern/skill_steward/blob/main/DX_FAQ.md"
         },
         {
           "title": "STANDARDS",
-          "href": "https://github.com/arenukvern/agent_guild/blob/main/docs/STANDARDS.md"
+          "href": "https://github.com/arenukvern/skill_steward/blob/main/docs/STANDARDS.md"
         }
       ]
     }

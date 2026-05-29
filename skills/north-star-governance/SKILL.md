@@ -1,10 +1,10 @@
 ---
 name: north-star-governance
-description: Maintains docs/NORTH_STAR.md, wires AGENTS.md as a short agent map, and enforces executable-only plans that merge into ADR, FAQ, code, or harness when done. Use when updating charter, repo navigation, roadmaps, or docs.page structure.
+description: Maintains docs/NORTH_STAR.md, wires AGENTS.md as a short agent map, and applies plan hygiene (any format—Superpowers, session plans, etc.) by extracting durable knowledge into ADR, FAQ, code, or harness then removing stale plan files. Use when updating charter, repo navigation, closing work, or docs.page structure. Does not define a new plan template.
 license: MIT
 metadata:
-  author: agent-guild
-  version: "1.0.0"
+  author: skill-steward
+  version: "1.1.0"
   category: governance
 paths:
   - "docs/NORTH_STAR.md"
@@ -16,14 +16,34 @@ paths:
 
 # North Star governance
 
-Keep Agent Guild **legible**: charter in one place, `AGENTS.md` as a **map**, plans that **die when done**.
+Keep Skill Steward **legible**: charter in one place, `AGENTS.md` as a **map**, plan artifacts **removed after extract** (any planning tool the user chooses).
 
 ## When to use
 
 - Updating repo scope, boundaries, or success criteria
 - Rewiring `AGENTS.md` or `docs.json` sidebar
 - Creating or closing plans, roadmaps, todos in-repo
+- **Before large or ambiguous work** — scope + design checkpoints ([`adr-records`](../adr-records/SKILL.md))
 - After a milestone: “where should this knowledge live?”
+
+## Before large work (scope + decisions)
+
+Run this spine **before** a multi-file feature, new integration, or repo reshape:
+
+```text
+1. North Star — still in scope? (own / do-not-own)
+2. adr-records — any trigger T1–T8? → decision brief or proposed ADR
+3. harness-engineering-culture — thin CLI/MCP, mechanical gate planned?
+4. Implement — only after checkpoint answered or waived by user
+5. Close — extract to ADR/FAQ/code; delete plan scratch
+```
+
+| Signal | Action |
+|--------|--------|
+| Touches charter or “do not own” | Stop; North Star diff + ADR if accepted |
+| 2+ valid designs | `adr-records` checkpoint brief; do not code yet |
+| User asked “key design decisions” | `adr-records` layer 0 ([decision-checkpoints](../adr-records/references/decision-checkpoints.md)) |
+| Small, ADR-covered change | Proceed; link existing ADR in PR |
 
 ## Canonical files
 
@@ -33,15 +53,17 @@ Keep Agent Guild **legible**: charter in one place, `AGENTS.md` as a **map**, pl
 | [AGENTS.md](../../AGENTS.md) | Agent **map** only—pointers, not encyclopedia | ~100 lines |
 | [docs/start_here/docs_map.mdx](../../docs/start_here/docs_map.mdx) | Human + agent doc index |
 | [docs.json](../../docs.json) | [docs.page](https://docs.page) sidebar |
-| [docs/start_here/executable-plans.mdx](../../docs/start_here/executable-plans.mdx) | Plan lifecycle doctrine |
+| [docs/start_here/executable-plans.mdx](../../docs/start_here/executable-plans.mdx) | Plan hygiene — extract & remove (not a format spec) |
 
 Root [DESIGN_FAQ.md](../../DESIGN_FAQ.md) / [DX_FAQ.md](../../DX_FAQ.md): standing why/how—not charter. Link from map; do not merge into North Star.
 
-## Executable plans rule
+## Plan hygiene (format-agnostic)
 
-**Plans, todos, and roadmaps are temporary.** They exist to drive work, not to document truth.
+**Do not invent a Guild plan format.** Users/agents may use Superpowers, Cursor plans, engineering-loop, Issues, `docs/exec-plans/active/`, or no file.
 
-When work completes, **collapse** and **delete** the plan:
+**Plans are temporary.** They drive work; they are not repo truth.
+
+When work completes, **extract** durable bits and **delete** (or archive as non-executable) the plan:
 
 ```text
 Done?  →  ADR (why) | DESIGN/DX FAQ | code/CI | skill/plugin/harness
@@ -58,9 +80,9 @@ Done?  →  ADR (why) | DESIGN/DX FAQ | code/CI | skill/plugin/harness
 | Agent procedure | `skills/{name}/SKILL.md` |
 | Scope change | `docs/NORTH_STAR.md` (+ ADR if large) |
 
-**Forbidden:** `ROADMAP.md` with months of finished items; duplicate plan + ADR; stale `docs/plans/` after merge.
+**Forbidden:** leaving finished checklists in-tree as if current; duplicate plan + ADR; executing archived Superpowers plans without tracker/spec.
 
-Active work (optional): `docs/exec-plans/active/YYYY-MM-DD-short-title.md` only until PR merges.
+Optional Guild scratch (not a standard): `docs/exec-plans/active/YYYY-MM-DD-short-title.md` until PR merges, then delete.
 
 ## Wire AGENTS.md (map pattern)
 
@@ -68,7 +90,7 @@ Active work (optional): `docs/exec-plans/active/YYYY-MM-DD-short-title.md` only 
 
 1. One paragraph purpose + `npx skills add` one-liner
 2. **Documentation router** table → North Star, FAQs, decisions, standards, key skills
-3. **Non-negotiables** (3–5 bullets): validate before PR, meta-only scope, executable plans, no secrets
+3. **Non-negotiables** (3–5 bullets): validate before PR, meta-only scope, plan hygiene (extract & remove), no secrets
 4. **Install paths** table (Cursor, Claude, Codex, `.agents/skills`)
 5. Link: “Skill authoring detail → [docs/STANDARDS.md](docs/STANDARDS.md)”
 
@@ -97,7 +119,8 @@ Update `github` URL in `docs.json` when remote is known.
 
 | Task | Also use |
 |------|----------|
-| ADR from decision | `adr-records` |
+| Design fork before/during work | `adr-records` — [decision checkpoints](../adr-records/references/decision-checkpoints.md) |
+| ADR after decision | `adr-records` — MADR workflow |
 | FAQ updates | `faq-driven-docs` |
 | Doc lattice | `concept-doc-store` |
 | Harness / CLI culture | `harness-engineering-culture` |
@@ -106,5 +129,9 @@ Update `github` URL in `docs.json` when remote is known.
 ## Install
 
 ```bash
-npx skills add arenukvern/agent_guild --skill north-star-governance
+npx skills add arenukvern/skill_steward --skill north-star-governance
 ```
+
+## Sources
+
+See [references/sources.md](references/sources.md). When researching, follow `skill-source-citations`.

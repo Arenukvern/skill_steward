@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-05-29
-decision-makers: Agent Guild maintainers
+decision-makers: Skill Steward maintainers
 consulted:
 informed:
 ---
@@ -10,13 +10,13 @@ informed:
 
 ## Context and Problem Statement
 
-Agent Guild documents process and meta-skills (ADRs, FAQ-driven docs, skill validation). Documentation can bloat when it **re-explains code** or relies on **embedding/RAG** instead of explicit structure.
+Skill Steward documents process and meta-skills (ADRs, FAQ-driven docs, skill validation). Documentation can bloat when it **re-explains code** or relies on **embedding/RAG** instead of explicit structure.
 
 A working pattern exists in [mcp_flutter](https://github.com/Arenukvern/mcp_flutter): layered docs (`docs_map` router, `NORTH_STAR`, ADRs, agent playbooks, optional `superpowers/` programs) where **behavior** stays in code/examples and **docs** hold decisions, concepts, and navigation.
 
 Maintainer practice also uses [FAQ-driven development](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl) for compressed Q&A at package level ([ADR 0002](0002-adopt-faq-driven-documentation.md)).
 
-How should Agent Guild teach agents to organize documentation in other repositories?
+How should Skill Steward teach agents to organize documentation in other repositories?
 
 ## Decision Drivers
 
@@ -42,7 +42,7 @@ Chosen option: **"Layered concept doc store + optional FAQs"**, shipped as skill
 
 * Good, because agents get a router and clear SSOT rules before writing prose.
 * Good, because ADRs and concepts stay short; code drift reduced.
-* Good, because aligns with Guild meta-layer mission (process improvement, not domain tutorials).
+* Good, because aligns with Skill Steward meta-layer mission (process improvement, not domain tutorials).
 * Bad, because more folders than a minimal repo strictly needs.
 * Bad, because `superpowers/` program layout is optional but easy to over-adopt.
 * Neutral, because public docs sites (docs.page) remain optional publish layer on top of git files.

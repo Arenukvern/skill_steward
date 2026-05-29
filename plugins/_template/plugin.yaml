@@ -1,4 +1,4 @@
-# Agent Guild plugin manifest (v1 draft — see ADR 0004)
+# Skill Steward plugin manifest (v1 draft — see ADR 0004)
 id: your-plugin-id
 version: "0.1.0"
 description: One line — what wiring this bundle adds beyond skills alone.

@@ -3,7 +3,7 @@ name: multi-agent-handoff
 description: Plan and document handoffs between specialized AI agents (foreman, workers, reviewers). Use for multi-agent workflows, subagent delegation, baton passes, or guild-style agent coordination.
 license: MIT
 metadata:
-  author: agent-guild
+  author: skill-steward
   version: "1.0.0"
   category: multi-agent
 ---
@@ -66,5 +66,9 @@ Create or update `HANDOFF.md` (or a section in the task issue) with:
 ## Install
 
 ```bash
-npx skills add arenukvern/agent_guild --skill multi-agent-handoff
+npx skills add arenukvern/skill_steward --skill multi-agent-handoff
 ```
+
+## Sources
+
+See [references/sources.md](references/sources.md). When researching, follow `skill-source-citations`.

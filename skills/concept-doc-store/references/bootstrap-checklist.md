@@ -29,5 +29,5 @@
 
 ## After bootstrap
 
-- [ ] ADR documents this doc model (Agent Guild: ADR 0003)
+- [ ] ADR documents this doc model (Skill Steward: ADR 0003)
 - [ ] CONTRIBUTING mentions which layer to update per change type

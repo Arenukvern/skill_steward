@@ -28,7 +28,7 @@ Copy into `HANDOFF.md` at the project root or task folder.
 
 ```bash
 # example
-npm run validate
+pnpm run validate
 ```
 
 ## Context links

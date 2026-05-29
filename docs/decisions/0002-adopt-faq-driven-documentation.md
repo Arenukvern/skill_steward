@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-05-29
-decision-makers: Agent Guild maintainers
+decision-makers: Skill Steward maintainers
 consulted:
 informed:
 ---
@@ -12,13 +12,13 @@ informed:
 
 Traditional specs and READMEs in agent-assisted repos tend to **bloat** (examples, duplicated rules, stale paragraphs) while agents and humans actually think in **questions**: why was X chosen, how do I do Y?
 
-Agent Guild’s charter ([ADR 0001](0001-repository-purpose-as-skills-meta-layer.md)) is a meta-layer for **managing skills and improving processes**. Documentation format is part of that process surface—not domain recipes.
+Skill Steward’s charter ([ADR 0001](0001-repository-purpose-as-skills-meta-layer.md)) is a meta-layer for **managing skills and improving processes**. Documentation format is part of that process surface—not domain recipes.
 
 Maintainer practice in [ecsly](https://github.com/) (reference) uses paired `DESIGN_FAQ.md` (why) and `DX_FAQ.md` (how), Cursor rules (`faq_usage.mdc`), and commands (`update-faq`, `use-faq-diagram`, `update-faq-packages`). The approach is articulated publicly as **FAQ-driven development**:
 
 **[FAQ-driven development — or new old way to write docs / rules / prompts](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl)** (Anton Arenukvern, DEV Community).
 
-How should Agent Guild document itself and teach agents to document other repositories?
+How should Skill Steward document itself and teach agents to document other repositories?
 
 ## Decision Drivers
 
@@ -37,7 +37,7 @@ How should Agent Guild document itself and teach agents to document other reposi
 
 ## Decision Outcome
 
-Chosen option: **"FAQ-driven pair (DESIGN_FAQ + DX_FAQ) + agent wiring"**, because it matches proven maintainer workflow, the linked article’s thesis, and Agent Guild’s process-improvement mission.
+Chosen option: **"FAQ-driven pair (DESIGN_FAQ + DX_FAQ) + agent wiring"**, because it matches proven maintainer workflow, the linked article’s thesis, and Skill Steward’s process-improvement mission.
 
 ### Consequences
 

@@ -1,0 +1,18 @@
+name: steward_cli
+description: Meta harness CLI for Skill Steward — validate and list skills.
+version: 0.1.0
+repository: https://github.com/arenukvern/skill_steward
+
+environment:
+  sdk: ^3.5.0
+
+dependencies:
+  args: ^2.6.0
+  path: ^1.9.0
+
+dev_dependencies:
+  lints: ^6.0.0
+  xsoulspace_lints: ^0.1.2
+
+executables:
+  steward: steward

@@ -1,10 +1,10 @@
 ---
 name: adr-records
-description: Writes and maintains Architecture Decision Records (ADRs) per adr.github.io using MADR, Nygard, or Y-Statement formats. Use when creating or updating ADRs, documenting architecture decisions, superseding decisions, or setting up a decision log in a repository.
+description: Writes and maintains ADRs (MADR, Nygard, Y-Statement) and runs decision checkpoints before/during work—trigger matrix, option briefs, proposed ADRs. Use when creating or updating ADRs, facing a design fork, trade-off, boundary change, or when the user asks for key design decisions before implementing.
 license: MIT
 metadata:
-  author: agent-guild
-  version: "1.0.0"
+  author: skill-steward
+  version: "1.1.0"
   category: documentation
 paths:
   - "docs/**"
@@ -21,9 +21,32 @@ Maintain a **decision log** of architecturally significant choices using formats
 ## When to use
 
 - User asks for an ADR, architecture decision record, or decision log
+- **Before or during implementation** — design fork, trade-off, or “which approach?” ([decision checkpoints](#decision-checkpoints-layer-0))
+- User asks for **key design decisions** when doing work (checkpoint brief, not silent defaults)
 - Recording a significant design choice (stack, integration, security, data model, deployment)
 - Updating ADR status (`accepted`, `deprecated`, `superseded`)
 - Aligning an existing repo with MADR / Nygard conventions
+
+## Decision checkpoints (layer 0)
+
+**Layer 0 = checkpoint** (brief or `proposed` ADR). **Layer 1 = accepted ADR** after agreement.
+
+When triggers fire, **stop and ask**—do not implement the most convenient option.
+
+| Trigger | Stop when… |
+|---------|------------|
+| **T1 Fork** | 2+ viable architectures or tools |
+| **T2 Boundary** | Scope crosses North Star / repo archetype |
+| **T3 Irreversible** | Public API, schema, auth, hard-to-revert migration |
+| **T4 Dependency** | New sibling repo, CI, or registry coupling |
+| **T5 Contradiction** | Conflicts with accepted ADR or charter |
+| **T6 Security** | Auth, PII, secrets, production exposure |
+| **T7 Cost** | Expensive to revert after merge |
+| **T8 Uncertainty** | Would need unstated assumptions |
+
+**Output:** [decision brief](references/decision-checkpoints.md#decision-brief-template) in chat/PR, or ADR with `status: proposed`. Full matrix, severity, and exceptions: [references/decision-checkpoints.md](references/decision-checkpoints.md).
+
+Combine with `north-star-governance` (in scope?) and `harness-engineering-culture` (harness shape) before large edits.
 
 ## Locate or bootstrap the decision log
 
@@ -95,6 +118,7 @@ Match the format already used in the repo. Do not mix formats within one decisio
 
 ## Authoring workflow
 
+0. **Checkpoint** — if a trigger fired, brief or `proposed` ADR first; get explicit choice.
 1. **Confirm scope** — one decision per ADR; split if multiple unrelated choices.
 2. **Gather** — context, drivers, options considered, who decided, date (ISO `YYYY-MM-DD`).
 3. **Draft** — fill template; write options you actually evaluated, not only the winner.
@@ -135,5 +159,14 @@ Tell the user:
 ## Install
 
 ```bash
-npx skills add arenukvern/agent_guild --skill adr-records
+npx skills add arenukvern/skill_steward --skill adr-records
 ```
+
+## References
+
+- [decision-checkpoints.md](references/decision-checkpoints.md) — trigger matrix, brief template, severity
+- [madr-bare-template.md](references/madr-bare-template.md) — full ADR (layer 1)
+
+## Sources
+
+See [references/sources.md](references/sources.md). When researching, follow `skill-source-citations`.

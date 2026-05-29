@@ -1,0 +1,40 @@
+{
+  "roots": [
+    "steward_cli"
+  ],
+  "packages": [
+    {
+      "name": "steward_cli",
+      "version": "0.1.0",
+      "dependencies": [
+        "args",
+        "path"
+      ],
+      "devDependencies": [
+        "lints",
+        "xsoulspace_lints"
+      ]
+    },
+    {
+      "name": "xsoulspace_lints",
+      "version": "0.1.2",
+      "dependencies": []
+    },
+    {
+      "name": "lints",
+      "version": "6.1.0",
+      "dependencies": []
+    },
+    {
+      "name": "path",
+      "version": "1.9.1",
+      "dependencies": []
+    },
+    {
+      "name": "args",
+      "version": "2.7.0",
+      "dependencies": []
+    }
+  ],
+  "configVersion": 1
+}

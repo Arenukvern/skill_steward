@@ -1,0 +1,61 @@
+---
+status: accepted
+date: 2026-05-29
+decision-makers: Skill Steward maintainers
+consulted:
+informed:
+---
+
+# Adopt Changesets for repo release notes
+
+## Context and Problem Statement
+
+Skill Steward is a **meta** repository: consumers care about skill content, install paths, docs, and validation behavior—not npm library semver in the traditional sense. Releases still need to be **legible**: what changed, for whom, and at which repo version.
+
+Hand-editing `package.json` version and `CHANGELOG.md` on release day is error-prone; agents and contributors lack a **structured PR-time artifact** to describe intent. The JS ecosystem’s [Changesets](https://github.com/changesets/changesets) pattern solves this with small markdown files in git ([release-changelog-harness](../../skills/release-changelog-harness/SKILL.md)).
+
+This repo is a **single root package** today (`package.json` name `skill-steward`), not a pnpm workspace. Changesets is still appropriate: one version tracks the **repository release**, skills remain unversioned packages inside the tree, and we can extend to workspace packages later without changing the contract.
+
+## Decision Drivers
+
+* **Release legibility contract** — notes in git, structured contributor input, mechanical gates ([release-changelog-harness](../../skills/release-changelog-harness/SKILL.md)).
+* **Agent-readable history** — agents can read `.changeset/*.md` and `CHANGELOG.md` without GitHub Releases API.
+* **FAQ-driven how** — commands live in [DX_FAQ.md](../../DX_FAQ.md), not in `AGENTS.md`.
+* **No npm product** — root package is `private`; Changesets manages **changelog + semver**, not npm publish (skills ship via `npx skills` / GitHub).
+* **Sibling ecosystems** — Dart/Rust repos in `~/mcp` keep native tooling; this ADR applies to **skill_steward only**.
+
+## Considered Options
+
+* **Manual CHANGELOG only** — Simple; no PR-time enforcement; agents skip updates.
+* **release-please** — Strong for conventional-commit monorepos; less explicit per-PR intent files.
+* **Changesets** — Explicit `.changeset/*.md` per change; standard for Node-maintained meta repos.
+* **No versioning** — Tags only; poor story for consumer communication.
+
+## Decision Outcome
+
+Chosen option: **"Changesets"** for Skill Steward repository releases.
+
+### Normative workflow
+
+| Phase | Maintainer action |
+|-------|-------------------|
+| **PR** | Add `.changeset/*.md` when changing releasable paths (CI enforces). |
+| **Pre-release** | `pnpm changeset:version` on `main` → updates `CHANGELOG.md` + `package.json`. |
+| **Release** | Git tag `v{package.json version}`; GitHub Release notes from `CHANGELOG` section. |
+
+Releasable paths (CI): `skills/`, `plugins/`, `docs/`, `package.json`, `skills.sh.json`, `README.md`, `AGENTS.md`, `docs.json`, `CONTRIBUTING.md`, `scripts/`, `.github/workflows/`.
+
+Exempt: typo-only PRs may use label or title `[skip changeset]` (documented in CONTRIBUTING).
+
+### Consequences
+
+* Good, because every consumer-facing merge can carry a reviewable release sentence.
+* Good, because `CHANGELOG.md` becomes the agent-facing “what shipped” SSOT.
+* Bad, because contributors learn a new ritual—mitigated by DX_FAQ Memory Palace block.
+* Neutral, because `packages/steward_cli` stays unversioned separately until a workspace split warrants it.
+
+## Links
+
+* [DX_FAQ — Release desk](../../DX_FAQ.md)
+* [release-changelog-harness skill](../../skills/release-changelog-harness/SKILL.md)
+* [Changesets documentation](https://github.com/changesets/changesets/blob/main/docs/intro-to-using-changesets.md)

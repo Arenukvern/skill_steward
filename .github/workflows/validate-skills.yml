@@ -12,12 +12,38 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
+          cache: pnpm
 
-      - name: Validate SKILL.md packages
-        run: npm run validate
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+
+      - name: Dart pub get (steward_cli)
+        working-directory: packages/steward_cli
+        run: dart pub get
+
+      - name: Analyze steward_cli (xsoulspace_lints)
+        working-directory: packages/steward_cli
+        run: dart analyze --fatal-infos
+
+      - name: Validate skills (steward CLI)
+        working-directory: packages/steward_cli
+        run: dart run :steward validate
+
+      - name: List skills (steward CLI smoke)
+        working-directory: packages/steward_cli
+        run: dart run :steward list
 
       - name: Validate skills.sh.json schema reference
         run: node -e "JSON.parse(require('fs').readFileSync('skills.sh.json','utf8'))"
+
+      - name: Check docs.page links (docs.json + docs/)
+        run: pnpm run docs:check

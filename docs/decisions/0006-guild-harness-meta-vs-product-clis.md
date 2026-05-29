@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-05-29
-decision-makers: Agent Guild maintainers
+decision-makers: Skill Steward maintainers
 consulted:
 informed:
 ---
@@ -10,43 +10,44 @@ informed:
 
 ## Context and Problem Statement
 
-The open skills ecosystem has **product harnesses** with real CLIs and MCP servers (e.g. [mcp_flutter](https://github.com/Arenukvern/mcp_flutter) `flutter-mcp-toolkit`, [agentkit](https://github.com/Arenukvern/agentkit)). Agent Guild is a **meta-layer** ([ADR 0001](0001-repository-purpose-as-skills-meta-layer.md)) teaching how to build and document harnesses—not replacing product tools.
+The open skills ecosystem has **product harnesses** with real CLIs and MCP servers (e.g. [mcp_flutter](https://github.com/Arenukvern/mcp_flutter) `flutter-mcp-toolkit`, [IntentCall](https://github.com/Arenukvern/intentcall)). Skill Steward is a **meta-layer** ([ADR 0001](0001-repository-purpose-as-skills-meta-layer.md)) teaching how to build and document harnesses—not replacing product tools.
 
-Contributors asked to formalize the split so Guild does not grow a second Flutter MCP server or duplicate `doctor` / `exec` semantics.
+Contributors asked to formalize the split so Skill Steward does not grow a second Flutter MCP server or duplicate `doctor` / `exec` semantics.
 
 ## Decision Drivers
 
-* **Clear ownership** — Users install Guild for meta-skills; products for domain/runtime tooling.
-* **Avoid confusion** — `npx skills add agent_guild` must not imply a debug MCP server ships here.
+* **Clear ownership** — Users install Skill Steward for meta-skills; products for domain/runtime tooling.
+* **Avoid confusion** — `npx skills add skill_steward` must not imply a debug MCP server ships here.
 * **Teach by example** — Guild may ship a **small meta CLI** (validate, list skills) as reference harness, not a general automation platform.
-* **Cross-promotion** — Product docs may recommend Guild meta-skills (e.g. `harness-engineering-culture`) without merging repos.
+* **Cross-promotion** — Product docs may recommend Skill Steward meta-skills (e.g. `harness-engineering-culture`) without merging repos.
 
 ## Considered Options
 
 * **A. Guild ships full product-style CLI+MCP** — Competes with mcp_flutter; wrong scope.
 * **B. Guild is skills-only forever** — No reference harness; harder to dogfood harness culture.
-* **C. Guild meta CLI (+ future meta MCP); products own domain CLIs** — Teach patterns; minimal typed tooling in Guild.
+* **C. Skill Steward meta CLI (+ future meta MCP); products own domain CLIs** — Teach patterns; minimal typed tooling in Guild.
 * **D. Document-only** — No executable harness in Guild.
 
 ## Decision Outcome
 
-Chosen option: **"C. Guild meta CLI (+ future meta MCP); products own domain CLIs"**.
+Chosen option: **"C. Skill Steward meta CLI (+ future meta MCP); products own domain CLIs"**.
 
 ### Split (normative)
 
 | Layer | Repository | CLI / MCP examples | Guild skill support |
 |-------|------------|--------------------|---------------------|
-| **Meta harness** | `agent_guild` | `guild validate`, `guild list`; future MCP skill index | `harness-engineering-culture`, `north-star-governance`, … |
+| **Meta harness** | `skill_steward` | `steward validate`, `steward list`; future MCP skill index | `harness-engineering-culture`, `north-star-governance`, … |
 | **Product harness** | `mcp_flutter`, app repos | `flutter-mcp-toolkit`, `flutter-mcp-toolkit-server`, `fmt_*` | Install Guild skills via `npx skills` |
-| **Library** | `agentkit` | Schema, registry adapters | Consumers integrate |
+| **Library** | IntentCall (`~/mcp/agentkit`) | Schema, registry adapters (`intentcall_*`) | Consumers integrate |
 
 **Guild teaches:**
 
-- CLI + MCP **parity** on shared contracts (pattern, not shared code)
-- Docs map, North Star, executable plans ([ADR 0005](0005-executable-plans-and-docs-page.md))
+- **Thin CLI/MCP, thick core** — adapters are agent-facing APIs; domain logic lives in core libraries; both surfaces call the same entrypoints (pattern, not shared code)
+- CLI + MCP **parity** on those shared contracts
+- Docs map, North Star, plan hygiene doctrine ([ADR 0005](0005-executable-plans-and-docs-page.md))
 - FAQ / ADR discipline
 
-**Guild does not teach:**
+**Skill Steward does not teach:**
 
 - Flutter VM service, widget tap, hot reload, or app dynamic tools
 
@@ -55,7 +56,7 @@ Chosen option: **"C. Guild meta CLI (+ future meta MCP); products own domain CLI
 Product repos (starting with mcp_flutter) may document:
 
 ```bash
-npx skills add arenukvern/agent_guild --skill harness-engineering-culture
+npx skills add arenukvern/skill_steward --skill harness-engineering-culture
 ```
 
 for contributors building or maintaining **product** harnesses.
@@ -64,7 +65,7 @@ for contributors building or maintaining **product** harnesses.
 
 * Good, because scope stays defensible in review.
 * Good, because mcp_flutter remains the reference **product** harness; Guild is reference **meta** harness.
-* Bad, because two CLIs in a contributor’s head—mitigated by naming (`guild` vs `flutter-mcp-toolkit`).
+* Bad, because two CLIs in a contributor’s head—mitigated by naming (`steward` vs `flutter-mcp-toolkit`).
 * Neutral, because meta MCP is deferred to phase 2 ([ADR 0007](0007-dart-for-guild-cli-and-harness-tooling.md)).
 
 ## Pros and Cons of the Options

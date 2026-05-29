@@ -4,10 +4,13 @@
   "groupings": [
     {
       "title": "Marketplace",
-      "description": "Authoring, reviewing, and publishing skills for the Agent Guild marketplace.",
+      "description": "Authoring, reviewing, and publishing skills for the Skill Steward marketplace.",
       "skills": [
         "create-skill",
-        "skill-spec-review"
+        "skill-spec-review",
+        "skill-source-citations",
+        "skill-eval-improve",
+        "plugin-marketplace-setup"
       ]
     },
     {
@@ -24,7 +27,9 @@
       "description": "Agent-first engineering culture—CLI, MCP, contracts, and docs as system of record.",
       "skills": [
         "harness-engineering-culture",
-        "north-star-governance"
+        "release-changelog-harness",
+        "north-star-governance",
+        "mcp-harness-repo-maintainer"
       ]
     },
     {

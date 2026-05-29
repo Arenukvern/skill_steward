@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-05-29
-decision-makers: Agent Guild maintainers
+decision-makers: Skill Steward maintainers
 consulted:
 informed:
 ---
@@ -10,7 +10,7 @@ informed:
 
 ## Context and Problem Statement
 
-Agent Guild is a long-lived repository whose purpose and boundaries will evolve. We need a durable, version-controlled record of *why* the repo exists and how it is shaped—not only *what* is in `skills/` today.
+Skill Steward is a long-lived repository whose purpose and boundaries will evolve. We need a durable, version-controlled record of *why* the repo exists and how it is shaped—not only *what* is in `skills/` today.
 
 How should we document significant decisions in this repository?
 
@@ -37,7 +37,7 @@ Chosen option: **"MADR in `docs/decisions/`"**, because it matches adr.github.io
 * Good, because decisions are reviewable in PRs and discoverable under `docs/decisions/`.
 * Good, because agents and humans share one canonical narrative for repo direction.
 * Bad, because ADRs require maintenance when direction changes (acceptable trade-off).
-* Neutral, because domain-specific skills may still live in other repos; this log only governs Agent Guild itself.
+* Neutral, because domain-specific skills may still live in other repos; this log only governs Skill Steward itself.
 
 ### Confirmation
 

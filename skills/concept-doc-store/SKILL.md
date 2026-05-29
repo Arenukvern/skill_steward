@@ -3,7 +3,7 @@ name: concept-doc-store
 description: Bootstraps and maintains a vectorless, layered documentation store for concepts, architecture, and decisions—without duplicating how code works. Use when organizing repo docs, writing ADRs, north-star charters, agent playbooks, or mcp_flutter-style doc lattices.
 license: MIT
 metadata:
-  author: agent-guild
+  author: skill-steward
   version: "1.0.0"
   category: documentation
 paths:
@@ -80,7 +80,7 @@ Example footer in ADR:
 
 ## Optional: spec-driven programs (`superpowers/`)
 
-For multi-phase agent work (mcp_flutter agentkit pattern):
+For multi-phase agent work (mcp_flutter IntentCall pattern):
 
 ```
 docs/superpowers/
@@ -116,7 +116,7 @@ Change type?
 └─ Behavior detail changed → update code/tests/examples first; docs only link
 ```
 
-Run `npm run validate` in agent_guild when touching skills; run project doc drift checks if present.
+Run `pnpm run validate` in skill_steward when touching skills; run project doc drift checks if present.
 
 ## Relationship to FAQ-driven docs
 
@@ -130,7 +130,7 @@ Use both: lattice for navigation and decisions; FAQs for dense package knowledge
 ## Install
 
 ```bash
-npx skills add arenukvern/agent_guild --skill concept-doc-store
+npx skills add arenukvern/skill_steward --skill concept-doc-store
 ```
 
 ## References
@@ -139,3 +139,7 @@ npx skills add arenukvern/agent_guild --skill concept-doc-store
 - [Layer catalog](references/layer-catalog.md)
 - [SSOT anti-duplication rules](references/ssot-rules.md)
 - [FAQ-driven development article](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl)
+
+## Sources
+
+See [references/sources.md](references/sources.md). When researching, follow `skill-source-citations`.

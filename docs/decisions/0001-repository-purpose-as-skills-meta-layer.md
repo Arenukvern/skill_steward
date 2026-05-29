@@ -1,18 +1,18 @@
 ---
 status: accepted
 date: 2026-05-29
-decision-makers: Agent Guild maintainers
+decision-makers: Skill Steward maintainers
 consulted:
 informed:
 ---
 
-# Agent Guild as a meta-layer for skills and process improvement
+# Skill Steward as a meta-layer for skills and process improvement
 
 ## Context and Problem Statement
 
 The open Agent Skills ecosystem (`npx skills`, [skills.sh](https://skills.sh), [agentskills.io](https://agentskills.io/)) makes it easy to publish and install many instruction packages. Repositories often grow into **large catalogs** of domain skills (framework guides, cloud recipes, design audits) with little cohesion.
 
-Agent Guild was bootstrapped with marketplace scaffolding and several starter skills. Without an explicit charter, it risks being read as “another bag of skills” competing with `vercel-labs/agent-skills`, `anthropics/skills`, and thousands of community packages.
+Skill Steward was bootstrapped with marketplace scaffolding and several starter skills. Without an explicit charter, it risks being read as “another bag of skills” competing with `vercel-labs/agent-skills`, `anthropics/skills`, and thousands of community packages.
 
 **Why should this repository exist, and what belongs here?**
 
@@ -34,7 +34,7 @@ Agent Guild was bootstrapped with marketplace scaffolding and several starter sk
 
 ## Decision Outcome
 
-Chosen option: **"C. Meta-layer guild (skills + plugins for managing skills and processes)"**, because it gives Agent Guild a clear reason to exist alongside larger marketplaces and matches the maintainer’s intent: **not a bunch of unrelated skills**, but a **concise control plane** for agent capability and process quality.
+Chosen option: **"C. Meta-layer guild (skills + plugins for managing skills and processes)"**, because it gives Skill Steward a clear reason to exist alongside larger marketplaces and matches the maintainer’s intent: **not a bunch of unrelated skills**, but a **concise control plane** for agent capability and process quality.
 
 ### Consequences
 
@@ -51,7 +51,7 @@ Chosen option: **"C. Meta-layer guild (skills + plugins for managing skills and 
 * README and `skills.sh.json` groupings emphasize meta/process categories, not domain stacks.
 * Follow-up delivered in [ADR 0004](0004-plugin-packaging-and-install-path.md) (`plugins/` layout and install paths).
 
-## Inclusion criteria (what belongs in Agent Guild)
+## Inclusion criteria (what belongs in Skill Steward)
 
 | Include | Exclude |
 |---------|---------|
@@ -67,7 +67,7 @@ Chosen option: **"C. Meta-layer guild (skills + plugins for managing skills and 
 ## Repository shape (intended)
 
 ```
-agent_guild/
+skill_steward/
 ├── skills/           # Installable meta-skills (small, focused)
 ├── plugins/          # Future: hooks/automation packages (ADR pending)
 ├── docs/decisions/   # Why the guild exists and how it evolves
@@ -75,7 +75,7 @@ agent_guild/
 └── templates/        # Scaffolding, not published as skills
 ```
 
-Domain knowledge stays in **other repositories**; Agent Guild links to them via documentation, not by ingesting their content.
+Domain knowledge stays in **other repositories**; Skill Steward links to them via documentation, not by ingesting their content.
 
 ## Pros and Cons of the Options
 

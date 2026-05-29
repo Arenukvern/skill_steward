@@ -3,7 +3,7 @@ name: faq-driven-docs
 description: Creates and maintains DESIGN_FAQ (why) and DX_FAQ (how) documentation in FAQ-driven development style. Use when writing docs, rules, prompts, updating FAQs after code changes, or bootstrapping faq_usage rules and Cursor commands.
 license: MIT
 metadata:
-  author: agent-guild
+  author: skill-steward
   version: "1.0.0"
   category: documentation
 paths:
@@ -128,7 +128,7 @@ Change type?
 ## Install
 
 ```bash
-npx skills add arenukvern/agent_guild --skill faq-driven-docs
+npx skills add arenukvern/skill_steward --skill faq-driven-docs
 ```
 
 ## Related Guild skill
@@ -138,5 +138,9 @@ Repo-wide navigation and SSOT rules: [concept-doc-store](../concept-doc-store/SK
 ## Further reading
 
 - Article: [FAQ-driven development](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl)
-- Agent Guild: [ADR 0002](../../docs/decisions/0002-adopt-faq-driven-documentation.md)
+- Skill Steward: [ADR 0002](../../docs/decisions/0002-adopt-faq-driven-documentation.md)
 - Reference implementation: ecsly (`DESIGN_FAQ.md` / `DX_FAQ.md` per package)
+
+## Sources
+
+See [references/sources.md](references/sources.md). When researching, follow `skill-source-citations`.

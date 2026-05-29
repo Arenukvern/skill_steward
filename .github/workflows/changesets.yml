@@ -1,0 +1,31 @@
+name: Changesets
+
+on:
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  require-changeset:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Fetch base branch
+        run: git fetch origin "${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}" --depth=1 || true
+
+      - name: Require changeset on consumer-facing diffs
+        env:
+          SKIP_CHANGESET_CHECK: ${{ contains(github.event.pull_request.title, '[skip changeset]') && '1' || '' }}
+        run: bash scripts/changeset-check.sh "origin/${{ github.base_ref }}"

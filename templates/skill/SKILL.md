@@ -3,7 +3,7 @@ name: your-skill-name
 description: Replace with what this skill does and when to use it. Include phrases users say, e.g. "audit my API", "scaffold a skill".
 license: MIT
 metadata:
-  author: agent-guild
+  author: skill-steward
   version: "0.1.0"
   category: template
 ---
@@ -27,8 +27,12 @@ One paragraph explaining the outcome for the user.
 
 Describe how to format the final response.
 
+## Sources
+
+Maintain [references/sources.md](references/sources.md). Follow [skill-source-citations](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-source-citations/SKILL.md).
+
 ## Install
 
 ```bash
-npx skills add arenukvern/agent_guild --skill your-skill-name
+npx skills add arenukvern/skill_steward --skill your-skill-name
 ```

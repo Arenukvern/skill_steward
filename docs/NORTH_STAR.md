@@ -1,29 +1,31 @@
-# Agent Guild — North Star
+# Skill Steward — North Star
 
 **Status:** active · **Audience:** humans and agents
 
 ## What we are
 
-A **meta-layer** for the Agent Skills ecosystem: small **skills** and **plugins** that help teams **manage other skills**, validate quality, document decisions, and improve agent workflows.
+**Skill Steward** is a **meta-layer** for the Agent Skills ecosystem: small **skills** and **plugins** that help teams **manage other skills**, validate quality, document decisions, and improve agent workflows.
 
-We are **not** a general domain skill catalog (React, Flutter, cloud recipes live elsewhere).
+We are **not** a general domain skill catalog (React, Flutter, cloud recipes live elsewhere). We are **not** a skill package manager ([Skillkit](https://github.com/rohitg00/skillkit), [skills.sh](https://skills.sh)).
+
+Sibling work: **[mcp_flutter](https://github.com/Arenukvern/mcp_flutter)** owns product harness (runtime MCP/CLI for Flutter). Skill Steward owns meta-skills and documentation patterns. Principles: [credo](https://dev.to/arenukvern/my-principles-at-work-credo-182c).
 
 ## What we own
 
 | Own | Do not own |
 |-----|------------|
 | Meta-skills (`skills/`) | Domain/framework instruction packs |
-| Skill validation (`npm run validate`) | Product MCP servers (see mcp_flutter, agentkit) |
-| Doc patterns (FAQ, ADR, docs.page lattice) | Long-lived roadmaps in-repo |
+| Skill validation (`pnpm run validate`) | Product MCP servers (see mcp_flutter, IntentCall) |
+| Doc patterns (FAQ, ADR, docs.page lattice) | Finished plan files as permanent docs |
 | Plugin manifests (`plugins/`) when wired | Copy-pasted API docs of other products |
 | Harness **culture** skill (how to build CLI/MCP harnesses) | Executable app/runtime code |
 
 ## How we ship value
 
-1. **`npx skills add arenukvern/agent_guild`** — portable `SKILL.md` packages.
-2. **Docs as system of record** — [docs.page](https://docs.page) site from `docs/` + `docs.json`; `AGENTS.md` is the agent map only.
-3. **Mechanical gates** — CI validates skills; contributors run `npm run validate`.
-4. **Executable plans only** — plans/todos/roadmaps are temporary; when done they become [ADR](decisions/), FAQ, code, or harness—then removed. See [Executable plans](start_here/executable-plans.md).
+1. **`npx skills add arenukvern/skill_steward`** — portable `SKILL.md` packages.
+2. **Docs as system of record** — [docs.page](https://docs.page/arenukvern/skill_steward) from `docs/` + `docs.json`; `AGENTS.md` is the agent map only.
+3. **Mechanical gates** — CI validates skills; contributors run `pnpm run validate`.
+4. **Plan hygiene (any format)** — use any planning tool; when work is done, [extract into ADR/FAQ/code/harness](start_here/executable-plans), then **remove** stale plan files from the repo.
 
 ## Boundaries (non‑negotiable)
 
@@ -34,12 +36,14 @@ We are **not** a general domain skill catalog (React, Flutter, cloud recipes liv
 
 ## Success looks like
 
-- Agents and humans can install Guild meta-skills without confusion about scope.
+- Agents and humans can install Skill Steward meta-skills without confusion about scope.
 - Product repos adopt our harness + FAQ patterns via installed skills.
 - The repo stays small enough to maintain; stale plans do not accumulate.
 
 ## References
 
 - [ADR 0001 — repository purpose](decisions/0001-repository-purpose-as-skills-meta-layer.md)
+- [ADR 0008 — Skill Steward product name](decisions/0008-adopt-skill-steward-product-name.md)
 - [Harness engineering (OpenAI)](https://openai.com/index/harness-engineering/)
 - [FAQ-driven development](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl)
+- [GitHub profile copy](GITHUB_PROFILE.md)

@@ -1,9 +1,9 @@
-# Exec plans (active only)
+# exec-plans (optional scratch)
 
-Temporary work orders. **Not** system of record.
+**Not a required plan format.** Use Superpowers, Cursor plans, Issues, or any workflow you prefer.
 
-- Put in-flight plans in `active/` with date prefix: `active/2026-05-29-short-title.md`
-- On merge: collapse into ADR, FAQ, code, or skill—then **delete** the file here
-- Doctrine: [executable-plans](../start_here/executable-plans.mdx)
+This folder is optional short-lived storage for maintainers who want a markdown file in-repo during a PR:
 
-Do not create this folder until there is active work.
+- `active/` — delete on merge after extracting knowledge to ADR, FAQ, code, or skills
+
+Doctrine (why extract & remove): [plan hygiene](../start_here/executable-plans.mdx)
