@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  push:
+    branches: [main, master]
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write      # push tags, create GitHub Releases
+      pull-requests: write # create / update the Version PR
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Full history so changeset version can diff correctly
+          fetch-depth: 0
+          # Use a PAT if you want CI to re-trigger on the Version PR;
+          # GITHUB_TOKEN is fine for most flows.
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Two-mode operation (handled automatically by changesets/action):
+      #   MODE A — pending changesets on main:
+      #     → creates/updates a PR titled "chore: version packages"
+      #     → that PR bumps package.json, writes CHANGELOG.md, removes .changeset/*.md
+      #   MODE B — Version PR just merged (no pending changesets):
+      #     → runs `publish` script (tags the release)
+      #     → creates a GitHub Release with CHANGELOG content
+      - name: Create Version PR or tag & GitHub Release
+        uses: changesets/action@v1
+        with:
+          # Script run in MODE B only — no npm publish, just git tag
+          publish: pnpm run release:tag
+          # PR title & commit message used in MODE A
+          title: "chore: version packages"
+          commit: "chore: version packages"
+          # Auto-create GitHub Releases from tags in MODE B
+          createGithubReleases: true
+          # GPG-signed commits attributed to GITHUB_TOKEN owner;
+          # no git CLI config needed, works without a PAT.
+          commitMode: github-api
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
