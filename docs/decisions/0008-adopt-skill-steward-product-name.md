@@ -60,5 +60,6 @@ Chosen option: **"Skill Steward"** as the **public product name**, with GitHub r
 ## Links
 
 * [North Star](../NORTH_STAR.md)
-* [GitHub profile copy](../GITHUB_PROFILE.md)
 * [ADR 0001 — meta-layer purpose](0001-repository-purpose-as-skills-meta-layer.md)
+
+**Public bio (out of repo):** GitHub profile and pinned repos should point at [mcp_flutter](https://github.com/Arenukvern/mcp_flutter) (product harness) and [skill_steward](https://github.com/Arenukvern/skill_steward) (meta skills)—not copy-paste blocks in this repository.

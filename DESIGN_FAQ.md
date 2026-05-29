@@ -40,6 +40,9 @@ A: **Different primary artifact.** Consumers install **skills** with `npx skills
 **Q: How are skills evaluated (Microsoft / Google / Codex style)?**  
 A: **Tiered:** Tier-1 charter skills require `evals/cases/*.yaml` + `pnpm run eval` (rule-based, no LLM in CI). Behavioral suites and judges stay offline (`references/evals.md`, plugin-eval, SkillOpt loop). Design language from [Chrome evals](https://developer.chrome.com/docs/ai/evals/design). [ADR 0011](docs/decisions/0011-tiered-skill-evals-and-rule-based-ci.md) · skill `skill-eval-improve`.
 
+**Q: Where does GitHub profile / bio copy live?**  
+A: **Not in this repo.** Public bio should point at [mcp_flutter](https://github.com/Arenukvern/mcp_flutter) and [skill_steward](https://github.com/Arenukvern/skill_steward) ([ADR 0008](docs/decisions/0008-adopt-skill-steward-product-name.md)). Repo-shape audits use `north-star-governance` + `concept-doc-store`, not product `flutter-mcp-boundary-audit` (CLI/MCP contracts only).
+
 ## Documentation
 
 **Q: Why ADRs in `docs/decisions/`?**  

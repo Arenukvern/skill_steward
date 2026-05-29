@@ -46,4 +46,3 @@ Sibling work: **[mcp_flutter](https://github.com/Arenukvern/mcp_flutter)** owns 
 - [ADR 0008 — Skill Steward product name](decisions/0008-adopt-skill-steward-product-name.md)
 - [Harness engineering (OpenAI)](https://openai.com/index/harness-engineering/)
 - [FAQ-driven development](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl)
-- [GitHub profile copy](GITHUB_PROFILE.md)

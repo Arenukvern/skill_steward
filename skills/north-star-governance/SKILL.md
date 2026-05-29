@@ -115,6 +115,22 @@ Update `github` URL in `docs.json` when remote is known.
 4. Update DESIGN_FAQ only for new standing **why** Q&As.
 5. No new permanent plan file—use PR description for ephemeral tracking.
 
+## Repo shape audit (in-scope vs artifact)
+
+When asking “does this file belong in Skill Steward?”:
+
+1. Read [docs/NORTH_STAR.md](../../docs/NORTH_STAR.md) — own / do-not-own.
+2. Use [`concept-doc-store`](../concept-doc-store/SKILL.md) — lattice layer (charter, ADR, FAQ, not personal ops copy).
+3. **Do not** use mcp_flutter `flutter-mcp-boundary-audit` for repo charter audits—that skill is for **CLI/MCP contract** validation in product harness repos.
+
+| Belongs here | Does not belong here |
+|--------------|----------------------|
+| Meta skills, ADRs, FAQs, validate/eval harness | GitHub profile README/bio paste-ups |
+| Plan scratch under `docs/exec-plans/active/` until extract | Domain framework tutorials |
+| Plugin manifests when wired | Product MCP server code |
+
+Personal profile copy → maintainer’s GitHub profile repo or gist; durable public naming → [ADR 0008](../../docs/decisions/0008-adopt-skill-steward-product-name.md) one-liner only.
+
 ## Guild skills to combine
 
 | Task | Also use |
