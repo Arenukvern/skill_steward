@@ -27,6 +27,7 @@ Read [DX_FAQ.md](DX_FAQ.md) for commands; [DESIGN_FAQ.md](DESIGN_FAQ.md) for wha
 - [ ] `pnpm run steward:validate` passes (same as CI)
 - [ ] Changeset added when required (or PR title `[skip changeset]` with justification)
 - [ ] `pnpm run docs:check` passes (if you changed `docs/` or `docs.json`)
+- [ ] Visual/brand changes cite `docs/brand.md` + [ADR 0012](docs/decisions/0012-adopt-visual-brand-identity-system.md)
 - [ ] Skill added to `skills.sh.json` groupings
 - [ ] `README.md` skill table updated
 - [ ] No unrelated changes

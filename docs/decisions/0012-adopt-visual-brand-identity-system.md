@@ -1,0 +1,104 @@
+---
+status: accepted
+date: 2026-05-29
+decision-makers: Skill Steward maintainers
+consulted:
+informed:
+---
+
+# Adopt visual brand identity system (growth rings + ledger + lattice; hero cover image)
+
+## Context and Problem Statement
+
+Skill Steward has a mature textual identity (NORTH_STAR, DESIGN_FAQ, DX_FAQ, AGENTS.md, ADRs 0000–0011, STANDARDS) but no visual system. GitHub social previews, docs.page landing, README, and install surfaces rely on default platform rendering. This makes the meta-layer harder to recognize at a glance in a noisy ecosystem.
+
+The brand must visibly express the four pillars that define the project:
+- Long-term stewardship
+- Ethics (boundaries, citations, mechanical gates)
+- Buildership (harness culture, careful construction of agent tools)
+- Care + restraint ("work worth people’s time", plan hygiene "extract then remove", anti-bloat)
+
+A full brand identity system (strategy, marks, palette, motifs, tone, hero direction) was developed using the `design` skill (write–review–revise loop with dedicated personas until 0 open issues). The output was a ~600-line design document containing detailed rationale, three logo directions, Master Specifications (exact SVG geometry), three ready-to-use hero prompts, and a realistic 5-PR rollout plan.
+
+This ADR records the adoption decision, the durable prompts, and the key standing choices so the visual language can evolve with the same rigor as charter or validation changes.
+
+## Decision Drivers
+
+* **Recognition without hype** — The meta-layer role (validate, govern, document) must be instantly distinguishable from skill marketplaces and product harnesses.
+* **Cultural fidelity** — Every visual choice must map directly to existing doctrine (plan hygiene, restraint, "Docs ≠ code", mechanical gates, "Developer as User", credo alignment).
+* **Durability** — Prompts, palette, and usage rules must survive as citable artifacts (not ephemeral chat output).
+* **Small surface** — Assets and docs must remain minimal and governed; no root `assets/` precedent, no validator bloat.
+* **Early value + hygiene** — Text/wordmark surfaces should ship before expensive hero rasters; learnings from image generation must be extracted.
+
+## Considered Options
+
+* **No visual system (status quo)** — Zero maintenance cost; continued anonymity on GitHub/docs.page.
+* **Generic "trust" corporate palette + literal icons** (trees, hands, shields, robots) — Fast to produce; directly contradicts restraint, anti-literalism, and "absence of bloat is the signal".
+* **Full custom design system + component library** — Overkill for a meta-skills documentation repo; violates "one clear outcome" and small-repo doctrine.
+* **Adopt the system produced by the design skill** (growth rings with extraction caret, ledger rule, lattice gate; steward green + amber on warm parchment; three metaphorical hero prompts; assets under `docs/brand/assets/`) — Matches all drivers.
+
+## Decision Outcome
+
+**Chosen:** Adopt the visual brand identity system defined in the design document produced via the `design` skill on 2026-05-29.
+
+**Primary hero direction (Option 1 — Growth Rings + Extraction, recommended):**  
+A single cross-section of an ancient cared-for tree trunk at first light, rendered with exquisite fine detail in its growth rings; one precise radial extraction mark where a clean section of knowledge has been removed; delicate threads of a geometric lattice emerge from the cut and dissolve into soft mist beyond; a single bead of warm amber resin catches the low sunlight exactly at the boundary; deep moss greens, warm umber, cool slate, and generous parchment negative space; ultra-minimal cinematic still-life composition with profound breathing room; no figures, no tools, no text; evokes patient multi-generational stewardship, ethical clarity of boundaries, and the quiet high-craft of builders who leave durable structure behind.
+
+(The other two prompts — Ledger + Lattice and Boundary Gate + Grove — are recorded in `docs/brand.md` for future use or variants.)
+
+**Canonical palette (light / dark):**
+- Primary steward green: `#1A3C34` / `#4A7C6F`
+- Accent amber: `#A67C52` / `#C5A26F`
+- Paper / near-black: `#F8F5F0` / `#0D1110`
+
+**Logo directions (priority order):**
+1. Ledger Mark (primary for docs/README)
+2. Growth Ring Emblem (favicon/avatar)
+3. Lattice Gate
+
+**Key standing decisions** (full rationale in the design document):
+
+1. Growth Ring + Ledger as the two primary marks because they directly visualize plan hygiene ("extract then remove") and the ADR/citation culture.
+2. Steward green + amber on warm grounds (never cold tech blues) because they encode tending + "work worth people's time."
+3. Restraint (one motif per surface, max 3 colors, static only, generous whitespace) is the dominant visual principle.
+4. Brand assets live exclusively under `docs/brand/assets/` (single bounded exception under the docs/ tree). No changes were made to STANDARDS.md or NORTH_STAR.md.
+5. No visual personal artisan credit appears in project marks or lockups (honors ADR 0008 "personal bio out of repo").
+6. GitHub surfaces use committed static variants; zero runtime theme logic for the brand marks.
+7. Tone refinements stay extremely close to the existing precise, table-driven, ritual-oriented voice.
+8. Brand asset changes are versioned with the repo and governed via `docs/brand.md` + changeset (not a new ADR unless philosophy shifts).
+
+### Consequences
+
+* **Good**, because the system makes the existing textual rigor (citations, validate gates, plan hygiene) easier to discover while remaining quiet and high-craft.
+* **Good**, because the primary hero prompt and palette are now durable, citable artifacts inside the repo.
+* **Good**, because assets location and "no validator extension" decisions protect the small-repo and "one clear outcome" culture.
+* **Neutral**, because full vector masters and optimized favicons are deferred to follow-on implementation work (PR 2–3 in the design plan); current hero JPGs are the first committed artifacts.
+* **Bad (mitigated)**, because any visual asset adds git weight and maintenance surface; this is accepted as the minimal necessary exception to surface the rituals.
+
+### Follow-up
+
+| Item | Action |
+|------|--------|
+| Living SSOT | Create `docs/brand.md` (tight tables + prompts + image embeds) as the practical reference. Link from README, DESIGN_FAQ, and decisions index. |
+| Hero assets | Commit the generated 16:9 cover and square emblem to `docs/brand/assets/hero/`. Future variants must follow the Hero Production Checklist in the design. |
+| README & docs.page | Add hero image to README; wire `socialPreview` + theme.primary into `docs.json`. |
+| Vectors | Produce master SVGs per the Master Specifications appendix in the design document (PR 2). |
+| Governance | Add one-line note in CONTRIBUTING.md. Do **not** extend `pnpm run validate` or the steward binary for brand assets. |
+| Plan hygiene | Once `docs/brand.md` and the initial assets are merged, the originating design document (`/tmp/grok-design-doc-6369e7cf.md`) is considered extracted; the /tmp files may be discarded. |
+
+## Links
+
+* [Design document (full rationale, Master Specs, 5-PR plan, review history)](/tmp/grok-design-doc-6369e7cf.md) — produced via `/design` skill, 2 review rounds, 0 open issues after revision.
+* [Brand reference SSOT](../brand.md) (to be created in the same change set)
+* [ADR 0008 — Skill Steward name (stewardship, ethics, governance)](0008-adopt-skill-steward-product-name.md)
+* [NORTH_STAR.md](../NORTH_STAR.md) — plan hygiene, meta-layer boundaries, "repo stays small"
+* [DESIGN_FAQ.md](../DESIGN_FAQ.md) — restraint and care as features
+* Maintainer's credo: https://dev.to/arenukvern/my-principles-at-work-credo-182c
+
+**Primary hero image (current):** `docs/brand/assets/hero/skill-steward-growth-rings-hero-16x9.jpg`
+
+**Exact primary prompt** (recorded for provenance and future regeneration):
+
+> A single cross-section of an ancient cared-for tree trunk at first light, rendered with exquisite fine detail in its growth rings; one precise radial extraction mark where a clean section of knowledge has been removed; delicate threads of a geometric lattice emerge from the cut and dissolve into soft mist beyond; a single bead of warm amber resin catches the low sunlight exactly at the boundary; deep moss greens, warm umber, cool slate, and generous parchment negative space; ultra-minimal cinematic still-life composition with profound breathing room; no figures, no tools, no text; evokes patient multi-generational stewardship, ethical clarity of boundaries, and the quiet high-craft of builders who leave durable structure behind; filmic natural light, subtle texture, restrained emotional depth, square or 16:9.
+
+All changes to the visual language must cite this ADR and `docs/brand.md`.
