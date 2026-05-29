@@ -7,8 +7,8 @@
   "type": "module",
   "packageManager": "pnpm@9.15.4",
   "scripts": {
-    "validate": "node scripts/validate-skills.mjs",
-    "validate:json": "node scripts/validate-skills.mjs --json",
+    "validate": "cd packages/steward_cli && dart pub get && dart run :steward validate",
+    "validate:json": "cd packages/steward_cli && dart pub get && dart run :steward validate --json",
     "eval": "node scripts/eval-skill.mjs",
     "eval:json": "node scripts/eval-skill.mjs --json",
     "list": "node scripts/list-skills.mjs",

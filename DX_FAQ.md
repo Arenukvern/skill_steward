@@ -113,7 +113,7 @@ cp -r templates/skill skills/my-skill-name
 # 2. Edit skills/my-skill-name/SKILL.md (name == directory name)
 
 # 3. Validate
-pnpm run validate
+dart run :steward validate   # or pnpm run validate (now delegates to Dart)
 
 # 4. Register
 #    - skills.sh.json groupings
@@ -126,13 +126,12 @@ pnpm run validate
 ## ✅ Validate desk
 
 ```bash
-pnpm run validate          # all skills under skills/
-pnpm run validate:json     # machine-readable report
-pnpm run eval              # Tier 1 rule-based cases (ADR 0011)
-pnpm run eval:json
-pnpm run list              # skill names + descriptions
+dart run :steward validate          # canonical (pure Dart implementation)
+dart run :steward validate --json   # machine-readable report
+pnpm run eval                       # Tier 1 rule-based cases (ADR 0011) — still Node for now
+pnpm run list                       # skill names + descriptions
 
-# Dart meta CLI (same gates; delegates to pnpm/npm run in v1)
+# Dart meta CLI (primary)
 cd packages/steward_cli && dart pub get
 dart analyze --fatal-infos
 dart run :steward validate
@@ -235,7 +234,7 @@ Article: [FAQ-driven development](https://dev.to/arenukvern/faq-driven-developme
 plugins/{id}/plugin.yaml   → references skill ids in skills/
 CURSOR HOOKS           → .cursor/hooks.json (steward-validate-on-save; committed)
 install hooks elsewhere  → plugins/steward-validate-on-save/README.md
-template                   → plugins/_template/
+template                   → templates/plugin/
 ```
 
 ## 🤖 Agent ops
@@ -243,7 +242,7 @@ template                   → plugins/_template/
 ```text
 Read first:  AGENTS.md, DESIGN_FAQ.md (why), DX_FAQ.md (how)
 Rules:       .cursor/rules/faq_usage.mdc
-After edit:  pnpm run validate + update correct FAQ layer
+After edit:  dart run :steward validate + update correct FAQ layer
 ```
 
 Do not duplicate SKILL.md bodies in ADRs or FAQs—link to `skills/{name}/`.
