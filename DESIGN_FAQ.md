@@ -19,7 +19,7 @@ A: **Skills** are portable instructions (`SKILL.md`, `npx skills`). **Plugins** 
 **Q: How do public vs private marketplaces work across agents?**  
 A: **Public skills:** public Git + `npx skills add` + skills.sh. **Public plugins:** Cursor/Claude/Codex marketplace manifests (`.cursor-plugin/`, `.claude-plugin/`). **Private:** private Git with team install (Cursor team marketplace, Claude `/plugin marketplace add` + tokens, same `npx skills` if clone access). Skill `plugin-marketplace-setup` has the full matrix.
 
-**Q: How should sibling repos under `~/mcp/` differ?**  
+**Q: How should sibling repos differ?**  
 A: One archetype per repo (product MCP, platform libs, CLI harness, visual sidecar, meta steward). mcp_flutter owns plugin SSOT + `init`; skill_steward owns meta-skills only. Skill `mcp-harness-repo-maintainer` (mixture-of-experts checklists) documents layout, contract gates, and production MCP patterns.
 
 **Q: Why both CLI and MCP in product harnesses?**  

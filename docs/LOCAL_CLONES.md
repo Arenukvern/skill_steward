@@ -1,23 +1,24 @@
-# Local clone names (`~/mcp/`)
+# Local clone names
 
-GitHub product name: **Skill Steward** (`Arenukvern/skill_steward`). Many workspaces clone it as **`agent_guild/`** beside harness repos.
+GitHub product name: **Skill Steward** (`Arenukvern/skill_steward`). Many workspaces clone it as **`agent_guild/`** beside harness repos (e.g. in `~/mcp/` or any sibling directory).
 
 ## Maintainer setup
 
 ```bash
-cd ~/mcp/agent_guild
+# Clone wherever you keep your workspace (e.g. ~/mcp/, ~/dev/, etc.)
+cd <workspace>/agent_guild
 pnpm install
-pnpm run steward:validate
+pnpm run validate
 ```
 
 ## Consumer install (from a sibling repo)
 
 ```bash
 # Project scope (example: flutter_harness)
-cd ~/mcp/flutter_harness
+cd <workspace>/flutter_harness
 make agent-skills
-# or:
-npx skills add ~/mcp/agent_guild --skill mcp-harness-repo-maintainer -a cursor -y
+# or install from the cloned local copy:
+npx skills add <workspace>/agent_guild --skill mcp-harness-repo-maintainer -a cursor -y
 ```
 
 ## Harness bundle (recommended for product repos)

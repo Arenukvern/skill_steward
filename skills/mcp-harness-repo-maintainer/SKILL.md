@@ -1,6 +1,6 @@
 ---
 name: mcp-harness-repo-maintainer
-description: Maintains MCP-and-harness repositories where CLI and MCP are thin agent-facing interfaces and core libraries hold domain logic—mcp_flutter, IntentCall (intentcall), flutter_harness, skill_steward. Use when refactoring adapters, enforcing CLI/MCP/core parity, contract gates, or ~/mcp sibling layout.
+description: Maintains MCP-and-harness repositories where CLI and MCP are thin agent-facing interfaces and core libraries hold domain logic—mcp_flutter, IntentCall (intentcall), flutter_harness, skill_steward. Use when refactoring adapters, enforcing CLI/MCP/core parity, contract gates, or sibling repo layout.
 license: MIT
 metadata:
   author: skill-steward
@@ -22,7 +22,7 @@ paths:
 
 # MCP & harness repo maintainer
 
-Maintain **agent-first repos** in the `~/mcp/` family without copying the wrong shape into the wrong repo.
+Maintain **agent-first repos** in the `<workspace>/` family without copying the wrong shape into the wrong repo.
 
 ## Core principle (all archetypes)
 
@@ -39,7 +39,7 @@ Full layering: [core-and-interfaces.md](references/core-and-interfaces.md). **Pa
 ## When to use
 
 - Bootstrapping or auditing **mcp_flutter**-style product repos (MCP + plugin + `init`)
-- Maintaining **IntentCall** (library platform, `~/mcp/agentkit`), **flutter_harness** (CLI/HS), **flutter_visual_reconstruct** (offline compare)
+- Maintaining **IntentCall** (library platform, `agentkit/`), **flutter_harness** (CLI/HS), **flutter_visual_reconstruct** (offline compare)
 - Keeping **skill_steward** meta-only (skills/plugins, no product MCP)
 - Wiring **sibling clones**, version pins, or contract CI across repos
 - Applying production MCP patterns (resources vs tools, versioning, auth)
@@ -51,7 +51,7 @@ Read [repo-archetypes.md](references/repo-archetypes.md) for the full matrix. Ro
 | Expert lens | Repo examples | Owns | Does not own |
 |-------------|---------------|------|----------------|
 | **A — Product MCP** | `mcp_flutter` | `plugin/mcp.json`, `fmt_*` tools, `flutter-mcp-toolkit init`, `make check-contracts` | HS scripts, pixel guild profiles |
-| **B — Platform libs** | IntentCall (`~/mcp/agentkit`) | Dart packages (`intentcall_*`), adapters (MCP/WebMCP/native), publish order | Shippable plugin tree, dogfood app |
+| **B — Platform libs** | IntentCall (`agentkit/`) | Dart packages (`intentcall_*`), adapters (MCP/WebMCP/native), publish order | Shippable plugin tree, dogfood app |
 | **C — CLI harness** | `flutter_harness` | HS v1/v2, app registry, fixture lint/run | MCP server binary, marketplace manifests |
 | **D — Visual sidecar** | `flutter_visual_reconstruct` | `profiles/*.yaml`, compare/deconstruct CLI | VM/MCP, dynamic registry |
 | **E — Meta steward** | `skill_steward` | `skills/`, `plugins/`, `steward validate`, docs.page | Product MCP, domain `fmt_*` |
@@ -109,7 +109,7 @@ Product-specific depth: [mcp_flutter maintainer skill](https://github.com/Arenuk
 
 - **No MCP** by design—CLI is the sole agent/CI interface; still **thin** over harness core (HS engine, registry).
 - Entry: `bin/flutter_harness.dart`; depends on mcp_flutter **core packages**, not duplicated toolkit logic.
-- `pubspec_overrides.yaml` for sibling `~/mcp/mcp_flutter` path.
+- `pubspec_overrides.yaml` for sibling `mcp_flutter/` path (see [sibling-layout.md](references/sibling-layout.md)).
 - Validation: `dart test` + `tool/check_hs_fixtures.sh` (lint/run HS fixtures).
 - Skills under `plugin/skills/` for capture/semantic-test **workflows** only.
 
@@ -121,7 +121,7 @@ Product-specific depth: [mcp_flutter maintainer skill](https://github.com/Arenuk
 
 ## Archetype E — Meta steward (skill_steward)
 
-- **Core:** validators (`scripts/validate-skills.mjs`; Dart parser later).
+- **Core:** validators (`packages/steward_cli` — Dart; `steward validate` / `steward eval`).
 - **CLI:** `packages/steward_cli` — thin `steward validate` / `steward list`.
 - **MCP:** deferred meta index—must stay thin over same validators.
 - **Skills** in `skills/`; **plugins** for hooks only (`plugins/steward-validate-on-save`).
@@ -143,15 +143,15 @@ Apply on every **remote** or **shared** MCP server:
 
 Details: [mcp-production-practices.md](references/mcp-production-practices.md).
 
-## Sibling layout (`~/mcp/`)
+## Sibling layout
 
 ```text
-~/mcp/
+<workspace>/
   mcp_flutter/                 # A — toolkit + MCP + init
   agentkit/                    # B — IntentCall (GitHub: intentcall; on-disk folder may be agentkit)
   flutter_harness/             # C — HS CLI
   flutter_visual_reconstruct/  # D — compare (note: reconstruct, not reconstruction)
-  skill_steward/                 # E — meta skills
+  skill_steward/               # E — meta skills
 ```
 
 See [sibling-layout.md](references/sibling-layout.md) for dependency direction and dogfood warm path.
