@@ -1,16 +1,18 @@
 ---
 status: accepted
 date: 2026-05-29
-decision-makers: Agent Guild maintainers
+decision-makers: Skill Steward maintainers
 consulted:
 informed:
 ---
 
-# Executable plans and docs.page publishing
+# docs.page publishing and ephemeral plans doctrine
+
+> Filename keeps `executable-plans` for link stability. **Not** a plan format spec — see [plan hygiene](../start_here/executable-plans.mdx).
 
 ## Context and Problem Statement
 
-Agent Guild needs a published documentation site (like [mcp_flutter on docs.page](https://docs.page)) and a clear rule for **plans, todos, and roadmaps**: they are executable work orders, not permanent repo knowledge. Stale plans poison agent context (same failure mode as a 1,000-line `AGENTS.md`).
+Skill Steward needs a published documentation site (like [mcp_flutter on docs.page](https://docs.page)) and a clear **plan hygiene** doctrine: teams may use **any** planning format (Superpowers, Cursor plans, Issues, etc.); Skill Steward does **not** invent a new plan standard. Finished plan artifacts must not remain in-repo as source of truth—extract durable knowledge, then remove. Stale plans poison agent context (same failure mode as a 1,000-line `AGENTS.md`).
 
 **What site structure and plan lifecycle do we adopt?**
 
@@ -20,7 +22,7 @@ Agent Guild needs a published documentation site (like [mcp_flutter on docs.page
 * **North Star** — single charter file agents and humans read first.
 * **docs.page** — standard publishing via root `docs.json` + `docs/` MDX/Markdown.
 * **Harness alignment** — [OpenAI harness engineering](https://openai.com/index/harness-engineering/) treats plans as versioned artifacts but expects hygiene; we go further: **completed plans must merge into ADR/docs/code/harness and leave the tree**.
-* **Small repo** — no standing `docs/superpowers/` until a real multi-phase program needs it.
+* **Format-agnostic** — document extract-and-remove hygiene only; optional `docs/superpowers/` in *product* repos via `concept-doc-store`, not required in Guild.
 
 ## Considered Options
 
@@ -40,18 +42,18 @@ Chosen option: **"docs.page + ephemeral plans doctrine"**.
 * Agent entry: **`AGENTS.md`** (~100 lines) points to North Star, docs map, skills, validation—no skill-authoring encyclopedia in AGENTS.
 * Root `DESIGN_FAQ.md` / `DX_FAQ.md` remain for repo-local and `npx skills` consumers; site indexes them via docs map (GitHub links until duplicated if needed).
 
-### Executable plans
+### Ephemeral plans doctrine (not a format)
 
-* Plans/todos/roadmaps are **temporary** only.
-* On completion → **ADR | FAQ | code | harness (skills/plugins/CLI)**; then **remove** active plan files.
-* Documented in `docs/start_here/executable-plans.mdx` and enforced by skill **`north-star-governance`**.
+* **Any** plan tooling is allowed (Superpowers, session plans, `docs/exec-plans/`, Issues, etc.).
+* On completion → extract to **ADR | FAQ | code | harness (skills/plugins/CLI)**; then **remove** (or archive with “do not execute”) plan files.
+* Explained in `docs/start_here/executable-plans.mdx` (title: plan hygiene); skill **`north-star-governance`** applies on charter/navigation work, not on mandating a template.
 
 ### Consequences
 
 * Good, because agents get a map + charter without context bloat.
 * Good, because public docs match mcp_flutter contributor experience.
 * Bad, because dual root FAQs + `docs/` need cross-links maintained.
-* Neutral, because `arenukvern` placeholder in `docs.json` until GitHub remote is set.
+* Neutral, because docs.page availability requires a public GitHub repo at `arenukvern/skill_steward`.
 
 ### Confirmation
 

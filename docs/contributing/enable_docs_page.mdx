@@ -1,0 +1,82 @@
+# Enable and preview docs.page
+
+Skill Steward publishes user-facing docs with [docs.page](https://docs.page) from root [`docs.json`](https://github.com/arenukvern/skill_steward/blob/main/docs.json) and the [`docs/`](https://github.com/arenukvern/skill_steward/tree/main/docs) tree.
+
+**Live site (after public GitHub repo):** [https://docs.page/arenukvern/skill_steward](https://docs.page/arenukvern/skill_steward)
+
+Official product home: [docs.page](https://docs.page). Detailed guides: [use.docs.page](https://use.docs.page/getting-started).
+
+## Prerequisites
+
+- Public GitHub repository: `https://github.com/arenukvern/skill_steward`
+- Default branch `main` (or `master`) with `docs.json` at repo root
+- Markdown/MDX under `docs/` referenced from `docs.json` sidebar `href` values
+
+No separate “connect” dashboard is required for public repos: docs.page reads your GitHub content and builds the site from the default branch.
+
+## First-time setup (already done in this repo)
+
+This repo was bootstrapped with:
+
+```bash
+# Optional if starting from scratch elsewhere:
+npx @docs.page/cli init
+```
+
+We already have `docs.json`, `docs/index.mdx`, decisions, and start-here pages. **Do not re-run `init`** on top of an existing config unless you intend to merge carefully.
+
+Optional: install the [docs.page GitHub App](https://github.com/apps/docs-page) for PR preview comments ([live previews](https://use.docs.page/live-previews)).
+
+## Local preview (before push)
+
+1. Open **[https://docs.page/preview](https://docs.page/preview)** (see [local previewing](https://use.docs.page/local-previewing)).
+2. Click **Select directory** and choose the **repository root** (the folder that contains `docs.json`).
+3. Edit files under `docs/` in your editor; save to refresh the preview in the browser.
+4. If the preview stops updating, click **Grant Read Permission** again (browser File System API).
+
+## Live preview (branch / PR / commit)
+
+Append a Git reference to the base URL:
+
+| Reference | URL |
+|-----------|-----|
+| Production (`main`) | `https://docs.page/arenukvern/skill_steward` |
+| Branch `my-feature` | `https://docs.page/arenukvern/skill_steward~my-feature` |
+| Commit SHA | `https://docs.page/arenukvern/skill_steward~<sha>` |
+| Pull request `#13` | `https://docs.page/arenukvern/skill_steward~13` |
+
+Encode special characters in branch names per [live previews](https://use.docs.page/live-previews).
+
+## CI: link and config check
+
+From repo root:
+
+```bash
+pnpm run docs:check
+```
+
+Runs [`@docs.page/cli check`](https://use.docs.page/cli) — validates `docs.json` and internal doc links. This runs in GitHub Actions on every PR (see `.github/workflows/validate-skills.yml`).
+
+## Publishing workflow
+
+1. Edit `docs/**/*.mdx` or `docs/**/*.md`.
+2. Add or update sidebar entries in `docs.json` when you add new pages.
+3. Run `pnpm run docs:check` locally.
+4. Push to `main` — docs.page updates the production site automatically.
+
+Repo-root FAQs (`DESIGN_FAQ.md`, `DX_FAQ.md`) and `AGENTS.md` stay on GitHub; link them from MDX when agents or humans need them (see [docs map](/start_here/docs_map)).
+
+## Troubleshooting
+
+| Symptom | Fix |
+|---------|-----|
+| 404 on docs.page | Repo must be **public**; confirm owner/repo slug matches GitHub |
+| Sidebar link 404 | `href` in `docs.json` must match path under `docs/` (no `.mdx` suffix) |
+| Preview empty | Select repo **root**, not `docs/` only |
+| `docs:check` fails | Run locally; fix broken `href` or missing MDX files listed in output |
+
+## Related
+
+- [ADR 0005 — Executable plans and docs.page](/decisions/0005-executable-plans-and-docs-page)
+- [Docs map](/start_here/docs_map)
+- [DX_FAQ.md](https://github.com/arenukvern/skill_steward/blob/main/DX_FAQ.md) — contributor commands

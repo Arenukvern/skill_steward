@@ -1,7 +1,7 @@
 name: guild_cli
-description: Meta harness CLI for Agent Guild — validate and list skills.
+description: Meta harness CLI for Skill Steward — validate and list skills.
 version: 0.1.0
-repository: https://github.com/arenukvern/agent_guild
+repository: https://github.com/arenukvern/skill_steward
 
 environment:
   sdk: ^3.5.0

@@ -1,6 +1,8 @@
 # AGENTS.md — map (not encyclopedia)
 
-You are in **Agent Guild**: a meta-layer skills marketplace. Read the charter before large changes.
+`CLAUDE.md` → symlink to this file (Claude Code).
+
+You are in **Skill Steward**: a meta-layer for the Agent Skills ecosystem. Read the charter before large changes.
 
 ## Start here
 
@@ -10,14 +12,14 @@ You are in **Agent Guild**: a meta-layer skills marketplace. Read the charter be
 | **Why** (standing decisions) | [DESIGN_FAQ.md](DESIGN_FAQ.md) · [docs/decisions/](docs/decisions/) |
 | **How** (install, validate, contribute) | [DX_FAQ.md](DX_FAQ.md) |
 | **Full doc index** | [docs/start_here/docs_map.mdx](docs/start_here/docs_map.mdx) |
-| **Plans / roadmaps** | [docs/start_here/executable-plans.mdx](docs/start_here/executable-plans.mdx) — plans are temporary |
+| **Plan hygiene** | [docs/start_here/executable-plans.mdx](docs/start_here/executable-plans.mdx) — any format; extract & remove when done |
 | **Which FAQ to edit** | [.cursor/rules/faq_usage.mdc](.cursor/rules/faq_usage.mdc) |
 
-## Install Guild skills (consumers)
+## Install Skill Steward (consumers)
 
 ```bash
-npx skills add arenukvern/agent_guild
-npx skills add arenukvern/agent_guild --skill north-star-governance
+npx skills add arenukvern/skill_steward
+npx skills add arenukvern/skill_steward --skill north-star-governance
 ```
 
 [Listed agents](https://github.com/vercel-labs/skills#supported-agents). Project: `.agents/skills/` → `.cursor/skills/`. Global: `-g`.
@@ -25,8 +27,8 @@ npx skills add arenukvern/agent_guild --skill north-star-governance
 ## Non-negotiables
 
 1. **Meta only** — no domain framework skills (React, Flutter, …); see North Star.
-2. **`npm run validate`** before merging skill changes.
-3. **Executable plans** — when done, merge into ADR / FAQ / code / harness; delete stale plans ([doctrine](docs/start_here/executable-plans.mdx)).
+2. **`pnpm run validate`** before merging skill changes.
+3. **Plan hygiene** — any planning tool is fine; when done, extract into ADR / FAQ / code / harness, then delete stale plan files ([doctrine](docs/start_here/executable-plans.mdx)).
 4. **AGENTS.md stays a map** — skill authoring: [docs/STANDARDS.md](docs/STANDARDS.md); do not bloat this file.
 5. **Docs ≠ code** — link to behavior SSOT; do not paraphrase implementations in prose.
 
@@ -46,14 +48,14 @@ npx skills add arenukvern/agent_guild --skill north-star-governance
 ## Add or change a skill (checklist)
 
 1. `skills/{name}/SKILL.md` — `name` == directory; see [STANDARDS](docs/STANDARDS.md).
-2. `npm run validate`
+2. `pnpm run validate`
 3. `skills.sh.json` + [README](README.md) table
 4. No secrets; no domain tutorials
 
 ## Validation
 
 ```bash
-npm run validate
+pnpm run validate
 ```
 
 CI: `.github/workflows/validate-skills.yml`

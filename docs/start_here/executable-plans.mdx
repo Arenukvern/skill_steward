@@ -1,41 +1,61 @@
-# Executable plans (ephemeral only)
+# Plan hygiene — extract, then remove
 
-Plans, todos, and roadmaps in Agent Guild are **work orders**, not permanent documentation.
+> **This is not a plan format.** Developers, users, and agents may plan however they like: Superpowers, Cursor plans, engineering-loop, GitHub Issues, `TODO.md`, ad-hoc markdown, or no file at all. Skill Steward does **not** define or require a new planning template.
 
-## Rule
+This page explains **why** plan artifacts should not stay in the repo as source of truth after work finishes — and **where** durable knowledge should go instead.
 
-When work is **done**, the plan must **collapse** into durable artifacts and the ephemeral plan **removed or archived**:
+## The rule (format-agnostic)
+
+When work is **done**:
+
+1. **Extract** everything still true into durable homes (table below).
+2. **Remove** the plan artifact from the repo (or move it to an explicit archive that agents are told **not** to execute).
+
+Plans are **scratch paper**, not documentation. Keeping finished checklists in-tree misleads the next agent (same failure mode as a bloated `AGENTS.md`).
+
+## Where extracted knowledge goes
 
 | Outcome type | Land in |
 |--------------|---------|
 | Strategic choice, trade-off | [ADR](../decisions/README) |
-| Standing why / how | [DESIGN_FAQ.md](https://github.com/arenukvern/agent_guild/blob/main/DESIGN_FAQ.md) / [DX_FAQ.md](https://github.com/arenukvern/agent_guild/blob/main/DX_FAQ.md) |
+| Standing why / how | [DESIGN_FAQ.md](https://github.com/arenukvern/skill_steward/blob/main/DESIGN_FAQ.md) / [DX_FAQ.md](https://github.com/arenukvern/skill_steward/blob/main/DX_FAQ.md) |
 | Behavior, gates, automation | Code, CI, CLI, MCP, `plugins/` |
 | Repeatable agent procedure | `skills/{name}/SKILL.md` |
 | Charter / scope change | [North Star](../NORTH_STAR) + ADR if significant |
 
-**Do not** leave implemented checklists in `docs/plans/`, `TODO.md`, or roadmaps—they become lies.
+## Any planning tool is fine
 
-## Allowed temporary artifacts
+| You might use… | Guild stance |
+|----------------|--------------|
+| [Superpowers](https://github.com/obra/superpowers) / spec-driven programs | OK — use `docs/superpowers/` (or equivalent) in **your** repo; see `concept-doc-store` skill |
+| Cursor / Codex session plans | OK — ephemeral by default |
+| `docs/exec-plans/active/` in this repo | **Optional** scratch only; not a standard |
+| Issues / Projects | OK — tracking outside git truth |
 
-- Short-lived branch notes in PR description
-- Active program folders **only** while work is in flight, with a named owner and exit criteria (see mcp_flutter `docs/superpowers/` pattern for large repos—not required in Guild until needed)
-- GitHub Issues / Projects for tracking (outside repo truth)
+**Do not** treat this repo’s `docs/exec-plans/` as “the Guild plan format.” It exists only as optional short-lived storage for maintainers who want a file in-tree during a PR.
 
-## Agent workflow
+## Optional in-repo scratch (`docs/exec-plans/`)
 
-1. Read [North Star](../NORTH_STAR) before starting multi-step work.
-2. If a plan file is needed, put it under `docs/exec-plans/active/` with a date prefix and link from the PR.
-3. On merge: extract ADR/FAQ/code/skill updates; **delete** the active plan or move one paragraph to ADR “Notes”.
-4. Update [docs_map](docs_map) only if navigation changed.
+If you need a file while work is in flight:
+
+1. `docs/exec-plans/active/YYYY-MM-DD-short-title.md` (or your own path)
+2. Link it from the PR
+3. On merge: extract → **delete** the file (or one-line summary in ADR Notes)
 
 ## Anti-patterns
 
-- Roadmap.md with months of completed items unchecked
-- Duplicate “plan” and ADR saying the same thing
-- Superpowers-style archived plans executed as if current (Guild has no archive until we run a program)
+- Finished checklists left in `ROADMAP.md`, `docs/plans/`, or `TODO.md` as if still current
+- Duplicate plan + ADR with the same “truth”
+- Archived phase plans executed as if they were the live tracker (use tracker/spec + closure in Superpowers-style layouts, or delete/archive)
+
+## Agent workflow
+
+1. Read [North Star](../NORTH_STAR) before multi-step work.
+2. Plan with **whatever** the user or product repo already uses.
+3. On completion: extract → ADR / FAQ / code / skill → **remove** the plan file.
+4. Update [docs_map](docs_map) only if navigation changed.
 
 ## Related
 
 - Skill: `north-star-governance`
-- [ADR 0005 — executable plans and docs.page](../decisions/0005-executable-plans-and-docs-page.md)
+- [ADR 0005 — docs.page + ephemeral plans doctrine](../decisions/0005-executable-plans-and-docs-page.md)

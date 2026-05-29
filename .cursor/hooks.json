@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "hooks": {
+    "afterFileEdit": [
+      {
+        "command": "plugins/guild-validate-on-save/hooks/validate-on-skill-edit.sh"
+      }
+    ]
+  }
+}

@@ -1,15 +1,15 @@
 # guild-validate-on-save
 
-First Agent Guild **plugin** ([ADR 0004](../../docs/decisions/0004-plugin-packaging-and-install-path.md)): mechanical gate after skill edits.
+First Skill Steward **plugin** ([ADR 0004](../../docs/decisions/0004-plugin-packaging-and-install-path.md)): mechanical gate after skill edits.
 
 ## Why this plugin first?
 
 | Factor | Assessment |
 |--------|------------|
-| **Scope** | Meta-only; only runs in Agent Guild repos |
+| **Scope** | Meta-only; only runs in Skill Steward repos |
 | **Harness fit** | OpenAI harness pattern: enforce invariants mechanically |
 | **Pain addressed** | Merged broken `SKILL.md` frontmatter without running validate |
-| **Dependencies** | Node (`npm run validate`) + optional `guild validate` (Dart) |
+| **Dependencies** | Node (`pnpm run validate`) + optional `guild validate` (Dart) |
 | **Cursor gap** | `npx skills` does **not** install hooks — plugin documents merge |
 | **Risk** | Low — read-only validation; fails PR if invalid |
 | **Alternatives** | CI only (already exists) — hook gives **immediate** agent/human feedback |
@@ -21,7 +21,7 @@ First Agent Guild **plugin** ([ADR 0004](../../docs/decisions/0004-plugin-packag
 1. Install skills (if not already):
 
    ```bash
-   npx skills add arenukvern/agent_guild -y
+   npx skills add arenukvern/skill_steward -y
    ```
 
 2. Merge hook into `.cursor/hooks.json`:
@@ -49,10 +49,13 @@ First Agent Guild **plugin** ([ADR 0004](../../docs/decisions/0004-plugin-packag
 
 ## Behavior
 
-On `afterFileEdit`, if the file path matches `skills/**/SKILL.md`, runs from repo root:
+On `afterFileEdit`, if the file path matches `skills/**/SKILL.md`:
+
+- Warns if `skills/{name}/references/sources.md` is missing (citation discipline)
+- Then runs validation from repo root:
 
 1. `cd packages/guild_cli && dart run :guild validate` when Dart SDK present
-2. Else `npm run validate`
+2. Else `pnpm run validate` (npm fallback if pnpm missing)
 
 Non-skill edits are ignored.
 

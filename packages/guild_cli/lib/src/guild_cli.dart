@@ -12,7 +12,7 @@ class GuildCli {
   void run(List<String> args) {
     final runner = CommandRunner<void>(
       'guild',
-      'Agent Guild meta harness — validate and list skills.',
+      'Skill Steward meta harness — validate and list skills.',
     )
       ..addCommand(ValidateCommand())
       ..addCommand(ListCommand());

@@ -3,7 +3,7 @@ name: adr-records
 description: Writes and maintains Architecture Decision Records (ADRs) per adr.github.io using MADR, Nygard, or Y-Statement formats. Use when creating or updating ADRs, documenting architecture decisions, superseding decisions, or setting up a decision log in a repository.
 license: MIT
 metadata:
-  author: agent-guild
+  author: skill-steward
   version: "1.0.0"
   category: documentation
 paths:
@@ -135,5 +135,9 @@ Tell the user:
 ## Install
 
 ```bash
-npx skills add arenukvern/agent_guild --skill adr-records
+npx skills add arenukvern/skill_steward --skill adr-records
 ```
+
+## Sources
+
+See [references/sources.md](references/sources.md). When researching, follow `skill-source-citations`.

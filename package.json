@@ -1,16 +1,24 @@
 {
-  "name": "agent-guild",
+  "name": "skill-steward",
   "version": "0.1.0",
   "private": true,
   "description": "Cross-agent skills marketplace (Cursor, Claude Code, Codex, npx skills)",
   "license": "MIT",
   "type": "module",
+  "packageManager": "pnpm@9.15.4",
   "scripts": {
     "validate": "node scripts/validate-skills.mjs",
     "validate:json": "node scripts/validate-skills.mjs --json",
-    "list": "node scripts/list-skills.mjs"
+    "list": "node scripts/list-skills.mjs",
+    "docs:check": "node node_modules/@docs.page/cli/dist/cli.js check",
+    "guild:validate": "cd packages/guild_cli && dart pub get && dart run :guild validate",
+    "guild:list": "cd packages/guild_cli && dart pub get && dart run :guild list"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=18",
+    "pnpm": ">=9"
+  },
+  "devDependencies": {
+    "@docs.page/cli": "^1.0.3"
   }
 }

@@ -108,6 +108,15 @@ async function validateSkill(skillPath, dirName) {
     warnings.push("SKILL.md body is very short; add step-by-step instructions");
   }
 
+  const sourcesMd = join(skillPath, "references", "sources.md");
+  try {
+    await stat(sourcesMd);
+  } catch {
+    warnings.push(
+      "Missing references/sources.md — add curated links (see skill-source-citations)"
+    );
+  }
+
   return { dirName, errors, warnings, name: fields.name, description: fields.description };
 }
 

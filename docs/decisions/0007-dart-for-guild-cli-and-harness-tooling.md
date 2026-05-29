@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-05-29
-decision-makers: Agent Guild maintainers
+decision-makers: Skill Steward maintainers
 consulted:
 informed:
 ---
@@ -10,7 +10,7 @@ informed:
 
 ## Context and Problem Statement
 
-Agent Guild needs a **meta harness** in-repo: at minimum a CLI for `validate` and `list` skills ([ADR 0006](0006-guild-harness-meta-vs-product-clis.md)). Implementation language was open: Rust (common for CLIs), Node (already used for `scripts/validate-skills.mjs`), or Dart (used across maintainer’s MCP/Flutter stack).
+Skill Steward needs a **meta harness** in-repo: at minimum a CLI for `validate` and `list` skills ([ADR 0006](0006-guild-harness-meta-vs-product-clis.md)). Implementation language was open: Rust (common for CLIs), Node (already used for `scripts/validate-skills.mjs`), or Dart (used across maintainer’s MCP/Flutter stack).
 
 **Why Dart for Guild harness tooling?**
 
@@ -37,7 +37,7 @@ Chosen option: **"Dart"** for Guild harness CLI (and planned meta MCP).
 
 | Phase | Deliverable |
 |-------|-------------|
-| **1 (now)** | `packages/guild_cli` — `guild validate`, `guild list`; validate delegates to `npm run validate` when Node present |
+| **1 (now)** | `packages/guild_cli` — `guild validate`, `guild list`; prefers `pnpm run` (npm fallback) when Node present |
 | **2** | Pure-Dart SKILL.md frontmatter validation (optional; reduce Node dep) |
 | **3** | Meta MCP server exposing skill index / validate for chat agents |
 

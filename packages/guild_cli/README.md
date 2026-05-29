@@ -1,13 +1,13 @@
 # guild_cli
 
-Meta harness CLI for [Agent Guild](https://github.com/arenukvern/agent_guild). Product CLIs (e.g. `flutter-mcp-toolkit`) live in their own repos — see [ADR 0006](../../docs/decisions/0006-guild-harness-meta-vs-product-clis.md).
+Meta harness CLI for [Skill Steward](https://github.com/arenukvern/skill_steward). Product CLIs (e.g. `flutter-mcp-toolkit`) live in their own repos — see [ADR 0006](../../docs/decisions/0006-guild-harness-meta-vs-product-clis.md).
 
 ## Commands
 
 | Command | Purpose |
 |---------|---------|
-| `guild validate` | Run skill validation (`npm run validate`) |
-| `guild list` | List skills (`npm run list`) |
+| `guild validate` | Run skill validation (`pnpm run validate`) |
+| `guild list` | List skills (`pnpm run list`) |
 
 ## Run from repo root
 
@@ -25,7 +25,7 @@ dart pub global activate --source path packages/guild_cli
 guild validate
 ```
 
-Requires Node 18+ on PATH for v1 (validator delegates to `scripts/validate-skills.mjs`).
+Requires Node 18+ and **pnpm** (or npm fallback) on PATH for v1 (validator delegates to `pnpm run validate`).
 
 ## Why Dart
 

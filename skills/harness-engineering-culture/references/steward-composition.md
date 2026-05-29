@@ -1,8 +1,8 @@
-# Composing Agent Guild skills for harness work
+# Composing Skill Steward skills for harness work
 
 ## Typical sequence
 
-1. **north-star-governance** — charter, AGENTS map, executable plans
+1. **north-star-governance** — charter, AGENTS map, plan hygiene (extract & remove)
 2. **harness-engineering-culture** — frame CLI/MCP/docs approach
 3. **adr-records** — ADR for harness boundary (e.g. CLI-only gate vs MCP exposure)
 4. **concept-doc-store** — router, NORTH_STAR, doc lattice in product repo
@@ -13,16 +13,16 @@
 
 ## Repo type
 
-| Repo | Guild focus |
+| Repo | Skill Steward focus |
 |------|-------------|
-| **agent_guild** | Meta-skills only; this skill + doc skills |
+| **skill_steward** | Meta-skills only; this skill + doc skills |
 | **Product** (mcp_flutter, your app) | Apply harness skill *from install*; local ADRs + CLI/MCP |
 | **agentkit** | Schema/core library; consumers integrate |
 
 ## Install bundle (consumer)
 
 ```bash
-npx skills add arenukvern/agent_guild -a cursor -a claude-code -y
+npx skills add arenukvern/skill_steward -a cursor -a claude-code -y
 # Prioritize for harness builds:
 #   north-star-governance, harness-engineering-culture, faq-driven-docs, adr-records
 ```

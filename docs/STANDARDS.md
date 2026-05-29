@@ -1,4 +1,4 @@
-# Agent Guild — Skills standards
+# Skill Steward — Skills standards
 
 This document consolidates rules from the open ecosystem so skills in this repo install reliably via `npx skills` and appear on [skills.sh](https://skills.sh).
 
@@ -17,11 +17,16 @@ This document consolidates rules from the open ecosystem so skills in this repo 
 ```
 skill-name/
 ├── SKILL.md          # Required
-├── scripts/          # Optional — executable helpers
 ├── references/       # Optional — docs loaded on demand
+│   └── sources.md    # Required in skill_steward — curated URLs + changelog
+├── scripts/          # Optional — executable helpers
 ├── assets/           # Optional — templates, images, data
 └── LICENSE           # Optional — if not MIT at repo root
 ```
+
+### Citations (skill_steward)
+
+Every skill must include **`references/sources.md`** listing URLs for specs, papers, and reference repos used. Update when research changes. Skill: `skill-source-citations`. Evaluations: optional `references/evals.md` per `skill-eval-improve`.
 
 ## SKILL.md
 
@@ -69,16 +74,16 @@ skill-name/
 
 ```bash
 # All skills
-npx skills add arenukvern/agent_guild
+npx skills add arenukvern/skill_steward
 
 # One skill
-npx skills add arenukvern/agent_guild --skill create-skill
+npx skills add arenukvern/skill_steward --skill create-skill
 
 # List without installing
-npx skills add arenukvern/agent_guild --list
+npx skills add arenukvern/skill_steward --list
 
 # Agents: cursor, claude-code, codex, windsurf, github-copilot, …
-npx skills add arenukvern/agent_guild -a cursor -y
+npx skills add arenukvern/skill_steward -a cursor -y
 ```
 
 ### Install scopes
@@ -95,7 +100,7 @@ Before merging:
 - [ ] `name` matches directory name and naming rules
 - [ ] `description` includes trigger phrases
 - [ ] No `README.md` inside skill folder (agents ignore it; use `references/` instead)
-- [ ] `npm run validate` passes
+- [ ] `pnpm run validate` passes
 - [ ] Skill listed in `skills.sh.json` and root `README.md`
 - [ ] No secrets, API keys, or machine-specific absolute paths
 

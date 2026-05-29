@@ -15,7 +15,7 @@ Not: assign blame or add vague prompt text.
 ## Documentation
 
 - `AGENTS.md` = **map** (~100 lines), pointers to `docs/`
-- Structured `docs/`: design index, architecture map, quality grades, exec-plans (active/completed/debt)
+- Structured `docs/`: design index, architecture map, quality grades; **plans are ephemeral** (any tool)—extract to ADRs/FAQs/code, then remove
 - Mechanical doc hygiene: linters, doc-gardening agents, cross-links
 - **Agent legibility:** if it is not in the repo, it does not exist for the agent
 
@@ -33,4 +33,4 @@ Not: assign blame or add vague prompt text.
 
 ## Implication for Guild
 
-Agent Guild ships **meta-harness** (skills, validation, doc patterns)—not product CLIs. Product harnesses (e.g. `flutter-mcp-toolkit`, `agentkit`) live in their repos; this skill teaches how to build and document them.
+Skill Steward ships **meta-harness** (skills, validation, doc patterns)—not product CLIs. Product harnesses (e.g. `flutter-mcp-toolkit`, `agentkit`) live in their repos; this skill teaches how to build and document them.

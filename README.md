@@ -1,64 +1,82 @@
-# Agent Guild
+# Skill Steward
 
-A **meta-layer** for the Agent Skills ecosystem: small, focused **skills** and (future) **plugins** that help you **manage other skills**, validate quality, document decisions, and **continuously improve** agent workflows—not a general catalog of domain recipes.
+**Meta skills for the [Agent Skills](https://agentskills.io/) ecosystem** — validate, govern, and document portable `SKILL.md` packages. Not a domain skill catalog (React, Flutter, cloud recipes live elsewhere). Not a skill installer ([Skillkit](https://github.com/rohitg00/skillkit) and [skills.sh](https://skills.sh) cover distribution).
 
-Installable on **Cursor**, **Claude Code**, **Codex**, **Windsurf**, **GitHub Copilot**, and 15+ tools via [Agent Skills](https://agentskills.io/) and `npx skills`.
+Install on **Cursor**, **Claude Code**, **Codex**, **Windsurf**, **GitHub Copilot**, and 15+ tools via `npx skills`.
 
-**Charter:** [docs/NORTH_STAR.md](docs/NORTH_STAR.md) · **Docs site:** [docs.page](https://docs.page) via [docs.json](docs.json)  
+**Charter:** [docs/NORTH_STAR.md](docs/NORTH_STAR.md) · **Docs:** [docs.page/arenukvern/skill_steward](https://docs.page/arenukvern/skill_steward) · [docs.json](docs.json)  
 **Why / how:** [DESIGN_FAQ.md](DESIGN_FAQ.md) · [DX_FAQ.md](DX_FAQ.md) · [Decisions](docs/decisions/) · [AGENTS.md](AGENTS.md) (agent map)
 
-[![skills.sh](https://skills.sh/b/arenukvern/agent_guild)](https://skills.sh/arenukvern/agent_guild)
+[skills.sh](https://skills.sh/arenukvern/skill_steward)
 
-> Replace `arenukvern` with your GitHub org/user after publishing.
+## How this fits my other work
+
+
+| Project                                                                              | Role                                                                                                                             |
+| ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| **[mcp_flutter](https://github.com/Arenukvern/mcp_flutter)**                         | **Product harness** — closed-loop tooling so agents can inspect and interact with running Flutter apps (CLI + MCP).              |
+| **Skill Steward** (this repo)                                                        | **Meta layer** — skills that help teams manage *other* skills: validation, ADRs, FAQ-driven docs, plan hygiene, harness culture. |
+| **[Principles at work](https://dev.to/arenukvern/my-principles-at-work-credo-182c)** | **Why** — ethical AI boundaries, care for end users and builders, prototyping with feedback, artisan credit.                     |
+
+
+Same thread: useful docs for humans and agents, mechanical gates, and work worth people’s time. See [FAQ-driven development](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl) for the documentation shape this repo dogfoods.
+
+**How the name was chosen:** public product name and GitHub repo are **Skill Steward** ([ADR 0008](docs/decisions/0008-adopt-skill-steward-product-name.md)). GitHub profile copy: [docs/GITHUB_PROFILE.md](docs/GITHUB_PROFILE.md).
 
 ## Install
 
-Install the full marketplace (all skills):
+All meta-skills:
 
 ```bash
-npx skills add arenukvern/agent_guild
+npx skills add arenukvern/skill_steward
 ```
 
-Install one skill:
+One skill:
 
 ```bash
-npx skills add arenukvern/agent_guild --skill create-skill
+npx skills add arenukvern/skill_steward --skill create-skill
 ```
 
 Target specific agents:
 
 ```bash
-npx skills add arenukvern/agent_guild -a cursor -a claude-code -y
+npx skills add arenukvern/skill_steward -a cursor -a claude-code -y
 ```
 
-Global install (available in every project):
+Global install:
 
 ```bash
-npx skills add arenukvern/agent_guild -g
+npx skills add arenukvern/skill_steward -g
 ```
 
-Discover skills on [skills.sh](https://skills.sh) or search from the CLI:
+Discover on [skills.sh](https://skills.sh) or:
 
 ```bash
-npx skills find guild
+npx skills find steward
 ```
 
 ## What belongs here
 
-Meta and process capabilities only—see [inclusion criteria](docs/decisions/0001-repository-purpose-as-skills-meta-layer.md#inclusion-criteria-what-belongs-in-agent-guild). Domain skills (React, cloud, mobile, etc.) live in other repositories.
+Meta and process capabilities only — [inclusion criteria](docs/decisions/0001-repository-purpose-as-skills-meta-layer.md#inclusion-criteria-what-belongs-in-skill-steward). Domain skills live in other repositories.
 
 ## Available skills
 
-| Skill | Description |
-|-------|-------------|
-| [create-skill](skills/create-skill/) | Scaffold a new skill that passes validation and works with `npx skills`. |
-| [skill-spec-review](skills/skill-spec-review/) | Audit a skill package against the Agent Skills spec. |
-| [adr-records](skills/adr-records/) | Write and maintain ADRs per [adr.github.io](https://adr.github.io/). |
-| [faq-driven-docs](skills/faq-driven-docs/) | Maintain DESIGN_FAQ (why) and DX_FAQ (how) per [FAQ-driven development](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl). |
-| [concept-doc-store](skills/concept-doc-store/) | Vectorless doc lattice (router, ADRs, concepts)—link to code for behavior; [mcp_flutter](https://github.com/Arenukvern/mcp_flutter)-style. |
-| [multi-agent-handoff](skills/multi-agent-handoff/) | Plan handoffs between specialized agents. |
-| [harness-engineering-culture](skills/harness-engineering-culture/) | Agent-first harness design—CLI/MCP, mechanical gates, docs map ([OpenAI harness engineering](https://openai.com/index/harness-engineering/)). |
-| [north-star-governance](skills/north-star-governance/) | North Star charter, AGENTS.md map, executable-only plans, docs.page wiring. |
+
+| Skill                                                              | Description                                                                                                                                                                |
+| ------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [create-skill](skills/create-skill/)                               | Scaffold a new skill that passes validation and works with `npx skills`.                                                                                                   |
+| [skill-spec-review](skills/skill-spec-review/)                     | Audit a skill package against the Agent Skills spec.                                                                                                                       |
+| [plugin-marketplace-setup](skills/plugin-marketplace-setup/)       | Public/private skill & plugin marketplaces for Cursor, Claude, Codex, and `npx skills`.                                                                                    |
+| [skill-source-citations](skills/skill-source-citations/)           | Cite and persist URLs in `references/sources.md` when authoring skills.                                                                                                    |
+| [skill-eval-improve](skills/skill-eval-improve/)                   | Evaluate and improve skills—plugin-eval, SkillOpt loop, human prompt suites.                                                                                               |
+| [adr-records](skills/adr-records/)                                 | Write and maintain ADRs per [adr.github.io](https://adr.github.io/).                                                                                                       |
+| [faq-driven-docs](skills/faq-driven-docs/)                         | Maintain DESIGN_FAQ (why) and DX_FAQ (how) per [FAQ-driven development](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl). |
+| [concept-doc-store](skills/concept-doc-store/)                     | Vectorless doc lattice (router, ADRs, concepts)—link to code for behavior; [mcp_flutter](https://github.com/Arenukvern/mcp_flutter)-style.                                 |
+| [multi-agent-handoff](skills/multi-agent-handoff/)                 | Plan handoffs between specialized agents.                                                                                                                                  |
+| [harness-engineering-culture](skills/harness-engineering-culture/) | Agent-first harness design—CLI/MCP, mechanical gates, docs map ([OpenAI harness engineering](https://openai.com/index/harness-engineering/)).                              |
+| [mcp-harness-repo-maintainer](skills/mcp-harness-repo-maintainer/) | Maintain MCP/harness repos (mcp_flutter, agentkit, flutter_harness)—archetypes, contract gates, sibling layout.                                                            |
+| [north-star-governance](skills/north-star-governance/)             | North Star charter, AGENTS.md map, plan hygiene (any format), docs.page wiring.                                                                                            |
+
 
 ## Standards
 
@@ -66,28 +84,23 @@ Meta and process capabilities only—see [inclusion criteria](docs/decisions/000
 - Registry: [skills.sh](https://skills.sh) indexes public repos with valid skills
 - CLI: [vercel-labs/skills](https://github.com/vercel-labs/skills) (`npx skills`)
 
-See [docs/STANDARDS.md](docs/STANDARDS.md) for the full checklist used in this repo.
+See [docs/STANDARDS.md](docs/STANDARDS.md) for the checklist used in this repo.
 
 ## Repository layout
 
 ```
-agent_guild/
+skill_steward/              # GitHub: Arenukvern/skill_steward
 ├── DESIGN_FAQ.md           # Why (decisions, charter)
-├── DX_FAQ.md               # How (install, validate, contribute)
-├── docs/decisions/         # Architecture decision log (formal ADRs)
-├── skills/                 # Meta-skills only — one focused capability each
-├── packages/guild_cli/     # Dart `guild` CLI — validate, list ([ADR 0007](docs/decisions/0007-dart-for-guild-cli-and-harness-tooling.md))
-├── plugins/                # Hook/wiring bundles (see [ADR 0004](docs/decisions/0004-plugin-packaging-and-install-path.md)); skills install via npx
-│   └── guild-validate-on-save/  # Cursor hook → validate on SKILL.md edit
-│   └── {skill-name}/
-│       ├── SKILL.md        # Required
-│       ├── scripts/        # Optional
-│       ├── references/     # Optional
-│       └── assets/         # Optional
-├── templates/skill/        # Copy-paste template (not installable)
-├── skills.sh.json          # skills.sh category groupings
-├── AGENTS.md               # Instructions for AI contributors
-├── docs/STANDARDS.md       # Human-readable spec summary
+├── DX_FAQ.md                 # How (install, validate, contribute)
+├── docs/decisions/           # ADRs (incl. product name ADR 0008)
+├── docs/GITHUB_PROFILE.md    # Bio + profile README copy
+├── skills/                   # Meta-skills only
+├── packages/guild_cli/       # Dart `guild` CLI — validate, list (rename TBD)
+├── plugins/
+│   └── guild-validate-on-save/
+├── templates/skill/
+├── skills.sh.json
+├── AGENTS.md
 └── scripts/validate-skills.mjs
 ```
 
@@ -95,29 +108,24 @@ agent_guild/
 
 1. Read [AGENTS.md](AGENTS.md) and [CONTRIBUTING.md](CONTRIBUTING.md).
 2. Add a skill under `skills/{kebab-case-name}/` with `SKILL.md`.
-3. Run `npm run validate`.
+3. Run `pnpm run validate`.
 4. Update `skills.sh.json` and the skill table in this README.
 5. Open a PR.
 
 ## Validate locally
 
 ```bash
-npm install
-npm run validate
+pnpm install
+pnpm run guild:validate
 ```
 
-Dart CLI (meta harness, [ADR 0006](docs/decisions/0006-guild-harness-meta-vs-product-clis.md) / [0007](docs/decisions/0007-dart-for-guild-cli-and-harness-tooling.md)):
+Dart CLI directly ([ADR 0006](docs/decisions/0006-guild-harness-meta-vs-product-clis.md) / [0007](docs/decisions/0007-dart-for-guild-cli-and-harness-tooling.md)):
 
 ```bash
 cd packages/guild_cli && dart pub get && dart run :guild validate
 ```
 
-Optional (official reference validator, Python):
-
-```bash
-pip install skills-ref  # from agentskills/agentskills
-skills-ref validate ./skills/my-skill
-```
+Cursor validates `skills/**/SKILL.md` on save via `[.cursor/hooks.json](.cursor/hooks.json)`.
 
 ## License
 

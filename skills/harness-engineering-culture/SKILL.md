@@ -1,9 +1,9 @@
 ---
 name: harness-engineering-culture
-description: Develops agent-first engineering culture via harness design—CLI and MCP with shared contracts, mechanical gates, and in-repo docs. Use when building agentic tooling, harness loops, Codex/Cursor workflows, or applying OpenAI harness engineering with Guild meta-skills.
+description: Develops agent-first engineering culture via harness design—CLI and MCP with shared contracts, mechanical gates, and in-repo docs. Use when building agentic tooling, harness loops, Codex/Cursor workflows, or applying OpenAI harness engineering with Skill Steward meta-skills.
 license: MIT
 metadata:
-  author: agent-guild
+  author: skill-steward
   version: "1.0.0"
   category: harness
 paths:
@@ -25,12 +25,12 @@ Local patterns: [mcp_flutter CLI vs MCP](https://github.com/Arenukvern/mcp_flutt
 ## Core beliefs
 
 1. **Missing capability → harness gap** — When an agent fails, ask what is not *legible* or *enforceable*, then add CLI command, MCP tool, linter, or skill—not “try harder.”
-2. **CLI + MCP, one catalog** — Same semantics: CLI for CI, scripts, `doctor`, contracts; MCP for chat loops. Divergence is a bug ([mcp_flutter tier-A parity](https://github.com/Arenukvern/mcp_flutter/blob/main/flutter_test_app/AGENTKIT_PLATFORM.md)).
+2. **CLI + MCP = thin interfaces; core = logic** — MCP and CLI are agent-facing APIs only. Domain logic, schemas, and registries live in **core** packages; both surfaces call the same entrypoints. CLI for CI/`doctor`/contracts; MCP for chat. Divergence is a bug ([core pattern](https://github.com/arenukvern/skill_steward/blob/main/skills/mcp-harness-repo-maintainer/references/core-and-interfaces.md)).
 3. **Docs are the system of record** — Versioned markdown in git; Slack/docs outside repo are invisible to agents. `AGENTS.md` is a **map** (~100 lines), not an encyclopedia.
-4. **Mechanical enforcement** — Linters, `make check-*`, `npm run validate`, schema validation at boundaries—error messages teach the agent how to fix.
+4. **Mechanical enforcement** — Linters, `make check-*`, `pnpm run validate`, schema validation at boundaries—error messages teach the agent how to fix.
 5. **Progressive disclosure** — Router → ADR / DESIGN_FAQ (why) → DX_FAQ (how) → skills (procedures) → code (behavior SSOT).
 
-## Guild skill stack (use together)
+## Skill Steward skill stack (use together)
 
 | Phase | Skill | Action |
 |-------|--------|--------|
@@ -38,7 +38,8 @@ Local patterns: [mcp_flutter CLI vs MCP](https://github.com/Arenukvern/mcp_flutt
 | Package knowledge | `faq-driven-docs` | DESIGN_FAQ + DX_FAQ per module |
 | Ship a procedure | `create-skill`, `skill-spec-review` | Agent-invokable workflow in `SKILL.md` |
 | Multi-agent work | `multi-agent-handoff` | HANDOFF.md between implementer / closer |
-| Wiring | ADR 0004 + future `plugins/` | Hooks when skills CLI is not enough (Cursor) |
+| Wiring | ADR 0004 + `plugins/` | Hooks when skills CLI is not enough (Cursor) |
+| Repo maintenance | `mcp-harness-repo-maintainer` | mcp_flutter / agentkit / harness / meta-steward archetypes |
 
 Do not duplicate other skills’ content here—**invoke** them by name when in scope.
 
@@ -76,7 +77,7 @@ Human intent (prompt, plan, review)
 3. **Make legible** — JSON schema, `--json` output, stable error codes; document in DX_FAQ Memory Palace location.
 4. **Document why** — ADR or DESIGN_FAQ Q&A (2–3 sentences); link **Authoritative source:** to code.
 5. **Wire map** — `AGENTS.md` / `docs_map` row; never paste full schemas into AGENTS.
-6. **Validate** — `npm run validate` (Guild skills); project `make check-*` / contract tests (product repos).
+6. **Validate** — `pnpm run validate` (Skill Steward skills); project `make check-*` / contract tests (product repos).
 7. **Human collab** — PR describes harness change; agent self-review loop optional; human reviews harness shape, not every line.
 
 ## Docs discipline (harness-aligned)
@@ -97,7 +98,7 @@ Article pattern: [FAQ-driven development](https://dev.to/arenukvern/faq-driven-d
 - 1,000-line `AGENTS.md` (crowds out task context)
 - CLI and MCP with different validation rules
 - Docs that paraphrase code instead of linking
-- Domain tutorials in Agent Guild (wrong repo—meta harness only)
+- Domain tutorials in Skill Steward (wrong repo—meta harness only)
 - Relying on vector search instead of structured docs + `skills find`
 
 ## Checklist before claiming “harness ready”
@@ -107,16 +108,20 @@ Article pattern: [FAQ-driven development](https://dev.to/arenukvern/faq-driven-d
 - [ ] MCP tool shares schema/validation with CLI (if MCP applies)
 - [ ] Failure messages say how to remediate
 - [ ] ADR or DESIGN_FAQ explains why split exists
-- [ ] Guild `npm run validate` passes if skills changed
+- [ ] Skill Steward `pnpm run validate` passes if skills changed
 
 ## Install
 
 ```bash
-npx skills add arenukvern/agent_guild --skill harness-engineering-culture
+npx skills add arenukvern/skill_steward --skill harness-engineering-culture
 ```
 
 ## References
 
 - [harness-principles.md](references/harness-principles.md) — OpenAI article distilled
 - [cli-mcp-pattern.md](references/cli-mcp-pattern.md) — Dual surface, shared core
-- [guild-composition.md](references/guild-composition.md) — Which Guild skill when
+- [steward-composition.md](references/steward-composition.md) — Which Skill Steward skill when
+
+## Sources
+
+See [references/sources.md](references/sources.md). When researching, follow `skill-source-citations`.

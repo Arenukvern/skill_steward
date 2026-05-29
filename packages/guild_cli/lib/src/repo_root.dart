@@ -12,7 +12,7 @@ String findRepoRoot(Directory start) {
     final parent = dir.parent;
     if (parent.path == dir.path) {
       throw StateError(
-        'Not inside an Agent Guild repo (missing skills.sh.json).',
+        'Not inside an Skill Steward repo (missing skills.sh.json).',
       );
     }
     dir = parent;

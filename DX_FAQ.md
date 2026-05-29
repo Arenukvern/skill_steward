@@ -1,6 +1,6 @@
-# Agent Guild DX_FAQ — Memory Palace
+# Skill Steward DX_FAQ — Memory Palace
 
-_How to work in this repo and install Guild skills elsewhere. Walk locations in order or jump by emoji._
+_How to work in this repo and install Skill Steward meta-skills elsewhere. Walk locations in order or jump by emoji._
 
 ## 🧭 Router
 
@@ -8,28 +8,37 @@ _How to work in this repo and install Guild skills elsewhere. Walk locations in 
 CHARTER / scope        → docs/NORTH_STAR.md
 WHY / ADRs             → DESIGN_FAQ.md, docs/decisions/
 HOW contribute         → this file, AGENTS.md, CONTRIBUTING.md
-PLANS (temporary only) → docs/start_here/executable-plans.mdx
-DOCS SITE              → docs.json + docs/  (docs.page)
-INSTALL for users      → npx skills add arenukvern/agent_guild
-VALIDATE before PR     → npm run validate  OR  packages/guild_cli (dart run :guild validate)
+PLAN HYGIENE (any format) → docs/start_here/executable-plans.mdx
+DOCS SITE              → https://docs.page/arenukvern/skill_steward · docs.json + docs/
+DOCS CI                → pnpm run docs:check  (@docs.page/cli)
+INSTALL for users      → npx skills add arenukvern/skill_steward
+VALIDATE before PR     → pnpm run guild:validate  (CI uses dart run :guild validate)
+CITE / EVAL SKILLS     → skill-source-citations, skill-eval-improve
 GUILD CLI              → packages/guild_cli/README.md  (ADR 0007)
 PLUGINS (hooks)        → plugins/README.md  (not via npx skills)
 ```
 
-## 📦 Install Guild (consumers)
+## 📦 Repo setup (maintainers)
+
+```bash
+pnpm install          # packageManager: pnpm@9 (see package.json)
+pnpm run guild:validate
+```
+
+## 📦 Install Skill Steward (consumers)
 
 ```bash
 # All meta-skills
-npx skills add arenukvern/agent_guild
+npx skills add arenukvern/skill_steward
 
 # One skill
-npx skills add arenukvern/agent_guild --skill adr-records
+npx skills add arenukvern/skill_steward --skill adr-records
 
 # Cursor + Claude, project scope, non-interactive
-npx skills add arenukvern/agent_guild -a cursor -a claude-code -y
+npx skills add arenukvern/skill_steward -a cursor -a claude-code -y
 
 # Global (every project)
-npx skills add arenukvern/agent_guild -g
+npx skills add arenukvern/skill_steward -g
 
 # List without installing (from repo path)
 npx skills add . --list
@@ -46,7 +55,7 @@ cp -r templates/skill skills/my-skill-name
 # 2. Edit skills/my-skill-name/SKILL.md (name == directory name)
 
 # 3. Validate
-npm run validate
+pnpm run validate
 
 # 4. Register
 #    - skills.sh.json groupings
@@ -59,11 +68,11 @@ npm run validate
 ## ✅ Validate desk
 
 ```bash
-npm run validate          # all skills under skills/
-npm run validate:json     # machine-readable report
-npm run list              # skill names + descriptions
+pnpm run validate          # all skills under skills/
+pnpm run validate:json     # machine-readable report
+pnpm run list              # skill names + descriptions
 
-# Dart meta CLI (same gates; delegates to npm in v1)
+# Dart meta CLI (same gates; delegates to pnpm/npm run in v1)
 cd packages/guild_cli && dart pub get
 dart run :guild validate
 dart run :guild list
@@ -111,10 +120,10 @@ Skill                  → north-star-governance
 Agent-first culture     → skill harness-engineering-culture
 OpenAI principles       → skills/harness-engineering-culture/references/harness-principles.md
 CLI+MCP dual surface    → references/cli-mcp-pattern.md (mcp_flutter / agentkit)
-Compose Guild skills    → references/guild-composition.md
+Compose Skill Steward skills    → skills/harness-engineering-culture/references/steward-composition.md
 ```
 
-Product example: `flutter-mcp-toolkit doctor`, `make check-contracts` — not shipped from Guild.
+Product example: `flutter-mcp-toolkit doctor`, `make check-contracts` — not shipped from Skill Steward.
 
 ## 📚 Doc styles desk
 
@@ -133,7 +142,8 @@ Article: [FAQ-driven development](https://dev.to/arenukvern/faq-driven-developme
 
 ```text
 plugins/{id}/plugin.yaml   → references skill ids in skills/
-install hooks separately   → .cursor/hooks.json (not npx skills)
+CURSOR HOOKS           → .cursor/hooks.json (guild-validate-on-save; committed)
+install hooks elsewhere  → plugins/guild-validate-on-save/README.md
 template                   → plugins/_template/
 ```
 
@@ -142,7 +152,7 @@ template                   → plugins/_template/
 ```text
 Read first:  AGENTS.md, DESIGN_FAQ.md (why), DX_FAQ.md (how)
 Rules:       .cursor/rules/faq_usage.mdc
-After edit:  npm run validate + update correct FAQ layer
+After edit:  pnpm run validate + update correct FAQ layer
 ```
 
 Do not duplicate SKILL.md bodies in ADRs or FAQs—link to `skills/{name}/`.

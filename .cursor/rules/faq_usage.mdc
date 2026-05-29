@@ -2,13 +2,13 @@
 alwaysApply: true
 ---
 
-# FAQ Documentation Usage Guide — Agent Guild
+# FAQ Documentation Usage Guide — Skill Steward
 
 **Q: What is DESIGN_FAQ.md for?**  
 A: Explains **why** Guild repo decisions were made (meta-layer charter, skills vs plugins, ADRs, validation). Use when changing architecture, inclusion criteria, or documenting rationale. Path: repo root `DESIGN_FAQ.md`.
 
 **Q: What is DX_FAQ.md for?**  
-A: Explains **how** to contribute and install (npx skills, `npm run validate`, add skill workflow). Memory Palace format. Path: repo root `DX_FAQ.md`.
+A: Explains **how** to contribute and install (npx skills, `pnpm run validate`, add skill workflow). Memory Palace format. Path: repo root `DX_FAQ.md`.
 
 **Q: What is the difference from `docs/decisions/` ADRs?**  
 A: ADRs are formal decision records for significant changes. DESIGN_FAQ is a compressed index of standing **why** answers; link to ADRs for full deliberation.
@@ -35,4 +35,4 @@ A: Yes. Example: DESIGN explains why plugins need a separate hook install; DX sh
 A: Architectural or charter **why** → `DESIGN_FAQ.md` (+ new ADR if significant). Contributor workflow **how** → `DX_FAQ.md`. Skill behavior → `skills/{name}/SKILL.md` only.
 
 **Q: Should I update FAQs when adding a skill?**  
-A: Update `DX_FAQ.md` only if the maintainer workflow changes. Update `DESIGN_FAQ.md` only if the change affects repo-level **why**. Always update `README.md`, `skills.sh.json`, and run `npm run validate`.
+A: Update `DX_FAQ.md` only if the maintainer workflow changes. Update `DESIGN_FAQ.md` only if the change affects repo-level **why**. Always update `README.md`, `skills.sh.json`, and run `pnpm run validate`.

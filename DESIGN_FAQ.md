@@ -1,4 +1,4 @@
-# Design Decisions FAQ — Agent Guild
+# Design Decisions FAQ — Skill Steward
 
 Quick reference for **why** this repository is shaped the way it is. For charter detail see [ADR 0001](docs/decisions/0001-repository-purpose-as-skills-meta-layer.md). For operational how-to see [DX_FAQ.md](DX_FAQ.md).
 
@@ -8,13 +8,25 @@ Quick reference for **why** this repository is shaped the way it is. For charter
 A: [docs/NORTH_STAR.md](docs/NORTH_STAR.md) is canonical; published via [docs.json](docs.json). `AGENTS.md` is only the agent map (~100 lines). Skill `north-star-governance` maintains this split.
 
 **Q: Why are plans and roadmaps not kept after implementation?**  
-A: They are executable work orders. When done, knowledge moves to ADR, FAQ, code, or harness—then plans are removed. Stale checklists mislead agents. [ADR 0005](docs/decisions/0005-executable-plans-and-docs-page.md).
+A: Any plan format is fine (Superpowers, session plans, Issues, etc.)—Skill Steward does not define a template. When done, **extract** durable knowledge to ADR, FAQ, code, or harness, then **remove** the plan file so agents are not misled. [Plan hygiene](docs/start_here/executable-plans.mdx) · [ADR 0005](docs/decisions/0005-executable-plans-and-docs-page.md).
 
-**Q: Why does Agent Guild exist instead of another skills catalog?**  
+**Q: Why does Skill Steward exist instead of another skills catalog?**  
 A: The open skills ecosystem has huge domain libraries; Guild is a **meta-layer**—managing, validating, and improving skills and processes—not competing on React/Flutter/cloud recipes. Domain skills stay in other repos.
 
 **Q: Why skills and plugins instead of skills only?**  
 A: **Skills** are portable instructions (`SKILL.md`, `npx skills`). **Plugins** are wiring (Cursor hooks, install glue) that skills CLI does not install on Cursor. See [ADR 0004](docs/decisions/0004-plugin-packaging-and-install-path.md).
+
+**Q: How do public vs private marketplaces work across agents?**  
+A: **Public skills:** public Git + `npx skills add` + skills.sh. **Public plugins:** Cursor/Claude/Codex marketplace manifests (`.cursor-plugin/`, `.claude-plugin/`). **Private:** private Git with team install (Cursor team marketplace, Claude `/plugin marketplace add` + tokens, same `npx skills` if clone access). Skill `plugin-marketplace-setup` has the full matrix.
+
+**Q: How should sibling repos under `~/mcp/` differ?**  
+A: One archetype per repo (product MCP, platform libs, CLI harness, visual sidecar, meta steward). mcp_flutter owns plugin SSOT + `init`; skill_steward owns meta-skills only. Skill `mcp-harness-repo-maintainer` (mixture-of-experts checklists) documents layout, contract gates, and production MCP patterns.
+
+**Q: Why both CLI and MCP in product harnesses?**  
+A: They are **thin interfaces** to the same **core**—CLI for CI and scripts, MCP for in-chat agents. Logic belongs in core packages (e.g. mcp_flutter `packages/*`, agentkit `agentkit_core`); adapters must not diverge. Repos without MCP (harness, visual_reconstruct) still use CLI → core only.
+
+**Q: Why require `references/sources.md` per skill?**  
+A: Research and external knowledge must survive beyond one chat—links are provenance for humans and agents. Skill `skill-source-citations` defines the practice; `skill-eval-improve` adds eval/improve loops (plugin-eval, SkillOpt-style gates). Validator warns if `sources.md` is missing.
 
 **Q: Why keep each skill small and focused?**  
 A: Agents load name + description first; bloated skills waste context. One outcome per skill; depth in `references/` or separate skills.
@@ -27,8 +39,8 @@ A: Durable **why** for repo evolution; PR-reviewable. FAQs hold operational comp
 **Q: Why DESIGN_FAQ and DX_FAQ at repo root?**  
 A: [FAQ-driven development](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl) separates **why** (this file) from **how** (DX_FAQ). No duplication between them. [ADR 0002](docs/decisions/0002-adopt-faq-driven-documentation.md).
 
-**Q: Why a concept doc lattice skill but no full `docs/superpowers/` here?**  
-A: Guild is small; router + ADRs + FAQs suffice. `concept-doc-store` teaches the mcp_flutter-style lattice for larger repos. [ADR 0003](docs/decisions/0003-concept-doc-store-lattice.md).
+**Q: Why a concept doc lattice skill but no full `docs/superpowers/` in Guild?**  
+A: Guild is small; router + ADRs + FAQs suffice. Teams may still use Superpowers (or any planner) in Guild or product repos—`concept-doc-store` teaches the mcp_flutter-style lattice when you need it. [ADR 0003](docs/decisions/0003-concept-doc-store-lattice.md).
 
 ## Packaging
 
@@ -54,7 +66,7 @@ A: Deterministic gates (`doctor`, contracts, validate) belong in terminal/CI; MC
 
 ## Quality
 
-**Q: Why `npm run validate` instead of only human review?**  
+**Q: Why `pnpm run validate` instead of only human review?**  
 A: Cheap CI gate on frontmatter, naming, and registry consistency before merge.
 
 **Q: Why reject domain/framework skills in this repo?**  

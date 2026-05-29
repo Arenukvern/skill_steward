@@ -1,16 +1,16 @@
 ---
 name: create-skill
-description: Scaffold a new Agent Skill in this marketplace repo with valid SKILL.md, directory layout, and registry entries. Use when adding a skill, creating SKILL.md, or contributing to agent_guild.
+description: Scaffold a new Agent Skill in this marketplace repo with valid SKILL.md, directory layout, and registry entries. Use when adding a skill, creating SKILL.md, or contributing to skill_steward.
 license: MIT
 metadata:
-  author: agent-guild
+  author: skill-steward
   version: "1.0.0"
   category: marketplace
 ---
 
 # Create skill
 
-Add a new installable skill package under `skills/` in the Agent Guild marketplace.
+Add a new installable skill package under `skills/` in the Skill Steward marketplace.
 
 ## When to use
 
@@ -24,12 +24,13 @@ Add a new installable skill package under `skills/` in the Agent Guild marketpla
 2. **Create directory** — `skills/{name}/` (directory name must equal `name` in frontmatter).
 3. **Copy template** — from `templates/skill/SKILL.md`; replace placeholders.
 4. **Write description** — one block covering *what* and *when* (trigger phrases users say).
-5. **Write body** — numbered steps, examples, output format; keep under 500 lines.
-6. **Optional folders** — `scripts/`, `references/`, `assets/` as needed.
-7. **Register skill**:
+5. **Cite sources** — create `references/sources.md` from `templates/skill/references/sources.md`; add rows for every spec/repo/paper used ([skill-source-citations](../skill-source-citations/SKILL.md)).
+6. **Write body** — numbered steps, examples, output format; keep under 500 lines.
+7. **Optional** — `references/evals.md` for prompt suites ([skill-eval-improve](../skill-eval-improve/references/evals-template.md)); `scripts/`, `assets/`.
+8. **Register skill**:
    - Add skill id to `skills.sh.json` under the right grouping
    - Add row to root `README.md` skill table
-8. **Validate** — run `npm run validate` from repo root; fix all errors.
+9. **Validate** — run `pnpm run validate` from repo root; fix all errors and citation warnings.
 
 ## Frontmatter template
 
@@ -39,7 +40,7 @@ name: {same-as-directory}
 description: {capability + trigger phrases, 20-1024 chars}
 license: MIT
 metadata:
-  author: agent-guild
+  author: skill-steward
   version: "1.0.0"
   category: {marketplace|multi-agent|...}
 ---
@@ -59,11 +60,27 @@ disable-model-invocation: false
 - [ ] Description includes user trigger phrases
 - [ ] No `README.md` inside skill folder
 - [ ] No secrets or absolute local paths
-- [ ] `npm run validate` passes
+- [ ] `pnpm run validate` passes
 - [ ] Listed in `skills.sh.json` and README
+- [ ] `references/sources.md` present with URLs used
+- [ ] Optional: `references/evals.md` if behavior-critical
+
+## Related skills
+
+| Task | Skill |
+|------|-------|
+| Marketplace / private distribution | `plugin-marketplace-setup` |
+| MCP/harness repo maintenance | `mcp-harness-repo-maintainer` |
+| Citations / sources.md | `skill-source-citations` |
+| Eval & improve loop | `skill-eval-improve` |
+| Spec audit before PR | `skill-spec-review` |
 
 ## Install (end users)
 
 ```bash
-npx skills add arenukvern/agent_guild --skill create-skill
+npx skills add arenukvern/skill_steward --skill create-skill
 ```
+
+## Sources
+
+See [references/sources.md](references/sources.md). When researching, follow `skill-source-citations`.

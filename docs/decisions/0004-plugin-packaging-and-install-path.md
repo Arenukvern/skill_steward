@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-05-29
-decision-makers: Agent Guild maintainers
+decision-makers: Skill Steward maintainers
 consulted:
 informed:
 ---
@@ -10,7 +10,7 @@ informed:
 
 ## Context and Problem Statement
 
-[ADR 0001](0001-repository-purpose-as-skills-meta-layer.md) commits Agent Guild to **skills and plugins**: skills for concise meta-capabilities, plugins where a skill alone is insufficient (hooks, automations, registry glue). The repo has a mature **`skills/`** tree installable via `npx skills`, but `plugins/` is only a placeholder.
+[ADR 0001](0001-repository-purpose-as-skills-meta-layer.md) commits Skill Steward to **skills and plugins**: skills for concise meta-capabilities, plugins where a skill alone is insufficient (hooks, automations, registry glue). The repo has a mature **`skills/`** tree installable via `npx skills`, but `plugins/` is only a placeholder.
 
 The ecosystem overloads “plugin”:
 
@@ -22,18 +22,18 @@ The ecosystem overloads “plugin”:
 
 Without a Guild-specific definition, contributors will put hooks in `skills/` (wrong lifecycle), or duplicate SKILL bodies inside plugins, or expect `npx skills` to configure Cursor hooks (it does not).
 
-**How do Agent Guild plugins differ from skills, and how are they installed?**
+**How do Skill Steward plugins differ from skills, and how are they installed?**
 
 ## Decision Drivers
 
 * **Skills stay portable** — one `SKILL.md` per capability; installable across 50+ agents via [vercel-labs/skills](https://github.com/vercel-labs/skills).
 * **Plugins wire the runtime** — event hooks, MCP fragments, install scripts, multi-skill bundles where the **unit of install** is a workflow, not a single instruction file.
 * **No duplication** — plugin manifests **reference** repo skills by name; they do not fork SKILL.md content.
-* **Cursor-first for hooks** — Guild meta-plugins target Cursor hooks ([hooks.json](https://cursor.com/docs/agent/hooks)) as the primary enforcement layer; other agents use their native hook/settings surfaces.
+* **Cursor-first for hooks** — Skill Steward meta-plugins target Cursor hooks ([hooks.json](https://cursor.com/docs/agent/hooks)) as the primary enforcement layer; other agents use their native hook/settings surfaces.
 * **Small surface** — plugins remain meta/process-only per ADR 0001 inclusion criteria.
 * **Honest install docs** — each artifact declares what `npx skills` covers vs what needs a separate step.
 
-## Definitions (Agent Guild)
+## Definitions (Skill Steward)
 
 | Term | What it is | Loaded by | Typical content |
 |------|------------|-----------|-----------------|
@@ -59,8 +59,8 @@ Chosen option: **"C. Plugins as manifests + wiring; skills canonical in `skills/
 
 | Artifact | Install command / path | Cursor project | Cursor global |
 |----------|------------------------|----------------|---------------|
-| **Skill** | `npx skills add arenukvern/agent_guild --skill <name>` | `.agents/skills/<name>/` → symlinked to `.cursor/skills/` | `~/.cursor/skills/` with `-g` |
-| **All skills** | `npx skills add arenukvern/agent_guild` | same | same |
+| **Skill** | `npx skills add arenukvern/skill_steward --skill <name>` | `.agents/skills/<name>/` → symlinked to `.cursor/skills/` | `~/.cursor/skills/` with `-g` |
+| **All skills** | `npx skills add arenukvern/skill_steward` | same | same |
 | **Cursor hook (plugin)** | `plugins/<id>/install` or documented copy | `.cursor/hooks.json`, `.cursor/hooks/*` | `~/.cursor/hooks.json` (user scope) |
 | **Cursor rules/commands (plugin)** | plugin install merges templates | `.cursor/rules/`, `.cursor/commands/` | usually project-only |
 | **MCP fragment** | not used in v1 Guild plugins | consumer `mcp.json` | N/A |
@@ -115,14 +115,14 @@ targets:
 
 | Plugin id | Purpose | Wiring |
 |-----------|---------|--------|
-| `guild-validate-on-save` | Run `npm run validate` when `skills/**/SKILL.md` changes | Cursor `afterFileEdit` |
+| `guild-validate-on-save` | Run `pnpm run validate` when `skills/**/SKILL.md` changes | Cursor `afterFileEdit` |
 | `guild-faq-reminder` | Nudge FAQ updates when architecture files change | Cursor `afterFileEdit` + skill `faq-driven-docs` |
 
 Implement after manifest schema stabilizes; until then `plugins/README.md` points here.
 
 ### Relationship to mcp_flutter
 
-[mcp_flutter/plugin](https://github.com/Arenukvern/mcp_flutter/tree/main/plugin) is a **product plugin** (MCP server + skills + marketplace manifests). Agent Guild **does not** replicate that stack. We may **learn** manifest discovery (`.claude-plugin/marketplace.json` skill paths) so `npx skills` discovers bundled skills from a plugin root—optional compatibility, not required for Guild meta-plugins.
+[mcp_flutter/plugin](https://github.com/Arenukvern/mcp_flutter/tree/main/plugin) is a **product plugin** (MCP server + skills + marketplace manifests). Skill Steward **does not** replicate that stack. We may **learn** manifest discovery (`.claude-plugin/marketplace.json` skill paths) so `npx skills` discovers bundled skills from a plugin root—optional compatibility, not required for Skill Steward meta-plugins.
 
 ### Consequences
 

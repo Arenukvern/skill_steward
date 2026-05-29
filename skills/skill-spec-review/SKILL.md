@@ -3,7 +3,7 @@ name: skill-spec-review
 description: Audit SKILL.md and skill directories for Agent Skills spec, Cursor extensions, and npx skills compatibility. Use when reviewing a skill, validating frontmatter, or checking marketplace readiness.
 license: MIT
 metadata:
-  author: agent-guild
+  author: skill-steward
   version: "1.0.0"
   category: marketplace
 paths:
@@ -46,7 +46,8 @@ Review a skill package before merge or publish to skills.sh.
 - [ ] Clear numbered workflow
 - [ ] Under ~500 lines (or split to `references/`)
 - [ ] Relative file links one level deep
-- [ ] Install command documented: `npx skills add <owner>/<repo> --skill <name>`
+- [ ] `references/sources.md` with URLs for external claims ([skill-source-citations](../skill-source-citations/SKILL.md))
+- [ ] Install command documented: `npx skills add arenukvern/skill_steward --skill <name>`
 
 ### Scripts (if present)
 
@@ -58,7 +59,8 @@ Review a skill package before merge or publish to skills.sh.
 
 - [ ] Skill id in `skills.sh.json`
 - [ ] Row in root `README.md` table
-- [ ] `npm run validate` passes
+- [ ] `pnpm run validate` passes (no `sources.md` warning)
+- [ ] Behavior-critical skills: `references/evals.md` or plugin-eval note ([skill-eval-improve](../skill-eval-improve/SKILL.md))
 
 ## Output format
 
@@ -86,5 +88,9 @@ Report as:
 ## Install
 
 ```bash
-npx skills add arenukvern/agent_guild --skill skill-spec-review
+npx skills add arenukvern/skill_steward --skill skill-spec-review
 ```
+
+## Sources
+
+See [references/sources.md](references/sources.md). When researching, follow `skill-source-citations`.
