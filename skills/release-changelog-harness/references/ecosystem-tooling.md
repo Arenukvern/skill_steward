@@ -18,7 +18,7 @@ Pick **one primary generator** per repo. Link upstream docs; do not duplicate th
 |------|----------|------------|
 | **Melos** | Multi-package Dart repos | `melos version`, changelog commands |
 | **Manual CHANGELOG + tag** | Single package | Edit `CHANGELOG.md` section `[Unreleased]` |
-| **Custom scripts** (product harness) | mcp_flutter-style plugin.json + binaries | Follow existing `make` / release PR workflow—extend, don’t replace |
+| **Custom scripts** (product harness) | mcp_flutter-style plugin.json + binaries | [binary-release-contract.md](binary-release-contract.md) — extend, don’t replace |
 
 ## Rust
 
@@ -41,17 +41,27 @@ Pick **one primary generator** per repo. Link upstream docs; do not duplicate th
 PR opened → contributor added structured release note?
 merge to main → version/changelog coherent?
 tag/publish → artifacts match changelog?
+tag/publish → binaries checksum-verified and version-aligned?
 ```
 
 Implement with your stack’s workflow file; keep command names in **DX_FAQ**, not in skills.
+
+## Distribution surfaces (not generators)
+
+| Consumer gets | Mechanism | Reference |
+|---------------|-----------|-----------|
+| MCP/CLI binary | GitHub Releases + `install.sh` | [binary-release-contract.md](binary-release-contract.md) |
+| Skills | `npx skills add owner/repo` | vercel-labs/skills |
+| Dart libs | `dart pub publish` | Melos / manual CHANGELOG |
+| Meta steward CLI | Maintainer clone + `pnpm run steward:*` | [ADR 0010](../../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.md) |
 
 ## Sibling consistency (`~/mcp`)
 
 | Repo type | Typical release face |
 |-----------|------------------------|
-| mcp_flutter | release-please / custom plugin train |
+| mcp_flutter | release-please + Release tarballs + `install.sh` |
 | IntentCall (`agentkit/`) | pub publish + changelog per package |
-| skill_steward | CHANGELOG + validate gate |
-| flutter_harness | HS fixtures + package versions |
+| skill_steward | Changesets + `npx skills` (no binary train) |
+| flutter_harness | HS fixtures + package versions; binaries when standalone CLI ships |
 
 Align **wording** (“what changed for agents?”) across siblings; **do not** force one npm tool on all.

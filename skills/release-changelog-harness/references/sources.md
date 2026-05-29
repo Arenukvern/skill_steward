@@ -11,7 +11,10 @@
 | Semantic Versioning | https://semver.org/ | Version semantics |
 | Harness engineering | https://openai.com/index/harness-engineering/ | Mechanical release gates |
 | FAQ-driven docs | https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl | DX_FAQ for commands |
+| mcp_flutter install.sh | https://github.com/Arenukvern/mcp_flutter/blob/main/install.sh | Binary install without clone |
+| mcp_flutter release workflow | https://github.com/Arenukvern/mcp_flutter/blob/main/.github/workflows/release.yml | Tag-triggered artifacts |
 
 ## Changelog
 
+- 2026-05-29: v1.1 — binary release contract + distribution router ([ADR 0010](../../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.md))
 - 2026-05-29: initial skill — release legibility contract + ecosystem router + MoE critique

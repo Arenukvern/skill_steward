@@ -45,6 +45,7 @@ Copy the section for your archetype before a release or large PR.
 - [ ] `pnpm run docs:check` if `docs/` or `docs.json` touched
 - [ ] `skills.sh.json` + README skill table
 - [ ] No product MCP, no domain skills
+- [ ] **No binary release train** — skills via `npx skills` only ([ADR 0010](../../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.md))
 - [ ] Plan files removed after extract (plan hygiene)
 - [ ] `.cursor/hooks.json` still valid if plugin hooks changed
 

@@ -34,6 +34,9 @@ A: Agents load name + description first; bloated skills waste context. One outco
 **Q: Why Changesets for a skills repo that is not an npm product?**  
 A: **Release legibility**—structured `.changeset/*.md` in PRs and `CHANGELOG.md` in git so humans and agents know what shipped at each repo version. Skills themselves are not semver’d; the root `skill-steward` package version tags the repository. [ADR 0009](docs/decisions/0009-adopt-changesets-for-repo-releases.md) · skill `release-changelog-harness`.
 
+**Q: Why doesn’t Skill Steward ship binaries like mcp_flutter?**  
+A: **Different primary artifact.** Consumers install **skills** with `npx skills add arenukvern/skill_steward` (no full clone). `steward_cli` validates the **in-repo** `skills/` tree and delegates to Node—useful for maintainers with a checkout, not a standalone product binary. Product harness repos (mcp_flutter) should ship Release tarballs + `install.sh`. [ADR 0010](docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.md) · skill `release-changelog-harness` → `references/binary-release-contract.md`.
+
 ## Documentation
 
 **Q: Why ADRs in `docs/decisions/`?**  

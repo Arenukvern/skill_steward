@@ -1,10 +1,10 @@
 ---
 name: release-changelog-harness
-description: Chooses ecosystem-native release and changelog tooling (e.g. Changesets for JS monorepos, Melos, release-plz, cargo-release) so versions and notes stay legible to humans and agents. Use when adopting changesets, release-please, versioning monorepos, writing CHANGELOGs, release CI, or making publishes understandable—not for domain app tutorials.
+description: Chooses ecosystem-native release and changelog tooling (Changesets, Melos, release-plz) plus binary distribution (GitHub Release tarballs, install.sh) when the product is an executable. Use for release CI, install.sh, versioning, CHANGELOGs, shipping MCP/CLI without clone, or meta repos that only ship skills via npx skills—not domain app tutorials.
 license: MIT
 metadata:
   author: skill-steward
-  version: "1.0.0"
+  version: "1.1.0"
   category: harness
 paths:
   - "CHANGELOG.md"
@@ -60,9 +60,10 @@ Before picking a tool, agree the repo obeys:
 | Single Dart package | `CHANGELOG.md` + git tag + `dart pub publish` | Keep entries agent-editable markdown. |
 | Rust workspace | [release-plz](https://github.com/MarcoIeni/release-plz) or cargo-release + git-cliff | Prefer automation that opens version PRs. |
 | Meta / skills-only (Skill Steward) | [Changesets](https://github.com/changesets/changesets) + `CHANGELOG.md` + git tag ([ADR 0009](../../docs/decisions/0009-adopt-changesets-for-repo-releases.md)) | Repo semver only; skills unversioned; document consumer impact in `.changeset/*.md`. |
-| Product harness w/ binaries (mcp_flutter) | Existing release train (e.g. release-please, custom scripts) | **Do not** add a second version source; extend contract gates only. |
+| Product harness w/ binaries (mcp_flutter) | release-please + tag CI + `install.sh` | **Do not** add a second version source; follow [binary-release-contract.md](references/binary-release-contract.md) |
+| Meta / skills-only (Skill Steward) | Changesets + `npx skills` — **no** binary train | [ADR 0010](../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.md) |
 
-Full matrix: [ecosystem-tooling.md](references/ecosystem-tooling.md).
+Full matrix: [ecosystem-tooling.md](references/ecosystem-tooling.md). Binary/install: [binary-release-contract.md](references/binary-release-contract.md).
 
 ## When to use this skill
 
@@ -120,12 +121,23 @@ git commit -am "chore: version packages"
 
 Publish: project-specific (`changeset publish`, GitHub Action, or npm provenance)—**document exact commands in DX_FAQ**, not here.
 
-### 5. Verify legibility
+### 5. Choose distribution surface
+
+| Ship unit | Pattern |
+|-----------|---------|
+| Executable MCP/CLI | GitHub Release binaries + checksums + `install.sh` — [binary-release-contract.md](references/binary-release-contract.md) |
+| Skills only | `npx skills add owner/repo` — no repo tarball for consumers |
+| Libraries | pub.dev / npm / crates.io per ecosystem table |
+
+**Skill Steward:** skills via `npx skills`; `steward_cli` for maintainers with clone only ([ADR 0010](../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.md)).
+
+### 6. Verify legibility
 
 - [ ] Agent can read “what’s unreleased” from git without GitHub API
 - [ ] CI fails when a version bump lacks notes
 - [ ] DX_FAQ lists commands copy-paste ready
 - [ ] No duplicate version sources (e.g. hand bump + bot bump)
+- [ ] If binaries: tag assets match version SSOT; `install.sh` documents pinned install
 
 ## Anti-patterns
 
@@ -136,6 +148,8 @@ Publish: project-specific (`changeset publish`, GitHub Action, or npm provenance
 | 1,000-line release doc in AGENTS.md | Crowds task context; belongs in DX_FAQ / ADR |
 | Skipping changesets “because AI will write CHANGELOG at release” | Non-deterministic; no PR-time review |
 | Version bumps without consumer-facing sentence | Users and agents can’t assess upgrade risk |
+| Binary Releases without changelog in git | Users see version; agents miss intent |
+| `git clone` as end-user install for a server product | Use install.sh + Release assets (mcp_flutter pattern) |
 
 ## Related skills
 

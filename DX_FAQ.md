@@ -16,7 +16,7 @@ ANALYZE steward_cli    → pnpm run steward:analyze  (xsoulspace_lints; CI on PR
 VALIDATE before PR     → pnpm run steward:validate  (CI uses dart run :steward validate)
 CITE / EVAL SKILLS     → skill-source-citations, skill-eval-improve
 STEWARD CLI              → packages/steward_cli/README.md  (ADR 0007)
-RELEASE / CHANGELOG    → this file (Release desk) · ADR 0009 · skill release-changelog-harness
+RELEASE / CHANGELOG    → this file (Release desk) · ADR 0009 · ADR 0010 · skill release-changelog-harness
 PLUGINS (hooks)        → plugins/README.md  (not via npx skills)
 ```
 
@@ -120,7 +120,7 @@ Skill                  → north-star-governance
 
 ## 🚀 Release desk (Changesets)
 
-Skill Steward uses [Changesets](https://github.com/changesets/changesets) for **repo** semver + `CHANGELOG.md` (skills are not individually versioned). Skill: `release-changelog-harness` · ADR: [0009](docs/decisions/0009-adopt-changesets-for-repo-releases.md).
+Skill Steward uses [Changesets](https://github.com/changesets/changesets) for **repo** semver + `CHANGELOG.md` (skills are not individually versioned). **No binary release train** — consumers use `npx skills`; product siblings use GitHub Release tarballs + `install.sh` ([ADR 0010](docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.md)). Skill: `release-changelog-harness` · ADRs: [0009](docs/decisions/0009-adopt-changesets-for-repo-releases.md), [0010](docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.md).
 
 ```bash
 # PR: describe consumer impact (required when skills/docs/plugins/registry change)
