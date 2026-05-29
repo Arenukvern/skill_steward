@@ -15,7 +15,7 @@ Sibling work: **[mcp_flutter](https://github.com/Arenukvern/mcp_flutter)** owns 
 | Own | Do not own |
 |-----|------------|
 | Meta-skills (`skills/`) | Domain/framework instruction packs |
-| Skill validation (`pnpm run validate`) | Product MCP servers (see mcp_flutter, agentkit) |
+| Skill validation (`pnpm run validate`) | Product MCP servers (see mcp_flutter, IntentCall) |
 | Doc patterns (FAQ, ADR, docs.page lattice) | Finished plan files as permanent docs |
 | Plugin manifests (`plugins/`) when wired | Copy-pasted API docs of other products |
 | Harness **culture** skill (how to build CLI/MCP harnesses) | Executable app/runtime code |

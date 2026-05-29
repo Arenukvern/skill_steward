@@ -50,7 +50,7 @@ Implement with your stack’s workflow file; keep command names in **DX_FAQ**, n
 | Repo type | Typical release face |
 |-----------|------------------------|
 | mcp_flutter | release-please / custom plugin train |
-| agentkit | pub publish + changelog per package |
+| IntentCall (`agentkit/`) | pub publish + changelog per package |
 | skill_steward | CHANGELOG + validate gate |
 | flutter_harness | HS fixtures + package versions |
 

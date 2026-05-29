@@ -10,7 +10,7 @@ informed:
 
 ## Context and Problem Statement
 
-The open skills ecosystem has **product harnesses** with real CLIs and MCP servers (e.g. [mcp_flutter](https://github.com/Arenukvern/mcp_flutter) `flutter-mcp-toolkit`, [agentkit](https://github.com/Arenukvern/agentkit)). Skill Steward is a **meta-layer** ([ADR 0001](0001-repository-purpose-as-skills-meta-layer.md)) teaching how to build and document harnesses—not replacing product tools.
+The open skills ecosystem has **product harnesses** with real CLIs and MCP servers (e.g. [mcp_flutter](https://github.com/Arenukvern/mcp_flutter) `flutter-mcp-toolkit`, [IntentCall (repo agentkit until rename)](https://github.com/Arenukvern/agentkit)). Skill Steward is a **meta-layer** ([ADR 0001](0001-repository-purpose-as-skills-meta-layer.md)) teaching how to build and document harnesses—not replacing product tools.
 
 Contributors asked to formalize the split so Skill Steward does not grow a second Flutter MCP server or duplicate `doctor` / `exec` semantics.
 
@@ -38,7 +38,7 @@ Chosen option: **"C. Skill Steward meta CLI (+ future meta MCP); products own do
 |-------|------------|--------------------|---------------------|
 | **Meta harness** | `skill_steward` | `steward validate`, `steward list`; future MCP skill index | `harness-engineering-culture`, `north-star-governance`, … |
 | **Product harness** | `mcp_flutter`, app repos | `flutter-mcp-toolkit`, `flutter-mcp-toolkit-server`, `fmt_*` | Install Guild skills via `npx skills` |
-| **Library** | `agentkit` | Schema, registry adapters | Consumers integrate |
+| **Library** | IntentCall (`~/mcp/agentkit`) | Schema, registry adapters (`intentcall_*`) | Consumers integrate |
 
 **Guild teaches:**
 

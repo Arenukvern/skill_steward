@@ -1,6 +1,6 @@
 ---
 name: mcp-harness-repo-maintainer
-description: Maintains MCP-and-harness repositories where CLI and MCP are thin agent-facing interfaces and core libraries hold domain logic—mcp_flutter, agentkit, flutter_harness, skill_steward. Use when refactoring adapters, enforcing CLI/MCP/core parity, contract gates, or ~/mcp sibling layout.
+description: Maintains MCP-and-harness repositories where CLI and MCP are thin agent-facing interfaces and core libraries hold domain logic—mcp_flutter, IntentCall (intentcall), flutter_harness, skill_steward. Use when refactoring adapters, enforcing CLI/MCP/core parity, contract gates, or ~/mcp sibling layout.
 license: MIT
 metadata:
   author: skill-steward
@@ -39,7 +39,7 @@ Full layering: [core-and-interfaces.md](references/core-and-interfaces.md). **Pa
 ## When to use
 
 - Bootstrapping or auditing **mcp_flutter**-style product repos (MCP + plugin + `init`)
-- Maintaining **agentkit** (library platform), **flutter_harness** (CLI/HS), **flutter_visual_reconstruct** (offline compare)
+- Maintaining **IntentCall** (library platform, `~/mcp/agentkit`), **flutter_harness** (CLI/HS), **flutter_visual_reconstruct** (offline compare)
 - Keeping **skill_steward** meta-only (skills/plugins, no product MCP)
 - Wiring **sibling clones**, version pins, or contract CI across repos
 - Applying production MCP patterns (resources vs tools, versioning, auth)
@@ -51,7 +51,7 @@ Read [repo-archetypes.md](references/repo-archetypes.md) for the full matrix. Ro
 | Expert lens | Repo examples | Owns | Does not own |
 |-------------|---------------|------|----------------|
 | **A — Product MCP** | `mcp_flutter` | `plugin/mcp.json`, `fmt_*` tools, `flutter-mcp-toolkit init`, `make check-contracts` | HS scripts, pixel guild profiles |
-| **B — Platform libs** | `agentkit` | Dart packages, adapters (MCP/WebMCP/native), publish order | Shippable plugin tree, dogfood app |
+| **B — Platform libs** | IntentCall (`~/mcp/agentkit`) | Dart packages (`intentcall_*`), adapters (MCP/WebMCP/native), publish order | Shippable plugin tree, dogfood app |
 | **C — CLI harness** | `flutter_harness` | HS v1/v2, app registry, fixture lint/run | MCP server binary, marketplace manifests |
 | **D — Visual sidecar** | `flutter_visual_reconstruct` | `profiles/*.yaml`, compare/deconstruct CLI | VM/MCP, dynamic registry |
 | **E — Meta steward** | `skill_steward` | `skills/`, `plugins/`, `steward validate`, docs.page | Product MCP, domain `fmt_*` |
@@ -98,12 +98,12 @@ flutter-mcp-toolkit doctor
 
 Product-specific depth: [mcp_flutter maintainer skill](https://github.com/Arenukvern/mcp_flutter/blob/main/plugin/skills/flutter-mcp-toolkit-repo-maintainer/SKILL.md) (install via `npx skills add Arenukvern/mcp_flutter --skill flutter-mcp-toolkit-repo-maintainer`).
 
-## Archetype B — Platform libs (agentkit)
+## Archetype B — Platform libs (IntentCall)
 
-- **Core:** `agentkit_core`, `agentkit_schema` — registry, validation, invoke.
-- **Adapters:** `agentkit_mcp`, WebMCP/native—wire only; no domain forks.
+- **Core:** `intentcall_core`, `intentcall_schema` — registry, validation, invoke.
+- **Adapters:** `intentcall_mcp`, WebMCP/native—wire only; no domain forks.
 - **CLI:** `CommandCatalog` → same core as MCP tools.
-- Multi-package workspace; integration proof in **mcp_flutter** (`make check-agentkit-integration`).
+- Multi-package workspace; integration proof in **mcp_flutter** (`make check-intentcall-integration`).
 
 ## Archetype C — CLI harness (flutter_harness)
 
@@ -148,7 +148,7 @@ Details: [mcp-production-practices.md](references/mcp-production-practices.md).
 ```text
 ~/mcp/
   mcp_flutter/                 # A — toolkit + MCP + init
-  agentkit/                    # B — platform packages
+  agentkit/                    # B — IntentCall platform packages (folder until rename)
   flutter_harness/             # C — HS CLI
   flutter_visual_reconstruct/  # D — compare (note: reconstruct, not reconstruction)
   skill_steward/                 # E — meta skills

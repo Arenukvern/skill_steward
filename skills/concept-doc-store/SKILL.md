@@ -80,7 +80,7 @@ Example footer in ADR:
 
 ## Optional: spec-driven programs (`superpowers/`)
 
-For multi-phase agent work (mcp_flutter agentkit pattern):
+For multi-phase agent work (mcp_flutter IntentCall pattern):
 
 ```
 docs/superpowers/

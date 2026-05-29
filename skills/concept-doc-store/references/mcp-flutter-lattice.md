@@ -22,8 +22,8 @@ Why this repo is the reference for **concept-doc-store**.
 | `docs/guides/` | Task workflows (debugging, dynamic tools) |
 | `docs/troubleshooting/` | Symptom → fix |
 | `docs/decisions/` | ADRs (symlink to root `decisions/`) |
-| `docs/superpowers/` | Agentkit program: specs, plans, tracker, closure, evals |
-| `docs/agentkit/` | Product checklists (regression, external repo) |
+| `docs/superpowers/` | IntentCall program: specs, plans, tracker, closure, evals |
+| `docs/intentcall/` | IntentCall product checklists (regression, external repo; path may be `docs/agentkit/` until rename) |
 | `docs/NORTH_STAR.md` | Charter |
 | Root `AGENTS.md` | Agent rules + table to superpowers docs |
 | `plugin/skills/` | Installable Agent Skills |

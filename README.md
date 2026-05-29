@@ -75,7 +75,7 @@ Meta and process capabilities only — [inclusion criteria](docs/decisions/0001-
 | [multi-agent-handoff](skills/multi-agent-handoff/)                 | Plan handoffs between specialized agents.                                                                                                                                  |
 | [harness-engineering-culture](skills/harness-engineering-culture/) | Agent-first harness design—CLI/MCP, mechanical gates, docs map ([OpenAI harness engineering](https://openai.com/index/harness-engineering/)).                              |
 | [release-changelog-harness](skills/release-changelog-harness/) | Ecosystem-native release/changelog tooling (Changesets, Melos, release-plz)—legible versions for humans and agents.                                                          |
-| [mcp-harness-repo-maintainer](skills/mcp-harness-repo-maintainer/) | Maintain MCP/harness repos (mcp_flutter, agentkit, flutter_harness)—archetypes, contract gates, sibling layout.                                                            |
+| [mcp-harness-repo-maintainer](skills/mcp-harness-repo-maintainer/) | Maintain MCP/harness repos (mcp_flutter, IntentCall, flutter_harness)—archetypes, contract gates, sibling layout.                                                            |
 | [north-star-governance](skills/north-star-governance/)             | North Star charter, AGENTS.md map, plan hygiene (any format), docs.page wiring.                                                                                            |
 
 

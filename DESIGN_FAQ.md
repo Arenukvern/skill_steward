@@ -23,7 +23,7 @@ A: **Public skills:** public Git + `npx skills add` + skills.sh. **Public plugin
 A: One archetype per repo (product MCP, platform libs, CLI harness, visual sidecar, meta steward). mcp_flutter owns plugin SSOT + `init`; skill_steward owns meta-skills only. Skill `mcp-harness-repo-maintainer` (mixture-of-experts checklists) documents layout, contract gates, and production MCP patterns.
 
 **Q: Why both CLI and MCP in product harnesses?**  
-A: They are **thin interfaces** to the same **core**—CLI for CI and scripts, MCP for in-chat agents. Logic belongs in core packages (e.g. mcp_flutter `packages/*`, agentkit `agentkit_core`); adapters must not diverge. Repos without MCP (harness, visual_reconstruct) still use CLI → core only.
+A: They are **thin interfaces** to the same **core**—CLI for CI and scripts, MCP for in-chat agents. Logic belongs in core packages (e.g. mcp_flutter `packages/*`, IntentCall `intentcall_core`); adapters must not diverge. Repos without MCP (harness, visual_reconstruct) still use CLI → core only.
 
 **Q: Why require `references/sources.md` per skill?**  
 A: Research and external knowledge must survive beyond one chat—links are provenance for humans and agents. Skill `skill-source-citations` defines the practice; `skill-eval-improve` adds eval/improve loops (plugin-eval, SkillOpt-style gates). Validator warns if `sources.md` is missing.
@@ -62,7 +62,7 @@ A: Skills are canonical in `skills/`; plugins reference skill ids in `plugin.yam
 ## Harness
 
 **Q: Why a harness-engineering-culture skill instead of only product CLIs?**  
-A: Guild teaches **how to build** agent-first harnesses (CLI+MCP parity, docs map, Guild skill composition). Product repos (`mcp_flutter`, `agentkit`) ship the actual tools; see [OpenAI harness engineering](https://openai.com/index/harness-engineering/).
+A: Guild teaches **how to build** agent-first harnesses (CLI+MCP parity, docs map, Guild skill composition). Product repos (`mcp_flutter`, [IntentCall](https://github.com/Arenukvern/agentkit) (repo agentkit until rename)) ship the actual tools; see [OpenAI harness engineering](https://openai.com/index/harness-engineering/).
 
 **Q: Why emphasize CLI before MCP in harness docs?**  
 A: Deterministic gates (`doctor`, contracts, validate) belong in terminal/CI; MCP is the conversational layer on the same catalog—pattern from mcp_flutter [CLI vs MCP](https://github.com/Arenukvern/mcp_flutter/blob/main/docs/start_here/cli_vs_mcp.mdx).
