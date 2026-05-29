@@ -29,7 +29,7 @@
       "name": "steward_cli",
       "rootUri": "../",
       "packageUri": "lib/",
-      "languageVersion": "3.5"
+      "languageVersion": "3.11"
     }
   ],
   "generator": "pub",
