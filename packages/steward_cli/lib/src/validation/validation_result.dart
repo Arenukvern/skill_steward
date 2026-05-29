@@ -6,13 +6,6 @@
 ///
 /// Populated by [validateSingleSkill] / [validateAllSkills].
 class SkillValidationResult {
-  final String dirName;
-  final List<String> errors;
-  final List<String> warnings;
-  final String? name;
-  final String? description;
-
-  // ignore: sort_constructors_first
   const SkillValidationResult({
     required this.dirName,
     this.errors = const [],
@@ -20,6 +13,12 @@ class SkillValidationResult {
     this.name,
     this.description,
   });
+  final String dirName;
+  final List<String> errors;
+  final List<String> warnings;
+  final String? name;
+
+  final String? description;
 
   bool get isValid => errors.isEmpty;
 
@@ -46,16 +45,15 @@ class SkillValidationResult {
 /// Matches the shape of the JSON emitted by the original Node validator --json output
 /// (when registry processing has run).
 class ValidationReport {
-  final List<SkillValidationResult> skills;
-  final List<String> registryWarnings;
-  final bool ok;
-
-  // ignore: sort_constructors_first
   const ValidationReport({
     required this.skills,
     required this.ok,
     this.registryWarnings = const [],
   });
+  final List<SkillValidationResult> skills;
+  final List<String> registryWarnings;
+
+  final bool ok;
 
   List<SkillValidationResult> get failed =>
       skills.where((final s) => !s.isValid).toList();

@@ -98,8 +98,11 @@ void main() {
   group('Dart validation module (validateSingleSkill / validateAllSkills)', () {
     test('discovers all documented fixtures', () {
       final dir = Directory(fixturesRoot);
-      expect(dir.existsSync(), isTrue,
-          reason: 'Fixtures dir must exist for tests',);
+      expect(
+        dir.existsSync(),
+        isTrue,
+        reason: 'Fixtures dir must exist for tests',
+      );
 
       final entries = dir.listSync();
       final subdirs = entries
@@ -198,7 +201,8 @@ void main() {
       expect(
         okOnes,
         containsAll(
-            {'good-skill', 'missing-sources', 'has-readme', 'too-long-body'},),
+          {'good-skill', 'missing-sources', 'has-readme', 'too-long-body'},
+        ),
       );
 
       // Spot-check one aggregate result (via the all-skills path).

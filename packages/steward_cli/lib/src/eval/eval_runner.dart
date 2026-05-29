@@ -143,8 +143,7 @@ Future<List<String>> _runCaseRules(
       .take(8)
       .toList();
   final descLower = description.toLowerCase();
-  // ignore: unnecessary_lambdas — descLower is a closure capture, tearoff not possible
-  final overlap = inputTokens.where((final t) => descLower.contains(t)).length;
+  final overlap = inputTokens.where(descLower.contains).length;
 
   if (evalCase.routing == 'should_trigger' &&
       inputTokens.isNotEmpty &&

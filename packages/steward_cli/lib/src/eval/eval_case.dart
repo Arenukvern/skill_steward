@@ -73,7 +73,6 @@ class EvalRule {
 
 /// A parsed eval case from a YAML file.
 class EvalCase {
-  // ignore: sort_constructors_first
   const EvalCase({
     required this.id,
     required this.skill,

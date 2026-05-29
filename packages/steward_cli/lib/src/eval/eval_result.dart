@@ -1,15 +1,21 @@
 /// Result types for the Dart eval runner.
 library;
 
+/// Overall eval report across all skills.
+class EvalReport {
+  const EvalReport({required this.results, required this.ok});
+  final List<EvalSkillResult> results;
+
+  final bool ok;
+
+  Map<String, dynamic> toJson() => {
+        'results': results.map((final r) => r.toJson()).toList(),
+        'exitCode': ok ? 0 : 1,
+      };
+}
+
 /// Result for a single Tier 1 skill evaluation.
 class EvalSkillResult {
-  final String skillName;
-  final List<String> errors;
-  final List<String> warnings;
-  final int passed;
-  final int total;
-
-  // ignore: sort_constructors_first
   const EvalSkillResult({
     required this.skillName,
     required this.errors,
@@ -17,6 +23,12 @@ class EvalSkillResult {
     required this.passed,
     required this.total,
   });
+  final String skillName;
+  final List<String> errors;
+  final List<String> warnings;
+  final int passed;
+
+  final int total;
 
   bool get isOk => errors.isEmpty;
 
@@ -26,19 +38,5 @@ class EvalSkillResult {
         'warnings': warnings,
         'passed': passed,
         'total': total,
-      };
-}
-
-/// Overall eval report across all skills.
-class EvalReport {
-  final List<EvalSkillResult> results;
-  final bool ok;
-
-  // ignore: sort_constructors_first
-  const EvalReport({required this.results, required this.ok});
-
-  Map<String, dynamic> toJson() => {
-        'results': results.map((final r) => r.toJson()).toList(),
-        'exitCode': ok ? 0 : 1,
       };
 }

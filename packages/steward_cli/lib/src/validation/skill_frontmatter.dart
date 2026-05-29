@@ -1,38 +1,5 @@
 import 'dart:io';
 
-/// Parsed frontmatter + body from a SKILL.md file.
-///
-/// Includes [lineCount] (computed with cross-platform splitting) used for the
-/// long-file warning in skill_rules.dart.
-///
-/// This structure + parser behavior is ported from:
-///   original Node parseFrontmatter (from validate-skills.mjs)
-///
-/// See also the golden cases:
-///   evals/fixtures/validate/good-skill/SKILL.md (has nested `metadata:` and extra keys)
-///   evals/fixtures/validate/missing-frontmatter/SKILL.md
-class ParsedFrontmatter {
-  final Map<String, String> fields;
-  final String body;
-  final String raw;
-  final String? error;
-
-  /// Total lines in the original file content (split on \r?\n).
-  /// 0 for the synthetic "missing SKILL.md file" error case.
-  final int lineCount;
-
-  // ignore: sort_constructors_first
-  const ParsedFrontmatter({
-    required this.fields,
-    required this.body,
-    required this.raw,
-    this.error,
-    this.lineCount = 0,
-  });
-
-  String? operator [](final String key) => fields[key];
-}
-
 /// Very lightweight YAML-ish frontmatter parser (matches the Node behavior exactly).
 ///
 /// Only supports simple `key: value` lines inside the first `--- ... ---` block.
@@ -111,4 +78,36 @@ Future<ParsedFrontmatter> readAndParseSkill(final String skillPath) async {
 
   final content = await file.readAsString();
   return parseFrontmatter(content);
+}
+
+/// Parsed frontmatter + body from a SKILL.md file.
+///
+/// Includes [lineCount] (computed with cross-platform splitting) used for the
+/// long-file warning in skill_rules.dart.
+///
+/// This structure + parser behavior is ported from:
+///   original Node parseFrontmatter (from validate-skills.mjs)
+///
+/// See also the golden cases:
+///   evals/fixtures/validate/good-skill/SKILL.md (has nested `metadata:` and extra keys)
+///   evals/fixtures/validate/missing-frontmatter/SKILL.md
+class ParsedFrontmatter {
+  const ParsedFrontmatter({
+    required this.fields,
+    required this.body,
+    required this.raw,
+    this.error,
+    this.lineCount = 0,
+  });
+  final Map<String, String> fields;
+  final String body;
+  final String raw;
+
+  final String? error;
+
+  /// Total lines in the original file content (split on \r?\n).
+  /// 0 for the synthetic "missing SKILL.md file" error case.
+  final int lineCount;
+
+  String? operator [](final String key) => fields[key];
 }
