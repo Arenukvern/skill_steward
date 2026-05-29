@@ -1,6 +1,6 @@
 # AGENTS.md — map (not encyclopedia)
 
-`CLAUDE.md` → symlink to this file (Claude Code).
+Claude Code loads this map via `CLAUDE.md` (symlink to this file).
 
 You are in **Skill Steward**: a meta-layer for the Agent Skills ecosystem. Read the charter before large changes.
 
