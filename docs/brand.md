@@ -26,6 +26,8 @@ Quiet, high-craft expression of **long-term stewardship** over the Agent Skills 
 
 ## Marks (Logo Directions)
 
+The three official directions, implemented as **vector masters** (the single source of truth):
+
 1. **Ledger Mark** (primary for docs, README, long-form)  
    "Skill Steward" set in a precise humanist sans with a single thin horizontal rule under "Steward" only. Echoes ADR/MADR record-keeping and citation culture.
 
@@ -35,7 +37,11 @@ Quiet, high-craft expression of **long-term stewardship** over the Agent Skills 
 3. **Lattice Gate** (secondary, builder/ethics emphasis)  
    Highly reduced open rectangular frame of fine lines suggesting both the concept-doc-store lattice and ethical boundaries.
 
-**Shared rules:** Vector masters only. Generous clear space (0.5× mark height). Monochrome + color variants. Never distort, add effects, or combine motifs on one surface. See ADR 0012 for "no personal artisan credit in project visuals".
+**Vector masters location:** `docs/brand/assets/svg/`
+
+See the [SVG directory README](assets/svg/README.md) for usage examples, technical rules, and `currentColor` guidance.
+
+**Shared rules:** Vector masters only. Generous clear space (0.5× mark height). Monochrome + color variants via `currentColor`. Never distort, add effects, or combine motifs on one surface. See ADR 0012 for "no personal artisan credit in project visuals".
 
 ## Motifs & Illustration Style
 
@@ -67,6 +73,8 @@ Two alternate prompts exist in ADR 0012 and the originating design document (Led
 - Post-optimization budgets: <150 KiB wide, <80 KiB for other variants.
 - Include provenance (generation date, prompt version, tool) in commit or adjacent `PROVENANCE.md`.
 - Always generate mono + dark variants when updating the primary.
+
+**Note on vector masters:** The artistic hero images are raster. The actual abstract logo marks (Growth Ring, Ledger, Lattice) exist as precise vector masters in `docs/brand/assets/svg/`. Use those for all logo/identity applications.
 
 ## Tone of Voice (Refinements)
 

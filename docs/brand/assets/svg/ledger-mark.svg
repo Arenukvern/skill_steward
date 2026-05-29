@@ -1,0 +1,61 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 320 48"
+  width="320"
+  height="48"
+  aria-labelledby="title desc"
+  role="img"
+>
+  <title id="title">Skill Steward — Ledger Mark</title>
+  <desc id="desc">
+    Typographic lockup: "Skill Steward" in a precise humanist sans with a single thin horizontal ledger rule under "Steward" only.
+    References the ADR and citation culture of the project. Primary wordmark for documentation surfaces.
+    Master vector per ADR 0012.
+  </desc>
+
+  <!-- 
+    Ledger Mark — Vector Master
+    Recommended for README, docs, long-form surfaces.
+
+    Typography: Humanist sans (system-ui stack)
+    Rule: Thin horizontal line under "Steward" only, matching the weight of a typical 1px rule at this scale.
+    Clear space: generous on all sides.
+
+    Usage:
+      - Best used with currentColor or the brand steward green.
+      - For dark backgrounds, the monochrome variant can be inverted via CSS.
+  -->
+
+  <g fill="currentColor">
+    <!-- "Skill" (regular weight) -->
+    <text
+      x="0"
+      y="32"
+      font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+      font-size="28"
+      font-weight="400"
+      letter-spacing="0.5"
+    >Skill</text>
+
+    <!-- "Steward" (slightly stronger for hierarchy) -->
+    <text
+      x="68"
+      y="32"
+      font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+      font-size="28"
+      font-weight="600"
+      letter-spacing="0.25"
+    >Steward</text>
+  </g>
+
+  <!-- Thin ledger rule — positioned under "Steward" only -->
+  <line
+    x1="68"
+    y1="38"
+    x2="200"
+    y2="38"
+    stroke="currentColor"
+    stroke-width="1.25"
+    stroke-linecap="round"
+  />
+</svg>

@@ -1,0 +1,84 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 200 200"
+  width="200"
+  height="200"
+  aria-labelledby="title desc"
+  role="img"
+>
+  <title id="title">Skill Steward — Growth Ring Emblem</title>
+  <desc id="desc">
+    Four concentric growth rings with a precise radial extraction mark (caret) at 55° clockwise from vertical.
+    Symbolizes long-term stewardship and plan hygiene ("extract then remove").
+    Master vector specification per ADR 0012 and the Brand Identity Design.
+  </desc>
+
+  <!-- 
+    Growth Ring Emblem — Vector Master
+    Canonical viewBox: 200×200
+    Center: (100, 100)
+
+    Rings (outer → inner):
+      R1: r=88, stroke=6
+      R2: r=68, stroke=4.5
+      R3: r=48, stroke=3.5
+      R4: r=28, stroke=2.5
+
+    Extraction caret:
+      Angle: 55° clockwise from positive Y axis
+      Extends from ~r=22 to r=94
+      Square caps, 2-unit width
+
+    Usage:
+      - Inherit color via currentColor (recommended)
+      - For monochrome: set color or use CSS
+      - Clear space: ≥ 0.5× capital S height on all sides
+  -->
+
+  <g fill="none" stroke="currentColor" stroke-linecap="round">
+    <!-- Outer ring (R1) with gap for caret -->
+    <circle
+      cx="100" cy="100" r="88"
+      stroke-width="6"
+      stroke-dasharray="480 85"
+      stroke-dashoffset="-42"
+    />
+
+    <!-- R2 -->
+    <circle
+      cx="100" cy="100" r="68"
+      stroke-width="4.5"
+      stroke-dasharray="370 65"
+      stroke-dashoffset="-32"
+    />
+
+    <!-- R3 -->
+    <circle
+      cx="100" cy="100" r="48"
+      stroke-width="3.5"
+      stroke-dasharray="260 50"
+      stroke-dashoffset="-23"
+    />
+
+    <!-- Inner ring (R4) -->
+    <circle
+      cx="100" cy="100" r="28"
+      stroke-width="2.5"
+      stroke-dasharray="150 35"
+      stroke-dashoffset="-15"
+    />
+
+    <!-- Extraction caret (radial line with square caps) -->
+    <!-- 
+      Angle: 55° clockwise from positive Y (down).
+      In SVG math: approximately 325° from +X (or -35°).
+      Line from near center out to near outer ring.
+    -->
+    <line
+      x1="100" y1="100"
+      x2="155.8" y2="45.2"
+      stroke-width="2"
+      stroke-linecap="square"
+    />
+  </g>
+</svg>
