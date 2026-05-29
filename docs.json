@@ -4,8 +4,11 @@
   "description": "Meta skills for the Agent Skills ecosystem—validate, govern, document SKILL.md packages, ADRs, FAQ-driven docs, and harness culture.",
   "github": "https://github.com/arenukvern/skill_steward",
   "theme": {
-    "defaultTheme": "system"
+    "defaultTheme": "system",
+    "primary": "#1A3C34"
   },
+  "socialPreview": "docs/brand/assets/hero/skill-steward-growth-rings-hero-16x9.jpg",
+  "favicon": "docs/brand/assets/hero/skill-steward-growth-rings-emblem-square.jpg",
   "header": {
     "showName": true,
     "showThemeToggle": true,
@@ -70,6 +73,10 @@
         {
           "title": "Plan hygiene (extract & remove)",
           "href": "/start_here/executable-plans"
+        },
+        {
+          "title": "Brand identity",
+          "href": "/brand"
         }
       ]
     },
@@ -149,6 +156,10 @@
         {
           "title": "DX_FAQ",
           "href": "https://github.com/arenukvern/skill_steward/blob/main/DX_FAQ.md"
+        },
+        {
+          "title": "Brand",
+          "href": "https://github.com/arenukvern/skill_steward/blob/main/docs/brand.md"
         },
         {
           "title": "STANDARDS",

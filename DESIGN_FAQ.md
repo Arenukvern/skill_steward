@@ -54,6 +54,9 @@ A: [FAQ-driven development](https://dev.to/arenukvern/faq-driven-development-or-
 **Q: Why a concept doc lattice skill but no full `docs/superpowers/` in Guild?**  
 A: Guild is small; router + ADRs + FAQs suffice. Teams may still use Superpowers (or any planner) in Guild or product repos—`concept-doc-store` teaches the mcp_flutter-style lattice when you need it. [ADR 0003](docs/decisions/0003-concept-doc-store-lattice.md).
 
+**Q: Where is the visual brand identity documented?**  
+A: Practical reference + hero prompts in [`docs/brand.md`](../brand.md) · strategic decision, palette, and exact prompts in [ADR 0012](docs/decisions/0012-adopt-visual-brand-identity-system.md). Wired into README hero and `docs.json` (`socialPreview` + theme).
+
 ## Packaging
 
 **Q: Why are all installable skills under `skills/` only?**  
