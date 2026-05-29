@@ -21,7 +21,7 @@ Install on **Cursor**, **Claude Code**, **Codex**, **Windsurf**, **GitHub Copilo
 
 Same thread: useful docs for humans and agents, mechanical gates, and work worth people’s time. See [FAQ-driven development](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl) for the documentation shape this repo dogfoods.
 
-**How the name was chosen:** public product name and GitHub repo are **Skill Steward** ([ADR 0008](docs/decisions/0008-adopt-skill-steward-product-name.md)). GitHub profile copy: [docs/GITHUB_PROFILE.md](docs/GITHUB_PROFILE.md).
+**How the name was chosen:** public product name and GitHub repo are **Skill Steward** ([ADR 0008](docs/decisions/0008-adopt-skill-steward-product-name.md)).
 
 ## Install
 
@@ -136,7 +136,6 @@ skill_steward/              # GitHub: Arenukvern/skill_steward
 ├── DESIGN_FAQ.md           # Why (decisions, charter)
 ├── DX_FAQ.md                 # How (install, validate, contribute)
 ├── docs/decisions/           # ADRs (incl. product name ADR 0008)
-├── docs/GITHUB_PROFILE.md    # Bio + profile README copy
 ├── skills/                   # Meta-skills only
 ├── packages/steward_cli/       # Dart `steward` CLI — validate, list
 ├── plugins/
