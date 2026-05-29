@@ -18,7 +18,8 @@
     "steward:test":      "cd packages/steward_cli && dart pub get && dart test",
     "changeset":         "changeset",
     "changeset:version": "changeset version",
-    "changeset:status":  "changeset status"
+    "changeset:status":  "changeset status",
+    "release:tag":       "changeset tag && git push --tags"
   },
   "engines": {
     "node": ">=18",
