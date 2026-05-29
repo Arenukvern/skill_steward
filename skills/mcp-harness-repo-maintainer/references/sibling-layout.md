@@ -11,7 +11,7 @@ Canonical peer layout from [flutter_harness RELATED_REPOS](https://github.com/Ar
   flutter_harness/
   flutter_visual_reconstruct/   # not flutter_visual_reconstruction
   flutter_mcp_video/            # skills/docs; optional LFS
-  skill_steward/
+  agent_guild/                  # local clone of skill_steward (GitHub: skill_steward)
 ```
 
 ## Dependency direction
@@ -21,7 +21,7 @@ flutter_mcp_video → flutter_harness → mcp_flutter (toolkit packages)
                          ↓
               flutter_visual_reconstruct (compare / guild)
 IntentCall (`agentkit/`) ← extracted platform (consumes / integrates via mcp_flutter CI)
-skill_steward → meta skills only (no runtime dep on above)
+agent_guild (skill_steward) → meta skills only (no runtime dep on above)
 ```
 
 ## Path overrides
@@ -52,7 +52,7 @@ dependency_overrides:
 | IntentCall (`agentkit/`) | `make test` / `make analyze` |
 | flutter_harness | `make check` or `dart test` + fixture script |
 | flutter_visual_reconstruct | `dart test`, `dart run … guild validate` |
-| skill_steward | `pnpm run steward:analyze`, `pnpm run steward:validate`, `pnpm run docs:check` |
+| agent_guild (skill_steward) | `pnpm run steward:analyze`, `pnpm run steward:validate`, `pnpm run docs:check` |
 
 ## Cross-install docs
 
