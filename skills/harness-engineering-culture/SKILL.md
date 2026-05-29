@@ -20,7 +20,7 @@ paths:
 Build environments where **agents execute** and **humans steer**—through legible tooling (CLI, MCP, hooks, skills) and docs that agents can navigate without a monolithic manual.
 
 Primary reference: [Harness engineering (OpenAI)](https://openai.com/index/harness-engineering/).  
-Local patterns: [mcp_flutter CLI vs MCP](https://github.com/Arenukvern/mcp_flutter/blob/main/docs/start_here/cli_vs_mcp.mdx), [IntentCall (repo agentkit until rename)](https://github.com/Arenukvern/agentkit) (schema, registry, adapters).
+Local patterns: [mcp_flutter CLI vs MCP](https://github.com/Arenukvern/mcp_flutter/blob/main/docs/start_here/cli_vs_mcp.mdx), [IntentCall](https://github.com/Arenukvern/intentcall) (schema, registry, adapters).
 
 ## Core beliefs
 

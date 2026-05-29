@@ -7,7 +7,7 @@ Canonical peer layout from [flutter_harness RELATED_REPOS](https://github.com/Ar
 ```text
 ~/mcp/
   mcp_flutter/
-  agentkit/                     # IntentCall product (folder until rename)
+  agentkit/                     # IntentCall (github.com/Arenukvern/intentcall)
   flutter_harness/
   flutter_visual_reconstruct/   # not flutter_visual_reconstruction
   flutter_mcp_video/            # skills/docs; optional LFS

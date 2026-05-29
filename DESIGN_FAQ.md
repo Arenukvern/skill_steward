@@ -62,7 +62,7 @@ A: Skills are canonical in `skills/`; plugins reference skill ids in `plugin.yam
 ## Harness
 
 **Q: Why a harness-engineering-culture skill instead of only product CLIs?**  
-A: Guild teaches **how to build** agent-first harnesses (CLI+MCP parity, docs map, Guild skill composition). Product repos (`mcp_flutter`, [IntentCall](https://github.com/Arenukvern/agentkit) (repo agentkit until rename)) ship the actual tools; see [OpenAI harness engineering](https://openai.com/index/harness-engineering/).
+A: Guild teaches **how to build** agent-first harnesses (CLI+MCP parity, docs map, Guild skill composition). Product repos (`mcp_flutter`, [IntentCall](https://github.com/Arenukvern/intentcall)) ship the actual tools; see [OpenAI harness engineering](https://openai.com/index/harness-engineering/).
 
 **Q: Why emphasize CLI before MCP in harness docs?**  
 A: Deterministic gates (`doctor`, contracts, validate) belong in terminal/CI; MCP is the conversational layer on the same catalog—pattern from mcp_flutter [CLI vs MCP](https://github.com/Arenukvern/mcp_flutter/blob/main/docs/start_here/cli_vs_mcp.mdx).

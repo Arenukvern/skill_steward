@@ -148,7 +148,7 @@ Details: [mcp-production-practices.md](references/mcp-production-practices.md).
 ```text
 ~/mcp/
   mcp_flutter/                 # A — toolkit + MCP + init
-  agentkit/                    # B — IntentCall platform packages (folder until rename)
+  agentkit/                    # B — IntentCall (GitHub: intentcall; on-disk folder may be agentkit)
   flutter_harness/             # C — HS CLI
   flutter_visual_reconstruct/  # D — compare (note: reconstruct, not reconstruction)
   skill_steward/                 # E — meta skills
