@@ -51,5 +51,8 @@ jobs:
           commit: "chore: version packages"
           # Auto-create GitHub Releases from tags in MODE B
           createGithubReleases: true
+          # GPG-signed commits attributed to GITHUB_TOKEN owner;
+          # no git CLI config needed, works without a PAT.
+          commitMode: github-api
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
