@@ -98,7 +98,8 @@ void main() {
   group('Dart validation module (validateSingleSkill / validateAllSkills)', () {
     test('discovers all documented fixtures', () {
       final dir = Directory(fixturesRoot);
-      expect(dir.existsSync(), isTrue, reason: 'Fixtures dir must exist for tests');
+      expect(dir.existsSync(), isTrue,
+          reason: 'Fixtures dir must exist for tests',);
 
       final entries = dir.listSync();
       final subdirs = entries
@@ -119,7 +120,8 @@ void main() {
     // One test case per fixture using the expectations map.
     // This is resilient as new fixtures are added.
     for (final fixture in _expectations.keys) {
-      test('validateSingleSkill on $fixture matches documented expectations', () async {
+      test('validateSingleSkill on $fixture matches documented expectations',
+          () async {
         final fixturePath = p.join(fixturesRoot, fixture);
         final result = await validateSingleSkill(fixturePath, fixture);
 
@@ -136,7 +138,8 @@ void main() {
         expect(
           result.errors,
           hasLength(exp.errorContains.length),
-          reason: 'Fixture "$fixture" should have exactly ${exp.errorContains.length} errors',
+          reason:
+              'Fixture "$fixture" should have exactly ${exp.errorContains.length} errors',
         );
 
         for (final fragment in exp.warningContains) {
@@ -151,7 +154,8 @@ void main() {
         expect(
           result.warnings,
           hasLength(exp.warningContains.length),
-          reason: 'Fixture "$fixture" should have exactly ${exp.warningContains.length} warnings',
+          reason:
+              'Fixture "$fixture" should have exactly ${exp.warningContains.length} warnings',
         );
 
         // isValid is purely error-driven (per validation_result.dart)
@@ -160,7 +164,9 @@ void main() {
       });
     }
 
-    test('validateAllSkills on fixtures directory produces correct aggregate report', () async {
+    test(
+        'validateAllSkills on fixtures directory produces correct aggregate report',
+        () async {
       final report = await validateAllSkills(fixturesRoot);
 
       // There are failing skills (name/format/frontmatter errors)
@@ -177,21 +183,30 @@ void main() {
       final failed = report.failed.map((final s) => s.dirName).toSet();
       expect(
         failed,
-        containsAll({'bad-name-mismatch', 'invalid-name-format', 'missing-frontmatter'}),
+        containsAll({
+          'bad-name-mismatch',
+          'invalid-name-format',
+          'missing-frontmatter',
+        }),
       );
 
       // Successful ones (only warnings or clean) among the baseline
-      final okOnes = report.skills.where((final s) => s.isValid).map((final s) => s.dirName).toSet();
+      final okOnes = report.skills
+          .where((final s) => s.isValid)
+          .map((final s) => s.dirName)
+          .toSet();
       expect(
         okOnes,
-        containsAll({'good-skill', 'missing-sources', 'has-readme', 'too-long-body'}),
+        containsAll(
+            {'good-skill', 'missing-sources', 'has-readme', 'too-long-body'},),
       );
 
       // Spot-check one aggregate result (via the all-skills path).
       // Singles tests already verified direct validateSingleSkill on good-skill is clean.
       // The all path now also runs registry checks (see skills.sh.json), so individual
       // results obtained here may carry registry-related warnings for unregistered fixture dirs.
-      final good = report.skills.firstWhere((final s) => s.dirName == 'good-skill');
+      final good =
+          report.skills.firstWhere((final s) => s.dirName == 'good-skill');
       expect(good.errors, isEmpty);
       // registryWarnings on the report (or per-skill) are expected to be populated for this input.
       expect(report.registryWarnings, isNotEmpty);

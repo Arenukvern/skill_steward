@@ -7,18 +7,18 @@
   "type": "module",
   "packageManager": "pnpm@9.15.4",
   "scripts": {
-    "validate": "cd packages/steward_cli && dart pub get && dart run :steward validate",
-    "validate:json": "cd packages/steward_cli && dart pub get && dart run :steward validate --json",
-    "eval": "node scripts/eval-skill.mjs",
-    "eval:json": "node scripts/eval-skill.mjs --json",
-    "list": "node scripts/list-skills.mjs",
-    "docs:check": "node node_modules/@docs.page/cli/dist/cli.js check",
-    "steward:analyze": "cd packages/steward_cli && dart pub get && dart analyze --fatal-infos",
-    "steward:validate": "cd packages/steward_cli && dart pub get && dart run :steward validate",
-    "steward:list": "cd packages/steward_cli && dart pub get && dart run :steward list",
-    "changeset": "changeset",
+    "validate":          "cd packages/steward_cli && dart pub get && dart run :steward validate",
+    "validate:json":     "cd packages/steward_cli && dart pub get && dart run :steward validate --json",
+    "eval":              "cd packages/steward_cli && dart pub get && dart run :steward eval",
+    "eval:json":         "cd packages/steward_cli && dart pub get && dart run :steward eval --json",
+    "eval:skill":        "cd packages/steward_cli && dart pub get && dart run :steward eval --skill",
+    "list":              "cd packages/steward_cli && dart pub get && dart run :steward list",
+    "docs:check":        "node node_modules/@docs.page/cli/dist/cli.js check",
+    "steward:analyze":   "cd packages/steward_cli && dart pub get && dart analyze --fatal-infos",
+    "steward:test":      "cd packages/steward_cli && dart pub get && dart test",
+    "changeset":         "changeset",
     "changeset:version": "changeset version",
-    "changeset:status": "changeset status"
+    "changeset:status":  "changeset status"
   },
   "engines": {
     "node": ">=18",
@@ -26,7 +26,6 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.0",
-    "@docs.page/cli": "^1.0.3",
-    "yaml": "2.8.0"
+    "@docs.page/cli": "^1.0.3"
   }
 }

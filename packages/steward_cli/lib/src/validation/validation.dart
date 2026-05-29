@@ -14,8 +14,5 @@ library;
 export 'skill_frontmatter.dart';
 export 'skill_rules.dart';
 export 'skill_validator.dart'
-    show
-        validateAllSkills,
-        validateAllSkillsToJson,
-        validateSingleSkill;
+    show validateAllSkills, validateAllSkillsToJson, validateSingleSkill;
 export 'validation_result.dart';

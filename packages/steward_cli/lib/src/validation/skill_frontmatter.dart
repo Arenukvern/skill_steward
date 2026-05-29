@@ -79,9 +79,7 @@ ParsedFrontmatter parseFrontmatter(final String content) {
 
     final key = m.group(1)!;
     // Replicate Node quote-strip + final trim exactly.
-    final value = m.group(2)!
-        .replaceAll(RegExp(r'''^["']|["']$'''), '')
-        .trim();
+    final value = m.group(2)!.replaceAll(RegExp(r'''^["']|["']$'''), '').trim();
 
     fields[key] = value;
   }
