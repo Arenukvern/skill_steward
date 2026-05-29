@@ -113,7 +113,7 @@ plugins/my-hook-pack/
 └── hooks/
 ```
 
-Canonical skills stay in `skills/`. See [plugins/_template/](../../plugins/_template/).
+Canonical skills stay in `skills/`. See [templates/plugin/](../../templates/plugin/).
 
 ## Private marketplace checklist
 
@@ -145,7 +145,7 @@ Do not put product MCP servers in Guild. Cross-promote: `npx skills add arenukve
 
 ## Workflow: add a Guild plugin
 
-1. Copy `plugins/_template/` → `plugins/{id}/`.
+1. Copy `templates/plugin/` → `plugins/{id}/`.
 2. List referenced skills in `plugin.yaml` (ids only).
 3. Document install (Cursor hooks merge, etc.).
 4. Update [plugins/README.md](../../plugins/README.md).
