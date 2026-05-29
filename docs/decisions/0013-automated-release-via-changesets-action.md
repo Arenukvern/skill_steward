@@ -1,0 +1,70 @@
+# ADR 0013 — Automated release via changesets/action (Version PR + git tag + GitHub Release)
+
+Date: 2026-05-30  
+Status: **Accepted**  
+Relates to: [ADR 0009](0009-adopt-changesets-for-repo-releases.md) · [ADR 0010](0010-binary-releases-for-product-harness-not-meta-steward.md)
+
+---
+
+## Context
+
+ADR 0009 adopted Changesets for structured changelog notes. The flow was partially manual:
+
+1. PRs land `.changeset/*.md` files on `main` — gated by `require-changeset` CI.
+2. **Gap:** no automation consumed those changesets to bump `package.json`, write `CHANGELOG.md`, push a git tag, or create a GitHub Release. A maintainer had to run `pnpm changeset version` locally and tag manually.
+
+The repo is `private: true` — no npm publish. The release artifact is a **git tag + GitHub Release** that documents what shipped at each repo version, giving consumers and agents a durable changelog anchor.
+
+---
+
+## Decision
+
+Add `.github/workflows/release.yml` using [`changesets/action@v1`](https://github.com/changesets/action) with `commitMode: github-api`.
+
+### Two-mode operation (automatic, driven by pending changesets)
+
+```
+MODE A — changesets present on main after a PR merges
+  → action creates / updates a PR titled "chore: version packages"
+  → PR contains: bumped package.json, updated CHANGELOG.md, deleted .changeset/*.md
+
+MODE B — Version PR merged (no pending changesets remain)
+  → action runs: pnpm run release:tag
+      (changeset tag && git push --tags)
+  → action creates a GitHub Release with the CHANGELOG content
+```
+
+### commitMode: github-api
+
+Version PR commits are pushed via the GitHub Commits API instead of the git CLI:
+
+- **GPG-signed** — verified badge on all version bump commits and tags.
+- **No SSH / git config** — works with the built-in `GITHUB_TOKEN` alone.
+- **Attributed** to `github-actions[bot]` with full verification.
+
+### No npm publish
+
+`release:tag` script only creates and pushes git tags. `package.json` remains `"private": true`. Skills are distributed via `npx skills add arenukvern/skill_steward` (ADR 0010) — git tags are the release unit, not npm packages.
+
+---
+
+## Consequences
+
+### Good
+
+- Full release loop is automated: changeset → Version PR → tag → GitHub Release.
+- CHANGELOG.md is written from structured `.changeset/*.md` descriptions — no manual editing.
+- GPG-signed tags provide tamper-evident provenance for every release.
+- No new secrets required — `GITHUB_TOKEN` with `contents: write` + `pull-requests: write` is sufficient.
+- `concurrency: cancel-in-progress` prevents duplicate release jobs on rapid pushes.
+
+### Neutral
+
+- The Version PR commit is made by `github-actions[bot]`, so it does **not** re-trigger `validate` CI automatically (GitHub security restriction). The Version PR is low-risk (only version + CHANGELOG edits) and can be merged after a quick review. A PAT stored as `secrets.RELEASE_TOKEN` could enable CI re-triggering if needed later.
+- `changeset tag` produces tags in the form `skill-steward@<version>` (Changesets default). Rename to `v<version>` style via a custom `release:tag` script if preferred — not done now to keep it simple.
+
+### References
+
+- [changesets/action README](https://github.com/changesets/action)
+- [ADR 0009 — Adopt Changesets](0009-adopt-changesets-for-repo-releases.md)
+- [ADR 0010 — Binary release scope](0010-binary-releases-for-product-harness-not-meta-steward.md)
