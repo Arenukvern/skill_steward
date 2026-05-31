@@ -1,5 +1,13 @@
 # skill-steward
 
+## 0.2.1
+
+### Patch Changes
+
+- bf693c0: Fix docs.page configuration (favicon and social preview paths), correct broken relative links across documentation and skill files.
+  Chore - dart SDK upgrade to 3.11.0 + dart tool cleanup.
+- bdb84a5: Generalize the `mcp-harness-repo-maintainer` skill and all other skills, documentation, and Architectural Decision Records (ADRs) to remove specific framework and repository references (e.g., `mcp_flutter`, `IntentCall`, `flutter_harness`), replacing them with abstract framework-agnostic descriptors.
+
 ## 0.2.0
 
 ### Minor Changes
