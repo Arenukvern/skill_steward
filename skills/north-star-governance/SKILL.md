@@ -4,7 +4,7 @@ description: Maintains docs/NORTH_STAR.md, wires AGENTS.md as a short agent map,
 license: MIT
 metadata:
   author: skill-steward
-  version: "1.2.0"
+  version: "1.3.0"
   category: governance
 paths:
   - "docs/NORTH_STAR.md"
@@ -154,6 +154,8 @@ Personal profile copy → maintainer’s GitHub profile repo or gist; durable pu
 | ADR after decision | `adr-records` — MADR workflow |
 | FAQ updates | `faq-driven-docs` |
 | Doc lattice | `concept-doc-store` |
+| Repository branding & badges | `repo-brand-identity` |
+| Moral values & stewardship | `ethical-stewardship` |
 | Harness / CLI culture | `harness-engineering-culture` |
 | New skill from outcome | `create-skill` |
 

@@ -7,4 +7,6 @@
 
 ## Changelog
 
+- 2026-05-31: update routing table for repo-brand-identity and ethical-stewardship skills.
 - 2026-05-29: initial
+
