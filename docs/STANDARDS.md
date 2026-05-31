@@ -11,6 +11,7 @@ This document consolidates rules from the open ecosystem so skills in this repo 
 | Vercel skills CLI | https://github.com/vercel-labs/skills |
 | Cursor skills docs | https://cursor.com/docs/skills |
 | skills.sh registry | https://skills.sh |
+| skills.sh customization | https://www.skills.sh/docs/customize |
 
 ## Skill package structure
 
@@ -75,7 +76,7 @@ Case schema: [eval-case-schema.md](../skills/skill-eval-improve/references/eval-
 
 1. All installable skills live under **`skills/{name}/`**.
 2. One skill per directory; directory name = `name` field.
-3. Root **`skills.sh.json`** lists groupings for the skills.sh directory UI.
+3. Root **`skills.sh.json`** lists groupings for the skills.sh directory UI (see [skills.sh customization docs](https://www.skills.sh/docs/customize)).
 4. Root **`README.md`** documents install commands and the skill catalog.
 5. **`AGENTS.md`** guides AI contributors; keep in sync with this doc.
 

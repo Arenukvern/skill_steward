@@ -29,7 +29,7 @@ Add a new installable skill package under `skills/` in the Skill Steward marketp
 7. **Evals** — Tier 1 skills (see [STANDARDS](../../docs/STANDARDS.md)): `references/evals.md` + ≥2 `evals/cases/*.yaml` ([eval-case-schema](../skill-eval-improve/references/eval-case-schema.md)). Others: optional `evals.md`.
 8. **Optional** — `scripts/`, `assets/`.
 9. **Register skill**:
-   - Add skill id to `skills.sh.json` under the right grouping
+   - Add skill id to `skills.sh.json` under the right grouping (see [skills.sh customization docs](https://www.skills.sh/docs/customize) for schemas and layout options)
    - Add row to root `README.md` skill table
 10. **Validate** — `pnpm run validate`; Tier 1 also `pnpm run eval`.
 
