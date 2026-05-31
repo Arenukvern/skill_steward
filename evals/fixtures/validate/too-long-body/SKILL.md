@@ -1,6 +1,7 @@
 ---
 name: too-long-body
 description: This skill is used to test the line count warning in the validator.
+license: MIT
 ---
 
 # Too Long Body

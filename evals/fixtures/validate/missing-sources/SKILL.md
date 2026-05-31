@@ -1,6 +1,7 @@
 ---
 name: missing-sources
 description: A skill that is missing its references/sources.md on purpose.
+license: MIT
 ---
 
 # Missing Sources
