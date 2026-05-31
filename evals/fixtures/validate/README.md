@@ -51,11 +51,4 @@ Each subdirectory under `evals/fixtures/validate/` represents one test case (a s
 - Missing required file SKILL.md entirely → hard error
 - Registry drift warnings (skill dir not in skills.sh.json groupings, or vice-versa)
 
-## Next Steps (per migration plan)
-
-- ~~Expand fixtures for more edge cases (registry drift, very short body, missing SKILL.md, etc.)~~ — **done** (see table above; added 4 new fixtures exercising body length, missing file, registry drift, and missing description field)
-- Implement equivalent checks in Dart (parallel with fixture growth)
-- Add automated comparison (Dart output vs expected) as part of `steward:validate` or a dedicated test command
-- Eventually drive the removal of the Node validator once parity is proven
-
 These fixtures are **not** Tier-1 skill evals. They are meta-evals for the repository's own validation harness.
