@@ -4,7 +4,7 @@ description: Develops agent-first engineering culture via harness design—CLI a
 license: MIT
 metadata:
   author: skill-steward
-  version: "1.1.0"
+  version: "1.2.0"
   category: harness
 paths:
   - "AGENTS.md"
@@ -39,6 +39,8 @@ Local patterns: CLI vs MCP separation (dual interfaces), schema and adapter regi
 | Design fork (during work) | `adr-records` | Checkpoint brief before coding ([decision-checkpoints](../adr-records/references/decision-checkpoints.md)) |
 | Releases | `release-changelog-harness` | Ecosystem Changesets / Melos / release-plz; DX_FAQ + CI gates |
 | Package knowledge | `faq-driven-docs` | DESIGN_FAQ + DX_FAQ per module |
+| Brand Identity | `repo-brand-identity` | Visual guidelines, custom SVG status badges, tone constraints |
+| Ethics & Stewardship | `ethical-stewardship` | Eliciting values, defining constraints, building environment gates |
 | Ship a procedure | `create-skill`, `skill-spec-review` | Agent-invokable workflow in `SKILL.md` |
 | Multi-agent work | `multi-agent-handoff` | HANDOFF.md between implementer / closer |
 | Wiring | ADR 0004 + `plugins/` | Hooks when skills CLI is not enough (Cursor) |

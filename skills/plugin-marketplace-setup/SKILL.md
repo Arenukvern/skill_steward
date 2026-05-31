@@ -83,7 +83,7 @@ my-skills/
 └── package.json            # optional: pnpm run validate
 ```
 
-Publish: push public → `npx skills add org/my-skills`. No plugin manifest required.
+Publish: push public → `npx skills add org/my-skills`. No plugin manifest required. For customizing the repository page by defining groupings and categories in `skills.sh.json`, see the [skills.sh customization docs](https://www.skills.sh/docs/customize).
 
 ### B. Claude/Codex git marketplace (multi-plugin)
 
@@ -163,6 +163,7 @@ Do not put product MCP servers in Guild. Cross-promote: `npx skills add arenukve
 - [manifest-snippets.md](references/manifest-snippets.md) — minimal JSON/YAML examples
 - [ADR 0004](../../docs/decisions/0004-plugin-packaging-and-install-path.md)
 - [ADR 0006](../../docs/decisions/0006-guild-harness-meta-vs-product-clis.md)
+- [skills.sh customization docs](https://www.skills.sh/docs/customize)
 
 ## Install this skill
 

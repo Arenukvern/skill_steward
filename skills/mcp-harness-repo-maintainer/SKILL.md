@@ -4,7 +4,7 @@ description: Maintains MCP-and-harness repositories where CLI and MCP are thin a
 license: MIT
 metadata:
   author: skill-steward
-  version: "1.0.0"
+  version: "1.1.0"
   category: harness
 paths:
   - "AGENTS.md"
@@ -184,6 +184,8 @@ See [sibling-layout.md](references/sibling-layout.md) for dependency direction a
 | Marketplace / private install | `plugin-marketplace-setup` |
 | Harness philosophy | `harness-engineering-culture` |
 | Doc lattice | `concept-doc-store` |
+| Repository branding & status badges | `repo-brand-identity` |
+| Moral values & stewardship | `ethical-stewardship` |
 | ADR | `adr-records` |
 | Charter / plan hygiene | `north-star-governance` |
 

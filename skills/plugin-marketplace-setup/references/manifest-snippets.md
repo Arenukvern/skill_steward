@@ -4,12 +4,16 @@ Minimal copies—adjust names and paths.
 
 ## skills.sh.json (Guild)
 
-```yaml
-# skills.sh.json uses JSON; groupings for https://skills.sh UI
+Configures repository-level groupings on the [skills.sh](https://skills.sh) registry directory (see [customization docs](https://www.skills.sh/docs/customize)).
+
+```json
 {
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "notGrouped": "bottom",
   "groupings": [
     {
       "title": "My Category",
+      "description": "Short description of the category.",
       "skills": ["my-skill"]
     }
   ]

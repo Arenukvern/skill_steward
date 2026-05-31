@@ -1,6 +1,7 @@
 ---
 name: has-readme
 description: This skill incorrectly includes a README.md which should be a warning.
+license: MIT
 ---
 
 # Has README

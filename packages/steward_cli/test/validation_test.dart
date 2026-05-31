@@ -69,6 +69,10 @@ final Map<String, FixtureExpectation> _expectations = {
     errorContains: ['Missing required frontmatter field: description'],
     warningContains: [],
   ),
+  'missing-license': (
+    errorContains: [],
+    warningContains: ['Missing frontmatter field: license'],
+  ),
 };
 
 void main() {
@@ -201,7 +205,7 @@ void main() {
       expect(
         okOnes,
         containsAll(
-          {'good-skill', 'missing-sources', 'has-readme', 'too-long-body'},
+          {'good-skill', 'missing-sources', 'has-readme', 'too-long-body', 'missing-license'},
         ),
       );
 

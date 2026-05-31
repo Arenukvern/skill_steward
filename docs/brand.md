@@ -94,6 +94,8 @@ Example (install surface):
 - **CLI** — ANSI approximations of green/amber from tokens (zero-dependency).
 - **Favicon / avatar** — Growth Ring Emblem (optimized PNG + SVG source).
 - **Skills & releases** — One motif only, generous whitespace, cite this document on major changes.
+- **Status Badges** — "Maintained with Skill Steward" badges (light, dark, solid, and shields.io dynamic variants) are provided under `docs/brand/assets/svg/` for use in consumer repositories.
+
 
 ## Governance
 

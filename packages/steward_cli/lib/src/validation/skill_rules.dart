@@ -4,6 +4,34 @@ import 'skill_frontmatter.dart';
 
 final RegExp _nameRegex = RegExp(r'^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$');
 
+/// Recognized SPDX license identifiers (non-exhaustive; covers the most common
+/// ones expected in Skill Steward). Validators warn — not error — so skills
+/// with non-standard identifiers still pass; they just get a notice to use a
+/// well-known SPDX id for clarity.
+///
+/// References:
+/// - https://spdx.org/licenses/
+/// - skills/skill-source-citations/SKILL.md (citation + provenance requirements)
+/// - skills/ethical-stewardship/SKILL.md (Artisan Credit & Craftsmanship principle)
+const _knownSpdxIds = {
+  'MIT',
+  'Apache-2.0',
+  'GPL-2.0',
+  'GPL-3.0',
+  'LGPL-2.1',
+  'LGPL-3.0',
+  'BSD-2-Clause',
+  'BSD-3-Clause',
+  'ISC',
+  'MPL-2.0',
+  'AGPL-3.0',
+  'CC0-1.0',
+  'CC-BY-4.0',
+  'CC-BY-SA-4.0',
+  'Unlicense',
+  'EUPL-1.2',
+};
+
 /// Validates the `name` field according to Agent Skills conventions.
 ///
 /// Exact error strings and early-exit behavior are preserved for parity with
@@ -67,6 +95,40 @@ List<String> validateDescription(final String? description) {
   return errors;
 }
 
+/// Validates the `license` field in the frontmatter.
+///
+/// A missing `license` key is a **warning** (not an error) because many existing
+/// skills and early-stage contributions will lack it. The goal is to surface the
+/// gap so authors can add an SPDX identifier (see `skill-source-citations`).
+///
+/// An unrecognized identifier produces a lighter advisory warning to guide
+/// authors toward canonical SPDX ids without blocking CI.
+///
+/// References:
+/// - skills/skill-source-citations/SKILL.md
+/// - skills/ethical-stewardship/SKILL.md (Artisan Credit & Craftsmanship)
+List<String> validateLicense(final String? license) {
+  final warnings = <String>[];
+
+  if (license == null || license.isEmpty) {
+    warnings.add(
+      'Missing frontmatter field: license — add an SPDX identifier '
+      '(e.g. license: MIT) to honor Artisan Credit & Craftsmanship '
+      '(see skill-source-citations)',
+    );
+    return warnings;
+  }
+
+  if (!_knownSpdxIds.contains(license)) {
+    warnings.add(
+      'license "$license" is not a recognized SPDX identifier; '
+      'consider using one from https://spdx.org/licenses/ for clarity',
+    );
+  }
+
+  return warnings;
+}
+
 /// Runs all structural checks (frontmatter, name/desc, length, sources, README presence)
 /// for a single skill directory.
 ///
@@ -125,6 +187,9 @@ Future<({List<String> errors, List<String> warnings})> validateSkillStructure(
   if (parsed.body.length < 50) {
     warnings.add('SKILL.md body is very short; add step-by-step instructions');
   }
+
+  // license check (warning only) — performed only on successful frontmatter parse.
+  warnings.addAll(validateLicense(parsed['license']));
 
   // sources.md check (warning only) — performed only on successful frontmatter parse
   // (parity with Node ordering and early returns).
