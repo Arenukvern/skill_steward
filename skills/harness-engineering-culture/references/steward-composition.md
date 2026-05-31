@@ -17,8 +17,8 @@
 | Repo | Skill Steward focus |
 |------|-------------|
 | **skill_steward** | Meta-skills only; this skill + doc skills |
-| **Product** (mcp_flutter, your app) | Apply harness skill *from install*; local ADRs + CLI/MCP |
-| **IntentCall** (`agentkit/`) | Schema/core library (`intentcall_*`); consumers integrate |
+| **Product** (your app / server) | Apply harness skill *from install*; local ADRs + CLI/MCP |
+| **Platform SDK / Lib** | Schema/core library; consumers integrate |
 
 ## Install bundle (consumer)
 

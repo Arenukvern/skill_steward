@@ -1,6 +1,6 @@
 ---
 name: mcp-harness-repo-maintainer
-description: Maintains MCP-and-harness repositories where CLI and MCP are thin agent-facing interfaces and core libraries hold domain logic—mcp_flutter, IntentCall (intentcall), flutter_harness, skill_steward. Use when refactoring adapters, enforcing CLI/MCP/core parity, contract gates, or sibling repo layout.
+description: Maintains MCP-and-harness repositories where CLI and MCP are thin agent-facing interfaces and core libraries hold domain logic (e.g., skill_steward and generic sibling repos). Use when refactoring adapters, enforcing CLI/MCP/core parity, contract gates, or sibling repo layout.
 license: MIT
 metadata:
   author: skill-steward
@@ -11,9 +11,13 @@ paths:
   - "docs/**"
   - "plugin/**"
   - "packages/**"
-  - "mcp_server_dart/**"
+  - "src/**"
+  - "mcp_server_*/**"
   - "Makefile"
   - "makefile"
+  - "package.json"
+  - "Cargo.toml"
+  - "pyproject.toml"
   - "pubspec.yaml"
   - "**/mcp.json"
   - ".github/workflows/**"
@@ -38,9 +42,9 @@ Full layering: [core-and-interfaces.md](references/core-and-interfaces.md). **Pa
 
 ## When to use
 
-- Bootstrapping or auditing **mcp_flutter**-style product repos (MCP + plugin + `init`)
-- Maintaining **IntentCall** (library platform, `agentkit/`), **flutter_harness** (CLI/HS), **flutter_visual_reconstruct** (offline compare)
-- Keeping **skill_steward** meta-only (skills/plugins, no product MCP)
+- Bootstrapping or auditing product MCP repos (MCP + plugin + `init` command)
+- Maintaining platform libraries, CLI harnesses, or visual comparison sidecars
+- Keeping meta-stewards meta-only (skills/plugins, no product MCP, e.g. **skill_steward**)
 - Wiring **sibling clones**, version pins, or contract CI across repos
 - Applying production MCP patterns (resources vs tools, versioning, auth)
 
@@ -50,11 +54,11 @@ Read [repo-archetypes.md](references/repo-archetypes.md) for the full matrix. Ro
 
 | Expert lens | Repo examples | Owns | Does not own |
 |-------------|---------------|------|----------------|
-| **A — Product MCP** | `mcp_flutter` | `plugin/mcp.json`, `fmt_*` tools, `flutter-mcp-toolkit init`, `make check-contracts` | HS scripts, pixel guild profiles |
-| **B — Platform libs** | IntentCall (`agentkit/`) | Dart packages (`intentcall_*`), adapters (MCP/WebMCP/native), publish order | Shippable plugin tree, dogfood app |
-| **C — CLI harness** | `flutter_harness` | HS v1/v2, app registry, fixture lint/run | MCP server binary, marketplace manifests |
-| **D — Visual sidecar** | `flutter_visual_reconstruct` | `profiles/*.yaml`, compare/deconstruct CLI | VM/MCP, dynamic registry |
-| **E — Meta steward** | `skill_steward` | `skills/`, `plugins/`, `steward validate`, docs.page | Product MCP, domain `fmt_*` |
+| **A — Product MCP** | `<custom_mcp>` | `plugin/mcp.json`, tool prefixing, init utility (`[tool] init`), check contracts tasks | Harness scripts, visual comparisons |
+| **B — Platform libs** | `<platform_libs>` | Platform packages/modules, adapters (MCP/WebMCP/native), publish sequence | Shippable plugin tree, dogfood apps |
+| **C — CLI harness** | `<cli_harness>` | Harness engine, app registry, fixture lint/run tasks | MCP server binary, marketplace manifests |
+| **D — Visual sidecar** | `<visual_sidecar>` | Profile configs, compare/deconstruct CLI | VM/MCP, dynamic registry |
+| **E — Meta steward** | `skill_steward`, `<meta_steward>` | `skills/`, `plugins/`, validator CLI, documentation lattice | Product MCP, domain tools |
 | **F — Security/Ops** | all remotes | OAuth gateway, token brokering, tool schema stability | Feature code |
 
 **Rule:** One repo = one North Star. Cross-repo deps flow **down** the graph (see [sibling-layout.md](references/sibling-layout.md)), never circular.
@@ -64,14 +68,14 @@ Read [repo-archetypes.md](references/repo-archetypes.md) for the full matrix. Ro
 1. **Charter** — `docs/NORTH_STAR.md` (or root pointer); `AGENTS.md` = map only (~100 lines).
 2. **Behavior SSOT** — code + schemas; docs hold **why** (ADR, DESIGN_FAQ) and **how** (DX_FAQ, skills).
 3. **Thin adapters, thick core** — implement once in core; CLI + MCP are wrappers; CI uses CLI, chat uses MCP ([core-and-interfaces.md](references/core-and-interfaces.md)).
-4. **Mechanical gates** — `make check-*` / `pnpm run validate` / `dart test` before merge; errors teach remediation.
+4. **Mechanical gates** — contract checks / validate commands / unit tests before merge; errors teach remediation.
 5. **Plan hygiene** — any plan format OK; extract to ADR/FAQ/code/skill then **delete** plan files ([executable-plans](../../docs/start_here/executable-plans.mdx)).
 6. **Version honesty** — single `VERSION` or release-please manifest; plugin manifests + generated embeds stay in sync.
 7. **Distribution** — document per channel: `npx skills`, `init <agent>`, git marketplace ([plugin-marketplace-setup](../plugin-marketplace-setup/SKILL.md)).
 
-## Archetype A — Product MCP (mcp_flutter pattern)
+## Archetype A — Product MCP
 
-**SSOT tree:** `plugin/` (manifests, `mcp.json`, canonical `skills/`), CLI embeds via `make sync-skills` → `skill_assets.g.dart`.
+**SSOT tree:** `plugin/` (manifests, `mcp.json`, canonical `skills/`), CLI embeds via skill synchronization.
 
 ```text
 plugin/
@@ -81,52 +85,50 @@ plugin/
 ├── .codex-plugin/plugin.json
 └── skills/*/SKILL.md
 .claude-plugin/marketplace.json   # source: ./plugin
-mcp_server_dart/                  # thin CLI router + thin MCP server binary
-packages/*, server_capability_*  # core logic (fmt_* implementation)
-make check-contracts              # manifests, skills, version, asset drift
+mcp_server/                       # thin CLI router + thin MCP server binary (e.g., mcp_server_rust)
+packages/*, src/*                 # core logic / capabilities implementation
+make check-contracts              # manifests, skills, version, asset drift checks
 ```
 
 **Golden commands:**
 
 ```bash
 make sync-skills && make check-contracts
-flutter-mcp-toolkit init cursor   # or codex, claude-code, cline
-flutter-mcp-toolkit doctor
+[tool-cli] init cursor   # e.g., init command for cursor
+[tool-cli] doctor       # check runtime capabilities
 ```
 
 **Do not** patch community MCP servers for product logic—ship a **custom** server ([production practices](references/mcp-production-practices.md)).
 
-Product-specific depth: [mcp_flutter maintainer skill](https://github.com/Arenukvern/mcp_flutter/blob/main/plugin/skills/flutter-mcp-toolkit-repo-maintainer/SKILL.md) (install via `npx skills add Arenukvern/mcp_flutter --skill flutter-mcp-toolkit-repo-maintainer`).
+## Archetype B — Platform libs
 
-## Archetype B — Platform libs (IntentCall)
+- **Core:** `[platform]_core`, `[platform]_schema` — registry, validation, invocation logic.
+- **Adapters:** `[platform]_mcp`, WebMCP/native—wire protocol adapters only; no domain forks.
+- **CLI:** CLI runner command -> same core logic as MCP tools.
+- Multi-package/module workspace; integration tests validated in product MCP.
 
-- **Core:** `intentcall_core`, `intentcall_schema` — registry, validation, invoke.
-- **Adapters:** `intentcall_mcp`, WebMCP/native—wire only; no domain forks.
-- **CLI:** `CommandCatalog` → same core as MCP tools.
-- Multi-package workspace; integration proof in **mcp_flutter** (`make check-intentcall-integration`).
+## Archetype C — CLI harness
 
-## Archetype C — CLI harness (flutter_harness)
-
-- **No MCP** by design—CLI is the sole agent/CI interface; still **thin** over harness core (HS engine, registry).
-- Entry: `bin/flutter_harness.dart`; depends on mcp_flutter **core packages**, not duplicated toolkit logic.
-- `pubspec_overrides.yaml` for sibling `mcp_flutter/` path (see [sibling-layout.md](references/sibling-layout.md)).
-- Validation: `dart test` + `tool/check_hs_fixtures.sh` (lint/run HS fixtures).
+- **No MCP** by design—CLI is the sole agent/CI interface; still **thin** over harness core (harness engine, registry).
+- Entry point: CLI executable; depends on product MCP **core packages/modules**, not duplicated toolkit logic.
+- Local workspaces use path dependencies/overrides (e.g. workspace overrides) for sibling development (see [sibling-layout.md](references/sibling-layout.md)).
+- Validation: test suite execution + fixture checks (lint/run fixtures).
 - Skills under `plugin/skills/` for capture/semantic-test **workflows** only.
 
-## Archetype D — Visual sidecar (flutter_visual_reconstruct)
+## Archetype D — Visual sidecar
 
-- **No MCP** — CLI commands (`compare`, `deconstruct`, `guild validate`) wrap profile/compare **core** library.
-- SSOT: `profiles/*.yaml`; ADR for sidecar-only grounding.
-- Consumers: flutter_harness HS `compare` steps, dogfood goldens in mcp_flutter.
+- **No MCP** — CLI commands wrap profile/compare **core** library.
+- SSOT: `profiles/*.yaml` or visual/profile definitions.
+- Consumers: harness comparison steps, dogfood output validation.
 
-## Archetype E — Meta steward (skill_steward)
+## Archetype E — Meta steward (e.g., skill_steward)
 
-- **Core:** validators (`packages/steward_cli` — Dart; `steward validate` / `steward eval`).
-- **CLI:** `packages/steward_cli` — thin `steward validate` / `steward list`.
+- **Core:** validators (e.g. validator CLI package, linter rules).
+- **CLI:** thin CLI check/list/validation commands.
 - **MCP:** deferred meta index—must stay thin over same validators.
-- **Skills** in `skills/`; **plugins** for hooks only (`plugins/steward-validate-on-save`).
-- No `mcp.json`, no `fmt_*` product tools—teach harness **culture**, not Flutter debug.
-- Cross-promote product installs in docs; own `arenukvern/skill_steward` on skills.sh.
+- **Skills** in `skills/`; **plugins** for hooks only.
+- No `mcp.json`, no domain-specific product tools.
+- Cross-promote product installs in docs.
 
 ## Archetype F — Production MCP (all remotes)
 
@@ -147,22 +149,22 @@ Details: [mcp-production-practices.md](references/mcp-production-practices.md).
 
 ```text
 <workspace>/
-  mcp_flutter/                 # A — toolkit + MCP + init
-  agentkit/                    # B — IntentCall (GitHub: intentcall; on-disk folder may be agentkit)
-  flutter_harness/             # C — HS CLI
-  flutter_visual_reconstruct/  # D — compare (note: reconstruct, not reconstruction)
-  skill_steward/               # E — meta skills
+  <product_mcp>/               # A — toolkit + MCP + init
+  <platform_libs>/             # B — SDK platform
+  <cli_harness>/               # C — CLI/Harness runner
+  <visual_sidecar>/            # D — comparison sidecar
+  <meta_steward>/              # E — meta skills & validation (e.g., skill_steward)
 ```
 
-See [sibling-layout.md](references/sibling-layout.md) for dependency direction and dogfood warm path.
+See [sibling-layout.md](references/sibling-layout.md) for dependency direction and dogfood details.
 
 ## Workflow: audit an existing repo
 
 1. Classify archetype (A–E) from [repo-archetypes.md](references/repo-archetypes.md).
 2. Check North Star + AGENTS map exist and are not duplicated encyclopedias.
 3. List install channels documented (skills CLI, init, marketplace)—fill gaps using `plugin-marketplace-setup`.
-4. Run that repo’s **contract gate** (e.g. `make check-contracts`, `pnpm run validate`, `dart test`).
-5. Verify VERSION/manifest/sync scripts if releasable.
+4. Run that repo’s **contract gate** (e.g., validate scripts, build commands, tests).
+5. Verify version/manifest/sync scripts if releasable.
 6. File ADR if boundary changes (new MCP tool family, new sibling dep).
 
 ## Workflow: bootstrap a new product MCP repo (minimal)
@@ -170,7 +172,7 @@ See [sibling-layout.md](references/sibling-layout.md) for dependency direction a
 1. ADR: scope, transport (stdio vs HTTP), tool prefix, auth model.
 2. `plugin/mcp.json` + one agent manifest (Cursor or Claude).
 3. `skills/` with setup + maintainer skills; duplicate or symlink for `npx skills`.
-4. CLI: `doctor`, `init <agent>`, validate command mirroring MCP checks.
+4. CLI: doctor, init <agent>, validate command mirroring MCP checks.
 5. `tool/contracts/` + CI job running them on every PR.
 6. `docs/ai_agents/overview.mdx` install matrix; link Skill Steward meta-skills.
 
@@ -187,12 +189,12 @@ See [sibling-layout.md](references/sibling-layout.md) for dependency direction a
 
 ## Anti-patterns
 
-- Domain logic in MCP tool handlers or CLI `main()` without a shared **core** module
+- Domain logic in MCP tool handlers or CLI entry points without a shared **core** module
 - CLI and MCP implementing the same capability twice (adapter drift)
-- skill_steward hosting product `mcp.json` or Flutter MCP server code
-- flutter_visual_reconstruct growing an MCP server “for convenience”
+- meta steward hosting product `mcp.json` or product MCP server code
+- visual sidecar growing an MCP server “for convenience”
 - Patching generic community MCP servers with private CRM/domain endpoints
-- `skills/` and `plugin/skills/` diverging without `sync-skills` or CI drift check
+- `skills/` and `plugin/skills/` diverging without sync or CI drift check
 - Monolithic `AGENTS.md` replacing `docs/` + skills
 
 ## References
@@ -212,3 +214,4 @@ npx skills add arenukvern/skill_steward --skill mcp-harness-repo-maintainer
 ## Sources
 
 See [references/sources.md](references/sources.md). When researching, follow `skill-source-citations`.
+

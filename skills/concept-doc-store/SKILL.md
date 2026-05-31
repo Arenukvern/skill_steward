@@ -1,6 +1,6 @@
 ---
 name: concept-doc-store
-description: Bootstraps and maintains a vectorless, layered documentation store for concepts, architecture, and decisions—without duplicating how code works. Use when organizing repo docs, writing ADRs, north-star charters, agent playbooks, or mcp_flutter-style doc lattices.
+description: Bootstraps and maintains a vectorless, layered documentation store for concepts, architecture, and decisions—without duplicating how code works. Use when organizing repo docs, writing ADRs, north-star charters, agent playbooks, or product-style doc lattices.
 license: MIT
 metadata:
   author: skill-steward
@@ -20,7 +20,7 @@ paths:
 
 Maintain documentation as a **git-native, linkable lattice**—not an embedding index. Agents and humans navigate by **role and question**, then jump to **code, examples, and tests** for behavior.
 
-Reference layout: [mcp_flutter](https://github.com/Arenukvern/mcp_flutter) (`docs/start_here/docs_map.mdx`, `docs/decisions/`, `docs/superpowers/`). Complements [faq-driven-docs](../faq-driven-docs/SKILL.md) (package-level DESIGN_FAQ / DX_FAQ).
+Reference layout: structured repository documentation directories (`docs/start_here/docs_map.mdx`, `docs/decisions/`, `docs/superpowers/`). Complements [faq-driven-docs](../faq-driven-docs/SKILL.md) (package-level DESIGN_FAQ / DX_FAQ).
 
 ## Core rule — three sources of truth
 
@@ -80,7 +80,7 @@ Example footer in ADR:
 
 ## Optional: spec-driven programs (`superpowers/`)
 
-For multi-phase agent work (mcp_flutter IntentCall pattern):
+For multi-phase agent work (e.g. structured program layouts):
 
 ```
 docs/superpowers/
@@ -135,7 +135,7 @@ npx skills add arenukvern/skill_steward --skill concept-doc-store
 
 ## References
 
-- [mcp_flutter lattice analysis](references/mcp-flutter-lattice.md)
+- [Product documentation lattice analysis](references/product-doc-lattice.md)
 - [Layer catalog](references/layer-catalog.md)
 - [SSOT anti-duplication rules](references/ssot-rules.md)
 - [FAQ-driven development article](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl)

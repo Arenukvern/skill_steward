@@ -133,7 +133,7 @@ npx skills add arenukvern/skill_steward --skill faq-driven-docs
 
 ## Related Guild skill
 
-Repo-wide navigation and SSOT rules: [concept-doc-store](../concept-doc-store/SKILL.md) (mcp_flutter-style lattice). Use **both**: lattice at repo root, FAQs per package.
+Repo-wide navigation and SSOT rules: [concept-doc-store](../concept-doc-store/SKILL.md) (structured documentation lattice). Use **both**: lattice at repo root, FAQs per package.
 
 ## Further reading
 

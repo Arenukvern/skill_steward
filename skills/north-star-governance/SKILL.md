@@ -121,7 +121,7 @@ When asking “does this file belong in Skill Steward?”:
 
 1. Read [docs/NORTH_STAR.md](../../docs/NORTH_STAR.md) — own / do-not-own.
 2. Use [`concept-doc-store`](../concept-doc-store/SKILL.md) — lattice layer (charter, ADR, FAQ, not personal ops copy).
-3. **Do not** use mcp_flutter `flutter-mcp-boundary-audit` for repo charter audits—that skill is for **CLI/MCP contract** validation in product harness repos.
+3. **Do not** use product-specific boundary audit commands for repo charter audits—those are for **CLI/MCP contract** validation in product harness repos.
 
 | Belongs here | Does not belong here |
 |--------------|----------------------|

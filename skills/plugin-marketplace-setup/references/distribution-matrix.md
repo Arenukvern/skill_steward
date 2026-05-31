@@ -21,14 +21,14 @@ Extended channel list for skills + plugins. Verify against upstream docs when sh
 | Codex | per OpenAI plugin layout | `codex plugin marketplace add` | Private git |
 | Cline / Kiro hooks | varies | skills CLI + native hooks | varies |
 
-## Product example (mcp_flutter)
+## Product example (generic product MCP)
 
 | Step | Command |
 |------|---------|
-| Skills only | `npx skills add Arenukvern/mcp_flutter` |
-| Full harness | `flutter-mcp-toolkit init cursor` |
-| Claude marketplace | `/plugin marketplace add Arenukvern/mcp_flutter` |
-| Codex marketplace | `codex plugin marketplace add Arenukvern/mcp_flutter` |
+| Skills only | `npx skills add <owner>/<repo>` |
+| Full harness | `[toolkit-cli] init cursor` |
+| Claude marketplace | `/plugin marketplace add <owner>/<repo>` |
+| Codex marketplace | `codex plugin marketplace add <owner>/<repo>` |
 
 ## When to use which
 

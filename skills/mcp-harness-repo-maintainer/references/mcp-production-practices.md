@@ -1,13 +1,13 @@
 # MCP production practices (reference)
 
-Synthesis from [Model Context Protocol](https://modelcontextprotocol.io/), field guides (2025–2026), and mcp_flutter operational lessons. Apply to **archetype A** and any remote HTTP MCP.
+Synthesis from [Model Context Protocol](https://modelcontextprotocol.io/), field guides (2025–2026), and production repository operational lessons. Apply to **archetype A** and any remote HTTP MCP.
 
 ## Design
 
 | Topic | Practice |
 |-------|----------|
 | **Resources vs tools** | Resources = read-only URIs; tools = actions. Do not overload one for the other. |
-| **Tool catalog** | Treat schemas as a **public API**—additive changes, explicit `version`, stable names (`fmt_*` prefix in mcp_flutter). |
+| **Tool catalog** | Treat schemas as a **public API**—additive changes, explicit `version`, stable names (e.g., standard tool name prefixes). |
 | **Long operations** | Return job id immediately; expose progress via resource or polling tool. |
 | **Community vs custom** | Generic servers (filesystem, git) for horizontal ops; **your** domain in **your** server—never patch community servers with private endpoints. |
 | **CLI parity** | MCP tools call **core**; CLI subcommands call the **same core** for CI (e.g. `doctor`, `validate-runtime` on product repos; `steward validate` on Skill Steward). Adapters stay thin. |

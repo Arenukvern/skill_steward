@@ -20,7 +20,7 @@ paths:
 Build environments where **agents execute** and **humans steer**—through legible tooling (CLI, MCP, hooks, skills) and docs that agents can navigate without a monolithic manual.
 
 Primary reference: [Harness engineering (OpenAI)](https://openai.com/index/harness-engineering/).  
-Local patterns: [mcp_flutter CLI vs MCP](https://github.com/Arenukvern/mcp_flutter/blob/main/docs/start_here/cli_vs_mcp.mdx), [IntentCall](https://github.com/Arenukvern/intentcall) (schema, registry, adapters).
+Local patterns: CLI vs MCP separation (dual interfaces), schema and adapter registries.
 
 ## Core beliefs
 
@@ -42,7 +42,7 @@ Local patterns: [mcp_flutter CLI vs MCP](https://github.com/Arenukvern/mcp_flutt
 | Ship a procedure | `create-skill`, `skill-spec-review` | Agent-invokable workflow in `SKILL.md` |
 | Multi-agent work | `multi-agent-handoff` | HANDOFF.md between implementer / closer |
 | Wiring | ADR 0004 + `plugins/` | Hooks when skills CLI is not enough (Cursor) |
-| Repo maintenance | `mcp-harness-repo-maintainer` | mcp_flutter / IntentCall / harness / meta-steward archetypes |
+| Repo maintenance | `mcp-harness-repo-maintainer` | Product MCP / platform SDK / CLI harness / meta-steward archetypes |
 
 Do not duplicate other skills’ content here—**invoke** them by name when in scope.
 
