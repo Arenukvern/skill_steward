@@ -11,12 +11,12 @@
 - c05d648: Add `release.yml` GitHub Actions workflow: uses `changesets/action` with `commitMode: github-api` to create a "Version Packages" PR when changesets accumulate on main, then tags and creates a GitHub Release automatically when that PR is merged. Adds `release:tag` script (`changeset tag && git push --tags`). See [ADR 0013](docs/decisions/0013-automated-release-via-changesets-action.md).
 - 0262f11: Add Changesets release harness: ADR 0009, DX_FAQ release desk, and PR CI gate for structured changelog notes.
 - a45b2ef: Add decision checkpoints to adr-records; wire north-star-governance and harness-engineering-culture for design forks before implementation.
-- c13457b: Document binary release contract (mcp_flutter pattern); ADR 0010 defers binaries for Skill Steward.
+- c13457b: Document binary release contract (product patterns); ADR 0010 defers binaries for Skill Steward.
 - b8a0db1: Adopt visual brand identity system: hero cover image in README + `docs.json` (`socialPreview`, theme.primary, favicon reference), new `docs/brand.md` (palette, marks, prompts) as living reference, [ADR 0012](docs/decisions/0012-adopt-visual-brand-identity-system.md) recording decisions + hero prompts. Small sidebar + docs_map + DESIGN_FAQ + CONTRIBUTING.md updates. Brand expresses long-term stewardship, ethics, buildership, and restraint.
 - 652b7eb: Fix CI pnpm setup: use packageManager field only (remove duplicate version in workflows).
 - 8658cb8: Document CLAUDE.md as symlink to AGENTS.md; add .gitattributes for symlink checkout.
 - 8db4eb5: Document how consumers update installed skills via npx skills update and re-add.
-- efe245c: Align harness skill docs with IntentCall product naming (github.com/Arenukvern/intentcall).
+- efe245c: Align harness skill docs with product naming.
 - 6bf111e: Add `preferred-tooling.md` reference inside `harness-engineering-culture` (Dart preferred for harness CLIs, Justfile as task runner default, guidance reusable by other ~/mcp repos). Link from SKILL.md and steward-composition.md. Post-hardcut cleanup after removing legacy validate-skills.mjs.
 - 8bee754: Remove docs/GITHUB_PROFILE.md; public bio pointer lives in ADR 0008 only.
 - e2b1d77: Add xsoulspace_lints analysis for steward_cli (CI, pnpm steward:analyze).

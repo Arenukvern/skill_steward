@@ -18,7 +18,7 @@ The ecosystem overloads “plugin”:
 |-----------|----------------|
 | **Agent Skills / `npx skills`** | A folder with `SKILL.md` (sometimes discovered via `.claude-plugin/plugin.json`) |
 | **Cursor** | Marketplace bundle (`plugin.json`) + optional **hooks** (`.cursor/hooks.json`) — hooks are **not** installed by `npx skills` |
-| **mcp_flutter** | Product bundle: skills + `mcp.json` + MCP server + multi-agent manifests ([plugin/README.md](https://github.com/Arenukvern/mcp_flutter/blob/main/plugin/README.md)) |
+| **Product bundle** | Product bundle: skills + `mcp.json` + MCP server + multi-agent manifests |
 
 Without a Guild-specific definition, contributors will put hooks in `skills/` (wrong lifecycle), or duplicate SKILL bodies inside plugins, or expect `npx skills` to configure Cursor hooks (it does not).
 
@@ -40,7 +40,7 @@ Without a Guild-specific definition, contributors will put hooks in `skills/` (w
 | **Skill** | Open [Agent Skills](https://agentskills.io/) package | Agent skill discovery; `npx skills add` | `SKILL.md`, optional `scripts/`, `references/` |
 | **Plugin** | Guild **bundle manifest** + wiring files | Manual or `plugins/*/install` script; merges into agent config | `plugin.yaml`, hook templates, optional MCP/rules/commands |
 | **Hook** (Cursor) | Lifecycle script or prompt check | `.cursor/hooks.json` | Shell/Node on `preToolUse`, `afterFileEdit`, etc. |
-| **Product plugin** (external pattern) | Full product distribution (e.g. mcp_flutter) | `init`, marketplace, `mcp.json` | Out of scope for Guild unless explicitly adopted later |
+| **Product plugin** (external pattern) | Full product distribution | `init`, marketplace, `mcp.json` | Out of scope for Guild unless explicitly adopted later |
 
 **Rule:** If it is only instructions for the model, it is a **skill**. If it must **run on agent events** or **atomically install multiple wiring artifacts**, it is a **plugin** (which may *include* skills by reference).
 
@@ -123,9 +123,9 @@ targets:
 
 Implement after manifest schema stabilizes; until then `plugins/README.md` points here.
 
-### Relationship to mcp_flutter
+### Relationship to product plugins
 
-[mcp_flutter/plugin](https://github.com/Arenukvern/mcp_flutter/tree/main/plugin) is a **product plugin** (MCP server + skills + marketplace manifests). Skill Steward **does not** replicate that stack. We may **learn** manifest discovery (`.claude-plugin/marketplace.json` skill paths) so `npx skills` discovers bundled skills from a plugin root—optional compatibility, not required for Skill Steward meta-plugins.
+Product plugins are product-specific bundles (MCP server + skills + marketplace manifests). Skill Steward **does not** replicate that stack. We may **learn** manifest discovery (`.claude-plugin/marketplace.json` skill paths) so `npx skills` discovers bundled skills from a plugin root—optional compatibility, not required for Skill Steward meta-plugins.
 
 ### Consequences
 
@@ -171,4 +171,4 @@ Implement after manifest schema stabilizes; until then `plugins/README.md` point
 * [Agent Skills spec](https://agentskills.io/)
 * [skills CLI — supported agents & hooks matrix](https://github.com/vercel-labs/skills#compatibility)
 * [Cursor hooks](https://cursor.com/docs/agent/hooks) (project: `.cursor/hooks.json`)
-* Reference product plugin: [mcp_flutter/plugin](https://github.com/Arenukvern/mcp_flutter/tree/main/plugin)
+* Reference product plugin patterns

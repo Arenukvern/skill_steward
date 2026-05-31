@@ -16,7 +16,7 @@ Install on **Cursor**, **Claude Code**, **Codex**, **Windsurf**, **GitHub Copilo
 
 | Project                                                                              | Role                                                                                                                             |
 | ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
-| **[mcp_flutter](https://github.com/Arenukvern/mcp_flutter)**                         | **Product harness** — closed-loop tooling so agents can inspect and interact with running Flutter apps (CLI + MCP).              |
+| **Product Harnesses**                                                                 | Closed-loop tooling so agents can inspect and interact with running apps (CLI + agent integrations).                            |
 | **Skill Steward** (this repo)                                                        | **Meta layer** — skills that help teams manage *other* skills: validation, ADRs, FAQ-driven docs, plan hygiene, harness culture. |
 | **[Principles at work](https://dev.to/arenukvern/my-principles-at-work-credo-182c)** | **Why** — ethical AI boundaries, care for end users and builders, prototyping with feedback, artisan credit.                     |
 
@@ -115,11 +115,11 @@ Meta and process capabilities only — [inclusion criteria](docs/decisions/0001-
 | [skill-eval-improve](skills/skill-eval-improve/)                   | Tiered evals—rule-based `pnpm run eval`, Chrome/SkillOpt patterns, plugin-eval, human prompt suites.                                                                      |
 | [adr-records](skills/adr-records/)                                 | Write and maintain ADRs per [adr.github.io](https://adr.github.io/).                                                                                                       |
 | [faq-driven-docs](skills/faq-driven-docs/)                         | Maintain DESIGN_FAQ (why) and DX_FAQ (how) per [FAQ-driven development](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl). |
-| [concept-doc-store](skills/concept-doc-store/)                     | Vectorless doc lattice (router, ADRs, concepts)—link to code for behavior; [mcp_flutter](https://github.com/Arenukvern/mcp_flutter)-style.                                 |
+| [concept-doc-store](skills/concept-doc-store/)                     | Vectorless doc lattice (router, ADRs, concepts)—link to code for behavior; layered-docs style.                                             |
 | [multi-agent-handoff](skills/multi-agent-handoff/)                 | Plan handoffs between specialized agents.                                                                                                                                  |
 | [harness-engineering-culture](skills/harness-engineering-culture/) | Agent-first harness design—CLI/MCP, mechanical gates, docs map ([OpenAI harness engineering](https://openai.com/index/harness-engineering/)).                              |
 | [release-changelog-harness](skills/release-changelog-harness/) | Release/changelog tooling plus binary distribution contract (install.sh, GitHub Releases) for product harness repos.                                                          |
-| [mcp-harness-repo-maintainer](skills/mcp-harness-repo-maintainer/) | Maintain MCP/harness repos (mcp_flutter, IntentCall, flutter_harness)—archetypes, contract gates, sibling layout.                                                            |
+| [mcp-harness-repo-maintainer](skills/mcp-harness-repo-maintainer/) | Maintain MCP/harness repos (product MCPs, libraries, CLI harnesses)—archetypes, contract gates, sibling layout.                                                            |
 | [north-star-governance](skills/north-star-governance/)             | North Star charter, AGENTS.md map, plan hygiene (any format), docs.page wiring.                                                                                            |
 
 

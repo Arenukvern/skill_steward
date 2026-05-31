@@ -208,11 +208,11 @@ Skip (maintainer only) → PR title contains [skip changeset]
 ```text
 Agent-first culture     → skill harness-engineering-culture
 OpenAI principles       → skills/harness-engineering-culture/references/harness-principles.md
-CLI+MCP dual surface    → references/cli-mcp-pattern.md (mcp_flutter / IntentCall)
+CLI+MCP dual surface    → references/cli-mcp-pattern.md (product MCP / platform libs)
 Compose Skill Steward skills    → skills/harness-engineering-culture/references/steward-composition.md
 ```
 
-Product example: `flutter-mcp-toolkit doctor`, `make check-contracts` — not shipped from Skill Steward.
+Product example: `<cli_harness> doctor`, `make check-contracts` — not shipped from Skill Steward.
 
 ## 📚 Doc styles desk
 

@@ -14,7 +14,7 @@ The repository was introduced as **Agent Guild** (`arenukvern/agent_guild`, now 
 
 The maintainer’s public work spans:
 
-- **[mcp_flutter](https://github.com/Arenukvern/mcp_flutter)** — product **harness** (closed-loop Flutter agent tooling).
+- **Product Harnesses** — closed-loop agent tooling for specific frameworks (such as app runtimes).
 - **This repo** — **meta** skills for the [Agent Skills](https://agentskills.io/) ecosystem.
 - **[Principles at work (credo)](https://dev.to/arenukvern/my-principles-at-work-credo-182c)** — ethical AI, care for end users and builders, FAQ-driven documentation, artisan credit.
 
@@ -45,7 +45,7 @@ Chosen option: **"Skill Steward"** as the **public product name**, with GitHub r
 ### Consequences
 
 * Good, because the name matches [ADR 0001](0001-repository-purpose-as-skills-meta-layer.md) intent (meta-layer) and the maintainer credo.
-* Good, because it pairs naturally with **mcp_flutter** (runtime harness) in public bios and README without a third “guild” narrative.
+* Good, because it pairs naturally with sibling product harnesses in public bios and README without a third “guild” narrative.
 * Neutral, because **historical** ADRs and ADR titles may still say “Agent Guild”; consumer-facing copy uses Skill Steward ([ADR 0008](0008-adopt-skill-steward-product-name.md)).
 * Neutral, because ADR filenames and historical “guild” wording in older ADRs remain for traceability.
 
@@ -62,4 +62,4 @@ Chosen option: **"Skill Steward"** as the **public product name**, with GitHub r
 * [North Star](../NORTH_STAR.md)
 * [ADR 0001 — meta-layer purpose](0001-repository-purpose-as-skills-meta-layer.md)
 
-**Public bio (out of repo):** GitHub profile and pinned repos should point at [mcp_flutter](https://github.com/Arenukvern/mcp_flutter) (product harness) and [skill_steward](https://github.com/Arenukvern/skill_steward) (meta skills)—not copy-paste blocks in this repository.
+**Public bio (out of repo):** GitHub profile and pinned repos should point at the product harness and [skill_steward](https://github.com/Arenukvern/skill_steward) (meta skills)—not copy-paste blocks in this repository.

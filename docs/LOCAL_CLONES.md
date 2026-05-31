@@ -14,8 +14,8 @@ pnpm run validate
 ## Consumer install (from a sibling repo)
 
 ```bash
-# Project scope (example: flutter_harness)
-cd <workspace>/flutter_harness
+# Project scope (example: <cli_harness>)
+cd <workspace>/<cli_harness>
 make agent-skills
 # or install from the cloned local copy:
 npx skills add <workspace>/agent_guild --skill mcp-harness-repo-maintainer -a cursor -y
@@ -32,4 +32,4 @@ npx skills add <workspace>/agent_guild --skill mcp-harness-repo-maintainer -a cu
 | `faq-driven-docs` | DESIGN_FAQ + DX_FAQ |
 | `create-skill` / `skill-spec-review` | Author and audit `plugin/skills/` |
 
-See [flutter_harness AGENTS.md](https://github.com/Arenukvern/flutter_harness/blob/main/AGENTS.md) for the wired consumer example.
+See the harness repository's AGENTS.md file for the wired consumer example.
