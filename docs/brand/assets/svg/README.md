@@ -54,7 +54,7 @@ The marks work on dark backgrounds when the parent sets `color: white` or simila
 
 These files were created from the exact geometry and rules defined in:
 
-- [ADR 0012](../../decisions/0012-adopt-visual-brand-identity-system.md)
+- [ADR 0012](../../../decisions/0012-adopt-visual-brand-identity-system.md)
 - The Brand Identity Design document (extracted per plan hygiene)
 
 The Growth Ring Emblem uses `stroke-dasharray` for clean, minimal gaps around the extraction caret. The caret itself is a radial line with square caps.

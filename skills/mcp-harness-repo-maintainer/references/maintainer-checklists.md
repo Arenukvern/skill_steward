@@ -2,54 +2,54 @@
 
 Copy the section for your archetype before a release or large PR.
 
-## A — mcp_flutter (product MCP)
+## Archetype A — Product MCP
 
-- [ ] `VERSION` == `plugin/EXPECTED_SERVER_VERSION` == all `plugin/*-plugin/plugin.json`
-- [ ] `make sync-skills` if `plugin/skills/` or manifests changed
-- [ ] `make check-contracts` green
-- [ ] CHANGELOG `## [Unreleased]` updated; MD052 disable intact
-- [ ] `docs/ai_agents/marketplace_copy.yaml` if listing text changed
-- [ ] Release PR: `skill_assets.g.dart` committed (or release_pr_sync_skills workflow)
-- [ ] Binaries attached on tag (`release.yml`)
-- [ ] Optional: `make macos-validate-runtime`, dogfood eval
+- [ ] Verify all project versions and manifests match (`VERSION` == expected server version == manifest files)
+- [ ] Run skill/manifest sync script if manifests or skills changed
+- [ ] Ensure contract check tasks are green
+- [ ] CHANGELOG `## [Unreleased]` updated
+- [ ] Update agent listing configs/YAML files if listing text changed
+- [ ] Confirm all synchronized assets/generated files are committed or automatically generated in release PR
+- [ ] Confirm server binaries are built and attached on tag/release (if relevant)
+- [ ] Optional: validate runtime environment & execute dogfooding loop
 
-## B — IntentCall (`agentkit/`)
+## Archetype B — Platform Libs
 
-- [ ] `dart analyze` / `make test` on all packages
-- [ ] `publish_all.sh --dry-run` before publish train
-- [ ] Public API/schema tests updated
-- [ ] mcp_flutter `check-intentcall-integration` green on integration PR
-- [ ] PRE_RELEASE / PUBLISHING docs match actual publish order
+- [ ] Run package static analysis and unit tests on all packages/modules
+- [ ] Execute dry-run publish commands before publishing
+- [ ] Ensure public API and schema tests are updated
+- [ ] Verify integration checks in the consuming Product MCP are green on integration PR
+- [ ] Ensure publishing documentation matches the actual publish order
 
-## C — flutter_harness
+## Archetype C — CLI Harness
 
-- [ ] `pubspec_overrides.yaml` points at sibling mcp_flutter (local dev)
-- [ ] `dart test`
-- [ ] `tool/check_hs_fixtures.sh` (or `make check`)
-- [ ] `harness/.flutter_mcp/apps.yaml` registry sane
-- [ ] RELATED_REPOS.md paths still accurate
-- [ ] Skills under `plugin/skills/` match harness workflows
+- [ ] Local path overrides (e.g., workspaces, overrides) point at sibling product MCP (for local development)
+- [ ] Run unit and integration tests
+- [ ] Run test harness fixture checks (e.g., validate and run fixtures)
+- [ ] Verify registry config files are correct
+- [ ] Check sibling/related repo references are accurate in docs
+- [ ] Verify skills/checklists match harness workflows
 
-## D — flutter_visual_reconstruct
+## Archetype D — Visual Sidecar
 
-- [ ] `dart test`
-- [ ] Profile YAML lint / `guild validate`
-- [ ] No new MCP or VM dependencies (ADR 0003 sidecar)
-- [ ] `export_profiles.dart` if profiles added
-- [ ] Document consumers (harness compare step, dogfood golden path)
+- [ ] Run unit tests
+- [ ] Run profile validation tools against comparison profiles
+- [ ] Ensure no runtime dependencies on product MCP or runtime VMs (maintain sidecar isolation)
+- [ ] Run export/registry scripts if profiles are added
+- [ ] Document consumers (harness comparison steps, dogfood golden path)
 
-## E — skill_steward
+## Archetype E — Meta Steward (e.g., skill_steward)
 
-- [ ] `pnpm run steward:analyze` (`packages/steward_cli`, xsoulspace_lints)
-- [ ] `pnpm run steward:validate`
-- [ ] `pnpm run docs:check` if `docs/` or `docs.json` touched
-- [ ] `skills.sh.json` + README skill table
-- [ ] No product MCP, no domain skills
-- [ ] **No binary release train** — skills via `npx skills` only ([ADR 0010](../../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.md))
-- [ ] Plan files removed after extract (plan hygiene)
-- [ ] `.cursor/hooks.json` still valid if plugin hooks changed
+- [ ] Run static analysis and lints on linter/validator CLI
+- [ ] Run validator CLI against meta-skills
+- [ ] Validate documentation / site checker if documentation touched
+- [ ] Sync skills registries and README tables
+- [ ] Ensure no domain/product MCP or product domain skills are added
+- [ ] **No binary release train** — skills via `npx skills` only (see ADR 0010)
+- [ ] Verify stale planning/plan files are removed (plan hygiene)
+- [ ] Verify IDE hooks / configuration files are valid
 
-## F — Security (any remote MCP release)
+## Archetype F — Security (any remote MCP release)
 
 - [ ] Tool schemas reviewed (permissions, PII)
 - [ ] No secrets in repo; env var docs only

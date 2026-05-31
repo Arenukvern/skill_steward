@@ -4,7 +4,7 @@
 
 | ID | User prompt | Pass criteria |
 |----|-------------|---------------|
-| T1 | Enforce CLI/MCP/core split on mcp_flutter PR | Archetype A checklist |
+| T1 | Enforce CLI/MCP/core split on product MCP PR | Archetype A checklist |
 
 ## Should not trigger
 

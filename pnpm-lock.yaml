@@ -9,10 +9,10 @@ importers:
   .:
     devDependencies:
       '@changesets/cli':
-        specifier: ^2.29.0
+        specifier: ^2.31.0
         version: 2.31.0(@types/node@22.19.19)
       '@docs.page/cli':
-        specifier: ^1.0.3
+        specifier: ^1.0.4
         version: 1.0.4
 
 packages:

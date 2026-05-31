@@ -26,7 +26,7 @@ The goal is legibility for both humans and agents, strong mechanical gates, and 
 - Extremely strong static analysis and refactoring tools — agents love this.
 - Excellent cross-platform behavior (the same binary works on macOS, Linux, Windows).
 - Mature package ecosystem for CLI work (`args`, `path`, `io`, `process`, etc.).
-- Consistent with the direction taken in `mcp_flutter`, `IntentCall`, and the Skill Steward meta-harness itself (`steward` CLI).
+- Consistent with the direction taken in production harnesses, SDKs, and the Skill Steward meta-harness itself (`steward` CLI).
 
 ## Task Runner Guidance
 

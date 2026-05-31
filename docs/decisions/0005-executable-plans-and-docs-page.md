@@ -12,7 +12,7 @@ informed:
 
 ## Context and Problem Statement
 
-Skill Steward needs a published documentation site (like [mcp_flutter on docs.page](https://docs.page)) and a clear **plan hygiene** doctrine: teams may use **any** planning format (Superpowers, Cursor plans, Issues, etc.); Skill Steward does **not** invent a new plan standard. Finished plan artifacts must not remain in-repo as source of truth—extract durable knowledge, then remove. Stale plans poison agent context (same failure mode as a 1,000-line `AGENTS.md`).
+Skill Steward needs a published documentation site (like other open docs.page sites) and a clear **plan hygiene** doctrine: teams may use **any** planning format (Superpowers, Cursor plans, Issues, etc.); Skill Steward does **not** invent a new plan standard. Finished plan artifacts must not remain in-repo as source of truth—extract durable knowledge, then remove. Stale plans poison agent context (same failure mode as a 1,000-line `AGENTS.md`).
 
 **What site structure and plan lifecycle do we adopt?**
 
@@ -51,7 +51,7 @@ Chosen option: **"docs.page + ephemeral plans doctrine"**.
 ### Consequences
 
 * Good, because agents get a map + charter without context bloat.
-* Good, because public docs match mcp_flutter contributor experience.
+* Good, because public docs match modern contributor experiences.
 * Bad, because dual root FAQs + `docs/` need cross-links maintained.
 * Neutral, because docs.page availability requires a public GitHub repo at `arenukvern/skill_steward`.
 
@@ -65,4 +65,4 @@ Chosen option: **"docs.page + ephemeral plans doctrine"**.
 ## More Information
 
 * [ADR 0003 — concept doc store](0003-concept-doc-store-lattice.md)
-* [mcp_flutter docs.json](https://github.com/Arenukvern/mcp_flutter/blob/main/docs.json)
+* Reference product docs.json configurations

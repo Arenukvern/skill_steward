@@ -7,8 +7,8 @@
     "defaultTheme": "system",
     "primary": "#1A3C34"
   },
-  "socialPreview": "docs/brand/assets/hero/skill-steward-growth-rings-hero-16x9.jpg",
-  "favicon": "docs/brand/assets/hero/skill-steward-growth-rings-emblem-square.jpg",
+  "socialPreview": "/brand/assets/hero/skill-steward-growth-rings-hero-16x9.jpg",
+  "favicon": "/brand/assets/hero/skill-steward-growth-rings-emblem-square.jpg",
   "header": {
     "showName": true,
     "showThemeToggle": true,
@@ -135,6 +135,22 @@
         {
           "title": "0009 — Changesets for releases",
           "href": "/decisions/0009-adopt-changesets-for-repo-releases"
+        },
+        {
+          "title": "0010 — Binary release scope",
+          "href": "/decisions/0010-binary-releases-for-product-harness-not-meta-steward"
+        },
+        {
+          "title": "0011 — Rule-based CI",
+          "href": "/decisions/0011-tiered-skill-evals-and-rule-based-ci"
+        },
+        {
+          "title": "0012 — Visual identity",
+          "href": "/decisions/0012-adopt-visual-brand-identity-system"
+        },
+        {
+          "title": "0013 — Automated release",
+          "href": "/decisions/0013-automated-release-via-changesets-action"
         }
       ]
     },

@@ -17,3 +17,4 @@ This repository records architecturally significant decisions using [MADR](https
 | [0010](0010-binary-releases-for-product-harness-not-meta-steward.md) | accepted | Binary releases for product harness; not Skill Steward | 2026-05-29 |
 | [0011](0011-tiered-skill-evals-and-rule-based-ci.md) | accepted | Tiered skill evals; rule-based CI (no LLM judge) | 2026-05-29 |
 | [0012](0012-adopt-visual-brand-identity-system.md) | accepted | Adopt visual brand identity system (growth rings + ledger + lattice; hero cover) | 2026-05-29 |
+| [0013](0013-automated-release-via-changesets-action.md) | accepted | Automated release via changesets/action (Version PR + git tag + GitHub Release) | 2026-05-30 |

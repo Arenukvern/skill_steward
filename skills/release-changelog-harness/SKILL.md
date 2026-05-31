@@ -60,7 +60,7 @@ Before picking a tool, agree the repo obeys:
 | Single Dart package | `CHANGELOG.md` + git tag + `dart pub publish` | Keep entries agent-editable markdown. |
 | Rust workspace | [release-plz](https://github.com/MarcoIeni/release-plz) or cargo-release + git-cliff | Prefer automation that opens version PRs. |
 | Meta / skills-only (Skill Steward) | [Changesets](https://github.com/changesets/changesets) + `CHANGELOG.md` + git tag ([ADR 0009](../../docs/decisions/0009-adopt-changesets-for-repo-releases.md)) | Repo semver only; skills unversioned; document consumer impact in `.changeset/*.md`. |
-| Product harness w/ binaries (mcp_flutter) | release-please + tag CI + `install.sh` | **Do not** add a second version source; follow [binary-release-contract.md](references/binary-release-contract.md) |
+| Product harness w/ binaries | release-please + tag CI + `install.sh` | **Do not** add a second version source; follow [binary-release-contract.md](references/binary-release-contract.md) |
 | Meta / skills-only (Skill Steward) | Changesets + `npx skills` — **no** binary train | [ADR 0010](../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.md) |
 
 Full matrix: [ecosystem-tooling.md](references/ecosystem-tooling.md). Binary/install: [binary-release-contract.md](references/binary-release-contract.md).
@@ -149,7 +149,7 @@ Publish: project-specific (`changeset publish`, GitHub Action, or npm provenance
 | Skipping changesets “because AI will write CHANGELOG at release” | Non-deterministic; no PR-time review |
 | Version bumps without consumer-facing sentence | Users and agents can’t assess upgrade risk |
 | Binary Releases without changelog in git | Users see version; agents miss intent |
-| `git clone` as end-user install for a server product | Use install.sh + Release assets (mcp_flutter pattern) |
+| `git clone` as end-user install for a server product | Use `install.sh` + Release assets (binary release pattern) |
 
 ## Related skills
 

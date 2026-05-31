@@ -39,7 +39,7 @@ The three official directions, implemented as **vector masters** (the single sou
 
 **Vector masters location:** `docs/brand/assets/svg/`
 
-See the [SVG directory README](assets/svg/README.md) for usage examples, technical rules, and `currentColor` guidance.
+See the [SVG directory README](brand/assets/svg/README.md) for usage examples, technical rules, and `currentColor` guidance.
 
 **Shared rules:** Vector masters only. Generous clear space (0.5× mark height). Monochrome + color variants via `currentColor`. Never distort, add effects, or combine motifs on one surface. See ADR 0012 for "no personal artisan credit in project visuals".
 
@@ -108,7 +108,7 @@ Example (install surface):
 - [ADR 0012 — Adopt visual brand identity system](decisions/0012-adopt-visual-brand-identity-system.md)
 - Originating design document (full Master Specifications, 5-PR plan, review notes) — extracted per plan hygiene on adoption.
 - [NORTH_STAR.md](NORTH_STAR.md)
-- [DESIGN_FAQ.md](DESIGN_FAQ.md)
+- [DESIGN_FAQ.md](../DESIGN_FAQ.md)
 - Maintainer's principles: https://dev.to/arenukvern/my-principles-at-work-credo-182c
 
 ---

@@ -8,14 +8,14 @@
 
 We are **not** a general domain skill catalog (React, Flutter, cloud recipes live elsewhere). We are **not** a skill package manager ([Skillkit](https://github.com/rohitg00/skillkit), [skills.sh](https://skills.sh)).
 
-Sibling work: **[mcp_flutter](https://github.com/Arenukvern/mcp_flutter)** owns product harness (runtime MCP/CLI for Flutter). Skill Steward owns meta-skills and documentation patterns. Principles: [credo](https://dev.to/arenukvern/my-principles-at-work-credo-182c).
+Sibling work: Product harness repositories (such as product-level MCP/CLI toolkits) own runtime/framework harnesses. Skill Steward owns meta-skills and documentation patterns. Principles: [credo](https://dev.to/arenukvern/my-principles-at-work-credo-182c).
 
 ## What we own
 
 | Own | Do not own |
 |-----|------------|
 | Meta-skills (`skills/`) | Domain/framework instruction packs |
-| Skill validation (`pnpm run validate`) | Product MCP servers (see mcp_flutter, IntentCall) |
+| Skill validation (`pnpm run validate`) | Product MCP servers and framework wrappers |
 | Doc patterns (FAQ, ADR, docs.page lattice) | Finished plan files as permanent docs |
 | Plugin manifests (`plugins/`) when wired | Copy-pasted API docs of other products |
 | Harness **culture** skill (how to build CLI/MCP harnesses) | Executable app/runtime code |
@@ -25,7 +25,7 @@ Sibling work: **[mcp_flutter](https://github.com/Arenukvern/mcp_flutter)** owns 
 1. **`npx skills add arenukvern/skill_steward`** — portable `SKILL.md` packages.
 2. **Docs as system of record** — [docs.page](https://docs.page/arenukvern/skill_steward) from `docs/` + `docs.json`; `AGENTS.md` is the agent map only.
 3. **Mechanical gates** — CI validates skills; contributors run `pnpm run validate`.
-4. **Plan hygiene (any format)** — use any planning tool; when work is done, [extract into ADR/FAQ/code/harness](start_here/executable-plans), then **remove** stale plan files from the repo.
+4. **Plan hygiene (any format)** — use any planning tool; when work is done, [extract into ADR/FAQ/code/harness](start_here/executable-plans.mdx), then **remove** stale plan files from the repo.
 
 ## Boundaries (non‑negotiable)
 

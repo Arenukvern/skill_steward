@@ -6,7 +6,7 @@ Docs that **re-explain code** drift immediately. Agents read stale prose instead
 
 ## Rules
 
-1. **Behavior** lives in code, `example/`, `flutter_test_app/`, tests — docs **link** only.
+1. **Behavior** lives in code, `example/`, `test_app/`, tests — docs **link** only.
 2. **Decisions** live in ADRs (or DESIGN_FAQ) — one compressed answer per decision.
 3. **Usage patterns** live in DX_FAQ, guides, or skills — short snippets OK if they are the canonical pattern; otherwise link to `examples/`.
 4. **Navigation** lives in router — no technical content in `docs_map`.

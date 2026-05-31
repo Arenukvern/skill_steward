@@ -33,4 +33,4 @@ Not: assign blame or add vague prompt text.
 
 ## Implication for Guild
 
-Skill Steward ships **meta-harness** (skills, validation, doc patterns)—not product CLIs. Product harnesses (e.g. `flutter-mcp-toolkit`, IntentCall) live in their repos; this skill teaches how to build and document them.
+Skill Steward ships **meta-harness** (skills, validation, doc patterns)—not product CLIs. Product harnesses and SDKs live in their respective repositories; this skill teaches how to build and document them.

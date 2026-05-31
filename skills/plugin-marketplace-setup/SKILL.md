@@ -67,7 +67,7 @@ Discovery also reads `.claude-plugin/plugin.json` and `.claude-plugin/marketplac
 | **Codex** | `.codex-plugin/` or plugin dir per OpenAI layout | marketplace in repo | `codex plugin marketplace add owner/repo` |
 | **Open skills only** | N/A | N/A | `npx skills add` — **no** MCP/hooks |
 
-Reference product layout: [mcp_flutter marketplace_distribution](https://github.com/Arenukvern/mcp_flutter/blob/main/docs/ai_agents/marketplace_distribution.mdx).
+Reference product layout: product repository marketplace distribution configs.
 
 ## Scaffold a new marketplace repo
 
@@ -126,11 +126,11 @@ Canonical skills stay in `skills/`. See [templates/plugin/](../../templates/plug
 
 ## Skill Steward vs product repo
 
-| Concern | Skill Steward | Product (e.g. mcp_flutter) |
+| Concern | Skill Steward | Product (e.g. product MCP) |
 |---------|-------------|------------------------------|
 | Skills | Meta only (`create-skill`, `adr-records`, …) | Domain + MCP skills |
 | Plugins | Meta hooks (`steward-validate-on-save`) | Full bundle: MCP + skills + init |
-| CLI | `steward validate` | `flutter-mcp-toolkit init <agent>` |
+| CLI | `steward validate` | `[toolkit-cli] init <agent>` |
 | Marketplace | Public Git + skills.sh | Claude/Codex git + Cursor submit + Smithery |
 
 Do not put product MCP servers in Guild. Cross-promote: `npx skills add arenukvern/skill_steward --skill harness-engineering-culture`.

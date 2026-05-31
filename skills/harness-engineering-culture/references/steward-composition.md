@@ -8,7 +8,7 @@
 4. **adr-records** — decision checkpoint on forks, then ADR for harness boundary (e.g. CLI-only gate vs MCP exposure)
 5. **concept-doc-store** — router, NORTH_STAR, doc lattice in product repo
 6. **faq-driven-docs** — DESIGN_FAQ (why doctor exists) + DX_FAQ (how to run CLI)
-7. **create-skill** — skill for agents using your harness (`flutter-mcp`, etc.)
+7. **create-skill** — skill for agents using your harness (customized toolkits, etc.)
 8. **skill-spec-review** — before publishing skill to skills.sh
 9. **multi-agent-handoff** — implementer/closer for large harness programs
 
@@ -17,8 +17,8 @@
 | Repo | Skill Steward focus |
 |------|-------------|
 | **skill_steward** | Meta-skills only; this skill + doc skills |
-| **Product** (mcp_flutter, your app) | Apply harness skill *from install*; local ADRs + CLI/MCP |
-| **IntentCall** (`agentkit/`) | Schema/core library (`intentcall_*`); consumers integrate |
+| **Product** (your app / server) | Apply harness skill *from install*; local ADRs + CLI/MCP |
+| **Platform SDK / Lib** | Schema/core library; consumers integrate |
 
 ## Install bundle (consumer)
 

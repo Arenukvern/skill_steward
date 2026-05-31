@@ -9,4 +9,4 @@ rules:
     terms: ["sourdough", "fermentation", "baking recipe"]
   - kind: body_includes_any
     path: SKILL.md
-    terms: ["mcp_flutter", "skill_steward"]
+    terms: ["skill_steward", "harness"]

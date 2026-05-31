@@ -92,7 +92,7 @@ Optional Guild scratch (not a standard): `docs/exec-plans/active/YYYY-MM-DD-shor
 2. **Documentation router** table → North Star, FAQs, decisions, standards, key skills
 3. **Non-negotiables** (3–5 bullets): validate before PR, meta-only scope, plan hygiene (extract & remove), no secrets
 4. **Install paths** table (Cursor, Claude, Codex, `.agents/skills`)
-5. Link: “Skill authoring detail → [docs/STANDARDS.md](docs/STANDARDS.md)”
+5. Link: “Skill authoring detail → [docs/STANDARDS.md](../../docs/STANDARDS.md)”
 
 Move long skill-creation prose out of AGENTS—never grow AGENTS into a skill tutorial.
 
@@ -121,7 +121,7 @@ When asking “does this file belong in Skill Steward?”:
 
 1. Read [docs/NORTH_STAR.md](../../docs/NORTH_STAR.md) — own / do-not-own.
 2. Use [`concept-doc-store`](../concept-doc-store/SKILL.md) — lattice layer (charter, ADR, FAQ, not personal ops copy).
-3. **Do not** use mcp_flutter `flutter-mcp-boundary-audit` for repo charter audits—that skill is for **CLI/MCP contract** validation in product harness repos.
+3. **Do not** use product-specific boundary audit commands for repo charter audits—those are for **CLI/MCP contract** validation in product harness repos.
 
 | Belongs here | Does not belong here |
 |--------------|----------------------|

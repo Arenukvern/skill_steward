@@ -1,61 +1,63 @@
 # Sibling layout (reference)
 
-Canonical peer layout from [flutter_harness RELATED_REPOS](https://github.com/Arenukvern/flutter_harness/blob/main/docs/RELATED_REPOS.md).
+Canonical peer layout from sibling agentic workspace patterns.
 
 ## Directory
 
 ```text
 <workspace>/
-  mcp_flutter/
-  agentkit/                     # IntentCall (github.com/Arenukvern/intentcall)
-  flutter_harness/
-  flutter_visual_reconstruct/   # not flutter_visual_reconstruction
-  flutter_mcp_video/            # skills/docs; optional LFS
-  skill_steward/                # local clone of skill_steward (GitHub: skill_steward)
+  <product_mcp>/                # A — toolkit + MCP + init
+  <platform_libs>/              # B — SDK platform / domain libraries
+  <cli_harness>/                # C — CLI/Harness runner
+  <visual_sidecar>/             # D — visual sidecar / comparison tool
+  <media_assets>/               # LFS/media assets (optional)
+  <meta_steward>/               # E — meta skills & validation (e.g., skill_steward)
 ```
 
 ## Dependency direction
 
 ```text
-flutter_mcp_video → flutter_harness → mcp_flutter (toolkit packages)
-                         ↓
-              flutter_visual_reconstruct (compare / guild)
-IntentCall (`agentkit/`) ← extracted platform (consumes / integrates via mcp_flutter CI)
-agent_guild (skill_steward) → meta skills only (no runtime dep on above)
+<media_assets> → <cli_harness> → <product_mcp> (core capability modules)
+                        ↓
+              <visual_sidecar> (visual validation engine)
+<platform_libs> ← platform SDK / packages (integrated & verified in product MCP)
+<meta_steward> → meta-skills and validation rules only (no runtime dep on above)
 ```
 
 ## Path overrides
 
-**flutter_harness** — copy `pubspec_overrides.yaml.example` → `pubspec_overrides.yaml`:
+Workspaces/repositories should support developer-friendly path overrides for sibling directories during local development (e.g., Cargo path overrides, npm/pnpm workspaces, Python sys.path or poetry path overrides, Dart `pubspec_overrides.yaml`).
+
+**Example (Dart/Flutter pubspec overrides in `<cli_harness>`):**
 
 ```yaml
 dependency_overrides:
-  flutter_mcp_toolkit_core:
-    path: ../mcp_flutter/packages/core
-  # … match example in repo
+  product_mcp_core:
+    path: ../<product_mcp>/packages/core
 ```
 
-**mcp_flutter** — `pubspec.yaml` workspace may path-override `intentcall_*` during Phase 7 dev.
+**Example (npm/pnpm workspace overrides in `<product_mcp>`):**
+Configure workspace dependency overrides in the package manager manifest to target local platform library path development.
 
 ## Dogfood warm path (integration smoke)
 
-1. mcp_flutter: Chrome dogfood + `DOGFOOD_VISUAL=1`
-2. flutter_harness: `harness/examples/visual_reconstruct/warm_path_direct.hs.yaml`
-3. flutter_visual_reconstruct: profile `dogfood_warm.yaml`
-4. Golden: `mcp_flutter/flutter_test_app/test/goldens/visual_reconstruct.png`
+1. **MCP/Server**: launch product server in test mode (e.g. `DOGFOOD=1`)
+2. **Harness runner**: execute harness test integration suite (e.g. fixture run task)
+3. **Visual comparator**: compare output artifacts using verification profiles
+4. **Golden comparison**: check produced visual/data artifacts against checked-in golden results
 
 ## Maintainer commands by repo
 
-| Repo | Before merge |
-|------|----------------|
-| mcp_flutter | `make check-contracts` |
-| IntentCall (`agentkit/`) | `make test` / `make analyze` |
-| flutter_harness | `make check` or `dart test` + fixture script |
-| flutter_visual_reconstruct | `dart test`, `dart run … guild validate` |
-| agent_guild (skill_steward) | `pnpm run validate`, `pnpm run docs:check` |
+| Archetype Role | Before Merge Task | Example CLI Command |
+|------|----------------|---|
+| **Product MCP** | Verify tool schemas and contracts | `make check-contracts` |
+| **Platform Libs** | Execute package analysis and unit tests | `make test` / `npm run test` |
+| **CLI Harness** | Run integration tests and fixtures | `make check` or test suite execution |
+| **Visual Sidecar**| Validate comparison profiles and verdict logic | `profile-cli validate` |
+| **Meta Steward** | Run validation linter on skills and docs | `pnpm run validate`, `pnpm run docs:check` |
 
 ## Cross-install docs
 
-- Product users: `flutter-mcp-toolkit init <agent>` + optional `npx skills add Arenukvern/mcp_flutter`
-- Harness contributors: clone siblings; read each `docs/NORTH_STAR.md`
-- Skill Steward meta: `npx skills add arenukvern/skill_steward --skill mcp-harness-repo-maintainer`
+- **Product Users**: run client-facing setup CLI (`[tool] init <agent>`) + optional `npx skills add [repo-path]`
+- **Harness Contributors**: clone sibling repositories; read the respective `docs/NORTH_STAR.md`
+- **Skill Steward Meta**: `npx skills add arenukvern/skill_steward --skill mcp-harness-repo-maintainer`

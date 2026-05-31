@@ -1,6 +1,6 @@
 # Binary release contract (product harness)
 
-Normative pattern for repos whose **primary consumer artifact is an executable** (CLI, MCP server binary). **Reference implementation:** [mcp_flutter](https://github.com/Arenukvern/mcp_flutter).
+Normative pattern for repos whose **primary consumer artifact is an executable** (CLI, MCP server binary).
 
 Meta repos that ship **only** `SKILL.md` + docs (Skill Steward) use `npx skills` — see [ADR 0010](../../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.md).
 
@@ -9,7 +9,7 @@ Meta repos that ship **only** `SKILL.md` + docs (Skill Steward) use `npx skills`
 | Primary artifact | Ship | Do not force |
 |------------------|------|----------------|
 | MCP/CLI server | GitHub Release tarballs + checksums + `install.sh` | Full git clone for end users |
-| Flutter/Dart library | `pub.dev` (or private registry) | Duplicate server binary in pub package |
+| Product library | Package manager registries (e.g. pub, npm, crates.io) | Duplicate server binary in library package |
 | Agent skills | `npx skills add owner/repo` | Tarball of entire monorepo for skill-only consumers |
 | Meta validate CLI tied to repo tree | CI + maintainer clone | Global binary without repo ([ADR 0010](../../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.md)) |
 
@@ -20,12 +20,12 @@ Binary trains still obey the **release legibility contract** from `SKILL.md`:
 1. Version/changelog in git (release-please, Changesets, or `CHANGELOG.md`).
 2. Tag `vX.Y.Z` is the publish event.
 3. CI attaches **artifacts that match** the tagged version (no “latest main” ambiguity).
-4. `install.sh` (or equivalent) defaults to **same version** as plugin manifest / `EXPECTED_SERVER_VERSION` when applicable.
+4. `install.sh` (or equivalent) defaults to **same version** as plugin manifest / expected server version when applicable.
 
-## Minimal layout (Dart AOT example)
+## Minimal layout (AOT example)
 
 ```text
-tool/release/build_release_artifacts.sh   # dart compile exe per triple
+tool/release/build_release_artifacts.sh   # compile executable per triple
 dist/release/*.tar.gz                     # bin/* + LICENSE
 dist/release/checksums.txt              # sha256 of tarballs
 install.sh                                # curl-friendly; no clone
@@ -48,11 +48,11 @@ Pick one SSOT; sync everything else in the release PR:
 
 | SSOT style | Examples |
 |------------|----------|
-| Root `VERSION` file | mcp_flutter |
+| Root `VERSION` file | Product version manifest |
 | `packageManager` + release-please manifest | JS monorepos |
 | `pubspec.yaml` + Melos | Dart monorepos |
 
-**Gate:** CI script fails if plugin `plugin.json`, embedded runtime version, and release asset names disagree.
+**Gate:** CI script fails if plugin manifest, embedded runtime version, and release asset names disagree.
 
 ## MoE — is “don’t clone” always best?
 
@@ -80,13 +80,13 @@ Pick one SSOT; sync everything else in the release PR:
 - [ ] `install.sh` supports `--version`, env override, checksum verify
 - [ ] Workflow on `v*` tag uploads tarballs + `checksums.txt`
 - [ ] Plugin / MCP config docs point to **binary path**, not `git clone && make`
-- [ ] Maintainer checklist includes binary attach step (`mcp-harness-repo-maintainer` archetype A)
+- [ ] Maintainer checklist includes binary attach step (archetype A maintainer checklist)
 
-## Sibling map (`~/mcp`)
+## Sibling map
 
-| Repo | Distribution face |
+| Repo Type | Distribution face |
 |------|-------------------|
-| mcp_flutter | Release binaries + `npx skills` for skills |
-| IntentCall | pub packages (+ integration with mcp_flutter) |
-| skill_steward | `npx skills` only; no binary train ([ADR 0010](../../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.md)) |
-| flutter_harness | CLI from source today; adopt binary contract when shipping a standalone HS binary to non-devs |
+| **Product MCP** | Release binaries + `npx skills` for skills |
+| **Platform Libs** | Package manager registries (pub, npm, crates.io, etc.) |
+| **Meta Steward** | `npx skills` only; no binary train |
+| **CLI Harness** | CLI from source (or packaged binaries when shipping standalone executable) |

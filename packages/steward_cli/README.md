@@ -1,6 +1,6 @@
 # steward_cli
 
-Meta harness CLI for [Skill Steward](https://github.com/arenukvern/skill_steward). Product CLIs (e.g. `flutter-mcp-toolkit`) live in their own repos — see [ADR 0006](../../docs/decisions/0006-guild-harness-meta-vs-product-clis.md).
+Meta harness CLI for [Skill Steward](https://github.com/arenukvern/skill_steward). Product CLIs live in their own repos — see [ADR 0006](../../docs/decisions/0006-guild-harness-meta-vs-product-clis.md).
 
 ## Commands
 
@@ -32,7 +32,7 @@ steward validate
 
 **Maintainers:** run from a repo clone (commands above). **Consumers** install skills with `npx skills add arenukvern/skill_steward` — not via a Release binary.
 
-Skill Steward does **not** ship `steward` on GitHub Releases ([ADR 0010](../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.md)). Product repos (mcp_flutter) use `install.sh` + tarballs — see skill `release-changelog-harness` → `references/binary-release-contract.md`.
+Skill Steward does **not** ship `steward` on GitHub Releases ([ADR 0010](../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.md)). Product repositories use `install.sh` + tarballs — see skill `release-changelog-harness` → `references/binary-release-contract.md`.
 
 ## Decisions
 

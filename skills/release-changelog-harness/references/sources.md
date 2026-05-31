@@ -11,8 +11,8 @@
 | Semantic Versioning | https://semver.org/ | Version semantics |
 | Harness engineering | https://openai.com/index/harness-engineering/ | Mechanical release gates |
 | FAQ-driven docs | https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl | DX_FAQ for commands |
-| mcp_flutter install.sh | https://github.com/Arenukvern/mcp_flutter/blob/main/install.sh | Binary install without clone |
-| mcp_flutter release workflow | https://github.com/Arenukvern/mcp_flutter/blob/main/.github/workflows/release.yml | Tag-triggered artifacts |
+| Reference install.sh | https://github.com/arenukvern/skill_steward/blob/main/skills/release-changelog-harness/references/binary-release-contract.md | Binary install patterns |
+| Reference release workflow | https://github.com/arenukvern/skill_steward/blob/main/skills/release-changelog-harness/references/binary-release-contract.md | Tag-triggered artifacts patterns |
 
 ## Changelog
 

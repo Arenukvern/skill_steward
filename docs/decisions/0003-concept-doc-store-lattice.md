@@ -12,7 +12,7 @@ informed:
 
 Skill Steward documents process and meta-skills (ADRs, FAQ-driven docs, skill validation). Documentation can bloat when it **re-explains code** or relies on **embedding/RAG** instead of explicit structure.
 
-A working pattern exists in [mcp_flutter](https://github.com/Arenukvern/mcp_flutter): layered docs (`docs_map` router, `NORTH_STAR`, ADRs, agent playbooks, optional `superpowers/` programs) where **behavior** stays in code/examples and **docs** hold decisions, concepts, and navigation.
+A working pattern exists in sibling product harnesses: layered docs (`docs_map` router, `NORTH_STAR`, ADRs, agent playbooks, optional `superpowers/` programs) where **behavior** stays in code/examples and **docs** hold decisions, concepts, and navigation.
 
 Maintainer practice also uses [FAQ-driven development](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl) for compressed Q&A at package level ([ADR 0002](0002-adopt-faq-driven-documentation.md)).
 
@@ -24,7 +24,7 @@ How should Skill Steward teach agents to organize documentation in other reposit
 * **No duplicate “how code works”** — examples, tests, and source are SSOT for behavior; docs link inward.
 * **Human + agent clarity** — separate charter, decisions, concepts, and agent ops.
 * **Composable with FAQs** — lattice for repo navigation; DESIGN_FAQ/DX_FAQ for package compression.
-* **Reference implementation** — mcp_flutter analyzed and encoded in `concept-doc-store` skill.
+* **Reference implementation** — product harnesses analyzed and encoded in `concept-doc-store` skill.
 
 ## Considered Options
 
@@ -32,11 +32,11 @@ How should Skill Steward teach agents to organize documentation in other reposit
 * **Wiki / Notion** — External, decoupled from PR review.
 * **RAG / embeddings over docs** — Semantic search as primary navigation.
 * **FAQ pair only** — DESIGN_FAQ + DX_FAQ without repo-level lattice.
-* **Layered concept doc store + optional FAQs** — mcp_flutter-style lattice + ADR 0002 FAQs.
+* **Layered concept doc store + optional FAQs** — layered doc lattice + ADR 0002 FAQs.
 
 ## Decision Outcome
 
-Chosen option: **"Layered concept doc store + optional FAQs"**, shipped as skill `concept-doc-store` with reference analysis of mcp_flutter.
+Chosen option: **"Layered concept doc store + optional FAQs"**, shipped as skill `concept-doc-store` with reference analysis of product harnesses.
 
 ### Consequences
 
@@ -51,7 +51,7 @@ Chosen option: **"Layered concept doc store + optional FAQs"**, shipped as skill
 
 * Skill `skills/concept-doc-store/` with lattice, SSOT, and bootstrap references.
 * Cross-link from `faq-driven-docs` and `adr-records` skills.
-* mcp_flutter cited as reference implementation in skill and this ADR.
+* Product harnesses cited as reference implementations in skill and this ADR.
 
 ## Layer summary (normative)
 
@@ -84,13 +84,13 @@ Chosen option: **"Layered concept doc store + optional FAQs"**, shipped as skill
 
 ### Layered concept doc store
 
-* Good, because matches mcp_flutter production pattern and user intent.
+* Good, because matches product harness production patterns and user intent.
 * Good, because vectorless and link-driven.
 * Bad, because initial setup cost for small repos.
 
 ## More Information
 
 * **FAQ-driven development:** https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl
-* **Reference repo:** https://github.com/Arenukvern/mcp_flutter — `docs/start_here/docs_map.mdx`, `docs/decisions/`, `docs/superpowers/`, `docs/NORTH_STAR.md`
+* **Reference repo structure:** `docs/start_here/docs_map.mdx`, `docs/decisions/`, `docs/superpowers/`, `docs/NORTH_STAR.md`
 * **Skill:** [skills/concept-doc-store/](../../skills/concept-doc-store/)
 * **Related:** [ADR 0002 — FAQ-driven documentation](0002-adopt-faq-driven-documentation.md)

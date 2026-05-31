@@ -10,9 +10,9 @@ informed:
 
 ## Context and Problem Statement
 
-The open skills ecosystem has **product harnesses** with real CLIs and MCP servers (e.g. [mcp_flutter](https://github.com/Arenukvern/mcp_flutter) `flutter-mcp-toolkit`, [IntentCall](https://github.com/Arenukvern/intentcall)). Skill Steward is a **meta-layer** ([ADR 0001](0001-repository-purpose-as-skills-meta-layer.md)) teaching how to build and document harnesses—not replacing product tools.
+The open skills ecosystem has **product harnesses** with real CLIs and MCP servers (e.g. product-level CLI toolkits and schema libraries). Skill Steward is a **meta-layer** ([ADR 0001](0001-repository-purpose-as-skills-meta-layer.md)) teaching how to build and document harnesses—not replacing product tools.
 
-Contributors asked to formalize the split so Skill Steward does not grow a second Flutter MCP server or duplicate `doctor` / `exec` semantics.
+Contributors asked to formalize the split so Skill Steward does not grow a second domain MCP server or duplicate `doctor` / `exec` semantics.
 
 ## Decision Drivers
 
@@ -23,7 +23,7 @@ Contributors asked to formalize the split so Skill Steward does not grow a secon
 
 ## Considered Options
 
-* **A. Guild ships full product-style CLI+MCP** — Competes with mcp_flutter; wrong scope.
+* **A. Guild ships full product-style CLI+MCP** — Competes with domain harnesses; wrong scope.
 * **B. Guild is skills-only forever** — No reference harness; harder to dogfood harness culture.
 * **C. Skill Steward meta CLI (+ future meta MCP); products own domain CLIs** — Teach patterns; minimal typed tooling in Guild.
 * **D. Document-only** — No executable harness in Guild.
@@ -37,8 +37,8 @@ Chosen option: **"C. Skill Steward meta CLI (+ future meta MCP); products own do
 | Layer | Repository | CLI / MCP examples | Guild skill support |
 |-------|------------|--------------------|---------------------|
 | **Meta harness** | `skill_steward` | `steward validate`, `steward list`; future MCP skill index | `harness-engineering-culture`, `north-star-governance`, … |
-| **Product harness** | `mcp_flutter`, app repos | `flutter-mcp-toolkit`, `flutter-mcp-toolkit-server`, `fmt_*` | Install Guild skills via `npx skills` |
-| **Library** | IntentCall (`agentkit/`) | Schema, registry adapters (`intentcall_*`) | Consumers integrate |
+| **Product harness** | Product-specific repos | `<cli_harness>`, product-specific servers, etc. | Install Guild skills via `npx skills` |
+| **Library** | Schema/adapter libraries | Schema, registry adapters, etc. | Consumers integrate |
 
 **Guild teaches:**
 
@@ -53,7 +53,7 @@ Chosen option: **"C. Skill Steward meta CLI (+ future meta MCP); products own do
 
 ### Cross-promotion
 
-Product repos (starting with mcp_flutter) may document:
+Product repos (such as product-specific harnesses) may document:
 
 ```bash
 npx skills add arenukvern/skill_steward --skill harness-engineering-culture
@@ -64,8 +64,8 @@ for contributors building or maintaining **product** harnesses.
 ### Consequences
 
 * Good, because scope stays defensible in review.
-* Good, because mcp_flutter remains the reference **product** harness; Guild is reference **meta** harness.
-* Bad, because two CLIs in a contributor’s head—mitigated by naming (`steward` vs `flutter-mcp-toolkit`).
+* Good, because product-specific harnesses remain the reference **product** harnesses; Guild is reference **meta** harness.
+* Bad, because two CLIs in a contributor’s head—mitigated by distinct naming (`steward` vs `<cli_harness>`).
 * Neutral, because meta MCP is deferred to phase 2 ([ADR 0007](0007-dart-for-guild-cli-and-harness-tooling.md)).
 
 ## Pros and Cons of the Options
@@ -93,5 +93,5 @@ for contributors building or maintaining **product** harnesses.
 ## More Information
 
 * [OpenAI — Harness engineering](https://openai.com/index/harness-engineering/)
-* [mcp_flutter CLI vs MCP](https://github.com/Arenukvern/mcp_flutter/blob/main/docs/start_here/cli_vs_mcp.mdx)
+* Reference CLI vs MCP parity documentation
 * Skill: `harness-engineering-culture`

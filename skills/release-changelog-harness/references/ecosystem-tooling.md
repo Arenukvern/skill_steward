@@ -18,7 +18,7 @@ Pick **one primary generator** per repo. Link upstream docs; do not duplicate th
 |------|----------|------------|
 | **Melos** | Multi-package Dart repos | `melos version`, changelog commands |
 | **Manual CHANGELOG + tag** | Single package | Edit `CHANGELOG.md` section `[Unreleased]` |
-| **Custom scripts** (product harness) | mcp_flutter-style plugin.json + binaries | [binary-release-contract.md](binary-release-contract.md) — extend, don’t replace |
+| **Custom scripts** (product harness) | product-style plugin.json + binaries | [binary-release-contract.md](binary-release-contract.md) — extend, don’t replace |
 
 ## Rust
 
@@ -55,13 +55,13 @@ Implement with your stack’s workflow file; keep command names in **DX_FAQ**, n
 | Dart libs | `dart pub publish` | Melos / manual CHANGELOG |
 | Meta steward CLI | Maintainer clone + `pnpm run steward:*` | [ADR 0010](../../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.md) |
 
-## Sibling consistency (`~/mcp`)
+## Sibling consistency
 
-| Repo type | Typical release face |
+| Repo Type | Typical release face |
 |-----------|------------------------|
-| mcp_flutter | release-please + Release tarballs + `install.sh` |
-| IntentCall (`agentkit/`) | pub publish + changelog per package |
-| skill_steward | Changesets + `npx skills` (no binary train) |
-| flutter_harness | HS fixtures + package versions; binaries when standalone CLI ships |
+| **Product MCP** | release-please + Release tarballs + `install.sh` |
+| **Platform Libs** | pub/npm publish + changelog per package |
+| **Meta Steward** | Changesets + `npx skills` (no binary train) |
+| **CLI Harness** | fixtures + package versions; binaries when standalone CLI ships |
 
 Align **wording** (“what changed for agents?”) across siblings; **do not** force one npm tool on all.
