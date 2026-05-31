@@ -25,7 +25,7 @@ Sibling work: **[mcp_flutter](https://github.com/Arenukvern/mcp_flutter)** owns 
 1. **`npx skills add arenukvern/skill_steward`** — portable `SKILL.md` packages.
 2. **Docs as system of record** — [docs.page](https://docs.page/arenukvern/skill_steward) from `docs/` + `docs.json`; `AGENTS.md` is the agent map only.
 3. **Mechanical gates** — CI validates skills; contributors run `pnpm run validate`.
-4. **Plan hygiene (any format)** — use any planning tool; when work is done, [extract into ADR/FAQ/code/harness](start_here/executable-plans), then **remove** stale plan files from the repo.
+4. **Plan hygiene (any format)** — use any planning tool; when work is done, [extract into ADR/FAQ/code/harness](start_here/executable-plans.mdx), then **remove** stale plan files from the repo.
 
 ## Boundaries (non‑negotiable)
 

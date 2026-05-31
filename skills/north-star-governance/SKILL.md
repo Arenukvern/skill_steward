@@ -92,7 +92,7 @@ Optional Guild scratch (not a standard): `docs/exec-plans/active/YYYY-MM-DD-shor
 2. **Documentation router** table → North Star, FAQs, decisions, standards, key skills
 3. **Non-negotiables** (3–5 bullets): validate before PR, meta-only scope, plan hygiene (extract & remove), no secrets
 4. **Install paths** table (Cursor, Claude, Codex, `.agents/skills`)
-5. Link: “Skill authoring detail → [docs/STANDARDS.md](docs/STANDARDS.md)”
+5. Link: “Skill authoring detail → [docs/STANDARDS.md](../../docs/STANDARDS.md)”
 
 Move long skill-creation prose out of AGENTS—never grow AGENTS into a skill tutorial.
 
