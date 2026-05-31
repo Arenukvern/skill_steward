@@ -21,7 +21,7 @@ Improve skills **measurably**: baseline → measure → bounded edit → re-vali
 - Skill triggers wrong or never loads (description routing)
 - Bloated `SKILL.md`, high token cost, weak outcomes
 - After adding a new procedure—need regression checks
-- Porting patterns from mcp_flutter / plugin-eval research into Guild skills
+- Porting patterns from product MCP / plugin-eval research into Guild skills
 
 ## When not to use
 

@@ -51,7 +51,7 @@ Template: [citation-template.md](references/citation-template.md).
 |------|---------|
 | Official specs | agentskills.io, Cursor/Claude/Codex docs |
 | Papers / research | SkillOpt, SkillsBench arXiv |
-| Reference implementations | mcp_flutter, Codex plugin-eval |
+| Reference implementations | product MCPs, Codex plugin-eval |
 | Blog/guides | Only if procedure is non-obvious; prefer primary docs |
 
 Do **not** cite ephemeral chat URLs or private tokens.
