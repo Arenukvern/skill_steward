@@ -1,5 +1,34 @@
 # skill-steward
 
+## 0.2.2
+
+### Patch Changes
+
+- cb0ea1b: Add skills.sh badge to README and update skills/documentation to reference skills.sh repository page customization.
+- 786f50f: feat(steward_cli): enforce `license` frontmatter field via validator
+
+  Adds `validateLicense` to `skill_rules.dart` — a warning (not an error) when a
+  skill's `SKILL.md` frontmatter is missing the `license` key, or uses an identifier
+  not found in the recognized SPDX set.
+
+  This operationalizes the **Artisan Credit & Craftsmanship** principle from
+  `ethical-stewardship` and the citation/provenance requirements from
+  `skill-source-citations` in the automated validation pipeline.
+
+  ### Changes
+
+  - `packages/steward_cli/lib/src/validation/skill_rules.dart`
+
+    - Added `_knownSpdxIds` constant with common SPDX identifiers.
+    - Added `validateLicense(String? license) → List<String>` (warnings only).
+    - Called from `validateSkillStructure` after body-length checks, before `sources.md` check.
+
+  - `evals/fixtures/validate/missing-license/` — new fixture isolating the license warning.
+  - `evals/fixtures/validate/*/SKILL.md` — added `license: MIT` to fixtures that were missing it (keeps per-fixture test expectations stable and focused).
+  - `packages/steward_cli/test/validation_test.dart` — adds `missing-license` expectation; adds fixture to aggregate `okOnes` set.
+
+- 68261bc: Add official "maintained with Skill Steward" badges (light, dark, solid, and shields.io). Create the new repo-brand-identity and ethical-stewardship skills to govern repository branding, custom badges, and core moral stewardship principles. Update and bump versions of north-star-governance, harness-engineering-culture, and mcp-harness-repo-maintainer to integrate the new skills into their routing tables and build workflows.
+
 ## 0.2.1
 
 ### Patch Changes
