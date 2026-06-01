@@ -78,7 +78,7 @@ void main() {
           ]);
         }
 
-        final exists = candidatePaths.any((path) => File(path).existsSync());
+        final exists = candidatePaths.any((final path) => File(path).existsSync());
         expect(
           exists,
           isTrue,
@@ -137,7 +137,7 @@ void main() {
         missingAdrs,
         isEmpty,
         reason: 'The following ADR files are present on disk but not referenced in docs.json sidebar: '
-            '${missingAdrs.map((path) => p.relative(path, from: repoRoot)).toList()}',
+            '${missingAdrs.map((final path) => p.relative(path, from: repoRoot)).toList()}',
       );
     });
 
@@ -149,7 +149,7 @@ void main() {
         final docFiles = Directory(docsDir)
             .listSync(recursive: true)
             .whereType<File>()
-            .where((file) => file.path.endsWith('.md') || file.path.endsWith('.mdx'));
+            .where((final file) => file.path.endsWith('.md') || file.path.endsWith('.mdx'));
         filesToCheck.addAll(docFiles);
       }
 
@@ -241,7 +241,7 @@ void main() {
 }
 
 /// Helper that checks if a file exists when common markdown extensions/index files are appended.
-bool _checkFileWithSuffixes(File file) {
+bool _checkFileWithSuffixes(final File file) {
   final path = file.path;
   final suffixes = [
     '.mdx',
