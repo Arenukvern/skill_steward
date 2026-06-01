@@ -29,14 +29,14 @@ skill-name/
 
 Every skill must include **`references/sources.md`** listing URLs for specs, papers, and reference repos used. Update when research changes. Skill: `skill-source-citations`.
 
-### Eval tiers ([ADR 0011](decisions/0011-tiered-skill-evals-and-rule-based-ci.mdx))
+### Eval tiers ([ADR 0011](decisions/0011-tiered-skill-evals-and-rule-based-ci))
 
 | Tier | Skills | Required |
 |------|--------|----------|
 | **1 — Behavioral** | `north-star-governance`, `harness-engineering-culture`, `mcp-harness-repo-maintainer`, `create-skill` | `references/evals.md` + ≥2 files in `evals/cases/*.yaml`; `pnpm run eval` passes |
 | **2 — Structural** | All other skills under `skills/` | `pnpm run validate`; optional `evals.md` when behavior-critical |
 
-Case schema: [eval-case-schema.md](../skills/skill-eval-improve/references/eval-case-schema.md). Skill: `skill-eval-improve`.
+Case schema: [eval-case-schema.md](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-eval-improve/references/eval-case-schema.md). Skill: `skill-eval-improve`.
 
 ## SKILL.md
 

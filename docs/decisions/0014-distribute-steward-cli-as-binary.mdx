@@ -10,7 +10,7 @@ informed:
 
 ## Context and Problem Statement
 
-Previously, in [ADR 0010](0010-binary-releases-for-product-harness-not-meta-steward.mdx), we decided to restrict `steward_cli` to repo clones (maintainers only) and not provide a precompiled binary distribution.
+Previously, in [ADR 0010](0010-binary-releases-for-product-harness-not-meta-steward), we decided to restrict `steward_cli` to repo clones (maintainers only) and not provide a precompiled binary distribution.
 
 However, as the `steward` CLI evolves to support repository-local installation, updating, and validation of skills (`steward install`, `steward update`), it behaves increasingly like a standalone package manager / utility tool for agent-first projects. Users and agents want to run validation and install skills without cloning the `skill_steward` repository or installing the Dart SDK.
 
@@ -30,7 +30,7 @@ However, as the `steward` CLI evolves to support repository-local installation, 
 
 Chosen option: **Binary releases via GitHub Release & `install.sh`**. 
 
-We will transition `steward_cli` to ship as precompiled target-specific binaries. This modifies the decision in [ADR 0010](0010-binary-releases-for-product-harness-not-meta-steward.mdx).
+We will transition `steward_cli` to ship as precompiled target-specific binaries. This modifies the decision in [ADR 0010](0010-binary-releases-for-product-harness-not-meta-steward).
 
 ### Consequences
 

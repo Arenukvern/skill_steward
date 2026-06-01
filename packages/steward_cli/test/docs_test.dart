@@ -234,6 +234,32 @@ void main() {
                 'Link text target: "$fullTarget" (resolved to: "${p.relative(resolvedFile.path, from: repoRoot)}")\n'
                 'The resolved file/directory does not exist on disk.',
           );
+
+          // For files inside the docs/ directory, enforce docs.page constraints:
+          if (p.isWithin(docsDir, file.path)) {
+            // 1. Must not escape the docs/ directory
+            final resolvedNormalized = p.normalize(resolvedFile.path);
+            final docsDirNormalized = p.normalize(docsDir);
+            final isResolvedInsideDocs = resolvedNormalized == docsDirNormalized ||
+                p.isWithin(docsDirNormalized, resolvedNormalized);
+            
+            expect(
+              isResolvedInsideDocs,
+              isTrue,
+              reason: 'Link target in docs/ escapes the docs/ directory: "$fullTarget" in ${p.relative(file.path, from: repoRoot)}\n'
+                  'On docs.page, relative links cannot point outside the docs/ directory. '
+                  'Use absolute GitHub URLs instead.',
+            );
+
+            // 2. Must not end with .md or .mdx extensions
+            final endsWithMdOrMdx = targetPath.endsWith('.md') || targetPath.endsWith('.mdx');
+            expect(
+              endsWithMdOrMdx,
+              isFalse,
+              reason: 'Link target contains .md or .mdx extension: "$fullTarget" in ${p.relative(file.path, from: repoRoot)}\n'
+                  'On docs.page, links to markdown pages must be extensionless to resolve correctly.',
+            );
+          }
         }
       }
     });

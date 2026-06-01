@@ -25,15 +25,15 @@ Sibling work: Product harness repositories (such as product-level MCP/CLI toolki
 1. **`npx skills add arenukvern/skill_steward`** — portable `SKILL.md` packages.
 2. **Docs as system of record** — [docs.page](https://docs.page/arenukvern/skill_steward) from `docs/` + `docs.json`; `AGENTS.md` is the agent map only.
 3. **Mechanical gates** — CI validates skills; contributors run `pnpm run validate`.
-4. **Plan hygiene (any format)** — use any planning tool; when work is done, [extract into ADR/FAQ/code/harness](start_here/executable-plans.mdx), then **remove** stale plan files from the repo.
+4. **Plan hygiene (any format)** — use any planning tool; when work is done, [extract into ADR/FAQ/code/harness](start_here/executable-plans), then **remove** stale plan files from the repo.
 
 ## Boundaries (non‑negotiable)
 
 - One clear outcome per skill; `SKILL.md` stays lean.
 - Skills in `skills/`; wiring in `plugins/`; templates in `templates/` (not installable).
 - **Behavior SSOT is code** — docs link inward; they do not paraphrase implementations.
-- New strategic **why** → ADR; standing **why** → [DESIGN_FAQ.mdx](DESIGN_FAQ.mdx); **how** → [DX_FAQ.mdx](DX_FAQ.mdx).
-- **Ethical governance model** — use [`ethical-stewardship`](../skills/ethical-stewardship/SKILL.md) to bootstrap, audit, and refine the credo and design constraints for this repo.
+- New strategic **why** → ADR; standing **why** → [DESIGN_FAQ.mdx](DESIGN_FAQ); **how** → [DX_FAQ.mdx](DX_FAQ).
+- **Ethical governance model** — use [`ethical-stewardship`](https://github.com/arenukvern/skill_steward/blob/main/skills/ethical-stewardship/SKILL.md) to bootstrap, audit, and refine the credo and design constraints for this repo.
 
 ## Success looks like
 
@@ -43,8 +43,8 @@ Sibling work: Product harness repositories (such as product-level MCP/CLI toolki
 
 ## References
 
-- [ADR 0001 — repository purpose](decisions/0001-repository-purpose-as-skills-meta-layer.mdx)
-- [ADR 0008 — Skill Steward product name](decisions/0008-adopt-skill-steward-product-name.mdx)
-- [Skill: ethical-stewardship](../skills/ethical-stewardship/SKILL.md) — governance model (Anti-Bloat, Reversibility, Legibility, Behavior-as-Truth, Artisan Restraint)
+- [ADR 0001 — repository purpose](decisions/0001-repository-purpose-as-skills-meta-layer)
+- [ADR 0008 — Skill Steward product name](decisions/0008-adopt-skill-steward-product-name)
+- [Skill: ethical-stewardship](https://github.com/arenukvern/skill_steward/blob/main/skills/ethical-stewardship/SKILL.md) — governance model (Anti-Bloat, Reversibility, Legibility, Behavior-as-Truth, Artisan Restraint)
 - [Harness engineering (OpenAI)](https://openai.com/index/harness-engineering/)
 - [FAQ-driven development](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl)

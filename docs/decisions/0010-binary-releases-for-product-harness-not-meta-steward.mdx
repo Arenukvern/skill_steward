@@ -18,7 +18,7 @@ Should Skill Steward adopt the same pattern for `steward_cli` and skill distribu
 
 * **Consumer path** — Skill Steward value is **`SKILL.md` via `npx skills`**, not a long-running server binary.
 * **CLI scope** — `steward validate` / `steward list` require a **checkout** (`skills/`, `pnpm`, Node validator). A standalone binary without the repo adds little.
-* **Maintainer capacity** — [ADR 0007](0007-dart-for-guild-cli-and-harness-tooling.mdx) explicitly deferred multi-target binary maintenance (Rust or release matrix) in favor of Dart + CI on clone.
+* **Maintainer capacity** — [ADR 0007](0007-dart-for-guild-cli-and-harness-tooling) explicitly deferred multi-target binary maintenance (Rust or release matrix) in favor of Dart + CI on clone.
 * **Sibling consistency** — Sibling product harnesses **should** ship binaries; meta steward teaches the contract via `release-changelog-harness`.
 
 ## Considered Options
@@ -44,12 +44,12 @@ Revisit shipping `steward` binaries only if a **global install without clone** b
 
 * Good, because release CI stays small (Changesets + validate; no cross-compilation matrix).
 * Good, because agents learn one **distribution router** (markdown vs executable vs pub).
-* Bad, because contributors without Dart still need Node/`pnpm run validate` until Dart-native validation lands ([ADR 0007](0007-dart-for-guild-cli-and-harness-tooling.mdx) phase 2).
+* Bad, because contributors without Dart still need Node/`pnpm run validate` until Dart-native validation lands ([ADR 0007](0007-dart-for-guild-cli-and-harness-tooling) phase 2).
 * Neutral, because sibling harnesses remain the reference implementations for binary trains.
 
 ### Confirmation
 
-* `release-changelog-harness` references [binary-release-contract.md](../../skills/release-changelog-harness/references/binary-release-contract.md).
+* `release-changelog-harness` references [binary-release-contract.md](https://github.com/arenukvern/skill_steward/blob/main/skills/release-changelog-harness/references/binary-release-contract.md).
 * DESIGN_FAQ Q&A on binary vs skills distribution.
 * Sibling harness maintainer checklist unchanged; Skill Steward checklist explicitly says “no binary release train.”
 

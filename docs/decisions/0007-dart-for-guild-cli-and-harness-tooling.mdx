@@ -10,7 +10,7 @@ informed:
 
 ## Context and Problem Statement
 
-Skill Steward needs a **meta harness** in-repo: at minimum a CLI for `validate` and `list` skills ([ADR 0006](0006-guild-harness-meta-vs-product-clis.mdx)). Implementation language was open: Rust (common for CLIs), Node (already used for `scripts/validate-skills.mjs`), or Dart (used across maintainer’s MCP/Flutter stack).
+Skill Steward needs a **meta harness** in-repo: at minimum a CLI for `validate` and `list` skills ([ADR 0006](0006-guild-harness-meta-vs-product-clis)). Implementation language was open: Rust (common for CLIs), Node (already used for `scripts/validate-skills.mjs`), or Dart (used across maintainer’s MCP/Flutter stack).
 
 **Why Dart for Guild harness tooling?**
 
@@ -49,7 +49,7 @@ Node `scripts/validate-skills.mjs` remains until Dart parity is proven; single u
 * Good, because disk/toolchain cost stays low vs Rust.
 * Bad, because contributors need Dart SDK for CLI dev (Flutter SDK satisfies).
 * Bad, because dual implementation during Node delegation period.
-* Neutral, because product CLIs stay separate ([ADR 0006](0006-guild-harness-meta-vs-product-clis.mdx)).
+* Neutral, because product CLIs stay separate ([ADR 0006](0006-guild-harness-meta-vs-product-clis)).
 
 ### Confirmation
 
@@ -77,4 +77,4 @@ Node `scripts/validate-skills.mjs` remains until Dart parity is proven; single u
 ## More Information
 
 * **Authoritative source:** `packages/steward_cli/`
-* [ADR 0006 — meta vs product CLIs](0006-guild-harness-meta-vs-product-clis.mdx)
+* [ADR 0006 — meta vs product CLIs](0006-guild-harness-meta-vs-product-clis)

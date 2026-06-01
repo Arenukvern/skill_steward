@@ -84,11 +84,11 @@ curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/insta
 curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash -s -- --version v0.1.0
 ```
 
-**Note:** Hooks/plugins are **not** installed by `npx skills` on Cursor—see `../plugins/README.md` and [ADR 0004](decisions/0004-plugin-packaging-and-install-path.mdx).
+**Note:** Hooks/plugins are **not** installed by `npx skills` on Cursor—see `../plugins/README.md` and [ADR 0004](decisions/0004-plugin-packaging-and-install-path).
 
 ## 🔄 Updating installed skills
 
-After Skill Steward merges to `main`, consumers refresh installed `SKILL.md` files with [vercel-labs/skills](https://github.com/vercel-labs/skills) (`npx skills`). Installed paths depend on agent (e.g. `.cursor/skills/`, `.agents/skills/`); see [AGENTS.md](../AGENTS.md).
+After Skill Steward merges to `main`, consumers refresh installed `SKILL.md` files with [vercel-labs/skills](https://github.com/vercel-labs/skills) (`npx skills`). Installed paths depend on agent (e.g. `.cursor/skills/`, `.agents/skills/`); see [AGENTS.md](https://github.com/arenukvern/skill_steward/blob/main/AGENTS.md).
 
 ```bash
 # List what is installed (project)
@@ -211,7 +211,7 @@ Skill                  → north-star-governance
 
 ## 🚀 Release desk (Changesets)
 
-Skill Steward uses [Changesets](https://github.com/changesets/changesets) for **repo** semver + `CHANGELOG.md` (skills are not individually versioned). **Binary release train enabled** — compiled AOT binaries (darwin-arm64, linux-x64) and `install.sh` bootstrapper attached to GitHub Releases via changesets-triggered tag workflows. See [ADR 0014](decisions/0014-distribute-steward-cli-as-binary.mdx) and [binary-release-contract.md](../skills/release-changelog-harness/references/binary-release-contract.md).
+Skill Steward uses [Changesets](https://github.com/changesets/changesets) for **repo** semver + `CHANGELOG.md` (skills are not individually versioned). **Binary release train enabled** — compiled AOT binaries (darwin-arm64, linux-x64) and `install.sh` bootstrapper attached to GitHub Releases via changesets-triggered tag workflows. See [ADR 0014](decisions/0014-distribute-steward-cli-as-binary) and [binary-release-contract.md](https://github.com/arenukvern/skill_steward/blob/main/skills/release-changelog-harness/references/binary-release-contract.md).
 
 ```bash
 # PR: describe consumer impact (required when skills/docs/plugins/registry change)

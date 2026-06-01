@@ -42,14 +42,14 @@ Chosen option: **"C. Meta-layer guild (skills + plugins for managing skills and 
 * Good, because agents loading this repo get consistent “how to run the guild” behavior instead of random domain trivia.
 * Good, because `validate-skills`, `skill-spec-review`, `create-skill`, `adr-records`, `faq-driven-docs`, and `multi-agent-handoff` are exemplars of the intended shape.
 * Bad, because the repo will **not** replace specialized skill libraries; users must install domain skills elsewhere.
-* Bad, because hook install is a second step on Cursor until plugin installers land — see [ADR 0004](0004-plugin-packaging-and-install-path.mdx).
+* Bad, because hook install is a second step on Cursor until plugin installers land — see [ADR 0004](0004-plugin-packaging-and-install-path).
 * Neutral, because skills.sh listing remains useful for discovery, but popularity is not the primary success metric.
 
 ### Confirmation
 
 * New skills are evaluated against the **inclusion criteria** below before merge.
 * README and `skills.sh.json` groupings emphasize meta/process categories, not domain stacks.
-* Follow-up delivered in [ADR 0004](0004-plugin-packaging-and-install-path.mdx) (`plugins/` layout and install paths).
+* Follow-up delivered in [ADR 0004](0004-plugin-packaging-and-install-path) (`plugins/` layout and install paths).
 
 ## Inclusion criteria (what belongs in Skill Steward)
 
@@ -104,5 +104,5 @@ Domain knowledge stays in **other repositories**; Skill Steward links to them vi
 ## More Information
 
 * Y-Statement (short): In the context of a fragmented Agent Skills ecosystem, facing unbounded catalog growth and stale domain packs, we decided for a **meta-layer repository** to achieve **focused tooling for skill lifecycle and process improvement**, accepting that **domain skills must be sourced elsewhere**.
-* Related: [ADR 0000](0000-use-markdown-architectural-decision-records.mdx)
+* Related: [ADR 0000](0000-use-markdown-architectural-decision-records)
 * External: [adr.github.io](https://adr.github.io/) · [Agent Skills spec](https://agentskills.io/) · [vercel-labs/skills](https://github.com/vercel-labs/skills)

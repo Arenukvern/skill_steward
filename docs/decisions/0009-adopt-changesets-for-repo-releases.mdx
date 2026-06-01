@@ -12,15 +12,15 @@ informed:
 
 Skill Steward is a **meta** repository: consumers care about skill content, install paths, docs, and validation behavior—not npm library semver in the traditional sense. Releases still need to be **legible**: what changed, for whom, and at which repo version.
 
-Hand-editing `package.json` version and `CHANGELOG.md` on release day is error-prone; agents and contributors lack a **structured PR-time artifact** to describe intent. The JS ecosystem’s [Changesets](https://github.com/changesets/changesets) pattern solves this with small markdown files in git ([release-changelog-harness](../../skills/release-changelog-harness/SKILL.md)).
+Hand-editing `package.json` version and `CHANGELOG.md` on release day is error-prone; agents and contributors lack a **structured PR-time artifact** to describe intent. The JS ecosystem’s [Changesets](https://github.com/changesets/changesets) pattern solves this with small markdown files in git ([release-changelog-harness](https://github.com/arenukvern/skill_steward/blob/main/skills/release-changelog-harness/SKILL.md)).
 
 This repo is a **single root package** today (`package.json` name `skill-steward`), not a pnpm workspace. Changesets is still appropriate: one version tracks the **repository release**, skills remain unversioned packages inside the tree, and we can extend to workspace packages later without changing the contract.
 
 ## Decision Drivers
 
-* **Release legibility contract** — notes in git, structured contributor input, mechanical gates ([release-changelog-harness](../../skills/release-changelog-harness/SKILL.md)).
+* **Release legibility contract** — notes in git, structured contributor input, mechanical gates ([release-changelog-harness](https://github.com/arenukvern/skill_steward/blob/main/skills/release-changelog-harness/SKILL.md)).
 * **Agent-readable history** — agents can read `.changeset/*.md` and `CHANGELOG.md` without GitHub Releases API.
-* **FAQ-driven how** — commands live in [DX_FAQ.mdx](../DX_FAQ.mdx), not in `AGENTS.md`.
+* **FAQ-driven how** — commands live in [DX_FAQ.mdx](../DX_FAQ), not in `AGENTS.md`.
 * **No npm product** — root package is `private`; Changesets manages **changelog + semver**, not npm publish (skills ship via `npx skills` / GitHub).
 * **Sibling ecosystems** — Dart/Rust repos in `~/mcp` keep native tooling; this ADR applies to **skill_steward only**.
 
@@ -56,6 +56,6 @@ Exempt: typo-only PRs may use label or title `[skip changeset]` (documented in C
 
 ## Links
 
-* [DX_FAQ — Release desk](../DX_FAQ.mdx)
-* [release-changelog-harness skill](../../skills/release-changelog-harness/SKILL.md)
+* [DX_FAQ — Release desk](../DX_FAQ)
+* [release-changelog-harness skill](https://github.com/arenukvern/skill_steward/blob/main/skills/release-changelog-harness/SKILL.md)
 * [Changesets documentation](https://github.com/changesets/changesets/blob/main/docs/intro-to-using-changesets.md)
