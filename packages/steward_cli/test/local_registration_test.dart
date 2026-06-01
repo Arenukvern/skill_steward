@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:args/command_runner.dart';
 import 'package:path/path.dart' as p;
 import 'package:steward_cli/src/commands/install_command.dart';
+import 'package:steward_cli/src/commands/update_command.dart';
 import 'package:steward_cli/src/commands/validate_command.dart';
+
 import 'package:steward_cli/src/validation/validation.dart';
 
 import 'package:test/test.dart';
@@ -153,7 +156,59 @@ Body steps.
       expect(cmd.argParser.options.containsKey('lock'), isTrue);
       expect(cmd.argParser.options.containsKey('force'), isTrue);
     });
+
+    test('UpdateCommand is registered with correct options', () {
+      final cmd = UpdateCommand();
+      expect(cmd.argParser.options.containsKey('local'), isTrue);
+      expect(cmd.argParser.options.containsKey('target'), isTrue);
+      expect(cmd.argParser.options.containsKey('force'), isTrue);
+    });
+  });
+
+  group('InstallCommand Integration', () {
+    test('copies local skill directory successfully', () async {
+      final originalCwd = Directory.current;
+      try {
+        // Set up dummy workspace
+        final workspaceDir = tempDir;
+        Directory.current = workspaceDir;
+
+        // Create skills.sh.json to mark repo root
+        await File(p.join(workspaceDir.path, 'skills.sh.json')).writeAsString('{}');
+
+        // Create dummy source skill
+        final srcSkillDir = Directory(p.join(workspaceDir.path, 'skills', 'dummy-skill'))..createSync(recursive: true);
+        await File(p.join(srcSkillDir.path, 'SKILL.md')).writeAsString('''---
+name: dummy-skill
+description: A dummy test skill.
+metadata:
+  cursor:
+    paths:
+      - "docs/**"
+---
+Instruction body.
+''');
+
+        // Run install command
+        final runner = CommandRunner<void>('steward', 'test')..addCommand(InstallCommand());
+        await runner.run(['install', 'skills/dummy-skill', '--local', '--target', 'cursor', '--force']);
+
+        // Verify copy exists under .agents/skills/dummy-skill
+        final destSkillDir = Directory(p.join(workspaceDir.path, '.agents', 'skills', 'dummy-skill'));
+        expect(destSkillDir.existsSync(), isTrue);
+
+        final skillMd = File(p.join(destSkillDir.path, 'SKILL.md'));
+        expect(skillMd.existsSync(), isTrue);
+
+        final content = await skillMd.readAsString();
+        expect(content, contains('paths:\n  - "docs/**"'));
+        expect(content, contains('Instruction body.'));
+      } finally {
+        Directory.current = originalCwd;
+      }
+    });
   });
 }
+
 
 
