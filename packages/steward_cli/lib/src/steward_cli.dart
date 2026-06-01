@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:args/command_runner.dart';
 
 import 'commands/eval_command.dart';
+import 'commands/install_command.dart';
 import 'commands/list_command.dart';
+import 'commands/update_command.dart';
 import 'commands/validate_command.dart';
 import 'repo_root.dart';
 
@@ -11,13 +13,16 @@ import 'repo_root.dart';
 class StewardCli {
   /// Runs [args] and exits with the command status code.
   Future<void> run(final List<String> args) async {
-    final runner = CommandRunner<void>(
-      'steward',
-      'Skill Steward meta harness — validate, eval, and list skills.',
-    )
-      ..addCommand(ValidateCommand())
-      ..addCommand(EvalCommand())
-      ..addCommand(ListCommand());
+    final runner =
+        CommandRunner<void>(
+            'steward',
+            'Skill Steward meta harness — validate, eval, and list skills.',
+          )
+          ..addCommand(ValidateCommand())
+          ..addCommand(EvalCommand())
+          ..addCommand(ListCommand())
+          ..addCommand(InstallCommand())
+          ..addCommand(UpdateCommand());
 
     try {
       await runner.run(args);

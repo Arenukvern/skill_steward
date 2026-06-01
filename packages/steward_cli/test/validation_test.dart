@@ -16,10 +16,7 @@ typedef FixtureExpectation = ({
 /// Expected behaviors for each fixture under evals/fixtures/validate/
 /// as documented in evals/fixtures/validate/README.md.
 final Map<String, FixtureExpectation> _expectations = {
-  'good-skill': (
-    errorContains: [],
-    warningContains: [],
-  ),
+  'good-skill': (errorContains: [], warningContains: []),
   'bad-name-mismatch': (
     errorContains: ['must match directory'],
     warningContains: ['Missing references/sources.md'],
@@ -45,10 +42,7 @@ final Map<String, FixtureExpectation> _expectations = {
   ),
   'too-long-body': (
     errorContains: [],
-    warningContains: [
-      'SKILL.md is ~',
-      'Missing references/sources.md',
-    ],
+    warningContains: ['SKILL.md is ~', 'Missing references/sources.md'],
   ),
   // New fixtures added during parallel evals expansion
   'very-short-body': (
@@ -109,26 +103,23 @@ void main() {
       );
 
       final entries = dir.listSync();
-      final subdirs = entries
-          .whereType<Directory>()
-          .map((final d) => p.basename(d.path))
-          .where((final name) => !name.startsWith('.'))
-          .toList()
-        ..sort();
+      final subdirs =
+          entries
+              .whereType<Directory>()
+              .map((final d) => p.basename(d.path))
+              .where((final name) => !name.startsWith('.'))
+              .toList()
+            ..sort();
 
       // Must include all fixtures we have expectations for.
-      expect(
-        subdirs,
-        containsAll(_expectations.keys),
-      );
+      expect(subdirs, containsAll(_expectations.keys));
       // We do not assert exact count here to remain resilient as fixture set grows.
     });
 
     // One test case per fixture using the expectations map.
     // This is resilient as new fixtures are added.
     for (final fixture in _expectations.keys) {
-      test('validateSingleSkill on $fixture matches documented expectations',
-          () async {
+      test('validateSingleSkill on $fixture matches documented expectations', () async {
         final fixturePath = p.join(fixturesRoot, fixture);
         final result = await validateSingleSkill(fixturePath, fixture);
 
@@ -172,52 +163,58 @@ void main() {
     }
 
     test(
-        'validateAllSkills on fixtures directory produces correct aggregate report',
-        () async {
-      final report = await validateAllSkills(fixturesRoot);
+      'validateAllSkills on fixtures directory produces correct aggregate report',
+      () async {
+        final report = await validateAllSkills(fixturesRoot);
 
-      // There are failing skills (name/format/frontmatter errors)
-      expect(report.ok, isFalse);
-      // Should have at least as many skills as we have expectations for.
-      expect(report.skills.length, greaterThanOrEqualTo(_expectations.length));
+        // There are failing skills (name/format/frontmatter errors)
+        expect(report.ok, isFalse);
+        // Should have at least as many skills as we have expectations for.
+        expect(
+          report.skills.length,
+          greaterThanOrEqualTo(_expectations.length),
+        );
 
-      final allNames = report.skills.map((final s) => s.dirName).toSet();
-      expect(
-        allNames,
-        containsAll(_expectations.keys),
-      );
+        final allNames = report.skills.map((final s) => s.dirName).toSet();
+        expect(allNames, containsAll(_expectations.keys));
 
-      final failed = report.failed.map((final s) => s.dirName).toSet();
-      expect(
-        failed,
-        containsAll({
-          'bad-name-mismatch',
-          'invalid-name-format',
-          'missing-frontmatter',
-        }),
-      );
+        final failed = report.failed.map((final s) => s.dirName).toSet();
+        expect(
+          failed,
+          containsAll({
+            'bad-name-mismatch',
+            'invalid-name-format',
+            'missing-frontmatter',
+          }),
+        );
 
-      // Successful ones (only warnings or clean) among the baseline
-      final okOnes = report.skills
-          .where((final s) => s.isValid)
-          .map((final s) => s.dirName)
-          .toSet();
-      expect(
-        okOnes,
-        containsAll(
-          {'good-skill', 'missing-sources', 'has-readme', 'too-long-body', 'missing-license'},
-        ),
-      );
+        // Successful ones (only warnings or clean) among the baseline
+        final okOnes = report.skills
+            .where((final s) => s.isValid)
+            .map((final s) => s.dirName)
+            .toSet();
+        expect(
+          okOnes,
+          containsAll({
+            'good-skill',
+            'missing-sources',
+            'has-readme',
+            'too-long-body',
+            'missing-license',
+          }),
+        );
 
-      // Spot-check one aggregate result (via the all-skills path).
-      // Singles tests already verified direct validateSingleSkill on good-skill is clean.
-      // The all path now also runs registry checks (see skills.sh.json), so individual
-      // results obtained here may carry registry-related warnings for unregistered fixture dirs.
-      final good =
-          report.skills.firstWhere((final s) => s.dirName == 'good-skill');
-      expect(good.errors, isEmpty);
-      // registryWarnings on the report (or per-skill) are expected to be populated for this input.
-      expect(report.registryWarnings, isNotEmpty);
-    });
+        // Spot-check one aggregate result (via the all-skills path).
+        // Singles tests already verified direct validateSingleSkill on good-skill is clean.
+        // The all path now also runs registry checks (see skills.sh.json), so individual
+        // results obtained here may carry registry-related warnings for unregistered fixture dirs.
+        final good = report.skills.firstWhere(
+          (final s) => s.dirName == 'good-skill',
+        );
+        expect(good.errors, isEmpty);
+        // registryWarnings on the report (or per-skill) are expected to be populated for this input.
+        expect(report.registryWarnings, isNotEmpty);
+      },
+    );
   });
 }

@@ -27,17 +27,20 @@ class ListCommand extends Command<void> {
       exit(1);
     }
 
-    final entries = skillsDir
-        .listSync()
-        .whereType<Directory>()
-        .where(
-          (final d) =>
-              !p.basename(d.path).startsWith('_') &&
-              !p.basename(d.path).startsWith('.'),
-        )
-        .toList()
-      ..sort((final a, final b) =>
-          p.basename(a.path).compareTo(p.basename(b.path)),);
+    final entries =
+        skillsDir
+            .listSync()
+            .whereType<Directory>()
+            .where(
+              (final d) =>
+                  !p.basename(d.path).startsWith('_') &&
+                  !p.basename(d.path).startsWith('.'),
+            )
+            .toList()
+          ..sort(
+            (final a, final b) =>
+                p.basename(a.path).compareTo(p.basename(b.path)),
+          );
 
     for (final dir in entries) {
       final skillName = p.basename(dir.path);

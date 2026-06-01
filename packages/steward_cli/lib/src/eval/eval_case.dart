@@ -24,10 +24,7 @@ class EvalRule {
     return EvalRule(kind: kind, path: path, terms: terms);
   }
 
-  static const _bodyKinds = {
-    'body_includes_any',
-    'body_excludes_all',
-  };
+  static const _bodyKinds = {'body_includes_any', 'body_excludes_all'};
   static const _termKinds = {
     'description_includes_any',
     'description_excludes_all',
@@ -91,9 +88,9 @@ class EvalCase {
     final rawRules = map['rules'];
     final rules = rawRules is List
         ? rawRules
-            .whereType<Map<Object?, Object?>>()
-            .map(EvalRule.fromMap)
-            .toList()
+              .whereType<Map<Object?, Object?>>()
+              .map(EvalRule.fromMap)
+              .toList()
         : const <EvalRule>[];
 
     return EvalCase(
@@ -119,14 +116,10 @@ class EvalCase {
     if (id.isEmpty) errors.add('$file: missing id');
     if (skill.isEmpty) errors.add('$file: missing skill');
     if (!_validRoutings.contains(routing)) {
-      errors.add(
-        '$file: routing must be should_trigger | should_not_trigger',
-      );
+      errors.add('$file: routing must be should_trigger | should_not_trigger');
     }
     if (input.length < 8) {
-      errors.add(
-        '$file: input must be a realistic user prompt (≥8 chars)',
-      );
+      errors.add('$file: input must be a realistic user prompt (≥8 chars)');
     }
     if (rules.isEmpty) {
       errors.add('$file: rules must be a non-empty array');

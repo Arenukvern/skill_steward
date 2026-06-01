@@ -23,12 +23,12 @@ class SkillValidationResult {
   bool get isValid => errors.isEmpty;
 
   Map<String, dynamic> toJson() => {
-        'dirName': dirName,
-        'errors': errors,
-        'warnings': warnings,
-        'name': name,
-        'description': description,
-      };
+    'dirName': dirName,
+    'errors': errors,
+    'warnings': warnings,
+    'name': name,
+    'description': description,
+  };
 
   @override
   String toString() {
@@ -59,8 +59,8 @@ class ValidationReport {
       skills.where((final s) => !s.isValid).toList();
 
   Map<String, dynamic> toJson() => {
-        'ok': ok,
-        'skills': skills.map((final s) => s.toJson()).toList(),
-        if (registryWarnings.isNotEmpty) 'registryWarnings': registryWarnings,
-      };
+    'ok': ok,
+    'skills': skills.map((final s) => s.toJson()).toList(),
+    if (registryWarnings.isNotEmpty) 'registryWarnings': registryWarnings,
+  };
 }

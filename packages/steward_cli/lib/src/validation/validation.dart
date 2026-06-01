@@ -11,6 +11,7 @@
 /// Node original and to evals/fixtures/validate/ cases.
 library;
 
+export 'local_validator.dart' show validateLocalSkills;
 export 'skill_frontmatter.dart';
 export 'skill_rules.dart';
 export 'skill_validator.dart'
