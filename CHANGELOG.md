@@ -1,5 +1,23 @@
 # skill-steward
 
+## 0.3.1
+
+### Patch Changes
+
+- 7a82826: docs: add automated docs validation tests and improve documentation readability
+
+  - Add a Dart-based test suite `docs_test.dart` to validate `docs.json` configuration integrity, verify sidebar pages, and automatically find broken internal markdown links.
+  - Add ADR 0014 to the `docs.json` sidebar configuration.
+  - Correct outdated references to removed Node.js validation scripts in `docs/STANDARDS.mdx` and update the binary release Q&A in `docs/DESIGN_FAQ.mdx`.
+  - Clean up duplicate installation instructions and update the repository layout diagram in `README.md`.
+  - Expand the visual branding guide in `docs/brand.mdx` with copy-pasteable repository status badges and a guide on custom badge creation (capsules and Shields.io base64 dynamic badges).
+
+- f85cfa7: docs: fix docs.page broken links and enforce link validation constraints
+
+  - Strip `.md` and `.mdx` extensions from all relative and root-relative links under `docs/` to ensure proper routing on `docs.page`.
+  - Update traversals escaping the `docs/` directory to absolute GitHub URLs.
+  - Update `docs_test.dart` to enforce these link structure rules on all markdown files in `docs/`.
+
 ## 0.3.0
 
 ### Minor Changes
