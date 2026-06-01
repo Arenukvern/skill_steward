@@ -29,10 +29,25 @@ Same thread: useful docs for humans and agents, mechanical gates, and work worth
 
 ## Install
 
-All meta-skills:
+### Skills
+Install the meta-skills (e.g., for Cursor, Claude Code, Codex) via `npx skills`:
 
 ```bash
+# All meta-skills
 npx skills add arenukvern/skill_steward
+
+# Target specific agents
+npx skills add arenukvern/skill_steward -a cursor -a claude-code -y
+
+# Global install
+npx skills add arenukvern/skill_steward -g
+```
+
+### Steward CLI (Global Binary)
+To install the `steward` CLI globally as a precompiled native binary (which allows you to run validation, skill installs, and updates locally without needing the Dart SDK or cloning the repository):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash
 ```
 
 One skill:
@@ -176,6 +191,12 @@ Dart CLI directly ([ADR 0006](docs/decisions/0006-guild-harness-meta-vs-product-
 
 ```bash
 cd packages/steward_cli && dart pub get && dart run :steward validate
+```
+
+Or using the globally installed `steward` binary:
+
+```bash
+steward validate
 ```
 
 Cursor validates `skills/**/SKILL.md` on save via `[.cursor/hooks.json](.cursor/hooks.json)`.

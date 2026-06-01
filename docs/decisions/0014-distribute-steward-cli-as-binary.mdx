@@ -1,0 +1,46 @@
+---
+status: accepted
+date: 2026-06-02
+decision-makers: Skill Steward maintainers
+consulted:
+informed:
+---
+
+# Distribute steward CLI as native precompiled binary
+
+## Context and Problem Statement
+
+Previously, in [ADR 0010](0010-binary-releases-for-product-harness-not-meta-steward.mdx), we decided to restrict `steward_cli` to repo clones (maintainers only) and not provide a precompiled binary distribution.
+
+However, as the `steward` CLI evolves to support repository-local installation, updating, and validation of skills (`steward install`, `steward update`), it behaves increasingly like a standalone package manager / utility tool for agent-first projects. Users and agents want to run validation and install skills without cloning the `skill_steward` repository or installing the Dart SDK.
+
+## Decision Drivers
+
+* **Consumer friction:** Requiring Dart SDK to run the `steward` tool is a high barrier for non-Dart developers.
+* **Global utility behavior:** Users want a single `steward` executable they can install globally (e.g. via `curl | bash`) and run inside any project.
+* **Sibling parity:** Sibling repos like `mcp_flutter` have proven the success of native binary AOT compilation and `install.sh` bootstrappers.
+
+## Considered Options
+
+* **Status Quo (ADR 0010):** Force a repo clone and running from source. High friction for general users.
+* **Pub.dev activation:** Distribute via `dart pub global activate`. Forces Dart SDK on the host machine.
+* **Binary releases via GitHub Release & `install.sh` (Chosen):** Compile native AOT executables using `dart compile exe` for `darwin-arm64` and `linux-x64`, publish them on tags, and provide a zero-dependency installer script.
+
+## Decision Outcome
+
+Chosen option: **Binary releases via GitHub Release & `install.sh`**. 
+
+We will transition `steward_cli` to ship as precompiled target-specific binaries. This modifies the decision in [ADR 0010](0010-binary-releases-for-product-harness-not-meta-steward.mdx).
+
+### Consequences
+
+* **Good:** Zero dependencies required on user machines to execute `steward`.
+* **Good:** Native binaries run with minimal startup latency (no Dart VM spin-up cost).
+* **Bad:** Release CI workflow becomes slightly larger to handle multi-platform target compilation.
+* **Neutral:** We must maintain and support `install.sh` alongside package manager setups.
+
+## Confirmation
+
+* `scripts/build_release_artifacts.sh` added to compile `steward_cli`.
+* `install.sh` added to the repository root.
+* `.github/workflows/publish-binaries.yml` added to automate target compilation and asset attachment on git tag `v*` releases.

@@ -74,6 +74,16 @@ npx skills add arenukvern/skill_steward -g
 npx skills add . --list
 ```
 
+### Install steward CLI (Global Binary)
+
+For zero-dependency installation of the `steward` CLI tool (which manages skill installation and checks locally without requiring a clone or Dart SDK):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash
+# Pinned version:
+curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash -s -- --version v0.1.0
+```
+
 **Note:** Hooks/plugins are **not** installed by `npx skills` on Cursor—see `../plugins/README.md` and [ADR 0004](decisions/0004-plugin-packaging-and-install-path.mdx).
 
 ## 🔄 Updating installed skills
@@ -201,7 +211,7 @@ Skill                  → north-star-governance
 
 ## 🚀 Release desk (Changesets)
 
-Skill Steward uses [Changesets](https://github.com/changesets/changesets) for **repo** semver + `CHANGELOG.md` (skills are not individually versioned). **No binary release train** — consumers use `npx skills`; product siblings use GitHub Release tarballs + `install.sh` ([ADR 0010](decisions/0010-binary-releases-for-product-harness-not-meta-steward.mdx)). Skill: `release-changelog-harness` · ADRs: [0009](decisions/0009-adopt-changesets-for-repo-releases.mdx), [0010](decisions/0010-binary-releases-for-product-harness-not-meta-steward.mdx).
+Skill Steward uses [Changesets](https://github.com/changesets/changesets) for **repo** semver + `CHANGELOG.md` (skills are not individually versioned). **Binary release train enabled** — compiled AOT binaries (darwin-arm64, linux-x64) and `install.sh` bootstrapper attached to GitHub Releases via changesets-triggered tag workflows. See [ADR 0014](decisions/0014-distribute-steward-cli-as-binary.mdx) and [binary-release-contract.md](../skills/release-changelog-harness/references/binary-release-contract.md).
 
 ```bash
 # PR: describe consumer impact (required when skills/docs/plugins/registry change)
@@ -216,6 +226,9 @@ git add -A && git commit -m "chore: version packages"
 # Tag release (example)
 git tag "v$(node -p "require('./package.json').version")"
 git push origin main --tags
+
+# Compile and package binaries locally:
+./scripts/build_release_artifacts.sh
 ```
 
 ```text

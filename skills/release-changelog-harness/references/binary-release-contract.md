@@ -42,6 +42,28 @@ curl -fsSL https://raw.githubusercontent.com/OWNER/REPO/main/install.sh | bash
 curl -fsSL .../install.sh | bash -s -- --version vX.Y.Z
 ```
 
+## Binary Distribution Blueprint & Design Patterns
+
+### 1. Zero-Dependency AOT Compilation
+* **Pattern:** Compile executables directly to native platform machine code (e.g., `dart compile exe` for Dart, `go build` for Go, `cargo build --release` for Rust).
+* **Benefit:** Decouples execution from the local SDK, allowing the CLI/MCP server to run on vanilla environments with no pre-installed runtimes.
+
+### 2. Monorepo Path Override Resolution
+* **Pattern:** For CLI tools that share internal workspace packages (via workspace package paths or local overrides), compile them in an isolated workspace where path references are resolved statically at build time.
+* **Benefit:** Bypasses public registry restrictions (which block publishing packages with local path overrides) and compiles all necessary modules into a single, redistributable binary.
+
+### 3. Curl-Friendly `install.sh` Mechanics
+A secure and robust `install.sh` must include the following logic:
+* **Platform/Architecture Detection:** Use `uname -s` and `uname -m` to determine OS and CPU arch, and fail gracefully if not supported.
+* **Fallback HTTP Clients:** Support both `curl` and `wget` gracefully.
+* **SHA-256 Integrity Verification:** Prior to unpacking, fetch the `checksums.txt` file and verify the SHA-256 hash using `shasum -a 256` or `sha256sum`.
+* **Automatic PATH Configuration:** Detect the active shell environment (Zsh/Bash) and offer or perform appending the binary directory to the shell rc file (`.zshrc` / `.bashrc`).
+* **Self-Validating Smoke Test:** Execute the compiled tool with `--help` at the end of the installation to confirm viability.
+
+### 4. Configuration Auto-Wiring
+* **Pattern:** Build an `init` or `setup` subcommand inside the CLI itself (e.g., `[cli-name] init <agent>`).
+* **Benefit:** Automatically writes the correct MCP configuration (like JSON-RPC configs) to the agent's global workspace directories (e.g., `~/Library/Application Support/` or `.claude`), avoiding manual setup errors.
+
 ## Version single source of truth
 
 Pick one SSOT; sync everything else in the release PR:
