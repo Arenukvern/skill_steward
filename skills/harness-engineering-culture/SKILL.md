@@ -90,8 +90,8 @@ Human intent (prompt, plan, review)
 | Artifact | Max role |
 |----------|----------|
 | `AGENTS.md` | Table of contents + non-negotiables |
-| `DESIGN_FAQ.md` | Why harness choices |
-| `DX_FAQ.md` | CLI/MCP commands, install, validate |
+| `docs/DESIGN_FAQ.mdx` | Why harness choices |
+| `docs/DX_FAQ.mdx` | CLI/MCP commands, install, validate |
 | `docs/decisions/` | ADRs for significant harness splits |
 | `skills/*/SKILL.md` | Repeatable agent procedures |
 | Code / examples | Behavior—link, do not copy |

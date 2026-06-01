@@ -4,7 +4,7 @@ Thank you for adding skills to the marketplace.
 
 ## Quick start
 
-Read [DX_FAQ.md](DX_FAQ.md) for commands; [DESIGN_FAQ.md](DESIGN_FAQ.md) for what belongs in Skill Steward.
+Read [docs/DX_FAQ.mdx](docs/DX_FAQ.mdx) for commands; [docs/DESIGN_FAQ.mdx](docs/DESIGN_FAQ.mdx) for what belongs in Skill Steward.
 
 1. Fork and clone the repo.
 2. Copy the template: `templates/skill/` → `skills/your-skill-name/`.

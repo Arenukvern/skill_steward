@@ -20,7 +20,7 @@ This repo is a **single root package** today (`package.json` name `skill-steward
 
 * **Release legibility contract** — notes in git, structured contributor input, mechanical gates ([release-changelog-harness](../../skills/release-changelog-harness/SKILL.md)).
 * **Agent-readable history** — agents can read `.changeset/*.md` and `CHANGELOG.md` without GitHub Releases API.
-* **FAQ-driven how** — commands live in [DX_FAQ.md](../../DX_FAQ.md), not in `AGENTS.md`.
+* **FAQ-driven how** — commands live in [DX_FAQ.mdx](../DX_FAQ.mdx), not in `AGENTS.md`.
 * **No npm product** — root package is `private`; Changesets manages **changelog + semver**, not npm publish (skills ship via `npx skills` / GitHub).
 * **Sibling ecosystems** — Dart/Rust repos in `~/mcp` keep native tooling; this ADR applies to **skill_steward only**.
 
@@ -56,6 +56,6 @@ Exempt: typo-only PRs may use label or title `[skip changeset]` (documented in C
 
 ## Links
 
-* [DX_FAQ — Release desk](../../DX_FAQ.md)
+* [DX_FAQ — Release desk](../DX_FAQ.mdx)
 * [release-changelog-harness skill](../../skills/release-changelog-harness/SKILL.md)
 * [Changesets documentation](https://github.com/changesets/changesets/blob/main/docs/intro-to-using-changesets.md)

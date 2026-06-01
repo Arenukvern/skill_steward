@@ -49,7 +49,7 @@ done
 if [[ "$count" -eq 0 ]]; then
   echo "changeset-check: no changeset found for consumer-facing changes." >&2
   echo "  Add one: pnpm changeset" >&2
-  echo "  See DX_FAQ.md (Release desk) and docs/decisions/0009-adopt-changesets-for-repo-releases.md" >&2
+  echo "  See docs/DX_FAQ.mdx (Release desk) and docs/decisions/0009-adopt-changesets-for-repo-releases.mdx" >&2
   exit 1
 fi
 

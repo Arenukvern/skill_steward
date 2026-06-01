@@ -9,7 +9,7 @@
 Install on **Cursor**, **Claude Code**, **Codex**, **Windsurf**, **GitHub Copilot**, and 15+ tools via `npx skills`.
 
 **Charter:** [docs/NORTH_STAR.mdx](docs/NORTH_STAR.mdx) · **Docs:** [docs.page/arenukvern/skill_steward](https://docs.page/arenukvern/skill_steward) · [docs.json](docs.json)  
-**Why / how:** [DESIGN_FAQ.md](DESIGN_FAQ.md) · [DX_FAQ.md](DX_FAQ.md) · [Decisions](docs/decisions/) · [AGENTS.md](AGENTS.md) (agent map)
+**Why / how:** [docs/DESIGN_FAQ.mdx](docs/DESIGN_FAQ.mdx) · [docs/DX_FAQ.mdx](docs/DX_FAQ.mdx) · [Decisions](docs/decisions/) · [AGENTS.md](AGENTS.md) (agent map)
 
 [skills.sh](https://skills.sh/arenukvern/skill_steward)
 
@@ -99,7 +99,7 @@ npx skills list -g
 
 **Note:** `npx skills update` tracks the source you installed from (GitHub `main` by default). It does not run Skill Steward’s `pnpm run validate`—that is for [contributors](CONTRIBUTING.md). Hooks under `plugins/` are separate; see [plugins/README.md](plugins/README.md).
 
-More commands: [DX_FAQ.md](DX_FAQ.md) (section **Updating installed skills**).
+More commands: [docs/DX_FAQ.mdx](docs/DX_FAQ.mdx) (section **Updating installed skills**).
 
 ## What belongs here
 
@@ -139,9 +139,10 @@ See [docs/STANDARDS.mdx](docs/STANDARDS.mdx) for the checklist used in this repo
 
 ```
 skill_steward/              # GitHub: Arenukvern/skill_steward
-├── DESIGN_FAQ.md           # Why (decisions, charter)
-├── DX_FAQ.md                 # How (install, validate, contribute)
-├── docs/decisions/           # ADRs (incl. product name ADR 0008)
+├── docs/
+│   ├── DESIGN_FAQ.mdx      # Why (decisions, charter)
+│   ├── DX_FAQ.mdx          # How (install, validate, contribute)
+│   └── decisions/           # ADRs (incl. product name ADR 0008)
 ├── skills/                   # Meta-skills only
 ├── packages/steward_cli/       # Dart `steward` CLI — validate, list
 ├── plugins/

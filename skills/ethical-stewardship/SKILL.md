@@ -8,7 +8,7 @@ metadata:
   category: governance
 paths:
   - "docs/NORTH_STAR.mdx"
-  - "DESIGN_FAQ.md"
+  - "docs/DESIGN_FAQ.mdx"
   - "CONTRIBUTING.md"
 ---
 

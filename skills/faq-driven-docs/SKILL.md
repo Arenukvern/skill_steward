@@ -8,7 +8,9 @@ metadata:
   category: documentation
 paths:
   - "**/DESIGN_FAQ.md"
+  - "**/DESIGN_FAQ.mdx"
   - "**/DX_FAQ.md"
+  - "**/DX_FAQ.mdx"
   - "**/.cursor/rules/faq_usage.mdc"
   - "**/.cursor/commands/update-faq.md"
 ---
@@ -21,8 +23,8 @@ Compress knowledge into **Q&A** so humans and agents can find answers without bl
 
 | File | Question type | Audience | Update when |
 |------|---------------|----------|-------------|
-| **DESIGN_FAQ.md** | **Why** — rationale, trade-offs | Maintainers, agents changing architecture | Internals, performance choices, boundaries |
-| **DX_FAQ.md** | **How** — API usage, patterns | Application developers, agents writing client code | Public API, examples, workflows |
+| **DESIGN_FAQ.md / .mdx** | **Why** — rationale, trade-offs | Maintainers, agents changing architecture | Internals, performance choices, boundaries |
+| **DX_FAQ.md / .mdx** | **How** — API usage, patterns | Application developers, agents writing client code | Public API, examples, workflows |
 
 Use **both** when needed; they complement each other. Never copy the same fact into both—link instead.
 
@@ -56,8 +58,8 @@ See [references/dx-faq-memory-palace.md](references/dx-faq-memory-palace.md).
 
 ```
 {package-or-repo-root}/
-├── DESIGN_FAQ.md
-├── DX_FAQ.md
+├── DESIGN_FAQ.mdx (or .md)
+├── DX_FAQ.mdx (or .md)
 ├── .cursor/rules/faq_usage.mdc    # When to read which FAQ
 └── .cursor/commands/
     ├── update-faq.md              # Sync FAQs after a change (why + how goals)
@@ -85,8 +87,8 @@ Command bodies should state: *concise docs, why in DESIGN, how in DX, Memory Pal
 
 ## Workflow: bootstrap new package
 
-1. Add `DESIGN_FAQ.md` — why the package exists + key decisions (5–15 Q&As to start).
-2. Add `DX_FAQ.md` — how to use it (Memory Palace if API surface is large).
+1. Add `DESIGN_FAQ.mdx` (or `.md`) — why the package exists + key decisions (5–15 Q&As to start).
+2. Add `DX_FAQ.mdx` (or `.md`) — how to use it (Memory Palace if API surface is large).
 3. Add `.cursor/rules/faq_usage.mdc`.
 4. Add `.cursor/commands/update-faq.md` (copy intent from references).
 5. Link from parent `README` or `AGENTS.md` (router table: why → DESIGN, how → DX).

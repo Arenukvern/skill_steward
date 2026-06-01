@@ -9,8 +9,8 @@ You are in **Skill Steward**: a meta-layer for the Agent Skills ecosystem. Read 
 | I need… | Read |
 |---------|------|
 | **Charter, scope, boundaries** | [docs/NORTH_STAR.mdx](docs/NORTH_STAR.mdx) |
-| **Why** (standing decisions) | [DESIGN_FAQ.md](DESIGN_FAQ.md) · [docs/decisions/](docs/decisions/) |
-| **How** (install, validate, contribute, release) | [DX_FAQ.md](DX_FAQ.md) |
+| **Why** (standing decisions) | [docs/DESIGN_FAQ.mdx](docs/DESIGN_FAQ.mdx) · [docs/decisions/](docs/decisions/) |
+| **How** (install, validate, contribute, release) | [docs/DX_FAQ.mdx](docs/DX_FAQ.mdx) |
 | **Full doc index** | [docs/start_here/docs_map.mdx](docs/start_here/docs_map.mdx) |
 | **Plan hygiene** | [docs/start_here/executable-plans.mdx](docs/start_here/executable-plans.mdx) — any format; extract & remove when done |
 | **Which FAQ to edit** | [.cursor/rules/faq_usage.mdc](.cursor/rules/faq_usage.mdc) |

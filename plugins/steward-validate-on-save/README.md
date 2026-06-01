@@ -1,6 +1,6 @@
 # steward-validate-on-save
 
-First Skill Steward **plugin** ([ADR 0004](../../docs/decisions/0004-plugin-packaging-and-install-path.md)): mechanical gate after skill edits.
+First Skill Steward **plugin** ([ADR 0004](../../docs/decisions/0004-plugin-packaging-and-install-path.mdx)): mechanical gate after skill edits.
 
 ## Why this plugin first?
 

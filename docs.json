@@ -67,6 +67,14 @@
           "href": "/NORTH_STAR"
         },
         {
+          "title": "DESIGN_FAQ",
+          "href": "/DESIGN_FAQ"
+        },
+        {
+          "title": "DX_FAQ",
+          "href": "/DX_FAQ"
+        },
+        {
           "title": "Skills Catalog",
           "href": "/skills-catalog"
         },
@@ -176,14 +184,6 @@
         {
           "title": "AGENTS.md",
           "href": "https://github.com/arenukvern/skill_steward/blob/main/AGENTS.md"
-        },
-        {
-          "title": "DESIGN_FAQ",
-          "href": "https://github.com/arenukvern/skill_steward/blob/main/DESIGN_FAQ.md"
-        },
-        {
-          "title": "DX_FAQ",
-          "href": "https://github.com/arenukvern/skill_steward/blob/main/DX_FAQ.md"
         },
         {
           "title": "Brand",
