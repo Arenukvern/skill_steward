@@ -53,18 +53,35 @@ Case schema: [eval-case-schema.md](../skills/skill-eval-improve/references/eval-
 
 ### Cursor extensions (optional, portable agents ignore)
 
-| Field | Purpose |
-|-------|---------|
-| `paths` | Glob list — skill only surfaces for matching files |
-| `disable-model-invocation` | `true` = user must invoke `/skill-name` manually |
+To maintain standard-compliance while supporting agent-specific extensions, it is **strongly recommended** to nest these fields inside the `metadata` object. During local installation/export, the CLI relocates these to the top level for target profiles if needed:
+
+```yaml
+metadata:
+  cursor:
+    paths:
+      - "docs/**"
+    disable-model-invocation: true
+```
+
+| Field | Purpose | Nested Path |
+|-------|---------|-------------|
+| `paths` | Glob list — skill only surfaces for matching files | `metadata.cursor.paths` |
+| `disable-model-invocation` | `true` = user must invoke `/skill-name` manually | `metadata.cursor.disable-model-invocation` |
 
 ### Claude Code extensions (optional)
 
-| Field | Purpose |
-|-------|---------|
-| `argument-hint` | Autocomplete hint for `/skill` args |
-| `user-invocable` | `false` hides from `/` menu |
-| `context` | `fork` runs in isolated subagent |
+```yaml
+metadata:
+  claude:
+    argument-hint: "options"
+    user-invocable: false
+```
+
+| Field | Purpose | Nested Path |
+|-------|---------|-------------|
+| `argument-hint` | Autocomplete hint for `/skill` args | `metadata.claude.argument-hint` |
+| `user-invocable` | `false` hides from `/` menu | `metadata.claude.user-invocable` |
+| `context` | `fork` runs in isolated subagent | `metadata.claude.context` |
 
 ### Body (Markdown)
 
@@ -72,13 +89,58 @@ Case schema: [eval-case-schema.md](../skills/skill-eval-improve/references/eval-
 - Recommended: **&lt; 500 lines** in `SKILL.md`; split long content into `references/`.
 - Progressive disclosure: metadata (~100 tokens) → full SKILL.md on activation → files on demand.
 
-## Repository conventions (this marketplace)
+## Repository-local registration (team workflow)
 
-1. All installable skills live under **`skills/{name}/`**.
-2. One skill per directory; directory name = `name` field.
-3. Root **`skills.sh.json`** lists groupings for the skills.sh directory UI (see [skills.sh customization docs](https://www.skills.sh/docs/customize)).
-4. Root **`README.md`** documents install commands and the skill catalog.
-5. **`AGENTS.md`** guides AI contributors; keep in sync with this doc.
+For teams and shared projects, Skill Steward supports **repo-local skill registration** using a standard configuration manifest in the root of the consumer project.
+
+### Recommended Layout
+
+```text
+.agents/
+  skills/
+    skill-name/
+      SKILL.md
+      references/
+      scripts/
+skills.json
+```
+
+### Configuration Manifest (`skills.json`)
+
+To manage and lock skills, place a `skills.json` file in the root of your project:
+
+```json
+{
+  "$schema": "https://unpkg.com/skillman/skills_schema.json",
+  "skills": [
+    {
+      "source": "Arenukvern/skill_steward",
+      "commit": "ec76d3ba063543418bd8e60b8448ee81e21b0ebd",
+      "skills": ["ethical-stewardship", "north-star-governance"]
+    }
+  ]
+}
+```
+
+- `source`: The GitHub repository source (`owner/repo`).
+- `commit`: The locked commit hash for safety, reproducibility, and auditability.
+- `skills`: The list of specific skills from that repository to install.
+
+### Installation & Update Commands
+
+```bash
+# Install all skills listed in project skills.json
+dart run steward install
+
+# Install a specific skill from a repository
+dart run steward install Arenukvern/skill_steward/ethical-stewardship --target cursor
+
+# Update installed skills to their latest upstream branch refs, pinning commits in skills.json
+dart run steward update
+
+# Validate that the local skills are present and valid
+dart run steward validate --local
+```
 
 ## Installation (end users)
 
@@ -88,12 +150,6 @@ npx skills add arenukvern/skill_steward
 
 # One skill
 npx skills add arenukvern/skill_steward --skill create-skill
-
-# List without installing
-npx skills add arenukvern/skill_steward --list
-
-# Agents: cursor, claude-code, codex, windsurf, github-copilot, …
-npx skills add arenukvern/skill_steward -a cursor -y
 ```
 
 ### Install scopes
@@ -102,6 +158,7 @@ npx skills add arenukvern/skill_steward -a cursor -y
 |-------|------|----------|
 | Project | (default) | `.agents/skills/` (+ symlinks to agent dirs) |
 | Global | `-g` | `~/.agents/skills/` |
+
 
 ## Validation checklist
 

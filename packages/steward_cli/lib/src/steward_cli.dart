@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:args/command_runner.dart';
 
 import 'commands/eval_command.dart';
+import 'commands/install_command.dart';
 import 'commands/list_command.dart';
+import 'commands/update_command.dart';
 import 'commands/validate_command.dart';
 import 'repo_root.dart';
 
@@ -17,7 +19,10 @@ class StewardCli {
     )
       ..addCommand(ValidateCommand())
       ..addCommand(EvalCommand())
-      ..addCommand(ListCommand());
+      ..addCommand(ListCommand())
+      ..addCommand(InstallCommand())
+      ..addCommand(UpdateCommand());
+
 
     try {
       await runner.run(args);
