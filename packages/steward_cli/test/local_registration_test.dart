@@ -119,9 +119,10 @@ license: MIT
 ---
 Steps
 ''');
-      File(p.join(localSkillDirA.path, 'references', 'sources.md'))
-        ..createSync(recursive: true)
-        ..writeAsString('Sources');
+      final sourcesFile = File(p.join(localSkillDirA.path, 'references', 'sources.md'))
+        ..createSync(recursive: true);
+      await sourcesFile.writeAsString('Sources');
+
 
       // Create extra skill-b
       final localSkillDirB = Directory(
