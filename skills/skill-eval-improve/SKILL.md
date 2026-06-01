@@ -53,7 +53,7 @@ pnpm run validate:json   # CI / automation
 
 Fix all `error:` lines. Treat `warn:` (missing `sources.md`, long SKILL.md) seriously.
 
-## Eval tiers ([ADR 0011](../../docs/decisions/0011-tiered-skill-evals-and-rule-based-ci.md))
+## Eval tiers ([ADR 0011](../../docs/decisions/0011-tiered-skill-evals-and-rule-based-ci.mdx))
 
 | Tier | Skills | CI |
 |------|--------|-----|
@@ -165,7 +165,7 @@ Related: [SkillLens](https://microsoft.github.io/SkillOpt/) (model-generated ski
 - Self-editing without held-out prompts (overfit)
 - Claims without `references/sources.md` rows
 - Evaluating only with static analyze—never running real prompts
-- LLM judge in CI (flake, cost) — offline only per [ADR 0011](../../docs/decisions/0011-tiered-skill-evals-and-rule-based-ci.md)
+- LLM judge in CI (flake, cost) — offline only per [ADR 0011](../../docs/decisions/0011-tiered-skill-evals-and-rule-based-ci.mdx)
 - Passing `pnpm run eval` and claiming agent behavior is proven
 
 ## Related skills

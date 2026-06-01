@@ -2,7 +2,7 @@
 
 Normative pattern for repos whose **primary consumer artifact is an executable** (CLI, MCP server binary).
 
-Meta repos that ship **only** `SKILL.md` + docs (Skill Steward) use `npx skills` — see [ADR 0010](../../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.md).
+Meta repos that ship **only** `SKILL.md` + docs (Skill Steward) use `npx skills` — see [ADR 0010](../../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.mdx).
 
 ## When to use binaries vs other surfaces
 
@@ -11,7 +11,7 @@ Meta repos that ship **only** `SKILL.md` + docs (Skill Steward) use `npx skills`
 | MCP/CLI server | GitHub Release tarballs + checksums + `install.sh` | Full git clone for end users |
 | Product library | Package manager registries (e.g. pub, npm, crates.io) | Duplicate server binary in library package |
 | Agent skills | `npx skills add owner/repo` | Tarball of entire monorepo for skill-only consumers |
-| Meta validate CLI tied to repo tree | CI + maintainer clone | Global binary without repo ([ADR 0010](../../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.md)) |
+| Meta validate CLI tied to repo tree | CI + maintainer clone | Global binary without repo ([ADR 0010](../../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.mdx)) |
 
 ## Release legibility + binaries (both required)
 

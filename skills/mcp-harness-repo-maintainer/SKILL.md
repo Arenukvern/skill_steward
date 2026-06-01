@@ -65,7 +65,7 @@ Read [repo-archetypes.md](references/repo-archetypes.md) for the full matrix. Ro
 
 ## Universal maintainer spine (every archetype)
 
-1. **Charter** — `docs/NORTH_STAR.md` (or root pointer); `AGENTS.md` = map only (~100 lines).
+1. **Charter** — `docs/NORTH_STAR.mdx` (or root pointer); `AGENTS.md` = map only (~100 lines).
 2. **Behavior SSOT** — code + schemas; docs hold **why** (ADR, DESIGN_FAQ) and **how** (DX_FAQ, skills).
 3. **Thin adapters, thick core** — implement once in core; CLI + MCP are wrappers; CI uses CLI, chat uses MCP ([core-and-interfaces.md](references/core-and-interfaces.md)).
 4. **Mechanical gates** — contract checks / validate commands / unit tests before merge; errors teach remediation.

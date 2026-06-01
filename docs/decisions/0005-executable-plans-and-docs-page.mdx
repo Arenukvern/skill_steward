@@ -28,7 +28,7 @@ Skill Steward needs a published documentation site (like other open docs.page si
 
 * **Git-only docs** — No docs.page; README + root FAQs only.
 * **docs.page + eternal roadmaps** — Published site but plans never deleted.
-* **docs.page + ephemeral plans doctrine** — `docs/NORTH_STAR.md`, `docs.json`, executable-plans page, skill `north-star-governance`.
+* **docs.page + ephemeral plans doctrine** — `docs/NORTH_STAR.mdx`, `docs.json`, executable-plans page, skill `north-star-governance`.
 * **Monolithic AGENTS.md** — Rejected per harness article.
 
 ## Decision Outcome
@@ -38,7 +38,7 @@ Chosen option: **"docs.page + ephemeral plans doctrine"**.
 ### Publishing
 
 * Root **`docs.json`** configures [docs.page](https://docs.page).
-* Canonical charter: **`docs/NORTH_STAR.md`**.
+* Canonical charter: **`docs/NORTH_STAR.mdx`**.
 * Agent entry: **`AGENTS.md`** (~100 lines) points to North Star, docs map, skills, validation—no skill-authoring encyclopedia in AGENTS.
 * Root `DESIGN_FAQ.md` / `DX_FAQ.md` remain for repo-local and `npx skills` consumers; site indexes them via docs map (GitHub links until duplicated if needed).
 
@@ -58,11 +58,11 @@ Chosen option: **"docs.page + ephemeral plans doctrine"**.
 ### Confirmation
 
 * `docs.json` committed.
-* `docs/NORTH_STAR.md`, `docs/index.mdx`, `docs/start_here/docs_map.mdx`, `docs/start_here/executable-plans.mdx` exist.
+* `docs/NORTH_STAR.mdx`, `docs/index.mdx`, `docs/start_here/docs_map.mdx`, `docs/start_here/executable-plans.mdx` exist.
 * Skill `north-star-governance` shipped.
 * `AGENTS.md` trimmed to map role.
 
 ## More Information
 
-* [ADR 0003 — concept doc store](0003-concept-doc-store-lattice.md)
+* [ADR 0003 — concept doc store](0003-concept-doc-store-lattice.mdx)
 * Reference product docs.json configurations

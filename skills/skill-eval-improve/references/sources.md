@@ -13,7 +13,7 @@
 | Skill Steward eval runner | https://github.com/arenukvern/skill_steward/blob/main/scripts/eval-skill.mjs | Layer 0b Tier 1 |
 | Chrome eval design | https://developer.chrome.com/docs/ai/evals/design | Failure modes, rubrics |
 | Chrome evals course | https://developer.chrome.com/docs/ai/evals | Layered pipeline |
-| ADR 0011 | https://github.com/arenukvern/skill_steward/blob/main/docs/decisions/0011-tiered-skill-evals-and-rule-based-ci.md | Tier policy |
+| ADR 0011 | https://github.com/arenukvern/skill_steward/blob/main/docs/decisions/0011-tiered-skill-evals-and-rule-based-ci.mdx | Tier policy |
 
 ## Changelog
 

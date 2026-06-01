@@ -59,9 +59,9 @@ Before picking a tool, agree the repo obeys:
 | Dart monorepo (`melos.yaml`) | [Melos](https://melos.invertase.dev/) `version` + changelog | Align with pub publish order in DX_FAQ. |
 | Single Dart package | `CHANGELOG.md` + git tag + `dart pub publish` | Keep entries agent-editable markdown. |
 | Rust workspace | [release-plz](https://github.com/MarcoIeni/release-plz) or cargo-release + git-cliff | Prefer automation that opens version PRs. |
-| Meta / skills-only (Skill Steward) | [Changesets](https://github.com/changesets/changesets) + `CHANGELOG.md` + git tag ([ADR 0009](../../docs/decisions/0009-adopt-changesets-for-repo-releases.md)) | Repo semver only; skills unversioned; document consumer impact in `.changeset/*.md`. |
+| Meta / skills-only (Skill Steward) | [Changesets](https://github.com/changesets/changesets) + `CHANGELOG.md` + git tag ([ADR 0009](../../docs/decisions/0009-adopt-changesets-for-repo-releases.mdx)) | Repo semver only; skills unversioned; document consumer impact in `.changeset/*.md`. |
 | Product harness w/ binaries | release-please + tag CI + `install.sh` | **Do not** add a second version source; follow [binary-release-contract.md](references/binary-release-contract.md) |
-| Meta / skills-only (Skill Steward) | Changesets + `npx skills` — **no** binary train | [ADR 0010](../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.md) |
+| Meta / skills-only (Skill Steward) | Changesets + `npx skills` — **no** binary train | [ADR 0010](../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.mdx) |
 
 Full matrix: [ecosystem-tooling.md](references/ecosystem-tooling.md). Binary/install: [binary-release-contract.md](references/binary-release-contract.md).
 
@@ -129,7 +129,7 @@ Publish: project-specific (`changeset publish`, GitHub Action, or npm provenance
 | Skills only | `npx skills add owner/repo` — no repo tarball for consumers |
 | Libraries | pub.dev / npm / crates.io per ecosystem table |
 
-**Skill Steward:** skills via `npx skills`; `steward_cli` for maintainers with clone only ([ADR 0010](../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.md)).
+**Skill Steward:** skills via `npx skills`; `steward_cli` for maintainers with clone only ([ADR 0010](../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.mdx)).
 
 ### 6. Verify legibility
 

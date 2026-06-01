@@ -19,7 +19,7 @@ Source: [Design evaluations](https://developer.chrome.com/docs/ai/evals/design) 
 2. **Split objective vs subjective** — Objective → YAML rules + validator; subjective → rubric in `evals.md`.
 3. **Write rubric** — Criteria with pass/partial/fail; no single golden transcript required.
 4. **Layer tests** — L0 CI rules → L1 static analyze → L2 human prompts → L3 judge (offline).
-5. **Do not** put LLM judge in Skill Steward PR CI ([ADR 0011](../../../docs/decisions/0011-tiered-skill-evals-and-rule-based-ci.md)).
+5. **Do not** put LLM judge in Skill Steward PR CI ([ADR 0011](../../../docs/decisions/0011-tiered-skill-evals-and-rule-based-ci.mdx)).
 
 ## Example rubric (procedure adherence)
 

@@ -65,7 +65,7 @@ To turn ethics into practice, the chosen constraints must be **mechanically enfo
 ### Enforce via the Environment
 *   **Remediable Gates:** Design validation commands, linters, or check-scripts that do not just raise errors, but explicitly teach the builder *why* the boundary matters and *how* to resolve the violation.
 *   **Sandbox Configuration:** If the project values security or determinism, configure the agent's workspace permissions (e.g. read/write files, network access) to match those constraints, making the workspace itself a mechanical gate.
-*   **Traceability Mapping:** Maintain a central reference (like `brand.md` or `references/sources.md`) where architectural constraints are linked directly to their originating design decision (ADR) or visual specification.
+*   **Traceability Mapping:** Maintain a central reference (like `brand.mdx` or `references/sources.md`) where architectural constraints are linked directly to their originating design decision (ADR) or visual specification.
 
 ---
 

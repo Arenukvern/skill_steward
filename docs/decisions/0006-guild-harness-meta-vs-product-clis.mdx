@@ -10,7 +10,7 @@ informed:
 
 ## Context and Problem Statement
 
-The open skills ecosystem has **product harnesses** with real CLIs and MCP servers (e.g. product-level CLI toolkits and schema libraries). Skill Steward is a **meta-layer** ([ADR 0001](0001-repository-purpose-as-skills-meta-layer.md)) teaching how to build and document harnesses—not replacing product tools.
+The open skills ecosystem has **product harnesses** with real CLIs and MCP servers (e.g. product-level CLI toolkits and schema libraries). Skill Steward is a **meta-layer** ([ADR 0001](0001-repository-purpose-as-skills-meta-layer.mdx)) teaching how to build and document harnesses—not replacing product tools.
 
 Contributors asked to formalize the split so Skill Steward does not grow a second domain MCP server or duplicate `doctor` / `exec` semantics.
 
@@ -44,7 +44,7 @@ Chosen option: **"C. Skill Steward meta CLI (+ future meta MCP); products own do
 
 - **Thin CLI/MCP, thick core** — adapters are agent-facing APIs; domain logic lives in core libraries; both surfaces call the same entrypoints (pattern, not shared code)
 - CLI + MCP **parity** on those shared contracts
-- Docs map, North Star, plan hygiene doctrine ([ADR 0005](0005-executable-plans-and-docs-page.md))
+- Docs map, North Star, plan hygiene doctrine ([ADR 0005](0005-executable-plans-and-docs-page.mdx))
 - FAQ / ADR discipline
 
 **Skill Steward does not teach:**
@@ -66,7 +66,7 @@ for contributors building or maintaining **product** harnesses.
 * Good, because scope stays defensible in review.
 * Good, because product-specific harnesses remain the reference **product** harnesses; Guild is reference **meta** harness.
 * Bad, because two CLIs in a contributor’s head—mitigated by distinct naming (`steward` vs `<cli_harness>`).
-* Neutral, because meta MCP is deferred to phase 2 ([ADR 0007](0007-dart-for-guild-cli-and-harness-tooling.md)).
+* Neutral, because meta MCP is deferred to phase 2 ([ADR 0007](0007-dart-for-guild-cli-and-harness-tooling.mdx)).
 
 ## Pros and Cons of the Options
 

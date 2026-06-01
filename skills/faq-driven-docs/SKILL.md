@@ -138,7 +138,7 @@ Repo-wide navigation and SSOT rules: [concept-doc-store](../concept-doc-store/SK
 ## Further reading
 
 - Article: [FAQ-driven development](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl)
-- Skill Steward: [ADR 0002](../../docs/decisions/0002-adopt-faq-driven-documentation.md)
+- Skill Steward: [ADR 0002](../../docs/decisions/0002-adopt-faq-driven-documentation.mdx)
 - Reference implementation: ecsly (`DESIGN_FAQ.md` / `DX_FAQ.md` per package)
 
 ## Sources

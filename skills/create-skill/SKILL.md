@@ -20,13 +20,13 @@ Add a new installable skill package under `skills/` in the Skill Steward marketp
 
 ## Workflow
 
-1. **Choose a name** — `kebab-case`, 1–64 chars, matches Agent Skills rules (see `docs/STANDARDS.md`).
+1. **Choose a name** — `kebab-case`, 1–64 chars, matches Agent Skills rules (see `docs/STANDARDS.mdx`).
 2. **Create directory** — `skills/{name}/` (directory name must equal `name` in frontmatter).
 3. **Copy template** — from `templates/skill/SKILL.md`; replace placeholders.
 4. **Write description** — one block covering *what* and *when* (trigger phrases users say).
 5. **Cite sources** — create `references/sources.md` from `templates/skill/references/sources.md`; add rows for every spec/repo/paper used ([skill-source-citations](../skill-source-citations/SKILL.md)).
 6. **Write body** — numbered steps, examples, output format; keep under 500 lines.
-7. **Evals** — Tier 1 skills (see [STANDARDS](../../docs/STANDARDS.md)): `references/evals.md` + ≥2 `evals/cases/*.yaml` ([eval-case-schema](../skill-eval-improve/references/eval-case-schema.md)). Others: optional `evals.md`.
+7. **Evals** — Tier 1 skills (see [STANDARDS](../../docs/STANDARDS.mdx)): `references/evals.md` + ≥2 `evals/cases/*.yaml` ([eval-case-schema](../skill-eval-improve/references/eval-case-schema.md)). Others: optional `evals.md`.
 8. **Optional** — `scripts/`, `assets/`.
 9. **Register skill**:
    - Add skill id to `skills.sh.json` under the right grouping (see [skills.sh customization docs](https://www.skills.sh/docs/customize) for schemas and layout options)

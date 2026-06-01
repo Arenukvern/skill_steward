@@ -70,7 +70,7 @@ Post in chat or PR comment (copy structure):
 | One-off significant choice | `docs/decisions/NNNN-*.md` (`accepted`) |
 | Standing policy / why | `DESIGN_FAQ.md` Q&A |
 | Commands / release steps | `DX_FAQ.md` |
-| Scope / charter | `docs/NORTH_STAR.md` (+ ADR if large) |
+| Scope / charter | `docs/NORTH_STAR.mdx` (+ ADR if large) |
 | Agent procedure | `skills/{name}/SKILL.md` |
 
 Do not leave the brief as the only artifact—**extract** into the table above, then continue implementation.

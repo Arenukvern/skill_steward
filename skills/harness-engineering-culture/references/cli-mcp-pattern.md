@@ -50,6 +50,6 @@ Agents should run doctor-style commands before expensive debug loops.
 | `toolkit-cli validate-runtime` | `pnpm run validate` (skills) |
 | `make check-contracts` | CI `validate-skills.yml` |
 | `custom_mcp` tools | `npx skills` + skills in repo |
-| Platform contract tables | `docs/STANDARDS.md`, skill-spec-review |
+| Platform contract tables | `docs/STANDARDS.mdx`, skill-spec-review |
 
 When bootstrapping a new product harness, copy the **shape**, not specific framework command names.

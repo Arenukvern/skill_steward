@@ -67,6 +67,10 @@
           "href": "/NORTH_STAR"
         },
         {
+          "title": "Skills Catalog",
+          "href": "/skills-catalog"
+        },
+        {
           "title": "Docs Map",
           "href": "/start_here/docs_map"
         },
@@ -86,6 +90,14 @@
         {
           "title": "Enable docs.page",
           "href": "/contributing/enable_docs_page"
+        },
+        {
+          "title": "CONTRIBUTING.md",
+          "href": "https://github.com/arenukvern/skill_steward/blob/main/CONTRIBUTING.md"
+        },
+        {
+          "title": "STANDARDS (skill format)",
+          "href": "/STANDARDS"
         }
       ]
     },
@@ -155,7 +167,7 @@
       ]
     },
     {
-      "group": "Repo Root (GitHub)",
+      "group": "Repo Root (GitHub) — agent workspace files",
       "pages": [
         {
           "title": "README",
@@ -175,11 +187,7 @@
         },
         {
           "title": "Brand",
-          "href": "https://github.com/arenukvern/skill_steward/blob/main/docs/brand.md"
-        },
-        {
-          "title": "STANDARDS",
-          "href": "https://github.com/arenukvern/skill_steward/blob/main/docs/STANDARDS.md"
+          "href": "https://github.com/arenukvern/skill_steward/blob/main/docs/brand.mdx"
         }
       ]
     }

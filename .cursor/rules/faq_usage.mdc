@@ -20,7 +20,7 @@ A: This repo has root FAQs only. When adding sub-packages with their own boundar
 A: **Memory Palace** — emoji locations with terse code blocks (install, validate, add skill). Optimized for agent recall.
 
 **Q: Where is the charter?**  
-A: `docs/NORTH_STAR.md` — not DESIGN_FAQ. Use skill `north-star-governance` when changing scope or AGENTS map.
+A: `docs/NORTH_STAR.mdx` — not DESIGN_FAQ. Use skill `north-star-governance` when changing scope or AGENTS map.
 
 **Q: When should I reference DESIGN_FAQ.md?**  
 A: Scope questions (“does this skill belong in Guild?”), plugins vs skills, documentation strategy, rejection of domain skills.

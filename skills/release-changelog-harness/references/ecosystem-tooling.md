@@ -53,7 +53,7 @@ Implement with your stack’s workflow file; keep command names in **DX_FAQ**, n
 | MCP/CLI binary | GitHub Releases + `install.sh` | [binary-release-contract.md](binary-release-contract.md) |
 | Skills | `npx skills add owner/repo` | vercel-labs/skills |
 | Dart libs | `dart pub publish` | Melos / manual CHANGELOG |
-| Meta steward CLI | Maintainer clone + `pnpm run steward:*` | [ADR 0010](../../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.md) |
+| Meta steward CLI | Maintainer clone + `pnpm run steward:*` | [ADR 0010](../../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.mdx) |
 
 ## Sibling consistency
 
