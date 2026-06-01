@@ -4,35 +4,35 @@ alwaysApply: true
 
 # FAQ Documentation Usage Guide — Skill Steward
 
-**Q: What is DESIGN_FAQ.md for?**  
-A: Explains **why** Guild repo decisions were made (meta-layer charter, skills vs plugins, ADRs, validation). Use when changing architecture, inclusion criteria, or documenting rationale. Path: repo root `DESIGN_FAQ.md`.
+**Q: What is DESIGN_FAQ.mdx for?**  
+A: Explains **why** Guild repo decisions were made (meta-layer charter, skills vs plugins, ADRs, validation). Use when changing architecture, inclusion criteria, or documenting rationale. Path: `docs/DESIGN_FAQ.mdx`.
 
-**Q: What is DX_FAQ.md for?**  
-A: Explains **how** to contribute and install (npx skills, `pnpm run validate`, add skill workflow). Memory Palace format. Path: repo root `DX_FAQ.md`.
+**Q: What is DX_FAQ.mdx for?**  
+A: Explains **how** to contribute and install (npx skills, `pnpm run validate`, add skill workflow). Memory Palace format. Path: `docs/DX_FAQ.mdx`.
 
 **Q: What is the difference from `docs/decisions/` ADRs?**  
 A: ADRs are formal decision records for significant changes. DESIGN_FAQ is a compressed index of standing **why** answers; link to ADRs for full deliberation.
 
 **Q: What about package-level FAQs?**  
-A: This repo has root FAQs only. When adding sub-packages with their own boundaries, add `DESIGN_FAQ.md` + `DX_FAQ.md` there and router rows—see skill `faq-driven-docs`.
+A: This repo has root FAQs only. When adding sub-packages with their own boundaries, add `DESIGN_FAQ.mdx` + `DX_FAQ.mdx` there and router rows—see skill `faq-driven-docs`.
 
-**Q: What format should DX_FAQ.md use?**  
+**Q: What format should DX_FAQ.mdx use?**  
 A: **Memory Palace** — emoji locations with terse code blocks (install, validate, add skill). Optimized for agent recall.
 
 **Q: Where is the charter?**  
 A: `docs/NORTH_STAR.mdx` — not DESIGN_FAQ. Use skill `north-star-governance` when changing scope or AGENTS map.
 
-**Q: When should I reference DESIGN_FAQ.md?**  
+**Q: When should I reference DESIGN_FAQ.mdx?**  
 A: Scope questions (“does this skill belong in Guild?”), plugins vs skills, documentation strategy, rejection of domain skills.
 
-**Q: When should I reference DX_FAQ.md?**  
+**Q: When should I reference DX_FAQ.mdx?**  
 A: Installing Guild, adding a skill, running validate, updating registry files, choosing which doc skill to use.
 
 **Q: Can I use both FAQs together?**  
 A: Yes. Example: DESIGN explains why plugins need a separate hook install; DX shows the `npx skills` commands. No duplicated paragraphs.
 
 **Q: Which FAQ should I update after a change?**  
-A: Architectural or charter **why** → `DESIGN_FAQ.md` (+ new ADR if significant). Contributor workflow **how** → `DX_FAQ.md`. Skill behavior → `skills/{name}/SKILL.md` only.
+A: Architectural or charter **why** → `docs/DESIGN_FAQ.mdx` (+ new ADR if significant). Contributor workflow **how** → `docs/DX_FAQ.mdx`. Skill behavior → `skills/{name}/SKILL.md` only.
 
 **Q: Should I update FAQs when adding a skill?**  
-A: Update `DX_FAQ.md` only if the maintainer workflow changes. Update `DESIGN_FAQ.md` only if the change affects repo-level **why**. Always update `README.md`, `skills.sh.json`, and run `pnpm run validate`.
+A: Update `docs/DX_FAQ.mdx` only if the maintainer workflow changes. Update `docs/DESIGN_FAQ.mdx` only if the change affects repo-level **why**. Always update `README.md`, `skills.sh.json`, and run `pnpm run validate`.

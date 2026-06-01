@@ -58,7 +58,7 @@ Do **not** cite ephemeral chat URLs or private tokens.
 
 ## Cross-skill index
 
-Guild-wide references: [docs/STANDARDS.mdx](../../docs/STANDARDS.mdx), [DESIGN_FAQ.md](../../DESIGN_FAQ.md).
+Guild-wide references: [docs/STANDARDS.mdx](../../docs/STANDARDS.mdx), [DESIGN_FAQ.mdx](../../docs/DESIGN_FAQ.mdx).
 
 ## Related skills
 

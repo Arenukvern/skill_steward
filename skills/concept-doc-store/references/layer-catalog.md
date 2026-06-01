@@ -64,4 +64,4 @@ Pick layers minimal for your repo. Delete unused layers from the router table.
 
 **Purpose:** Compressed per-package why/how — see `faq-driven-docs` skill.
 
-**Placement:** Next to package root (`DESIGN_FAQ.md`, `DX_FAQ.md`).
+**Placement:** Next to package root (`DESIGN_FAQ.mdx` / `.md`, `DX_FAQ.mdx` / `.md`).

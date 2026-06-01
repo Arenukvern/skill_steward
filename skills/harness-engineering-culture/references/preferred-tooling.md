@@ -52,7 +52,7 @@ You can still keep a thin `package.json` / `pubspec.yaml` / `Cargo.toml` for dep
 3. Record the decision (and any justified deviations) in your local `harness-principles.md` or equivalent, referencing this file.
 
 4. Make the choice legible:
-   - Document the primary entry points in `DX_FAQ.md`.
+   - Document the primary entry points in `DX_FAQ.mdx` (or `.md`).
    - Add a "Preferred tooling" row or section in your architecture docs.
    - Ensure `doctor` / `validate` / `check` commands exist and are the recommended path.
 

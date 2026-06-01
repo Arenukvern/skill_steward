@@ -13,7 +13,7 @@ Neither `skill/` nor `plugin/` is installable via `npx skills`. They exist only 
 
 ## Why the separation?
 
-Skills and plugins have fundamentally different contracts (see [ADR 0004](../docs/decisions/0004-plugin-packaging-and-install-path.md)):
+Skills and plugins have fundamentally different contracts (see [ADR 0004](../docs/decisions/0004-plugin-packaging-and-install-path.mdx)):
 
 - **Skills** are portable instruction packages (`SKILL.md`) installed via `npx skills`.
 - **Plugins** provide runtime wiring (Cursor hooks, manifests, etc.) that `npx skills` does **not** install. They reference skills by ID but never duplicate `SKILL.md`.
@@ -31,7 +31,7 @@ npx skills add arenukvern/skill_steward --skill create-skill
 ```
 
 See:
-- [DX_FAQ.md](../DX_FAQ.md) (Add a skill section)
+- [DX_FAQ.mdx](../docs/DX_FAQ.mdx) (Add a skill section)
 - [skills/create-skill/SKILL.md](../skills/create-skill/SKILL.md)
 - [CONTRIBUTING.md](../CONTRIBUTING.md)
 
@@ -44,7 +44,7 @@ cp -r templates/plugin plugins/my-plugin-id
 See:
 - [plugins/README.md](../plugins/README.md)
 - [skills/plugin-marketplace-setup/SKILL.md](../skills/plugin-marketplace-setup/SKILL.md)
-- [ADR 0004](../docs/decisions/0004-plugin-packaging-and-install-path.md)
+- [ADR 0004](../docs/decisions/0004-plugin-packaging-and-install-path.mdx)
 
 ## Governance
 

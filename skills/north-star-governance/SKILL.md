@@ -56,7 +56,7 @@ Run this spine **before** a multi-file feature, new integration, or repo reshape
 | [docs.json](../../docs.json) | [docs.page](https://docs.page) sidebar |
 | [docs/start_here/executable-plans.mdx](../../docs/start_here/executable-plans.mdx) | Plan hygiene — extract & remove (not a format spec) |
 
-Root [DESIGN_FAQ.md](../../DESIGN_FAQ.md) / [DX_FAQ.md](../../DX_FAQ.md): standing why/how—not charter. Link from map; do not merge into North Star.
+Root [DESIGN_FAQ.mdx](../../docs/DESIGN_FAQ.mdx) / [DX_FAQ.mdx](../../docs/DX_FAQ.mdx): standing why/how—not charter. Link from map; do not merge into North Star.
 
 ## Plan hygiene (format-agnostic)
 
@@ -75,8 +75,8 @@ Done?  →  ADR (why) | DESIGN/DX FAQ | code/CI | skill/plugin/harness
 | If the outcome is… | Put it in… |
 |--------------------|------------|
 | A decision with trade-offs | `docs/decisions/NNNN-*.md` + index row |
-| Ongoing “why we do X” | `DESIGN_FAQ.md` Q&A |
-| Commands / workflow | `DX_FAQ.md` location |
+| Ongoing “why we do X” | `docs/DESIGN_FAQ.mdx` Q&A |
+| Commands / workflow | `docs/DX_FAQ.mdx` location |
 | Automation or gate | `scripts/`, `.github/workflows/`, future CLI |
 | Agent procedure | `skills/{name}/SKILL.md` |
 | Scope change | `docs/NORTH_STAR.mdx` (+ ADR if large) |
