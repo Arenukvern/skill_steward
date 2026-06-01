@@ -8,7 +8,7 @@ metadata:
   category: documentation
 paths:
   - "docs/**"
-  - "NORTH_STAR.md"
+  - "NORTH_STAR.mdx"
   - "AGENTS.md"
   - "**/docs_map.mdx"
   - "decisions/**"
@@ -39,7 +39,7 @@ Build only layers the repo needs. See [references/layer-catalog.md](references/l
 | Layer | Typical path | Holds |
 |-------|--------------|--------|
 | **Router** | `docs/start_here/docs_map.mdx` | Tables: “I want to…” → one link |
-| **Charter** | `docs/NORTH_STAR.md` | What the product owns; extension model; boundaries |
+| **Charter** | `docs/NORTH_STAR.mdx` | What the product owns; extension model; boundaries |
 | **Decisions** | `docs/decisions/` or `decisions/` | ADRs — why the codebase looks like this |
 | **Concepts** | `docs/core/`, `docs/start_here/why_*` | Architecture mental model, flows, glossary |
 | **Agent ops** | `docs/ai_agents/`, `AGENTS.md` | Playbooks, init, troubleshooting for agents |

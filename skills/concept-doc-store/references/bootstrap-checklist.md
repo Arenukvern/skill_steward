@@ -3,7 +3,7 @@
 ## Minimal (any repo)
 
 - [ ] `docs/start_here/docs_map.md` or `docs_map.mdx` — Quick Router table
-- [ ] `docs/NORTH_STAR.md` or `docs/start_here/why_*.mdx` — charter
+- [ ] `docs/NORTH_STAR.mdx` or `docs/start_here/why_*.mdx` — charter
 - [ ] `docs/decisions/` + index — ADR 0000 meta + strategic ADRs
 - [ ] `AGENTS.md` — table: question → doc path
 - [ ] Root `README.md` — links to router and charter, not full architecture

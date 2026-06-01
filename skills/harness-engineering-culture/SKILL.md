@@ -78,7 +78,7 @@ Human intent (prompt, plan, review)
    - CI / script / gate → **CLI** first
    - Conversational debug loop → **MCP tool** (reuse CLI core)
    - One-off guidance → **skill** in `skills/`
-   - Event enforcement (save, tool use) → **plugin** hook ([ADR 0004](../../docs/decisions/0004-plugin-packaging-and-install-path.md))
+   - Event enforcement (save, tool use) → **plugin** hook ([ADR 0004](../../docs/decisions/0004-plugin-packaging-and-install-path.mdx))
 3. **Make legible** — JSON schema, `--json` output, stable error codes; document in DX_FAQ Memory Palace location.
 4. **Document why** — ADR or DESIGN_FAQ Q&A (2–3 sentences); link **Authoritative source:** to code.
 5. **Wire map** — `AGENTS.md` / `docs_map` row; never paste full schemas into AGENTS.

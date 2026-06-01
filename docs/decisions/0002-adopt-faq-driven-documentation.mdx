@@ -12,7 +12,7 @@ informed:
 
 Traditional specs and READMEs in agent-assisted repos tend to **bloat** (examples, duplicated rules, stale paragraphs) while agents and humans actually think in **questions**: why was X chosen, how do I do Y?
 
-Skill Steward’s charter ([ADR 0001](0001-repository-purpose-as-skills-meta-layer.md)) is a meta-layer for **managing skills and improving processes**. Documentation format is part of that process surface—not domain recipes.
+Skill Steward’s charter ([ADR 0001](0001-repository-purpose-as-skills-meta-layer.mdx)) is a meta-layer for **managing skills and improving processes**. Documentation format is part of that process surface—not domain recipes.
 
 Maintainer practice in [ecsly](https://github.com/) (reference) uses paired `DESIGN_FAQ.md` (why) and `DX_FAQ.md` (how), Cursor rules (`faq_usage.mdc`), and commands (`update-faq`, `use-faq-diagram`, `update-faq-packages`). The approach is articulated publicly as **FAQ-driven development**:
 
@@ -52,7 +52,7 @@ Chosen option: **"FAQ-driven pair (DESIGN_FAQ + DX_FAQ) + agent wiring"**, becau
 
 * Skill `skills/faq-driven-docs/` published with references and Cursor templates.
 * New repos/packages created via skill checklist include both FAQs where applicable.
-* Strategic alignment cited in [ADR 0001](0001-repository-purpose-as-skills-meta-layer.md) documentation practices.
+* Strategic alignment cited in [ADR 0001](0001-repository-purpose-as-skills-meta-layer.mdx) documentation practices.
 
 ## Format rules (normative for Guild-adopted repos)
 
@@ -94,5 +94,5 @@ Chosen option: **"FAQ-driven pair (DESIGN_FAQ + DX_FAQ) + agent wiring"**, becau
 * **FAQ-driven development (article):** https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl
 * **Skill:** [skills/faq-driven-docs/](../../skills/faq-driven-docs/)
 * **Reference implementation (structure):** ecsly — `core_packages/ecs/DESIGN_FAQ.md`, `DX_FAQ.md`, `plugins/*/DESIGN_FAQ.md`, `.cursor/rules/faq_usage.mdc`
-* **Related ADR:** [0001 — repository purpose](0001-repository-purpose-as-skills-meta-layer.md)
+* **Related ADR:** [0001 — repository purpose](0001-repository-purpose-as-skills-meta-layer.mdx)
 * **Y-Statement:** In the context of fast-moving agent-assisted codebases, facing doc bloat and stale specs, we decided for **paired DESIGN/DX FAQs with agent rules and commands** to achieve **compressible, queryable documentation**, accepting **discipline to keep answers short**.

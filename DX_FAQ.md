@@ -5,7 +5,7 @@ _How to work in this repo and install Skill Steward meta-skills elsewhere. Walk 
 ## 🧭 Router
 
 ```text
-CHARTER / scope        → docs/NORTH_STAR.md
+CHARTER / scope        → docs/NORTH_STAR.mdx
 WHY / ADRs             → DESIGN_FAQ.md, docs/decisions/
 HOW contribute         → this file, AGENTS.md, CONTRIBUTING.md
 PLAN HYGIENE (any format) → docs/start_here/executable-plans.mdx
@@ -24,11 +24,36 @@ PLUGINS (hooks)        → plugins/README.md  (not via npx skills)
 
 ## 📦 Repo setup (maintainers)
 
+GitHub product name: **Skill Steward** (`Arenukvern/skill_steward`). Many workspaces clone it as **`agent_guild/`** beside harness repos (e.g. in `~/mcp/` or any sibling directory).
+
 ```bash
+# Clone wherever you keep your workspace (e.g. ~/mcp/, ~/dev/, etc.)
+cd <workspace>/agent_guild
 pnpm install          # packageManager: pnpm@9 (see package.json)
 pnpm run steward:analyze
 pnpm run steward:validate
 ```
+
+### Consumer install from a local clone (sibling repo)
+
+```bash
+# Project scope (example: <cli_harness>)
+cd <workspace>/<cli_harness>
+make agent-skills
+# or install from the cloned local copy:
+npx skills add <workspace>/agent_guild --skill mcp-harness-repo-maintainer -a cursor -y
+```
+
+### Harness bundle (recommended for product repos)
+
+| Skill | Role |
+|-------|------|
+| `north-star-governance` | Charter, AGENTS map, plan hygiene |
+| `harness-engineering-culture` | CLI/MCP harness culture |
+| `mcp-harness-repo-maintainer` | Archetype checklists, sibling layout |
+| `adr-records` | ADRs in `decisions/` |
+| `faq-driven-docs` | DESIGN_FAQ + DX_FAQ |
+| `create-skill` / `skill-spec-review` | Author and audit `plugin/skills/` |
 
 ## 📦 Install Skill Steward (consumers)
 
@@ -49,7 +74,7 @@ npx skills add arenukvern/skill_steward -g
 npx skills add . --list
 ```
 
-**Note:** Hooks/plugins are **not** installed by `npx skills` on Cursor—see `plugins/README.md` and [ADR 0004](docs/decisions/0004-plugin-packaging-and-install-path.md).
+**Note:** Hooks/plugins are **not** installed by `npx skills` on Cursor—see `plugins/README.md` and [ADR 0004](docs/decisions/0004-plugin-packaging-and-install-path.mdx).
 
 ## 🔄 Updating installed skills
 
@@ -162,12 +187,12 @@ bash skills/adr-records/scripts/next-adr-number.sh docs/decisions
 # Use skill adr-records or references in skills/adr-records/
 ```
 
-Index: [docs/decisions/README.md](docs/decisions/README.md).
+Index: [docs/decisions/README.mdx](docs/decisions/README.mdx).
 
 ## 🧭 North Star desk
 
 ```text
-Edit charter           → docs/NORTH_STAR.md
+Edit charter           → docs/NORTH_STAR.mdx
 Wire agent map         → AGENTS.md (~100 lines max)
 docs.page sidebar      → docs.json + docs_map.mdx
 Close a plan           → merge to ADR/FAQ/code/skill → delete docs/exec-plans/active/*
@@ -176,7 +201,7 @@ Skill                  → north-star-governance
 
 ## 🚀 Release desk (Changesets)
 
-Skill Steward uses [Changesets](https://github.com/changesets/changesets) for **repo** semver + `CHANGELOG.md` (skills are not individually versioned). **No binary release train** — consumers use `npx skills`; product siblings use GitHub Release tarballs + `install.sh` ([ADR 0010](docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.md)). Skill: `release-changelog-harness` · ADRs: [0009](docs/decisions/0009-adopt-changesets-for-repo-releases.md), [0010](docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.md).
+Skill Steward uses [Changesets](https://github.com/changesets/changesets) for **repo** semver + `CHANGELOG.md` (skills are not individually versioned). **No binary release train** — consumers use `npx skills`; product siblings use GitHub Release tarballs + `install.sh` ([ADR 0010](docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.mdx)). Skill: `release-changelog-harness` · ADRs: [0009](docs/decisions/0009-adopt-changesets-for-repo-releases.mdx), [0010](docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.mdx).
 
 ```bash
 # PR: describe consumer impact (required when skills/docs/plugins/registry change)

@@ -17,11 +17,11 @@ Plans are **scratch paper**, not documentation. Keeping finished checklists in-t
 
 | Outcome type | Land in |
 |--------------|---------|
-| Strategic choice, trade-off | [ADR](../decisions/README.md) |
+| Strategic choice, trade-off | [ADR](../decisions/README.mdx) |
 | Standing why / how | [DESIGN_FAQ.md](https://github.com/arenukvern/skill_steward/blob/main/DESIGN_FAQ.md) / [DX_FAQ.md](https://github.com/arenukvern/skill_steward/blob/main/DX_FAQ.md) |
 | Behavior, gates, automation | Code, CI, CLI, MCP, `plugins/` |
 | Repeatable agent procedure | `skills/{name}/SKILL.md` |
-| Charter / scope change | [North Star](../NORTH_STAR.md) + ADR if significant |
+| Charter / scope change | [North Star](../NORTH_STAR.mdx) + ADR if significant |
 
 ## Any planning tool is fine
 
@@ -36,11 +36,11 @@ Plans are **scratch paper**, not documentation. Keeping finished checklists in-t
 
 ## Optional in-repo scratch (`docs/exec-plans/`)
 
-If you need a file while work is in flight:
+`docs/exec-plans/active/` is the conventional scratch location for in-flight plan files. It has no README — this page is the doctrine. Rules:
 
-1. `docs/exec-plans/active/YYYY-MM-DD-short-title.md` (or your own path)
-2. Link it from the PR
-3. On merge: extract → **delete** the file (or one-line summary in ADR Notes)
+1. Name files `YYYY-MM-DD-short-title.md` (or your own path).
+2. Link the file from the PR.
+3. On merge: extract durable knowledge → **delete** the file (or write a one-line summary in ADR Notes).
 
 ## Anti-patterns
 
@@ -50,7 +50,7 @@ If you need a file while work is in flight:
 
 ## Agent workflow
 
-1. Read [North Star](../NORTH_STAR.md) before multi-step work.
+1. Read [North Star](../NORTH_STAR.mdx) before multi-step work.
 2. Plan with **whatever** the user or product repo already uses.
 3. On completion: extract → ADR / FAQ / code / skill → **remove** the plan file.
 4. Update [docs_map](docs_map.mdx) only if navigation changed.
@@ -58,4 +58,4 @@ If you need a file while work is in flight:
 ## Related
 
 - Skill: `north-star-governance`
-- [ADR 0005 — docs.page + ephemeral plans doctrine](../decisions/0005-executable-plans-and-docs-page.md)
+- [ADR 0005 — docs.page + ephemeral plans doctrine](../decisions/0005-executable-plans-and-docs-page.mdx)

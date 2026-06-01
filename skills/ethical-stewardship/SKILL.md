@@ -7,7 +7,7 @@ metadata:
   version: "1.3.0"
   category: governance
 paths:
-  - "docs/NORTH_STAR.md"
+  - "docs/NORTH_STAR.mdx"
   - "DESIGN_FAQ.md"
   - "CONTRIBUTING.md"
 ---
@@ -106,7 +106,7 @@ Strictly enforce these boundaries in the repository:
 
 Implement these four operational rules during the development lifecycle:
 
-1.  **Draft a Credo:** Create a `docs/NORTH_STAR.md` defining what the repository owns, does not own, and its ethical boundaries.
+1.  **Draft a Credo:** Create a `docs/NORTH_STAR.mdx` defining what the repository owns, does not own, and its ethical boundaries.
 2.  **Use Decision Checkpoints:** Require an Architectural Decision Record (ADR) or a designated brief before coding significant architectural forks or dependency changes.
 3.  **Run Mechanical Quality Gates:** Every repository must contain an automated validator (e.g. `pnpm run validate`, `make check-contracts`, or custom linters) running in CI to enforce standards programmatically.
 4.  **Citations & Provenance:** Require documentation of external sources, research links, and prompt specifications (provenance) for generated assets to ensure knowledge tracebility.

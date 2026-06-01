@@ -17,7 +17,7 @@ Ship **skills** (portable instructions), **plugins** (runtime wiring), and **mar
 | Layer | What it is | Install unit | Skill Steward home |
 |-------|------------|--------------|------------------|
 | **Skill** | `SKILL.md` per [agentskills.io](https://agentskills.io/) | `npx skills add owner/repo --skill name` | `skills/{name}/` |
-| **Plugin** | Manifest + hooks/MCP/rules/commands | Per-agent (see matrix) | `plugins/{id}/` ([ADR 0004](../../docs/decisions/0004-plugin-packaging-and-install-path.md)) |
+| **Plugin** | Manifest + hooks/MCP/rules/commands | Per-agent (see matrix) | `plugins/{id}/` ([ADR 0004](../../docs/decisions/0004-plugin-packaging-and-install-path.mdx)) |
 | **Marketplace** | Catalog of plugins/skills | Add marketplace, then install plugin | Product repos; Guild uses public Git + skills.sh |
 
 **Rule:** Instructions only → **skill**. Event hooks or multi-file wiring → **plugin** (references skills by id, do not fork `SKILL.md`).
@@ -161,8 +161,8 @@ Do not put product MCP servers in Guild. Cross-promote: `npx skills add arenukve
 
 - [distribution-matrix.md](references/distribution-matrix.md) — full channel table
 - [manifest-snippets.md](references/manifest-snippets.md) — minimal JSON/YAML examples
-- [ADR 0004](../../docs/decisions/0004-plugin-packaging-and-install-path.md)
-- [ADR 0006](../../docs/decisions/0006-guild-harness-meta-vs-product-clis.md)
+- [ADR 0004](../../docs/decisions/0004-plugin-packaging-and-install-path.mdx)
+- [ADR 0006](../../docs/decisions/0006-guild-harness-meta-vs-product-clis.mdx)
 - [skills.sh customization docs](https://www.skills.sh/docs/customize)
 
 ## Install this skill

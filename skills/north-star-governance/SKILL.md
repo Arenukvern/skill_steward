@@ -1,13 +1,13 @@
 ---
 name: north-star-governance
-description: Maintains docs/NORTH_STAR.md, wires AGENTS.md as a short agent map, and applies plan hygiene (any format—Superpowers, session plans, etc.) by extracting durable knowledge into ADR, FAQ, code, or harness then removing stale plan files. Use when updating charter, repo navigation, closing work, or docs.page structure. Does not define a new plan template.
+description: Maintains docs/NORTH_STAR.mdx, wires AGENTS.md as a short agent map, and applies plan hygiene (any format—Superpowers, session plans, etc.) by extracting durable knowledge into ADR, FAQ, code, or harness then removing stale plan files. Use when updating charter, repo navigation, closing work, or docs.page structure. Does not define a new plan template.
 license: MIT
 metadata:
   author: skill-steward
   version: "1.3.0"
   category: governance
 paths:
-  - "docs/NORTH_STAR.md"
+  - "docs/NORTH_STAR.mdx"
   - "AGENTS.md"
   - "README.md"
   - "docs.json"
@@ -50,7 +50,7 @@ Run this spine **before** a multi-file feature, new integration, or repo reshape
 
 | File | Role | Max size guidance |
 |------|------|-------------------|
-| [docs/NORTH_STAR.md](../../docs/NORTH_STAR.md) | Charter: what we own, boundaries, success | ~1 screen |
+| [docs/NORTH_STAR.mdx](../../docs/NORTH_STAR.mdx) | Charter: what we own, boundaries, success | ~1 screen |
 | [AGENTS.md](../../AGENTS.md) | Agent **map** only—pointers, not encyclopedia | ~100 lines |
 | [docs/start_here/docs_map.mdx](../../docs/start_here/docs_map.mdx) | Human + agent doc index |
 | [docs.json](../../docs.json) | [docs.page](https://docs.page) sidebar |
@@ -79,7 +79,7 @@ Done?  →  ADR (why) | DESIGN/DX FAQ | code/CI | skill/plugin/harness
 | Commands / workflow | `DX_FAQ.md` location |
 | Automation or gate | `scripts/`, `.github/workflows/`, future CLI |
 | Agent procedure | `skills/{name}/SKILL.md` |
-| Scope change | `docs/NORTH_STAR.md` (+ ADR if large) |
+| Scope change | `docs/NORTH_STAR.mdx` (+ ADR if large) |
 
 **Forbidden:** leaving finished checklists in-tree as if current; duplicate plan + ADR; executing archived Superpowers plans without tracker/spec.
 
@@ -93,7 +93,7 @@ Optional Guild scratch (not a standard): `docs/exec-plans/active/YYYY-MM-DD-shor
 2. **Documentation router** table → North Star, FAQs, decisions, standards, key skills
 3. **Non-negotiables** (3–5 bullets): validate before PR, meta-only scope, plan hygiene (extract & remove), no secrets
 4. **Install paths** table (Cursor, Claude, Codex, `.agents/skills`)
-5. Link: “Skill authoring detail → [docs/STANDARDS.md](../../docs/STANDARDS.md)”
+5. Link: “Skill authoring detail → [docs/STANDARDS.mdx](../../docs/STANDARDS.mdx)”
 
 Move long skill-creation prose out of AGENTS—never grow AGENTS into a skill tutorial.
 
@@ -134,7 +134,7 @@ Update `github` URL in `docs.json` when remote is known.
 
 When asking “does this file belong in Skill Steward?”:
 
-1. Read [docs/NORTH_STAR.md](../../docs/NORTH_STAR.md) — own / do-not-own.
+1. Read [docs/NORTH_STAR.mdx](../../docs/NORTH_STAR.mdx) — own / do-not-own.
 2. Use [`concept-doc-store`](../concept-doc-store/SKILL.md) — lattice layer (charter, ADR, FAQ, not personal ops copy).
 3. **Do not** use product-specific boundary audit commands for repo charter audits—those are for **CLI/MCP contract** validation in product harness repos.
 
@@ -144,7 +144,7 @@ When asking “does this file belong in Skill Steward?”:
 | Plan scratch under `docs/exec-plans/active/` until extract | Domain framework tutorials |
 | Plugin manifests when wired | Product MCP server code |
 
-Personal profile copy → maintainer’s GitHub profile repo or gist; durable public naming → [ADR 0008](../../docs/decisions/0008-adopt-skill-steward-product-name.md) one-liner only.
+Personal profile copy → maintainer’s GitHub profile repo or gist; durable public naming → [ADR 0008](../../docs/decisions/0008-adopt-skill-steward-product-name.mdx) one-liner only.
 
 ## Guild skills to combine
 

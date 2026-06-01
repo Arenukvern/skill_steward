@@ -8,7 +8,7 @@
 
 Install on **Cursor**, **Claude Code**, **Codex**, **Windsurf**, **GitHub Copilot**, and 15+ tools via `npx skills`.
 
-**Charter:** [docs/NORTH_STAR.md](docs/NORTH_STAR.md) · **Docs:** [docs.page/arenukvern/skill_steward](https://docs.page/arenukvern/skill_steward) · [docs.json](docs.json)  
+**Charter:** [docs/NORTH_STAR.mdx](docs/NORTH_STAR.mdx) · **Docs:** [docs.page/arenukvern/skill_steward](https://docs.page/arenukvern/skill_steward) · [docs.json](docs.json)  
 **Why / how:** [DESIGN_FAQ.md](DESIGN_FAQ.md) · [DX_FAQ.md](DX_FAQ.md) · [Decisions](docs/decisions/) · [AGENTS.md](AGENTS.md) (agent map)
 
 [skills.sh](https://skills.sh/arenukvern/skill_steward)
@@ -25,7 +25,7 @@ Install on **Cursor**, **Claude Code**, **Codex**, **Windsurf**, **GitHub Copilo
 
 Same thread: useful docs for humans and agents, mechanical gates, and work worth people’s time. See [FAQ-driven development](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl) for the documentation shape this repo dogfoods.
 
-**How the name was chosen:** public product name and GitHub repo are **Skill Steward** ([ADR 0008](docs/decisions/0008-adopt-skill-steward-product-name.md)).
+**How the name was chosen:** public product name and GitHub repo are **Skill Steward** ([ADR 0008](docs/decisions/0008-adopt-skill-steward-product-name.mdx)).
 
 ## Install
 
@@ -103,7 +103,7 @@ More commands: [DX_FAQ.md](DX_FAQ.md) (section **Updating installed skills**).
 
 ## What belongs here
 
-Meta and process capabilities only — [inclusion criteria](docs/decisions/0001-repository-purpose-as-skills-meta-layer.md#inclusion-criteria-what-belongs-in-skill-steward). Domain skills live in other repositories.
+Meta and process capabilities only — [inclusion criteria](docs/decisions/0001-repository-purpose-as-skills-meta-layer.mdx#inclusion-criteria-what-belongs-in-skill-steward). Domain skills live in other repositories.
 
 ## Available skills
 
@@ -133,7 +133,7 @@ Meta and process capabilities only — [inclusion criteria](docs/decisions/0001-
 - Registry: [skills.sh](https://skills.sh) indexes public repos with valid skills
 - CLI: [vercel-labs/skills](https://github.com/vercel-labs/skills) (`npx skills`)
 
-See [docs/STANDARDS.md](docs/STANDARDS.md) for the checklist used in this repo.
+See [docs/STANDARDS.mdx](docs/STANDARDS.mdx) for the checklist used in this repo.
 
 ## Repository layout
 
@@ -171,7 +171,7 @@ pnpm install
 pnpm run steward:validate
 ```
 
-Dart CLI directly ([ADR 0006](docs/decisions/0006-guild-harness-meta-vs-product-clis.md) / [0007](docs/decisions/0007-dart-for-guild-cli-and-harness-tooling.md)):
+Dart CLI directly ([ADR 0006](docs/decisions/0006-guild-harness-meta-vs-product-clis.mdx) / [0007](docs/decisions/0007-dart-for-guild-cli-and-harness-tooling.mdx)):
 
 ```bash
 cd packages/steward_cli && dart pub get && dart run :steward validate

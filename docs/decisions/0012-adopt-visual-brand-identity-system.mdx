@@ -44,7 +44,7 @@ This ADR records the adoption decision, the durable prompts, and the key standin
 **Primary hero direction (Option 1 — Growth Rings + Extraction, recommended):**  
 A single cross-section of an ancient cared-for tree trunk at first light, rendered with exquisite fine detail in its growth rings; one precise radial extraction mark where a clean section of knowledge has been removed; delicate threads of a geometric lattice emerge from the cut and dissolve into soft mist beyond; a single bead of warm amber resin catches the low sunlight exactly at the boundary; deep moss greens, warm umber, cool slate, and generous parchment negative space; ultra-minimal cinematic still-life composition with profound breathing room; no figures, no tools, no text; evokes patient multi-generational stewardship, ethical clarity of boundaries, and the quiet high-craft of builders who leave durable structure behind.
 
-(The other two prompts — Ledger + Lattice and Boundary Gate + Grove — are recorded in `docs/brand.md` for future use or variants.)
+(The other two prompts — Ledger + Lattice and Boundary Gate + Grove — are recorded in `docs/brand.mdx` for future use or variants.)
 
 **Canonical palette (light / dark):**
 - Primary steward green: `#1A3C34` / `#4A7C6F`
@@ -61,11 +61,11 @@ A single cross-section of an ancient cared-for tree trunk at first light, render
 1. Growth Ring + Ledger as the two primary marks because they directly visualize plan hygiene ("extract then remove") and the ADR/citation culture.
 2. Steward green + amber on warm grounds (never cold tech blues) because they encode tending + "work worth people's time."
 3. Restraint (one motif per surface, max 3 colors, static only, generous whitespace) is the dominant visual principle.
-4. Brand assets live exclusively under `docs/brand/assets/` (single bounded exception under the docs/ tree). No changes were made to STANDARDS.md or NORTH_STAR.md.
+4. Brand assets live exclusively under `docs/brand/assets/` (single bounded exception under the docs/ tree). No changes were made to STANDARDS.mdx or NORTH_STAR.mdx.
 5. No visual personal artisan credit appears in project marks or lockups (honors ADR 0008 "personal bio out of repo").
 6. GitHub surfaces use committed static variants; zero runtime theme logic for the brand marks.
 7. Tone refinements stay extremely close to the existing precise, table-driven, ritual-oriented voice.
-8. Brand asset changes are versioned with the repo and governed via `docs/brand.md` + changeset (not a new ADR unless philosophy shifts).
+8. Brand asset changes are versioned with the repo and governed via `docs/brand.mdx` + changeset (not a new ADR unless philosophy shifts).
 
 ### Consequences
 
@@ -79,19 +79,19 @@ A single cross-section of an ancient cared-for tree trunk at first light, render
 
 | Item | Action |
 |------|--------|
-| Living SSOT | Create `docs/brand.md` (tight tables + prompts + image embeds) as the practical reference. Link from README, DESIGN_FAQ, and decisions index. |
+| Living SSOT | Create `docs/brand.mdx` (tight tables + prompts + image embeds) as the practical reference. Link from README, DESIGN_FAQ, and decisions index. |
 | Hero assets | Commit the generated 16:9 cover and square emblem to `docs/brand/assets/hero/`. Future variants must follow the Hero Production Checklist in the design. |
 | README & docs.page | Add hero image to README; wire `socialPreview` + theme.primary into `docs.json`. |
 | Vectors | Produce master SVGs per the Master Specifications appendix in the design document (PR 2). |
 | Governance | Add one-line note in CONTRIBUTING.md. Do **not** extend `pnpm run validate` or the steward binary for brand assets. |
-| Plan hygiene | Once `docs/brand.md` and the initial assets are merged, the originating design document (`/tmp/grok-design-doc-6369e7cf.md`) is considered extracted; the /tmp files may be discarded. |
+| Plan hygiene | Once `docs/brand.mdx` and the initial assets are merged, the originating design document (`/tmp/grok-design-doc-6369e7cf.md`) is considered extracted; the /tmp files may be discarded. |
 
 ## Links
 
 * [Design document (full rationale, Master Specs, 5-PR plan, review history)](/tmp/grok-design-doc-6369e7cf.md) — produced via `/design` skill, 2 review rounds, 0 open issues after revision.
-* [Brand reference SSOT](../brand.md) (to be created in the same change set)
-* [ADR 0008 — Skill Steward name (stewardship, ethics, governance)](0008-adopt-skill-steward-product-name.md)
-* [NORTH_STAR.md](../NORTH_STAR.md) — plan hygiene, meta-layer boundaries, "repo stays small"
+* [Brand reference SSOT](../brand.mdx) (to be created in the same change set)
+* [ADR 0008 — Skill Steward name (stewardship, ethics, governance)](0008-adopt-skill-steward-product-name.mdx)
+* [NORTH_STAR.mdx](../NORTH_STAR.mdx) — plan hygiene, meta-layer boundaries, "repo stays small"
 * [DESIGN_FAQ.md](../../DESIGN_FAQ.md) — restraint and care as features
 * Maintainer's credo: https://dev.to/arenukvern/my-principles-at-work-credo-182c
 
@@ -101,4 +101,4 @@ A single cross-section of an ancient cared-for tree trunk at first light, render
 
 > A single cross-section of an ancient cared-for tree trunk at first light, rendered with exquisite fine detail in its growth rings; one precise radial extraction mark where a clean section of knowledge has been removed; delicate threads of a geometric lattice emerge from the cut and dissolve into soft mist beyond; a single bead of warm amber resin catches the low sunlight exactly at the boundary; deep moss greens, warm umber, cool slate, and generous parchment negative space; ultra-minimal cinematic still-life composition with profound breathing room; no figures, no tools, no text; evokes patient multi-generational stewardship, ethical clarity of boundaries, and the quiet high-craft of builders who leave durable structure behind; filmic natural light, subtle texture, restrained emotional depth, square or 16:9.
 
-All changes to the visual language must cite this ADR and `docs/brand.md`.
+All changes to the visual language must cite this ADR and `docs/brand.mdx`.

@@ -59,5 +59,5 @@ Configure workspace dependency overrides in the package manager manifest to targ
 ## Cross-install docs
 
 - **Product Users**: run client-facing setup CLI (`[tool] init <agent>`) + optional `npx skills add [repo-path]`
-- **Harness Contributors**: clone sibling repositories; read the respective `docs/NORTH_STAR.md`
+- **Harness Contributors**: clone sibling repositories; read the respective `docs/NORTH_STAR.mdx`
 - **Skill Steward Meta**: `npx skills add arenukvern/skill_steward --skill mcp-harness-repo-maintainer`

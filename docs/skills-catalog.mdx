@@ -1,0 +1,72 @@
+# Skills Catalog
+
+All installable meta-skills shipped by Skill Steward. Descriptions are sourced from each skill's `SKILL.md` frontmatter — the source of truth lives in [`skills/`](https://github.com/arenukvern/skill_steward/tree/main/skills).
+
+```bash
+# Install all meta-skills
+npx skills add arenukvern/skill_steward
+
+# Install one skill by name
+npx skills add arenukvern/skill_steward --skill <name>
+```
+
+See [DX_FAQ.md](https://github.com/arenukvern/skill_steward/blob/main/DX_FAQ.md) for full install, update, and listing commands.
+
+---
+
+## Marketplace
+
+*Authoring, reviewing, and publishing skills for the Skill Steward marketplace.*
+
+| Skill | What it does |
+|-------|-------------|
+| [`create-skill`](https://github.com/arenukvern/skill_steward/tree/main/skills/create-skill) | Scaffold a new Agent Skill with valid SKILL.md, directory layout, and registry entries. Use when adding a skill or contributing to skill_steward. |
+| [`skill-spec-review`](https://github.com/arenukvern/skill_steward/tree/main/skills/skill-spec-review) | Audit SKILL.md and skill directories for Agent Skills spec, Cursor extensions, and npx skills compatibility. Use when reviewing or checking marketplace readiness. |
+| [`skill-source-citations`](https://github.com/arenukvern/skill_steward/tree/main/skills/skill-source-citations) | Requires durable citations when authoring skills — maintain `references/sources.md` per skill, link external research, and record provenance. |
+| [`skill-eval-improve`](https://github.com/arenukvern/skill_steward/tree/main/skills/skill-eval-improve) | Improves Agent Skills via validate → rule-based eval cases → plugin-eval → prompt evals → bounded edits with held-out gates. |
+| [`plugin-marketplace-setup`](https://github.com/arenukvern/skill_steward/tree/main/skills/plugin-marketplace-setup) | Designs public or private AI skill and plugin marketplaces for Cursor, Claude Code, Codex, and npx skills. |
+
+---
+
+## Documentation
+
+*Architecture knowledge and decision logs.*
+
+| Skill | What it does |
+|-------|-------------|
+| [`adr-records`](https://github.com/arenukvern/skill_steward/tree/main/skills/adr-records) | Writes and maintains ADRs (MADR, Nygard, Y-Statement) and runs decision checkpoints before/during work. Use when creating ADRs or facing a design fork. |
+| [`faq-driven-docs`](https://github.com/arenukvern/skill_steward/tree/main/skills/faq-driven-docs) | Creates and maintains DESIGN_FAQ (why) and DX_FAQ (how) in FAQ-driven development style. Use when writing docs or bootstrapping FAQ rules. |
+| [`concept-doc-store`](https://github.com/arenukvern/skill_steward/tree/main/skills/concept-doc-store) | Bootstraps a layered documentation store for concepts, architecture, and decisions without duplicating how code works. |
+| [`repo-brand-identity`](https://github.com/arenukvern/skill_steward/tree/main/skills/repo-brand-identity) | Establishes, maintains, and governs visual brand identity systems — palettes, vector logos, README badges, and documentation tone. |
+| [`ethical-stewardship`](https://github.com/arenukvern/skill_steward/tree/main/skills/ethical-stewardship) | Establishes, audits, and maintains core ethical systems in software repositories. Use when defining repository culture, drafting ethical manifestos, or auditing decisions against moral design boundaries. |
+
+---
+
+## Harness
+
+*Agent-first engineering culture — CLI, MCP, contracts, and docs as system of record.*
+
+| Skill | What it does |
+|-------|-------------|
+| [`north-star-governance`](https://github.com/arenukvern/skill_steward/tree/main/skills/north-star-governance) | Maintains `docs/NORTH_STAR.mdx`, wires `AGENTS.md` as a short agent map, and applies plan hygiene. Use when updating charter, repo navigation, or closing work. |
+| [`harness-engineering-culture`](https://github.com/arenukvern/skill_steward/tree/main/skills/harness-engineering-culture) | Develops agent-first engineering culture via harness design — CLI and MCP with shared contracts, mechanical gates, and in-repo docs. |
+| [`release-changelog-harness`](https://github.com/arenukvern/skill_steward/tree/main/skills/release-changelog-harness) | Chooses ecosystem-native release and changelog tooling (Changesets, Melos, release-plz) and binary distribution. Use for release CI, CHANGELOGs, or versioning. |
+| [`mcp-harness-repo-maintainer`](https://github.com/arenukvern/skill_steward/tree/main/skills/mcp-harness-repo-maintainer) | Maintains MCP-and-harness repositories where CLI and MCP are thin agent-facing interfaces and core libraries hold domain logic. |
+
+---
+
+## Multi-agent
+
+*Patterns for coordinating multiple AI agents on shared work.*
+
+| Skill | What it does |
+|-------|-------------|
+| [`multi-agent-handoff`](https://github.com/arenukvern/skill_steward/tree/main/skills/multi-agent-handoff) | Plan and document handoffs between specialized AI agents (foreman, workers, reviewers). Use for multi-agent workflows or guild-style agent coordination. |
+
+---
+
+## Related
+
+- [STANDARDS](STANDARDS.mdx) — SKILL.md format rules and validation checklist
+- [DX_FAQ — Add a skill](https://github.com/arenukvern/skill_steward/blob/main/DX_FAQ.md) — step-by-step for maintainers
+- [skills.sh registry](https://skills.sh) — public discovery directory

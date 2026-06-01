@@ -122,7 +122,7 @@ Match the format already used in the repo. Do not mix formats within one decisio
 1. **Confirm scope** — one decision per ADR; split if multiple unrelated choices.
 2. **Gather** — context, drivers, options considered, who decided, date (ISO `YYYY-MM-DD`).
 3. **Draft** — fill template; write options you actually evaluated, not only the winner.
-4. **Index** — add row to `docs/decisions/README.md` (see [references/decision-log-index.md](references/decision-log-index.md)).
+4. **Index** — add row to `docs/decisions/README.mdx` (see [references/decision-log-index.md](references/decision-log-index.md)).
 5. **Cross-link** — issues, PRs, diagrams, superseded ADRs.
 6. **Review** — consequences must include downsides (trade-offs, not marketing).
 

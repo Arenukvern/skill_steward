@@ -1,6 +1,6 @@
 # Eval case schema (`evals/cases/*.yaml`)
 
-Version: **1** · [ADR 0011](../../../docs/decisions/0011-tiered-skill-evals-and-rule-based-ci.md)
+Version: **1** · [ADR 0011](../../../docs/decisions/0011-tiered-skill-evals-and-rule-based-ci.mdx)
 
 Rule-based cases run in CI via `pnpm run eval`. They do **not** execute agents or LLM judges.
 

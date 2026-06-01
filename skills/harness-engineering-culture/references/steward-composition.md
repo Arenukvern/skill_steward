@@ -30,4 +30,4 @@ npx skills add arenukvern/skill_steward -a cursor -a claude-code -y
 
 When building or refreshing a harness CLI, also consult the tooling choices documented in [preferred-tooling.md](preferred-tooling.md) (Dart + Justfile defaults, rationale for avoiding unnecessary new mjs/TS harnesses, and guidance reusable across sibling repos).
 
-Hooks/plugins: install separately per [ADR 0004](../../../docs/decisions/0004-plugin-packaging-and-install-path.md).
+Hooks/plugins: install separately per [ADR 0004](../../../docs/decisions/0004-plugin-packaging-and-install-path.mdx).

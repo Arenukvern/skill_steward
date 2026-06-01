@@ -16,5 +16,5 @@
 
 ## Changelog
 
-- 2026-05-29: v1.1 — binary release contract + distribution router ([ADR 0010](../../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.md))
+- 2026-05-29: v1.1 — binary release contract + distribution router ([ADR 0010](../../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.mdx))
 - 2026-05-29: initial skill — release legibility contract + ecosystem router + MoE critique

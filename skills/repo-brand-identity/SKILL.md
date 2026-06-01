@@ -7,7 +7,7 @@ metadata:
   version: "1.1.0"
   category: governance
 paths:
-  - "docs/brand.md"
+  - "docs/brand.mdx"
   - "docs/brand/**"
   - "README.md"
 ---
@@ -73,7 +73,7 @@ node -e "const fs = require('fs'); const clean = fs.readFileSync('logo.svg', 'ut
 
 ### 5. Hero & Cover Illustration
 - Prefer metaphorical, artistic rasters (cinematic compositions with negative space) over literal representations of tools, robots, or code.
-- Record the exact generation prompt in `docs/brand.md` for provenance.
+- Record the exact generation prompt in `docs/brand.mdx` for provenance.
 - Optimize images for size: target `<150 KiB` for wide covers, `<80 KiB` for smaller squares.
 
 ### 6. Verbal Tone of Voice
@@ -86,7 +86,7 @@ node -e "const fs = require('fs'); const clean = fs.readFileSync('logo.svg', 'ut
 
 - **Location:** All brand assets (logos, heroes, badges) must live under `docs/brand/` to keep the root directory clean.
 - **Verification:** Do **not** write automated validators or extend CLI tools to check brand assets. Maintain brand integrity through human code review and documentation checklists.
-- **Log changes:** Document all brand-related updates in `docs/brand.md` and log public-facing changes using changesets (`pnpm changeset`).
+- **Log changes:** Document all brand-related updates in `docs/brand.mdx` and log public-facing changes using changesets (`pnpm changeset`).
 
 ---
 

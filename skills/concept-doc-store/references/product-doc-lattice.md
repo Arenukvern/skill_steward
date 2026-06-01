@@ -9,7 +9,7 @@ Why structured product repositories use the reference layout for **concept-doc-s
 3. **Decisions ≠ tutorials** — `docs/decisions/` ADRs are compressed *why*; they explicitly say day-to-day docs live elsewhere.
 4. **Code is behavior SSOT** — ADRs link to core implementation files instead of copying APIs.
 5. **Spec-driven agent programs** — `docs/superpowers/` holds spec (truth), plan (tasks), tracker YAML (machine state), closure (evidence), archive (do not execute).
-6. **North star** — `docs/NORTH_STAR.md` states what the product owns in bullet form, not implementation.
+6. **North star** — `docs/NORTH_STAR.mdx` states what the product owns in bullet form, not implementation.
 7. **Skills are procedures** — `plugin/skills/` teach *how to run a task*; architecture lives in `docs/core/` and ADRs.
 
 ## Folder map
@@ -24,7 +24,7 @@ Why structured product repositories use the reference layout for **concept-doc-s
 | `docs/decisions/` | ADRs (symlink to root `decisions/`) |
 | `docs/superpowers/` | Core program: specs, plans, tracker, closure, evals |
 | `docs/platform/` | Platform product checklists (regression, external repo) |
-| `docs/NORTH_STAR.md` | Charter |
+| `docs/NORTH_STAR.mdx` | Charter |
 | Root `AGENTS.md` | Agent rules + table to superpowers docs |
 | `plugin/skills/` | Installable Agent Skills |
 

@@ -3,7 +3,7 @@
 | Topic | URL | Used for |
 |-------|-----|----------|
 | Agent Skills spec | https://agentskills.io/ | SKILL.md format |
-| Skill Steward STANDARDS | https://github.com/arenukvern/skill_steward/blob/main/docs/STANDARDS.md | Repo conventions |
+| Skill Steward STANDARDS | https://github.com/arenukvern/skill_steward/blob/main/docs/STANDARDS.mdx | Repo conventions |
 | adr.github.io | https://adr.github.io/ | ADR practice |
 | MADR | https://adr.github.io/madr/ | Default template |
 
