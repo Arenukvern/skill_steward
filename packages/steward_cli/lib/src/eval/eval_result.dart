@@ -9,9 +9,9 @@ class EvalReport {
   final bool ok;
 
   Map<String, dynamic> toJson() => {
-        'results': results.map((final r) => r.toJson()).toList(),
-        'exitCode': ok ? 0 : 1,
-      };
+    'results': results.map((final r) => r.toJson()).toList(),
+    'exitCode': ok ? 0 : 1,
+  };
 }
 
 /// Result for a single Tier 1 skill evaluation.
@@ -33,10 +33,10 @@ class EvalSkillResult {
   bool get isOk => errors.isEmpty;
 
   Map<String, dynamic> toJson() => {
-        'skillName': skillName,
-        'errors': errors,
-        'warnings': warnings,
-        'passed': passed,
-        'total': total,
-      };
+    'skillName': skillName,
+    'errors': errors,
+    'warnings': warnings,
+    'passed': passed,
+    'total': total,
+  };
 }

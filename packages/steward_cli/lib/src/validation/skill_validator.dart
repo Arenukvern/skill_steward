@@ -76,17 +76,17 @@ Future<Set<String>> loadRegistrySkillIds(final String rootDir) async {
 /// of the original Node validator (after the per-skill loop).
 ///
 /// We return a fresh list of [SkillValidationResult] because the class is immutable.
-({
-  List<SkillValidationResult> augmentedResults,
-  List<String> registryWarnings,
-}) augmentWithRegistryWarnings(
+({List<SkillValidationResult> augmentedResults, List<String> registryWarnings})
+augmentWithRegistryWarnings(
   final List<SkillValidationResult> results,
   final Set<String> registryIds,
 ) {
   final registryWarnings = <String>[];
 
-  final skillNames =
-      results.map((final r) => r.name).whereType<String>().toSet();
+  final skillNames = results
+      .map((final r) => r.name)
+      .whereType<String>()
+      .toSet();
 
   for (final id in registryIds) {
     if (!skillNames.contains(id)) {
@@ -118,10 +118,7 @@ Future<Set<String>> loadRegistrySkillIds(final String rootDir) async {
     );
   }
 
-  return (
-    augmentedResults: augmented,
-    registryWarnings: registryWarnings,
-  );
+  return (augmentedResults: augmented, registryWarnings: registryWarnings);
 }
 
 /// Validates all skills under the given `skillsDir` (normally the repo `skills/` folder).

@@ -4,16 +4,14 @@ import 'dart:io';
 import 'package:args/command_runner.dart';
 
 import '../repo_root.dart';
-import '../validation/validation.dart' show validateAllSkills, validateLocalSkills, ValidationReport;
+import '../validation/validation.dart'
+    show ValidationReport, validateAllSkills, validateLocalSkills;
 
 /// Runs skill validation using the Dart implementation (post hardcut from Node).
 class ValidateCommand extends Command<void> {
   ValidateCommand() {
     argParser
-      ..addFlag(
-        'json',
-        help: 'Output results as JSON.',
-      )
+      ..addFlag('json', help: 'Output results as JSON.')
       ..addFlag(
         'local',
         help: 'Validate local .agents/skills/ directory against skills.json.',
@@ -70,4 +68,3 @@ class ValidateCommand extends Command<void> {
     exit(report.ok ? 0 : 1);
   }
 }
-

@@ -64,9 +64,7 @@ Future<List<String>> _runCaseRules(
 
   // Validate case skill field matches actual directory name.
   if (evalCase.skill != dirName) {
-    errors.add(
-      'case skill "${evalCase.skill}" != directory "$dirName"',
-    );
+    errors.add('case skill "${evalCase.skill}" != directory "$dirName"');
   }
 
   for (final rule in evalCase.rules) {
@@ -200,9 +198,7 @@ Future<EvalSkillResult> evalSkill(
 
   final casesDir = Directory(p.join(skillPath, 'evals', 'cases'));
   if (!casesDir.existsSync()) {
-    errors.add(
-      'Tier 1 requires evals/cases/*.yaml (min $tier1MinCases)',
-    );
+    errors.add('Tier 1 requires evals/cases/*.yaml (min $tier1MinCases)');
     return EvalSkillResult(
       skillName: skillName,
       errors: errors,
@@ -215,9 +211,7 @@ Future<EvalSkillResult> evalSkill(
   final caseFiles = casesDir
       .listSync()
       .whereType<File>()
-      .where(
-        (final f) => f.path.endsWith('.yaml') || f.path.endsWith('.yml'),
-      )
+      .where((final f) => f.path.endsWith('.yaml') || f.path.endsWith('.yml'))
       .toList();
 
   if (caseFiles.length < tier1MinCases) {

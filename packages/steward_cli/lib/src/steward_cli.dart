@@ -13,16 +13,16 @@ import 'repo_root.dart';
 class StewardCli {
   /// Runs [args] and exits with the command status code.
   Future<void> run(final List<String> args) async {
-    final runner = CommandRunner<void>(
-      'steward',
-      'Skill Steward meta harness — validate, eval, and list skills.',
-    )
-      ..addCommand(ValidateCommand())
-      ..addCommand(EvalCommand())
-      ..addCommand(ListCommand())
-      ..addCommand(InstallCommand())
-      ..addCommand(UpdateCommand());
-
+    final runner =
+        CommandRunner<void>(
+            'steward',
+            'Skill Steward meta harness — validate, eval, and list skills.',
+          )
+          ..addCommand(ValidateCommand())
+          ..addCommand(EvalCommand())
+          ..addCommand(ListCommand())
+          ..addCommand(InstallCommand())
+          ..addCommand(UpdateCommand());
 
     try {
       await runner.run(args);

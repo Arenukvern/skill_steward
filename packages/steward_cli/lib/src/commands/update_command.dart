@@ -26,7 +26,6 @@ class UpdateCommand extends Command<void> {
         'force',
         abbr: 'f',
         help: 'Force overwrite local changes.',
-        defaultsTo: false,
       );
   }
 
@@ -34,7 +33,8 @@ class UpdateCommand extends Command<void> {
   final name = 'update';
 
   @override
-  final description = 'Update local skills according to skills.json pinned sources.';
+  final description =
+      'Update local skills according to skills.json pinned sources.';
 
   @override
   Future<void> run() async {
@@ -46,7 +46,9 @@ class UpdateCommand extends Command<void> {
     final skillsJsonFile = File(p.join(root, 'skills.json'));
 
     if (!skillsJsonFile.existsSync()) {
-      stderr.writeln('No skills.json file found in project root. Run install command first.');
+      stderr.writeln(
+        'No skills.json file found in project root. Run install command first.',
+      );
       exit(1);
     }
 
@@ -66,14 +68,21 @@ class UpdateCommand extends Command<void> {
         final source = item['source'] as String?;
         final lockedCommit = item['commit'] as String?;
         final ref = item['ref'] as String? ?? 'main';
-        final skills = (item['skills'] as List?)?.cast<String>() ?? const <String>[];
+        final skills =
+            (item['skills'] as List?)?.cast<String>() ?? const <String>[];
 
         if (source == null || source.isEmpty) continue;
 
-        final repoUrl = source.startsWith('http') ? source : 'https://github.com/$source.git';
-        
+        final repoUrl = source.startsWith('http')
+            ? source
+            : 'https://github.com/$source.git';
+
         // Use git ls-remote to query the latest commit hash of the remote branch/ref
-        final lsRes = await Process.run('git', ['ls-remote', repoUrl, 'refs/heads/$ref']);
+        final lsRes = await Process.run('git', [
+          'ls-remote',
+          repoUrl,
+          'refs/heads/$ref',
+        ]);
         if (lsRes.exitCode != 0) {
           stderr.writeln('Failed to query remote for $source: ${lsRes.stderr}');
           continue;
@@ -88,12 +97,24 @@ class UpdateCommand extends Command<void> {
         final latestCommit = stdoutStr.split(RegExp(r'\s+')).first;
 
         if (latestCommit == lockedCommit) {
-          stdout.writeln('✓ $source is up to date (locked at ${lockedCommit?.substring(0, 7)}).');
+          stdout.writeln(
+            '✓ $source is up to date (locked at ${lockedCommit?.substring(0, 7)}).',
+          );
         } else {
-          stdout.writeln('Updating $source: ${lockedCommit?.substring(0, 7)} -> ${latestCommit.substring(0, 7)}...');
+          stdout.writeln(
+            'Updating $source: ${lockedCommit?.substring(0, 7)} -> ${latestCommit.substring(0, 7)}...',
+          );
           // Run the git clone and installation routine for the new commit
-          await _installFromSource(source, latestCommit, skills, root, isLocal, target, force);
-          
+          await _installFromSource(
+            source,
+            latestCommit,
+            skills,
+            root,
+            isLocal,
+            target,
+            force,
+          );
+
           // Write updated commit back to skills.json
           item['commit'] = latestCommit;
         }
@@ -101,7 +122,9 @@ class UpdateCommand extends Command<void> {
     }
 
     // Write updated manifest back to file
-    await skillsJsonFile.writeAsString(const JsonEncoder.withIndent('  ').convert(data));
+    await skillsJsonFile.writeAsString(
+      const JsonEncoder.withIndent('  ').convert(data),
+    );
     stdout.writeln('Update complete.');
   }
 
@@ -114,23 +137,34 @@ class UpdateCommand extends Command<void> {
     final String target,
     final bool force,
   ) async {
-    final repoUrl = source.startsWith('http') ? source : 'https://github.com/$source.git';
+    final repoUrl = source.startsWith('http')
+        ? source
+        : 'https://github.com/$source.git';
     final tempDir = Directory(p.join(root, '.steward_temp'));
-    
+
     if (tempDir.existsSync()) {
       await tempDir.delete(recursive: true);
     }
 
     final cloneRes = await Process.run('git', ['clone', repoUrl, tempDir.path]);
     if (cloneRes.exitCode != 0) {
-      stderr.writeln('Failed to clone repository during update: ${cloneRes.stderr}');
+      stderr.writeln(
+        'Failed to clone repository during update: ${cloneRes.stderr}',
+      );
       return;
     }
 
     // Checkout specific commit SHA
-    final checkoutRes = await Process.run('git', ['-C', tempDir.path, 'checkout', commitSha]);
+    final checkoutRes = await Process.run('git', [
+      '-C',
+      tempDir.path,
+      'checkout',
+      commitSha,
+    ]);
     if (checkoutRes.exitCode != 0) {
-      stderr.writeln('Failed to checkout commit $commitSha: ${checkoutRes.stderr}');
+      stderr.writeln(
+        'Failed to checkout commit $commitSha: ${checkoutRes.stderr}',
+      );
       await tempDir.delete(recursive: true);
       return;
     }
@@ -144,7 +178,8 @@ class UpdateCommand extends Command<void> {
         for (final entry in list) {
           if (entry is Directory) {
             final name = p.basename(entry.path);
-            if (!name.startsWith('.') && File(p.join(entry.path, 'SKILL.md')).existsSync()) {
+            if (!name.startsWith('.') &&
+                File(p.join(entry.path, 'SKILL.md')).existsSync()) {
               targetsToInstall.add(name);
             }
           }
@@ -158,10 +193,11 @@ class UpdateCommand extends Command<void> {
         for (final loc in [
           p.join(tempDir.path, 'skills', skillName),
           p.join(tempDir.path, skillName),
-          tempDir.path
+          tempDir.path,
         ]) {
           final dir = Directory(loc);
-          if (dir.existsSync() && File(p.join(dir.path, 'SKILL.md')).existsSync()) {
+          if (dir.existsSync() &&
+              File(p.join(dir.path, 'SKILL.md')).existsSync()) {
             srcDir = dir;
             break;
           }
@@ -182,7 +218,11 @@ class UpdateCommand extends Command<void> {
     }
   }
 
-  Directory _getDestDir(final String root, final bool isLocal, final String skillName) {
+  Directory _getDestDir(
+    final String root,
+    final bool isLocal,
+    final String skillName,
+  ) {
     if (isLocal) {
       return Directory(p.join(root, '.agents', 'skills', skillName));
     }
@@ -196,7 +236,9 @@ class UpdateCommand extends Command<void> {
     final bool force,
   ) async {
     if (dest.existsSync() && !force) {
-      stdout.writeln('Local modifications may exist at ${dest.path}. Use --force to overwrite.');
+      stdout.writeln(
+        'Local modifications may exist at ${dest.path}. Use --force to overwrite.',
+      );
       return;
     }
     if (dest.existsSync()) {

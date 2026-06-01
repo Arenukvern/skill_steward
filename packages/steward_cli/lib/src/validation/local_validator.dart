@@ -15,7 +15,9 @@ Future<ValidationReport> validateLocalSkills(final String projectRoot) async {
     return const ValidationReport(
       skills: [],
       ok: false,
-      registryWarnings: ['Missing required project configuration file: skills.json'],
+      registryWarnings: [
+        'Missing required project configuration file: skills.json',
+      ],
     );
   }
 
