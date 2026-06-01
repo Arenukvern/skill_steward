@@ -180,10 +180,10 @@ uv tool install skills-ref
 skills-ref validate ./skills/my-skill
 ```
 
-This repo ships `scripts/validate-skills.mjs` and `scripts/eval-skill.mjs` (Tier 1 rule-based cases) for CI without Python.
+This repo validates skills using the `steward` CLI (or via `pnpm` scripts in development):
 
 ```bash
-pnpm run validate    # all skills — structure
-pnpm run eval        # Tier 1 — evals/cases/*.yaml rules only
+pnpm run validate    # all skills — structure (delegates to steward validate)
+pnpm run eval        # Tier 1 — evals/cases/*.yaml rules only (delegates to steward eval)
 pnpm run eval:json   # machine-readable output
 ```

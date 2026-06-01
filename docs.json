@@ -171,6 +171,10 @@
         {
           "title": "0013 — Automated release",
           "href": "/decisions/0013-automated-release-via-changesets-action"
+        },
+        {
+          "title": "0014 — Native binary distribution",
+          "href": "/decisions/0014-distribute-steward-cli-as-binary"
         }
       ]
     },

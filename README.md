@@ -29,49 +29,33 @@ Same thread: useful docs for humans and agents, mechanical gates, and work worth
 
 ## Install
 
-### Skills
-Install the meta-skills (e.g., for Cursor, Claude Code, Codex) via `npx skills`:
+### Skills (npx skills)
+To install portable skills via the `skills` CLI:
 
 ```bash
-# All meta-skills
+# Install all meta-skills (project scope)
 npx skills add arenukvern/skill_steward
 
-# Target specific agents
-npx skills add arenukvern/skill_steward -a cursor -a claude-code -y
+# Install a specific skill (e.g. create-skill)
+npx skills add arenukvern/skill_steward --skill create-skill
 
-# Global install
+# Install globally (across all projects)
 npx skills add arenukvern/skill_steward -g
+
+# Target specific agents (e.g. Cursor & Claude Code, non-interactive)
+npx skills add arenukvern/skill_steward -a cursor -a claude-code -y
+```
+
+Discover available skills on [skills.sh](https://skills.sh/arenukvern/skill_steward) or search them in the terminal:
+```bash
+npx skills find steward
 ```
 
 ### Steward CLI (Global Binary)
-To install the `steward` CLI globally as a precompiled native binary (which allows you to run validation, skill installs, and updates locally without needing the Dart SDK or cloning the repository):
+To install the zero-dependency `steward` CLI globally as a precompiled native binary (which validates project-local skills and handles installation/updates without requiring the Dart SDK or a full repo clone):
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash
-```
-
-One skill:
-
-```bash
-npx skills add arenukvern/skill_steward --skill create-skill
-```
-
-Target specific agents:
-
-```bash
-npx skills add arenukvern/skill_steward -a cursor -a claude-code -y
-```
-
-Global install:
-
-```bash
-npx skills add arenukvern/skill_steward -g
-```
-
-Discover on [skills.sh](https://skills.sh) or:
-
-```bash
-npx skills find steward
 ```
 
 ## Updating installed skills
@@ -155,21 +139,21 @@ See [docs/STANDARDS.mdx](docs/STANDARDS.mdx) for the checklist used in this repo
 ```
 skill_steward/              # GitHub: Arenukvern/skill_steward
 ├── docs/
-│   ├── DESIGN_FAQ.mdx      # Why (decisions, charter)
+│   ├── DESIGN_FAQ.mdx      # Why (standing decisions)
 │   ├── DX_FAQ.mdx          # How (install, validate, contribute)
-│   └── decisions/           # ADRs (incl. product name ADR 0008)
-├── skills/                   # Meta-skills only
-├── packages/steward_cli/       # Dart `steward` CLI — validate, list
-├── plugins/
-│   └── steward-validate-on-save/
-├── templates/
-│   ├── skill/
-│   └── plugin/
-├── skills.sh.json
-├── CHANGELOG.md              # Generated via Changesets (ADR 0009)
-├── .changeset/               # PR-time release notes
-├── AGENTS.md
-└── scripts/validate-skills.mjs
+│   ├── brand.mdx           # Visual identity guidelines
+│   └── decisions/          # ADRs (strategic decisions)
+├── skills/                 # Meta-skills only (installable)
+├── packages/steward_cli/   # Dart `steward` CLI package (source & tests)
+├── plugins/                # Editor plugins and wiring hooks
+├── templates/              # Scaffolding templates for skills/plugins
+├── scripts/                # Utility shell scripts (e.g. build_release_artifacts.sh)
+├── install.sh              # Precompiled binary bootstrapper script
+├── docs.json               # docs.page configuration
+├── skills.sh.json          # skills.sh directory groupings
+├── CHANGELOG.md            # Version changelog (via Changesets)
+├── .changeset/             # In-flight changelog fragments
+└── AGENTS.md               # Agent entry map
 ```
 
 ## Contributing
