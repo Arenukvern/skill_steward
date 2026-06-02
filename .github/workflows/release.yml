@@ -34,6 +34,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Setup Dart SDK
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+
       # Two-mode operation (handled automatically by changesets/action):
       #   MODE A — pending changesets on main:
       #     → creates/updates a PR titled "chore: version packages"
