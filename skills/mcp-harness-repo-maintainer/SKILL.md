@@ -1,10 +1,11 @@
 ---
 name: mcp-harness-repo-maintainer
-description: Maintains MCP-and-harness repositories where CLI and MCP are thin agent-facing interfaces and core libraries hold domain logic (e.g., skill_steward and generic sibling repos). Use when refactoring adapters, enforcing CLI/MCP/core parity, contract gates, or sibling repo layout.
+description: Maintains MCP-and-harness repositories where CLI and MCP are thin agent-facing interfaces and core libraries hold domain logic. Develops agent-first engineering culture via shared contracts, mechanical gates, and in-repo docs. Use when refactoring adapters, enforcing CLI/MCP/core parity, building agentic tooling, or maintaining sibling repo layout.
 license: MIT
+type: governance
 metadata:
   author: skill-steward
-  version: "1.1.0"
+  version: "1.2.0"
   category: harness
 paths:
   - "AGENTS.md"
@@ -15,18 +16,22 @@ paths:
   - "mcp_server_*/**"
   - "Makefile"
   - "makefile"
+  - "Justfile"
+  - "justfile"
   - "package.json"
   - "Cargo.toml"
   - "pyproject.toml"
   - "pubspec.yaml"
   - "**/mcp.json"
+  - "**/mcp*.json"
   - ".github/workflows/**"
   - "tool/**"
+  - "scripts/**"
 ---
 
-# MCP & harness repo maintainer
+# MCP & Harness Repo Maintainer (Architecture & Culture)
 
-Maintain **agent-first repos** in the `<workspace>/` family without copying the wrong shape into the wrong repo.
+Build and maintain **agent-first repos** where agents execute and humans steer. Avoid copying the wrong shape into the wrong repo.
 
 ## Core principle (all archetypes)
 
@@ -38,112 +43,83 @@ Agents / CI  →  CLI ──┐
 Agents / chat →  MCP ──┘
 ```
 
-Full layering: [core-and-interfaces.md](references/core-and-interfaces.md). **Parity:** every MCP tool must call the same core entrypoint as its CLI twin (or CLI-only repos expose core via commands only).
+Full layering: [core-and-interfaces.md](references/core-and-interfaces.md). **Parity:** every MCP tool must call the same core entrypoint as its CLI twin.
 
-## When to use
+## Core Beliefs & Culture
 
-- Bootstrapping or auditing product MCP repos (MCP + plugin + `init` command)
-- Maintaining platform libraries, CLI harnesses, or visual comparison sidecars
-- Keeping meta-stewards meta-only (skills/plugins, no product MCP, e.g. **skill_steward**)
-- Wiring **sibling clones**, version pins, or contract CI across repos
-- Applying production MCP patterns (resources vs tools, versioning, auth)
+1. **Missing capability → harness gap** — When an agent fails, ask what is not *legible* or *enforceable*, then add CLI command, MCP tool, linter, or skill.
+2. **Ambiguous design → decision checkpoint** — Before coding a fork, use `adr-records` layer 0; record `accepted` ADR after agreement.
+3. **Mechanical enforcement** — Linters, validate commands, schema validation at boundaries—error messages teach the agent how to fix. Use structured parsing (YAML, JSON, or AST).
+4. **Progressive disclosure** — Router → ADR / DESIGN_FAQ (why) → DX_FAQ (how) → skills (procedures) → code (behavior SSOT).
+
+## Harness Layers to Build
+
+```text
+Human intent (prompt, plan, review)
+        │
+        ▼
+┌───────────────────┐
+│ Skills + AGENTS   │  Map & procedures (when to do what)
+└─────────┬─────────┘
+          ▼
+┌───────────────────┐
+│ CLI               │  doctor, exec, validate, contracts (deterministic)
+└─────────┬─────────┘
+          ▼
+┌───────────────────┐
+│ MCP server        │  fmt_* / tools for chat agents (same schemas)
+└─────────┬─────────┘
+          ▼
+┌───────────────────┐
+│ App / runtime     │  Legible UI, logs, metrics per worktree (optional)
+└───────────────────┘
+```
 
 ## Mixture of experts (pick one lead)
 
-Read [repo-archetypes.md](references/repo-archetypes.md) for the full matrix. Route by **primary artifact**:
+Route by **primary artifact**:
 
 | Expert lens | Repo examples | Owns | Does not own |
 |-------------|---------------|------|----------------|
-| **A — Product MCP** | `<custom_mcp>` | `plugin/mcp.json`, tool prefixing, init utility (`[tool] init`), check contracts tasks | Harness scripts, visual comparisons |
-| **B — Platform libs** | `<platform_libs>` | Platform packages/modules, adapters (MCP/WebMCP/native), publish sequence | Shippable plugin tree, dogfood apps |
-| **C — CLI harness** | `<cli_harness>` | Harness engine, app registry, fixture lint/run tasks | MCP server binary, marketplace manifests |
+| **A — Product MCP** | `<custom_mcp>` | `plugin/mcp.json`, tool prefixing, init utility | Harness scripts, visual comparisons |
+| **B — Platform libs** | `<platform_libs>` | Platform packages/modules, adapters | Shippable plugin tree, dogfood apps |
+| **C — CLI harness** | `<cli_harness>` | Harness engine, app registry, fixture lint | MCP server binary, marketplace manifests |
 | **D — Visual sidecar** | `<visual_sidecar>` | Profile configs, compare/deconstruct CLI | VM/MCP, dynamic registry |
-| **E — Meta steward** | `skill_steward`, `<meta_steward>` | `skills/`, `plugins/`, validator CLI, documentation lattice | Product MCP, domain tools |
-| **F — Security/Ops** | all remotes | OAuth gateway, token brokering, tool schema stability | Feature code |
-
-**Rule:** One repo = one North Star. Cross-repo deps flow **down** the graph (see [sibling-layout.md](references/sibling-layout.md)), never circular.
+| **E — Meta steward** | `skill_steward` | `skills/`, `plugins/`, validator CLI, docs | Product MCP, domain tools |
+| **F — Security/Ops** | all remotes | OAuth gateway, token brokering | Feature code |
 
 ## Universal maintainer spine (every archetype)
 
-1. **Charter** — `docs/NORTH_STAR.mdx` (or root pointer); `AGENTS.md` = map only (~100 lines).
-2. **Behavior SSOT** — code + schemas; docs hold **why** (ADR, DESIGN_FAQ) and **how** (DX_FAQ, skills).
-3. **Thin adapters, thick core** — implement once in core; CLI + MCP are wrappers; CI uses CLI, chat uses MCP ([core-and-interfaces.md](references/core-and-interfaces.md)).
-4. **Mechanical gates** — contract checks / validate commands / unit tests before merge; errors teach remediation.
-5. **Plan hygiene** — any plan format OK; extract to ADR/FAQ/code/skill then **delete** plan files ([executable-plans](../../docs/start_here/executable-plans.mdx)).
-6. **Version honesty** — single `VERSION` or release-please manifest; plugin manifests + generated embeds stay in sync.
-7. **Distribution** — document per channel: `npx skills`, `init <agent>`, git marketplace ([plugin-marketplace-setup](../plugin-marketplace-setup/SKILL.md)).
+1. **Charter & Archetype** — `docs/NORTH_STAR.mdx` (or root pointer); `AGENTS.md` = map only.
+2. **Behavior SSOT** — code + schemas; docs hold **why** and **how**.
+3. **Thin adapters, thick core** — implement once in core; CLI + MCP are wrappers.
+4. **Mechanical gates** — contract checks / validate commands / unit tests before merge.
+5. **Plan hygiene** — extract to ADR/FAQ/code/skill then **delete** plan files.
+6. **Version honesty** — single `VERSION` or release-please manifest.
+7. **Distribution** — document per channel: `npx skills`, `init <agent>`, git marketplace.
 
-## Archetype A — Product MCP
+## Workflow: Add Agent-First Capability
 
-**SSOT tree:** `plugin/` (manifests, `mcp.json`, canonical `skills/`), CLI embeds via skill synchronization.
+1. **Specify intent** — One sentence outcome + acceptance check.
+2. **Choose surface**
+   - CI / script / gate → **CLI** first
+   - Conversational debug loop → **MCP tool** (reuse CLI core)
+   - One-off guidance → **skill** in `skills/`
+   - Event enforcement → **plugin** hook
+3. **Make legible** — JSON schema, `--json` output, stable error codes; document in DX_FAQ.
+4. **Document why** — ADR or DESIGN_FAQ Q&A.
+5. **Wire map** — `AGENTS.md` / `docs_map` row.
+6. **Validate** — `pnpm run validate` or project contract tests.
+7. **Human collab** — PR describes harness change.
 
-```text
-plugin/
-├── mcp.json
-├── .cursor-plugin/plugin.json
-├── .claude-plugin/plugin.json
-├── .codex-plugin/plugin.json
-└── skills/*/SKILL.md
-.claude-plugin/marketplace.json   # source: ./plugin
-mcp_server/                       # thin CLI router + thin MCP server binary (e.g., mcp_server_rust)
-packages/*, src/*                 # core logic / capabilities implementation
-make check-contracts              # manifests, skills, version, asset drift checks
-```
+## Archetypes Details
 
-**Golden commands:**
-
-```bash
-make sync-skills && make check-contracts
-[tool-cli] init cursor   # e.g., init command for cursor
-[tool-cli] doctor       # check runtime capabilities
-```
-
-**Do not** patch community MCP servers for product logic—ship a **custom** server ([production practices](references/mcp-production-practices.md)).
-
-## Archetype B — Platform libs
-
-- **Core:** `[platform]_core`, `[platform]_schema` — registry, validation, invocation logic.
-- **Adapters:** `[platform]_mcp`, WebMCP/native—wire protocol adapters only; no domain forks.
-- **CLI:** CLI runner command -> same core logic as MCP tools.
-- Multi-package/module workspace; integration tests validated in product MCP.
-
-## Archetype C — CLI harness
-
-- **No MCP** by design—CLI is the sole agent/CI interface; still **thin** over harness core (harness engine, registry).
-- Entry point: CLI executable; depends on product MCP **core packages/modules**, not duplicated toolkit logic.
-- Local workspaces use path dependencies/overrides (e.g. workspace overrides) for sibling development (see [sibling-layout.md](references/sibling-layout.md)).
-- Validation: test suite execution + fixture checks (lint/run fixtures).
-- Skills under `plugin/skills/` for capture/semantic-test **workflows** only.
-
-## Archetype D — Visual sidecar
-
-- **No MCP** — CLI commands wrap profile/compare **core** library.
-- SSOT: `profiles/*.yaml` or visual/profile definitions.
-- Consumers: harness comparison steps, dogfood output validation.
-
-## Archetype E — Meta steward (e.g., skill_steward)
-
-- **Core:** validators (e.g. validator CLI package, linter rules).
-- **CLI:** thin CLI check/list/validation commands.
-- **MCP:** deferred meta index—must stay thin over same validators.
-- **Skills** in `skills/`; **plugins** for hooks only.
-- No `mcp.json`, no domain-specific product tools.
-- Cross-promote product installs in docs.
-
-## Archetype F — Production MCP (all remotes)
-
-Apply on every **remote** or **shared** MCP server:
-
-| Practice | Action |
-|----------|--------|
-| Resources ≠ tools | Read-only data → resources; mutations → tools |
-| Long work | Return job id + status resource; do not block stdio |
-| Versioning | Additive tool schemas; bump server `version` |
-| Auth | No token passthrough; OAuth 2.1 + PKCE for HTTP; env vars for stdio |
-| Fleet | Gateway for audit/rate-limit when many servers |
-| Supply chain | Pin server packages; review tool permissions like a public API |
-
-Details: [mcp-production-practices.md](references/mcp-production-practices.md).
+- **Archetype A (Product MCP):** `plugin/` is SSOT. Ship a **custom** server, do not patch community servers for product logic.
+- **Archetype B (Platform Libs):** Core modules + wire protocol adapters only; no domain forks.
+- **Archetype C (CLI Harness):** No MCP. Depends on product MCP core modules.
+- **Archetype D (Visual sidecar):** No MCP. SSOT: `profiles/*.yaml`.
+- **Archetype E (Meta Steward):** Core validators, thin CLI check. No `mcp.json`.
+- **Archetype F (Production MCP):** Resources for read-only; tools for mutation. Return job IDs for long tasks. Use OAuth.
 
 ## Sibling layout
 
@@ -153,59 +129,17 @@ Details: [mcp-production-practices.md](references/mcp-production-practices.md).
   <platform_libs>/             # B — SDK platform
   <cli_harness>/               # C — CLI/Harness runner
   <visual_sidecar>/            # D — comparison sidecar
-  <meta_steward>/              # E — meta skills & validation (e.g., skill_steward)
+  <meta_steward>/              # E — meta skills & validation
 ```
 
-See [sibling-layout.md](references/sibling-layout.md) for dependency direction and dogfood details.
+## Checklist before claiming “harness ready”
 
-## Workflow: audit an existing repo
-
-1. Classify archetype (A–E) from [repo-archetypes.md](references/repo-archetypes.md).
-2. Check North Star + AGENTS map exist and are not duplicated encyclopedias.
-3. List install channels documented (skills CLI, init, marketplace)—fill gaps using `plugin-marketplace-setup`.
-4. Run that repo’s **contract gate** (e.g., validate scripts, build commands, tests).
-5. Verify version/manifest/sync scripts if releasable.
-6. File ADR if boundary changes (new MCP tool family, new sibling dep).
-
-## Workflow: bootstrap a new product MCP repo (minimal)
-
-1. ADR: scope, transport (stdio vs HTTP), tool prefix, auth model.
-2. `plugin/mcp.json` + one agent manifest (Cursor or Claude).
-3. `skills/` with setup + maintainer skills; duplicate or symlink for `npx skills`.
-4. CLI: doctor, init <agent>, validate command mirroring MCP checks.
-5. `tool/contracts/` + CI job running them on every PR.
-6. `docs/ai_agents/overview.mdx` install matrix; link Skill Steward meta-skills.
-
-## Guild skills to combine
-
-| Need | Skill |
-|------|-------|
-| New procedure in Guild | `create-skill` |
-| Marketplace / private install | `plugin-marketplace-setup` |
-| Harness philosophy | `harness-engineering-culture` |
-| Doc lattice | `concept-doc-store` |
-| Repository branding & status badges | `repo-brand-identity` |
-| Moral values & stewardship | `ethical-stewardship` |
-| ADR | `adr-records` |
-| Charter / plan hygiene | `north-star-governance` |
-
-## Anti-patterns
-
-- Domain logic in MCP tool handlers or CLI entry points without a shared **core** module
-- CLI and MCP implementing the same capability twice (adapter drift)
-- meta steward hosting product `mcp.json` or product MCP server code
-- visual sidecar growing an MCP server “for convenience”
-- Patching generic community MCP servers with private CRM/domain endpoints
-- `skills/` and `plugin/skills/` diverging without sync or CI drift check
-- Monolithic `AGENTS.md` replacing `docs/` + skills
-
-## References
-
-- [core-and-interfaces.md](references/core-and-interfaces.md) — thin CLI/MCP, thick core (start here)
-- [repo-archetypes.md](references/repo-archetypes.md)
-- [maintainer-checklists.md](references/maintainer-checklists.md)
-- [mcp-production-practices.md](references/mcp-production-practices.md)
-- [sibling-layout.md](references/sibling-layout.md)
+- [ ] Agent can discover what to run from in-repo docs alone
+- [ ] CLI command exists for CI/gates (or documented why not)
+- [ ] MCP tool shares schema/validation with CLI
+- [ ] Failure messages say how to remediate
+- [ ] Design forks were checkpointed (`adr-records`)
+- [ ] Contract gate (validation scripts) pass
 
 ## Install
 
@@ -213,7 +147,18 @@ See [sibling-layout.md](references/sibling-layout.md) for dependency direction a
 npx skills add arenukvern/skill_steward --skill mcp-harness-repo-maintainer
 ```
 
+## References
+
+- [core-and-interfaces.md](references/core-and-interfaces.md)
+- [repo-archetypes.md](references/repo-archetypes.md)
+- [maintainer-checklists.md](references/maintainer-checklists.md)
+- [mcp-production-practices.md](references/mcp-production-practices.md)
+- [sibling-layout.md](references/sibling-layout.md)
+- [harness-principles.md](references/harness-principles.md)
+- [cli-mcp-pattern.md](references/cli-mcp-pattern.md)
+- [steward-composition.md](references/steward-composition.md)
+- [preferred-tooling.md](references/preferred-tooling.md)
+
 ## Sources
 
 See [references/sources.md](references/sources.md). When researching, follow `skill-source-citations`.
-

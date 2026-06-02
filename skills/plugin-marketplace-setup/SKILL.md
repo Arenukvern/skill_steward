@@ -2,6 +2,7 @@
 name: plugin-marketplace-setup
 description: Designs public or private AI skill and plugin marketplaces for Cursor, Claude Code, Codex, and npx skills—manifest layout, install matrix, and Guild vs product boundaries. Use when setting up a marketplace, distributing skills/plugins to a team, private registry, .cursor-plugin, .claude-plugin, or skills.sh publishing.
 license: MIT
+type: governance
 metadata:
   author: skill-steward
   version: "1.0.0"
@@ -128,16 +129,16 @@ Canonical skills stay in `skills/`. See [templates/plugin/](../../templates/plug
 
 | Concern | Skill Steward | Product (e.g. product MCP) |
 |---------|-------------|------------------------------|
-| Skills | Meta only (`create-skill`, `adr-records`, …) | Domain + MCP skills |
+| Skills | Meta only (`skill-authoring-lifecycle`, `adr-records`, …) | Domain + MCP skills |
 | Plugins | Meta hooks (`steward-validate-on-save`) | Full bundle: MCP + skills + init |
 | CLI | `steward validate` | `[toolkit-cli] init <agent>` |
 | Marketplace | Public Git + skills.sh | Claude/Codex git + Cursor submit + Smithery |
 
-Do not put product MCP servers in Guild. Cross-promote: `npx skills add arenukvern/skill_steward --skill harness-engineering-culture`.
+Do not put product MCP servers in Guild. Cross-promote: `npx skills add arenukvern/skill_steward --skill mcp-harness-repo-maintainer`.
 
 ## Workflow: add a distributable skill to Guild
 
-1. Follow [create-skill](../create-skill/SKILL.md) — `skills/{name}/SKILL.md`.
+1. Follow [skill-authoring-lifecycle](../skill-authoring-lifecycle/SKILL.md) — `skills/{name}/SKILL.md`.
 2. Register in `skills.sh.json` + root `README.md`.
 3. `pnpm run validate` in skill_steward.
 4. After merge to `main`, public repo is installable via `npx skills add arenukvern/skill_steward --skill {name}`.

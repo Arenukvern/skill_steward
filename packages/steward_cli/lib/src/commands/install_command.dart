@@ -4,6 +4,7 @@ import 'package:args/command_runner.dart';
 import 'package:path/path.dart' as p;
 
 import '../repo_root.dart';
+import '../validation/skill_frontmatter.dart';
 
 class InstallCommand extends Command<void> {
   InstallCommand() {
@@ -20,6 +21,11 @@ class InstallCommand extends Command<void> {
         help: 'Compatibility profile (cursor | claude | generic).',
         allowed: ['cursor', 'claude', 'generic'],
         defaultsTo: 'generic',
+      )
+      ..addOption(
+        'type',
+        help: 'Filter skill installation by type (governance | developer).',
+        allowed: ['governance', 'developer'],
       )
       ..addFlag(
         'lock',
@@ -43,6 +49,7 @@ class InstallCommand extends Command<void> {
   Future<void> run() async {
     final isLocal = argResults!['local'] as bool;
     final target = argResults!['target'] as String;
+    final typeFilter = argResults!['type'] as String?;
     final lock = argResults!['lock'] as bool;
     final force = argResults!['force'] as bool;
 
@@ -63,13 +70,14 @@ class InstallCommand extends Command<void> {
         root,
         isLocal,
         target,
+        typeFilter,
         lock,
         force,
       );
     } else {
       // 2. Install a specific skill
       final arg = argResults!.rest.first;
-      await _installSpecific(arg, root, isLocal, target, lock, force);
+      await _installSpecific(arg, root, isLocal, target, typeFilter, lock, force);
     }
   }
 
@@ -78,6 +86,7 @@ class InstallCommand extends Command<void> {
     final String root,
     final bool isLocal,
     final String target,
+    final String? typeFilter,
     final bool lock,
     final bool force,
   ) async {
@@ -115,6 +124,7 @@ class InstallCommand extends Command<void> {
           root,
           isLocal,
           target,
+          typeFilter,
           lock,
           force,
         );
@@ -127,6 +137,7 @@ class InstallCommand extends Command<void> {
     final String root,
     final bool isLocal,
     final String target,
+    final String? typeFilter,
     final bool lock,
     final bool force,
   ) async {
@@ -139,7 +150,7 @@ class InstallCommand extends Command<void> {
       // Local directory copy
       final skillName = p.basename(arg);
       final destDir = _getDestDir(root, isLocal, skillName);
-      await _copySkillDirectory(Directory(arg), destDir, target, force);
+      await _copySkillDirectory(Directory(arg), destDir, target, typeFilter, force);
       return;
     }
 
@@ -158,6 +169,7 @@ class InstallCommand extends Command<void> {
         root,
         isLocal,
         target,
+        typeFilter,
         lock,
         force,
       );
@@ -176,6 +188,7 @@ class InstallCommand extends Command<void> {
     final String root,
     final bool isLocal,
     final String target,
+    final String? typeFilter,
     final bool lock,
     final bool force,
   ) async {
@@ -236,6 +249,7 @@ class InstallCommand extends Command<void> {
         targetsToInstall.addAll(skillNames);
       }
 
+      final List<String> successfullyInstalled = [];
       for (final skillName in targetsToInstall) {
         // Resolve skill source dir inside temp clone
         Directory? srcDir;
@@ -260,11 +274,14 @@ class InstallCommand extends Command<void> {
         }
 
         final destDir = _getDestDir(root, isLocal, skillName);
-        await _copySkillDirectory(srcDir, destDir, target, force);
+        final success = await _copySkillDirectory(srcDir, destDir, target, typeFilter, force);
+        if (success) {
+          successfullyInstalled.add(skillName);
+        }
       }
 
-      if (lock && commitSha != null) {
-        await _updateSkillsJsonLock(root, source, commitSha, targetsToInstall);
+      if (lock && commitSha != null && successfullyInstalled.isNotEmpty) {
+        await _updateSkillsJsonLock(root, source, commitSha, successfullyInstalled);
       }
     } finally {
       if (tempDir.existsSync()) {
@@ -284,18 +301,32 @@ class InstallCommand extends Command<void> {
     return Directory(p.join(root, 'skills', skillName));
   }
 
-  Future<void> _copySkillDirectory(
+  Future<bool> _copySkillDirectory(
     final Directory src,
     final Directory dest,
     final String target,
+    final String? typeFilter,
     final bool force,
   ) async {
+    final skillMdFile = File(p.join(src.path, 'SKILL.md'));
+    if (skillMdFile.existsSync() && typeFilter != null) {
+      final content = await skillMdFile.readAsString();
+      final parsed = parseFrontmatter(content);
+      final skillType = parsed['type'];
+      if (skillType != typeFilter) {
+        stdout.writeln(
+          'Skipping skill "${p.basename(src.path)}" (type "$skillType" != filter "$typeFilter").',
+        );
+        return false;
+      }
+    }
+
     if (dest.existsSync()) {
       if (!force) {
         stdout.writeln(
           'Skill already exists at ${dest.path}. Use --force to overwrite.',
         );
-        return;
+        return false;
       }
       await dest.delete(recursive: true);
     }
@@ -305,14 +336,15 @@ class InstallCommand extends Command<void> {
     await _copyDirectory(src, dest);
 
     // Profile translation on the output SKILL.md
-    final skillMdFile = File(p.join(dest.path, 'SKILL.md'));
     if (skillMdFile.existsSync()) {
       final content = await skillMdFile.readAsString();
       final translated = translateFrontmatter(content, target);
-      await skillMdFile.writeAsString(translated);
+      final finalSkillMdFile = File(p.join(dest.path, 'SKILL.md'));
+      await finalSkillMdFile.writeAsString(translated);
     }
 
     stdout.writeln('Successfully installed skill to ${dest.path}');
+    return true;
   }
 
   Future<void> _copyDirectory(final Directory src, final Directory dest) async {

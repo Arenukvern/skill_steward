@@ -2,34 +2,45 @@ import 'dart:io';
 
 import 'package:args/command_runner.dart';
 
+import 'commands/adopt_command.dart';
 import 'commands/eval_command.dart';
 import 'commands/install_command.dart';
 import 'commands/list_command.dart';
+import 'commands/map_command.dart';
+import 'commands/uninstall_command.dart';
 import 'commands/update_command.dart';
 import 'commands/validate_command.dart';
+import 'commands/brand_check_command.dart';
 import 'repo_root.dart';
 
 /// Entry point for the `steward` meta harness CLI.
 class StewardCli {
+  late final CommandRunner<void> _runner;
+
+  StewardCli() {
+    _runner = CommandRunner<void>(
+      'steward',
+      'Skill Steward meta harness — validate, eval, and list skills.',
+    )
+      ..addCommand(ValidateCommand())
+      ..addCommand(EvalCommand())
+      ..addCommand(ListCommand())
+      ..addCommand(InstallCommand())
+      ..addCommand(UpdateCommand())
+      ..addCommand(AdoptCommand())
+      ..addCommand(UninstallCommand())
+      ..addCommand(MapCommand())
+      ..addCommand(BrandCheckCommand());
+  }
+
   /// Runs [args] and exits with the command status code.
   Future<void> run(final List<String> args) async {
-    final runner =
-        CommandRunner<void>(
-            'steward',
-            'Skill Steward meta harness — validate, eval, and list skills.',
-          )
-          ..addCommand(ValidateCommand())
-          ..addCommand(EvalCommand())
-          ..addCommand(ListCommand())
-          ..addCommand(InstallCommand())
-          ..addCommand(UpdateCommand());
-
     try {
-      await runner.run(args);
+      await _runner.run(args);
     } on UsageException catch (e) {
       stderr
         ..writeln(e)
-        ..writeln(runner.usage);
+        ..writeln(_runner.usage);
       exit(64);
     }
   }

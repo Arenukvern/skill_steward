@@ -18,7 +18,7 @@ How much automation belongs in this meta repo?
 
 * **Agent heterogeneity** — Skills run in Cursor, Claude Code, Codex, etc.; no single CI agent is canonical.
 * **Cost & flake** — LLM judges in PR CI are expensive and non-reproducible.
-* **Charter risk** — Tier-1 skills (`north-star-governance`, `create-skill`, …) need stronger gates than utility skills.
+* **Charter risk** — Tier-1 skills (`north-star-governance`, `skill-authoring-lifecycle`, …) need stronger gates than utility skills.
 * **Legibility** — Eval cases live in git (`evals/cases/*.yaml`), like changesets for releases.
 * **Existing skill** — `skill-eval-improve` already defines layers 0–4; this ADR makes tiers and L0–L1 CI normative.
 
@@ -34,7 +34,7 @@ Chosen: **Tiered rule-based CI + offline behavioral evals.**
 
 | Tier | Skills | CI (`pnpm run eval`) | Offline (maintainer) |
 |------|--------|----------------------|----------------------|
-| **1 — Behavioral** | `north-star-governance`, `harness-engineering-culture`, `mcp-harness-repo-maintainer`, `create-skill` | ≥2 `evals/cases/*.yaml`; schema + static rules | `references/evals.md`, held-out prompts, plugin-eval, SkillOpt loop |
+| **1 — Behavioral** | `north-star-governance`, `mcp-harness-repo-maintainer`, `mcp-harness-repo-maintainer`, `skill-authoring-lifecycle` | ≥2 `evals/cases/*.yaml`; schema + static rules | `references/evals.md`, held-out prompts, plugin-eval, SkillOpt loop |
 | **2 — Structural** | All other marketplace skills | `pnpm run validate` only | Optional `evals.md` when behavior-critical |
 
 **CI scope (explicit non-goals):** No LLM judge in CI. No claim that rule-based routing simulation equals production agent routing.

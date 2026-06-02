@@ -6,6 +6,7 @@ import 'package:path/path.dart' as p;
 import '../repo_root.dart';
 import 'skill_frontmatter.dart';
 import 'skill_rules.dart';
+import 'steward_config.dart';
 import 'validation_result.dart';
 
 /// Validates a single skill directory against the Agent Skills spec + Skill Steward rules.
@@ -51,6 +52,18 @@ Future<Set<String>> loadRegistrySkillIds(final String rootDir) async {
     final data = jsonDecode(raw) as Map<String, dynamic>;
 
     final ids = <String>{};
+
+    // Support flat skills list
+    final flatSkills = data['skills'];
+    if (flatSkills is List) {
+      for (final id in flatSkills) {
+        if (id is String && id.isNotEmpty) {
+          ids.add(id);
+        }
+      }
+    }
+
+    // Support grouped skills list
     final groupings = (data['groupings'] as List?) ?? const [];
     for (final g in groupings) {
       if (g is Map<String, dynamic>) {
@@ -147,7 +160,8 @@ Future<ValidationReport> validateAllSkills(final String skillsDir) async {
       .whereType<Directory>()
       .map((final d) => d.path)
       .where((final path) => !p.basename(path).startsWith('.'))
-      .toList();
+      .toList()
+    ..sort();
 
   final results = <SkillValidationResult>[];
 
@@ -156,9 +170,6 @@ Future<ValidationReport> validateAllSkills(final String skillsDir) async {
     final result = await validateSingleSkill(path, dirName);
     results.add(result);
   }
-
-  final failed = results.where((final r) => !r.isValid).length;
-  final ok = failed == 0;
 
   // --- Registry warnings preparation (the main addition in this iteration) ---
   List<SkillValidationResult> finalSkills = results;
@@ -172,11 +183,51 @@ Future<ValidationReport> validateAllSkills(final String skillsDir) async {
 
     final aug = augmentWithRegistryWarnings(results, registryIds);
     finalSkills = aug.augmentedResults;
-    registryWarnings = aug.registryWarnings;
+    
+    final warnings = List<String>.from(aug.registryWarnings);
+
+    // Plan hygiene scan
+    final activePlans = <String>[];
+    for (final planName in ['task.md', 'implementation_plan.md']) {
+      final file = File(p.join(root, planName));
+      if (file.existsSync()) {
+        activePlans.add(planName);
+      }
+    }
+    final activePlansDir = Directory(p.join(root, 'docs', 'exec-plans', 'active'));
+    if (activePlansDir.existsSync()) {
+      try {
+        final files = activePlansDir.listSync().whereType<File>();
+        for (final f in files) {
+          final name = p.basename(f.path);
+          if (!name.startsWith('.')) {
+            activePlans.add('docs/exec-plans/active/$name');
+          }
+        }
+      } catch (_) {}
+    }
+
+    for (final plan in activePlans) {
+      warnings.add(
+        'Stale/active plan file found: $plan. Extract durable findings to ADR/FAQ/Code, then delete the plan file to maintain hygiene.',
+      );
+    }
+
+    // Run custom validators from steward.json
+    final config = await StewardConfig.load(root);
+    for (final validator in config.validators) {
+      final customErrors = await validator.validate(root);
+      warnings.addAll(customErrors);
+    }
+
+    registryWarnings = warnings;
   } on Object catch (_) {
     // Not a full checkout or missing/broken skills.sh.json — registry checks skipped.
     // This is the intended graceful behavior (see Node catch in loadSkillsShIds).
   }
+
+  final failed = finalSkills.where((final r) => !r.isValid).length;
+  final ok = failed == 0 && registryWarnings.isEmpty;
 
   return ValidationReport(
     skills: finalSkills,

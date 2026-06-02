@@ -2,6 +2,7 @@
 name: multi-agent-handoff
 description: Plan and document handoffs between specialized AI agents (foreman, workers, reviewers). Use for multi-agent workflows, subagent delegation, baton passes, or guild-style agent coordination.
 license: MIT
+type: governance
 metadata:
   author: skill-steward
   version: "1.0.0"

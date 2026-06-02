@@ -6,8 +6,7 @@
       "title": "Marketplace",
       "description": "Authoring, reviewing, and publishing skills for the Skill Steward marketplace.",
       "skills": [
-        "create-skill",
-        "skill-spec-review",
+        "skill-authoring-lifecycle",
         "skill-source-citations",
         "skill-eval-improve",
         "plugin-marketplace-setup"
@@ -17,21 +16,17 @@
       "title": "Documentation",
       "description": "Architecture knowledge and decision logs aligned with adr.github.io.",
       "skills": [
-        "adr-records",
-        "faq-driven-docs",
-        "concept-doc-store",
-        "repo-brand-identity",
-        "ethical-stewardship"
+        "mixture-of-experts",
+        "repository-governance-lifecycle"
       ]
     },
     {
       "title": "Harness",
       "description": "Agent-first engineering culture—CLI, MCP, contracts, and docs as system of record.",
       "skills": [
-        "harness-engineering-culture",
         "release-changelog-harness",
-        "north-star-governance",
-        "mcp-harness-repo-maintainer"
+        "mcp-harness-repo-maintainer",
+        "harness-engineering-lifecycle"
       ]
     },
     {

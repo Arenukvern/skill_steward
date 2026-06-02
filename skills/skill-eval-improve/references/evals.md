@@ -15,7 +15,7 @@ Prompt suite and results. **Do not** paste full transcripts into SKILL.md.
 | ID | User prompt | Pass criteria |
 |----|-------------|---------------|
 | N1 | Run pnpm validate on skill_steward | Stays dormant or points to layer 0 only (`pnpm run validate`), not full eval-improve workflow |
-| N2 | Create a new skill for ADR writing | Routes to `create-skill` / `adr-records`, not skill-eval-improve |
+| N2 | Create a new skill for ADR writing | Routes to `skill-authoring-lifecycle` / `adr-records`, not skill-eval-improve |
 
 ## Held-out (gate)
 

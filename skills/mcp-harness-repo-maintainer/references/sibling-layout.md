@@ -50,9 +50,9 @@ Configure workspace dependency overrides in the package manager manifest to targ
 
 | Archetype Role | Before Merge Task | Example CLI Command |
 |------|----------------|---|
-| **Product MCP** | Verify tool schemas and contracts | `make check-contracts` |
-| **Platform Libs** | Execute package analysis and unit tests | `make test` / `npm run test` |
-| **CLI Harness** | Run integration tests and fixtures | `make check` or test suite execution |
+| **Product MCP** | Verify tool schemas and contracts | `[task-runner] check-contracts` (e.g. `just check-contracts`) |
+| **Platform Libs** | Execute package analysis and unit tests | `[task-runner] test` (e.g. `npm run test` or `dart test`) |
+| **CLI Harness** | Run integration tests and fixtures | `[task-runner] check` or test suite execution |
 | **Visual Sidecar**| Validate comparison profiles and verdict logic | `profile-cli validate` |
 | **Meta Steward** | Run validation linter on skills and docs | `pnpm run validate`, `pnpm run docs:check` |
 

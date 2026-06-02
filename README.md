@@ -36,8 +36,8 @@ To install portable skills via the `skills` CLI:
 # Install all meta-skills (project scope)
 npx skills add arenukvern/skill_steward
 
-# Install a specific skill (e.g. create-skill)
-npx skills add arenukvern/skill_steward --skill create-skill
+# Install a specific skill (e.g. skill-authoring-lifecycle)
+npx skills add arenukvern/skill_steward --skill skill-authoring-lifecycle
 
 # Install globally (across all projects)
 npx skills add arenukvern/skill_steward -g
@@ -83,7 +83,7 @@ Re-install from GitHub when you want a clean pull of the whole marketplace or a 
 npx skills add arenukvern/skill_steward -y
 
 # Refresh one skill
-npx skills add arenukvern/skill_steward --skill harness-engineering-culture -y
+npx skills add arenukvern/skill_steward --skill mcp-harness-repo-maintainer -y
 
 # Same, but only for Cursor in this repo
 npx skills add arenukvern/skill_steward -a cursor -y
@@ -106,24 +106,18 @@ Meta and process capabilities only — [inclusion criteria](docs/decisions/0001-
 
 ## Available skills
 
-
-| Skill                                                              | Description                                                                                                                                                                |
-| ------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [create-skill](skills/create-skill/)                               | Scaffold a new skill that passes validation and works with `npx skills`.                                                                                                   |
-| [skill-spec-review](skills/skill-spec-review/)                     | Audit a skill package against the Agent Skills spec.                                                                                                                       |
+| Skill | Use when |
+|-------|----------|
+| [skill-authoring-lifecycle](skills/skill-authoring-lifecycle/)     | Scaffold a new skill that passes validation and works with `npx skills`.                                                                                                   |
 | [plugin-marketplace-setup](skills/plugin-marketplace-setup/)       | Public/private skill & plugin marketplaces for Cursor, Claude, Codex, and `npx skills`.                                                                                    |
 | [skill-source-citations](skills/skill-source-citations/)           | Cite and persist URLs in `references/sources.md` when authoring skills.                                                                                                    |
 | [skill-eval-improve](skills/skill-eval-improve/)                   | Tiered evals—rule-based `pnpm run eval`, Chrome/SkillOpt patterns, plugin-eval, human prompt suites.                                                                      |
-| [adr-records](skills/adr-records/)                                 | Write and maintain ADRs per [adr.github.io](https://adr.github.io/).                                                                                                       |
-| [faq-driven-docs](skills/faq-driven-docs/)                         | Maintain DESIGN_FAQ (why) and DX_FAQ (how) per [FAQ-driven development](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl). |
-| [concept-doc-store](skills/concept-doc-store/)                     | Vectorless doc lattice (router, ADRs, concepts)—link to code for behavior; layered-docs style.                                             |
-| [repo-brand-identity](skills/repo-brand-identity/)                 | Establish, maintain, and govern a repository's brand identity, custom/Shields.io status badges, palette, and tone.                        |
-| [ethical-stewardship](skills/ethical-stewardship/)                 | Establish, audit, and maintain core repository ethics as moral principles, constraints, and actionable rules.                            |
-| [multi-agent-handoff](skills/multi-agent-handoff/)                 | Plan handoffs between specialized agents.                                                                                                                                  |
-| [harness-engineering-culture](skills/harness-engineering-culture/) | Agent-first harness design—CLI/MCP, mechanical gates, docs map ([OpenAI harness engineering](https://openai.com/index/harness-engineering/)).                              |
-| [release-changelog-harness](skills/release-changelog-harness/) | Release/changelog tooling plus binary distribution contract (install.sh, GitHub Releases) for product harness repos.                                                          |
-| [mcp-harness-repo-maintainer](skills/mcp-harness-repo-maintainer/) | Maintain MCP/harness repos (product MCPs, libraries, CLI harnesses)—archetypes, contract gates, sibling layout.                                                            |
-| [north-star-governance](skills/north-star-governance/)             | North Star charter, AGENTS.md map, plan hygiene (any format), docs.page wiring.                                                                                            |
+| [mixture-of-experts](skills/mixture-of-experts/)                   | Run a multi-agent Mixture of Experts audit on any topic to detect and consolidate overlapping logic.                                                                        |
+| [repository-governance-lifecycle](skills/repository-governance-lifecycle/) | Complete loop: check ethics, write ADRs, update FAQs, and enforce brand tone.                                                                                      |
+| [release-changelog-harness](skills/release-changelog-harness/)     | Ecosystem-native versioning (Changesets, Melos) and binary distribution (`install.sh`).                                                                                    |
+| [mcp-harness-repo-maintainer](skills/mcp-harness-repo-maintainer/) | Teach agents mechanical bounds of the workspace (task runners, docs) over raw shell loops.                                                                                  |
+| [harness-engineering-lifecycle](skills/harness-engineering-lifecycle/) | Generalize a custom validation script and safely dogfood it across sibling repos.                                                                                           |
+| [multi-agent-handoff](skills/multi-agent-handoff/)                 | Context-sharing schemas so Agent B can resume where Agent A left off.                                                                                                      |
 
 
 ## Standards

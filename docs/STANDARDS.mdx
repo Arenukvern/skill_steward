@@ -13,6 +13,14 @@ This document consolidates rules from the open ecosystem so skills in this repo 
 | skills.sh registry | https://skills.sh |
 | skills.sh customization | https://www.skills.sh/docs/customize |
 
+## Skill Cohesion and Boundaries
+
+To prevent cognitive overload for agents and users, skills must adhere to the **Skill Cohesion** standard ([ADR 0016](decisions/0016-skill-cohesion-and-lifecycle-boundaries.mdx)):
+
+1. **Lifecycle Journeys over Atomic Actions:** Skills must encapsulate complete lifecycles (e.g., authoring + reviewing). Avoid creating separate skills for two halves of the same process.
+2. **Intent Overlap:** Group tools by the user's high-level goal, not by the specific files they touch. If two skills share the same intent (e.g., governing the doc lattice), merge them.
+3. **Bundle Philosophy with Mechanics:** Abstract guidelines ("the why") must be bundled with the mechanical tools or linters ("the how") that enforce them. Do not create purely philosophical skills.
+
 ## Skill package structure
 
 ```
@@ -33,7 +41,7 @@ Every skill must include **`references/sources.md`** listing URLs for specs, pap
 
 | Tier | Skills | Required |
 |------|--------|----------|
-| **1 — Behavioral** | `north-star-governance`, `harness-engineering-culture`, `mcp-harness-repo-maintainer`, `create-skill` | `references/evals.md` + ≥2 files in `evals/cases/*.yaml`; `pnpm run eval` passes |
+| **1 — Behavioral** | `north-star-governance`, `mcp-harness-repo-maintainer`, `mcp-harness-repo-maintainer`, `skill-authoring-lifecycle` | `references/evals.md` + ≥2 files in `evals/cases/*.yaml`; `pnpm run eval` passes |
 | **2 — Structural** | All other skills under `skills/` | `pnpm run validate`; optional `evals.md` when behavior-critical |
 
 Case schema: [eval-case-schema.md](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-eval-improve/references/eval-case-schema.md). Skill: `skill-eval-improve`.
@@ -149,7 +157,7 @@ dart run steward validate --local
 npx skills add arenukvern/skill_steward
 
 # One skill
-npx skills add arenukvern/skill_steward --skill create-skill
+npx skills add arenukvern/skill_steward --skill skill-authoring-lifecycle
 ```
 
 ### Install scopes

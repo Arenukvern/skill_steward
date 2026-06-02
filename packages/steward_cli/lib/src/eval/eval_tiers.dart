@@ -7,9 +7,9 @@ library;
 /// Skills that require Tier 1 rule-based eval cases.
 const List<String> tier1Skills = [
   'north-star-governance',
-  'harness-engineering-culture',
   'mcp-harness-repo-maintainer',
-  'create-skill',
+  'mcp-harness-repo-maintainer',
+  'skill-authoring-lifecycle',
 ];
 
 /// Minimum number of eval case files required for a Tier 1 skill.

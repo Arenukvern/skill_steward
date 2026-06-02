@@ -49,11 +49,11 @@ npx skills add <workspace>/agent_guild --skill mcp-harness-repo-maintainer -a cu
 | Skill | Role |
 |-------|------|
 | `north-star-governance` | Charter, AGENTS map, plan hygiene |
-| `harness-engineering-culture` | CLI/MCP harness culture |
+| `mcp-harness-repo-maintainer` | CLI/MCP harness culture |
 | `mcp-harness-repo-maintainer` | Archetype checklists, sibling layout |
 | `adr-records` | ADRs in `decisions/` |
 | `faq-driven-docs` | DESIGN_FAQ + DX_FAQ |
-| `create-skill` / `skill-spec-review` | Author and audit `plugin/skills/` |
+| `skill-authoring-lifecycle` / `skill-authoring-lifecycle` | Author and audit `plugin/skills/` |
 
 ## 📦 Install Skill Steward (consumers)
 
@@ -108,7 +108,7 @@ npx skills update -p -y
 
 # Update one skill by directory name (from `skills list`)
 npx skills update north-star-governance -y
-npx skills update create-skill -y
+npx skills update skill-authoring-lifecycle -y
 ```
 
 **Re-add from GitHub** (same as install; overwrites/refreshes from `arenukvern/skill_steward`):
@@ -156,7 +156,7 @@ dart run :steward validate   # or pnpm run validate (now delegates to Dart)
 #    - optional DESIGN_FAQ Q&A if repo-level why changed
 ```
 
-**Authoring skill:** use installed `create-skill` or read `../skills/create-skill/SKILL.md`.
+**Authoring skill:** use installed `skill-authoring-lifecycle` or read `../skills/skill-authoring-lifecycle/SKILL.md`.
 
 ## ✅ Validate desk
 
@@ -205,7 +205,7 @@ Index: `decisions/README.mdx`.
 Edit charter           → NORTH_STAR.mdx
 Wire agent map         → ../AGENTS.md (~100 lines max)
 docs.page sidebar      → ../docs.json + docs_map.mdx
-Close a plan           → merge to ADR/FAQ/code/skill → delete docs/exec-plans/active/*
+Close a plan           → merge to ADR/FAQ/code/skill → delete docs/exec-plans/active/* (if used)
 Skill                  → north-star-governance
 ```
 
@@ -244,10 +244,10 @@ Skip (maintainer only) → PR title contains [skip changeset]
 ## 🏗️ Harness workshop
 
 ```text
-Agent-first culture     → skill harness-engineering-culture
-OpenAI principles       → ../skills/harness-engineering-culture/references/harness-principles.md
-CLI+MCP dual surface    → ../skills/harness-engineering-culture/references/cli-mcp-pattern.md (product MCP / platform libs)
-Compose Skill Steward skills    → ../skills/harness-engineering-culture/references/steward-composition.md
+Agent-first culture     → skill mcp-harness-repo-maintainer
+OpenAI principles       → ../skills/mcp-harness-repo-maintainer/references/harness-principles.md
+CLI+MCP dual surface    → ../skills/mcp-harness-repo-maintainer/references/cli-mcp-pattern.md (product MCP / platform libs)
+Compose Skill Steward skills    → ../skills/mcp-harness-repo-maintainer/references/steward-composition.md
 ```
 
 Product example: `<cli_harness> doctor`, `make check-contracts` — not shipped from Skill Steward.
@@ -256,12 +256,12 @@ Product example: `<cli_harness> doctor`, `make check-contracts` — not shipped 
 
 | Need | Skill / doc |
 |------|-------------|
-| Harness / CLI / MCP culture | `harness-engineering-culture` |
+| Harness / CLI / MCP culture | `mcp-harness-repo-maintainer` |
 | Release / changelog tooling | `release-changelog-harness` |
 | Package DESIGN + DX FAQ | `faq-driven-docs` |
-| Repo lattice (router, SSOT) | `concept-doc-store` |
+| Repo lattice (router, SSOT) | `north-star-governance` |
 | ADR format | `adr-records` |
-| Spec compliance | `skill-spec-review` |
+| Spec compliance | `skill-authoring-lifecycle` |
 | Agent handoffs | `multi-agent-handoff` |
 
 Article: [FAQ-driven development](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl).

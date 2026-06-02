@@ -22,7 +22,7 @@ Skill Steward needs a published documentation site (like other open docs.page si
 * **North Star** — single charter file agents and humans read first.
 * **docs.page** — standard publishing via root `docs.json` + `docs/` MDX/Markdown.
 * **Harness alignment** — [OpenAI harness engineering](https://openai.com/index/harness-engineering/) treats plans as versioned artifacts but expects hygiene; we go further: **completed plans must merge into ADR/docs/code/harness and leave the tree**.
-* **Format-agnostic** — document extract-and-remove hygiene only; optional `docs/superpowers/` in *product* repos via `concept-doc-store`, not required in Guild.
+* **Format-agnostic** — document extract-and-remove hygiene only; optional `docs/superpowers/` in *product* repos via `north-star-governance`, not required in Guild.
 
 ## Considered Options
 
@@ -64,5 +64,5 @@ Chosen option: **"docs.page + ephemeral plans doctrine"**.
 
 ## More Information
 
-* [ADR 0003 — concept doc store](0003-concept-doc-store-lattice)
+* [ADR 0003 — concept doc store](0003-north-star-governance-lattice)
 * Reference product docs.json configurations

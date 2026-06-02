@@ -82,7 +82,7 @@ plugins/
     commands/         # optional — command templates
 
 templates/
-  skill/              # scaffold for new skills (used by create-skill)
+  skill/              # scaffold for new skills (used by skill-authoring-lifecycle)
   plugin/             # scaffold for new plugins (moved from plugins/_template/)
 ```
 
@@ -94,7 +94,7 @@ id: steward-validate-on-save
 version: "0.1.0"
 description: Run skill validation after SKILL.md edits
 skills:
-  - skill-spec-review
+  - skill-authoring-lifecycle
 targets:
   cursor:
     hooks:

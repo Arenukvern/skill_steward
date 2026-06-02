@@ -47,7 +47,7 @@ node ./scripts/plugin-eval.js analyze <skill-path> --format markdown
 
 | plugin-eval | Guild |
 |-------------|-------|
-| `analyze` | `pnpm run validate` + `skill-spec-review` |
+| `analyze` | `pnpm run validate` + `skill-authoring-lifecycle` |
 | `init-benchmark` | `references/evals.md` prompt suite |
 | `improve-skill` | `skill-eval-improve` bounded edit loop |
 | `compare` | Before/after eval JSON in PR |

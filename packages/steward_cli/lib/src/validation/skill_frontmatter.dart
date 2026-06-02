@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:yaml/yaml.dart';
 
 /// Very lightweight YAML-ish frontmatter parser (matches the Node behavior exactly).
 ///
@@ -50,6 +51,23 @@ ParsedFrontmatter parseFrontmatter(final String content) {
 
     fields[key] = value;
   }
+
+  // Supplement/override with YAML parser to support block scalars (e.g. >-)
+  try {
+    final doc = loadYaml(raw);
+    if (doc is Map) {
+      doc.forEach((key, value) {
+        if (value is! Map && value is! List && value != null) {
+          // Standardize and flatten description fields to single line if multi-line
+          var parsedValue = value.toString();
+          if (key.toString() == 'description') {
+            parsedValue = parsedValue.replaceAll(RegExp(r'\s+'), ' ').trim();
+          }
+          fields[key.toString()] = parsedValue;
+        }
+      });
+    }
+  } catch (_) {}
 
   return ParsedFrontmatter(
     fields: fields,

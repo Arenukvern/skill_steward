@@ -1,0 +1,33 @@
+# 0016. Skill Cohesion and Lifecycle Boundaries
+
+Date: 2026-06-03
+
+## Status
+
+Accepted
+
+## Context
+
+During a routine "Mixture of Experts" audit of the Skill Steward repository, we identified friction caused by hyper-granularity in skill design. Specifically, skills that separated creation from auditing (`create-skill` vs `skill-spec-review`) or separated philosophical design from mechanical maintenance (`harness-engineering-culture` vs `mcp-harness-repo-maintainer`) forced human builders and autonomous agents to repeatedly context-switch or stitch together fragmented knowledge to complete a single user intent.
+
+While the North Star dictates "One clear outcome per skill", an outcome must be defined by the user's ultimate goal rather than an atomic mechanical file edit. When philosophical instructions are decoupled from their enforcement linters, agents frequently fail to apply the principles correctly.
+
+## Decision
+
+We will enforce a **Skill Cohesion** standard across the repository and all future skill contributions:
+
+1. **Lifecycle Journeys over Atomic Actions:** Skills should encapsulate complete lifecycles (e.g., authoring + reviewing) to minimize context switching for agents. If two skills are two halves of the same process, they must be merged.
+2. **Intent Overlap Trumps Mechanical Separation:** If two tools touch different files but serve the exact same high-level user intent (e.g., governing the documentation lattice), they must be merged or tightly coupled.
+3. **Bundle Philosophy with Mechanics:** Abstract cultural guidelines or rules ("the why") must never exist in a vacuum; they must be bundled with the mechanical checks, scripts, or archetypes ("the how") that enforce them.
+
+As part of this decision, we consolidated:
+- `concept-doc-store` into `north-star-governance`
+- `harness-engineering-culture` into `mcp-harness-repo-maintainer`
+- `skill-spec-review` into `skill-authoring-lifecycle` (formerly `create-skill`)
+
+## Consequences
+
+* **Positive:** Reduced cognitive load for AI agents reading the skill directory, leading to fewer hallucinated boundaries or missing steps.
+* **Positive:** Simpler installation for end-users, requiring fewer `npx skills add` commands to get complete functionality.
+* **Negative:** Larger individual `SKILL.md` files that approach the 500-line soft limit, necessitating better use of `references/` for progressive disclosure.
+* **Mitigation:** Renaming/merging skills breaks downstream references. We must treat skill renames with the same caution as API breaking changes, ensuring all internal references and `skills.sh.json` registries are carefully audited.

@@ -16,4 +16,5 @@ export 'skill_frontmatter.dart';
 export 'skill_rules.dart';
 export 'skill_validator.dart'
     show validateAllSkills, validateAllSkillsToJson, validateSingleSkill;
+export 'steward_config.dart';
 export 'validation_result.dart';

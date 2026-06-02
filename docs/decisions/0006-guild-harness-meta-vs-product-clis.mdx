@@ -19,7 +19,7 @@ Contributors asked to formalize the split so Skill Steward does not grow a secon
 * **Clear ownership** — Users install Skill Steward for meta-skills; products for domain/runtime tooling.
 * **Avoid confusion** — `npx skills add skill_steward` must not imply a debug MCP server ships here.
 * **Teach by example** — Guild may ship a **small meta CLI** (validate, list skills) as reference harness, not a general automation platform.
-* **Cross-promotion** — Product docs may recommend Skill Steward meta-skills (e.g. `harness-engineering-culture`) without merging repos.
+* **Cross-promotion** — Product docs may recommend Skill Steward meta-skills (e.g. `mcp-harness-repo-maintainer`) without merging repos.
 
 ## Considered Options
 
@@ -36,7 +36,7 @@ Chosen option: **"C. Skill Steward meta CLI (+ future meta MCP); products own do
 
 | Layer | Repository | CLI / MCP examples | Guild skill support |
 |-------|------------|--------------------|---------------------|
-| **Meta harness** | `skill_steward` | `steward validate`, `steward list`; future MCP skill index | `harness-engineering-culture`, `north-star-governance`, … |
+| **Meta harness** | `skill_steward` | `steward validate`, `steward list`; future MCP skill index | `mcp-harness-repo-maintainer`, `north-star-governance`, … |
 | **Product harness** | Product-specific repos | `<cli_harness>`, product-specific servers, etc. | Install Guild skills via `npx skills` |
 | **Library** | Schema/adapter libraries | Schema, registry adapters, etc. | Consumers integrate |
 
@@ -56,7 +56,7 @@ Chosen option: **"C. Skill Steward meta CLI (+ future meta MCP); products own do
 Product repos (such as product-specific harnesses) may document:
 
 ```bash
-npx skills add arenukvern/skill_steward --skill harness-engineering-culture
+npx skills add arenukvern/skill_steward --skill mcp-harness-repo-maintainer
 ```
 
 for contributors building or maintaining **product** harnesses.
@@ -78,7 +78,7 @@ for contributors building or maintaining **product** harnesses.
 ### B. Skills-only
 
 * Good, because minimal.
-* Bad, because no dogfood for harness-engineering-culture.
+* Bad, because no dogfood for mcp-harness-repo-maintainer.
 
 ### C. Meta CLI + product CLIs (chosen)
 
@@ -94,4 +94,4 @@ for contributors building or maintaining **product** harnesses.
 
 * [OpenAI — Harness engineering](https://openai.com/index/harness-engineering/)
 * Reference CLI vs MCP parity documentation
-* Skill: `harness-engineering-culture`
+* Skill: `mcp-harness-repo-maintainer`

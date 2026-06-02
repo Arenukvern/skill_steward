@@ -39,14 +39,14 @@ npx skills add arenukvern/skill_steward --skill north-star-governance
 |-------|----------|
 | `north-star-governance` | Charter, AGENTS map, plan lifecycle, docs.json |
 | `ethical-stewardship` | Bootstrapping ethics, auditing decisions against moral/design boundaries, defining repo credo |
-| `harness-engineering-culture` | CLI/MCP harness, agent-first culture |
+| `mcp-harness-repo-maintainer` | CLI/MCP harness, agent-first culture |
 | `release-changelog-harness` | Release/changelog tooling per ecosystem (Changesets, Melos, …) |
-| `create-skill` | New skill under `skills/` |
+| `skill-authoring-lifecycle` | New skill under `skills/` |
 | `skill-eval-improve` | Tiered evals, `evals/cases/*.yaml`, improve loops ([ADR 0011](docs/decisions/0011-tiered-skill-evals-and-rule-based-ci.mdx)) |
-| `skill-spec-review` | Audit SKILL.md before merge |
+| `skill-authoring-lifecycle` | Audit SKILL.md before merge |
 | `faq-driven-docs` | DESIGN_FAQ + DX_FAQ |
 | `adr-records` | New ADR in `docs/decisions/` |
-| `concept-doc-store` | Doc lattice for larger repos |
+| `north-star-governance` | Doc lattice for larger repos |
 | `multi-agent-handoff` | HANDOFF between agents |
 
 ## Add or change a skill (checklist)

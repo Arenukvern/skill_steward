@@ -2,6 +2,7 @@
 name: release-changelog-harness
 description: Chooses ecosystem-native release and changelog tooling (Changesets, Melos, release-plz) plus binary distribution (GitHub Release tarballs, install.sh) when the product is an executable. Use for release CI, install.sh, versioning, CHANGELOGs, shipping MCP/CLI without clone, or meta repos that only ship skills via npx skills—not domain app tutorials.
 license: MIT
+type: governance
 metadata:
   author: skill-steward
   version: "1.1.0"
@@ -165,7 +166,7 @@ Publish: project-specific (`changeset publish`, GitHub Action, or npm provenance
 
 | Skill | Use for |
 |-------|---------|
-| `harness-engineering-culture` | Mechanical gates, docs as SSOT |
+| `mcp-harness-repo-maintainer` | Mechanical gates, docs as SSOT |
 | `faq-driven-docs` | DX_FAQ release commands |
 | `adr-records` | Record toolchain choice |
 | `mcp-harness-repo-maintainer` | Archetype + sibling release consistency |

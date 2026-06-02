@@ -2,6 +2,7 @@
 name: skill-eval-improve
 description: Improves Agent Skills via validate → rule-based eval cases → plugin-eval → prompt evals → bounded edits with held-out gates. Use when tuning skill quality, routing, or adopting Chrome/Microsoft eval tiers—not for bulk validate-only or SkillOpt automation.
 license: MIT
+type: governance
 metadata:
   author: skill-steward
   version: "1.1.0"
@@ -25,9 +26,9 @@ Improve skills **measurably**: baseline → measure → bounded edit → re-vali
 
 ## When not to use
 
-- **Bulk repo validation** — e.g. “validate every skill in this repo” → `pnpm run validate` only ([skill-spec-review](../skill-spec-review/SKILL.md) for audit); do not start benchmark or SkillOpt loops.
+- **Bulk repo validation** — e.g. “validate every skill in this repo” → `pnpm run validate` only ([skill-authoring-lifecycle](../skill-authoring-lifecycle/SKILL.md) for audit); do not start benchmark or SkillOpt loops.
 - **Automated SkillOpt / cluster training** — Guild documents a **manual** bounded-edit loop; no overnight optimizer pipeline.
-- **Creating a new skill** — use [create-skill](../create-skill/SKILL.md) first; eval-improve applies after a skill exists.
+- **Creating a new skill** — use [skill-authoring-lifecycle](../skill-authoring-lifecycle/SKILL.md) first; eval-improve applies after a skill exists.
 
 Cursor scope (optional): activate when editing under `skills/**` or `scripts/validate-skills.mjs`.
 
@@ -35,7 +36,7 @@ Cursor scope (optional): activate when editing under `skills/**` or `scripts/val
 
 | Layer | Expert | Tool / method | Cost |
 |-------|--------|---------------|------|
-| **0 — Gate** | Lint | `pnpm run validate`, `skill-spec-review` | seconds |
+| **0 — Gate** | Lint | `pnpm run validate`, `skill-authoring-lifecycle` | seconds |
 | **0b — Rules** | Routing/docs SSOT | `pnpm run eval` (Tier 1 YAML cases) | seconds |
 | **1 — Static** | Structure | Codex `plugin-eval analyze` (if available) | seconds |
 | **2 — Human** | Behavior | 3–5 prompts with/without skill | minutes |
@@ -57,7 +58,7 @@ Fix all `error:` lines. Treat `warn:` (missing `sources.md`, long SKILL.md) seri
 
 | Tier | Skills | CI |
 |------|--------|-----|
-| **1** | `north-star-governance`, `harness-engineering-culture`, `mcp-harness-repo-maintainer`, `create-skill` | `pnpm run eval` + validate |
+| **1** | `north-star-governance`, `mcp-harness-repo-maintainer`, `mcp-harness-repo-maintainer`, `skill-authoring-lifecycle` | `pnpm run eval` + validate |
 | **2** | All others | `pnpm run validate` |
 
 Tier 1 requires `evals/cases/*.yaml` (≥2) + `references/evals.md`. Schema: [eval-case-schema.md](references/eval-case-schema.md).
@@ -147,7 +148,7 @@ Related: [SkillLens](https://microsoft.github.io/SkillOpt/) (model-generated ski
 - [ ] plugin-eval analyze (optional)
 - [ ] 3+ prompt evals documented in references/evals.md
 - [ ] Bounded edit applied; held-out improved
-- [ ] skill-spec-review checklist
+- [ ] skill-authoring-lifecycle checklist
 - [ ] PR mentions eval delta
 ```
 
@@ -173,8 +174,8 @@ Related: [SkillLens](https://microsoft.github.io/SkillOpt/) (model-generated ski
 | Skill | Role |
 |-------|------|
 | `skill-source-citations` | Save research links |
-| `create-skill` | Scaffold |
-| `skill-spec-review` | Pre-merge audit |
+| `skill-authoring-lifecycle` | Scaffold |
+| `skill-authoring-lifecycle` | Pre-merge audit |
 
 ## Sources
 

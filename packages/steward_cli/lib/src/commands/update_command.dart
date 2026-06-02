@@ -4,6 +4,7 @@ import 'package:args/command_runner.dart';
 import 'package:path/path.dart' as p;
 
 import '../repo_root.dart';
+import '../validation/skill_frontmatter.dart';
 import 'install_command.dart';
 
 class UpdateCommand extends Command<void> {
@@ -21,6 +22,11 @@ class UpdateCommand extends Command<void> {
         help: 'Compatibility profile (cursor | claude | generic).',
         allowed: ['cursor', 'claude', 'generic'],
         defaultsTo: 'generic',
+      )
+      ..addOption(
+        'type',
+        help: 'Filter skill updates by type (governance | developer).',
+        allowed: ['governance', 'developer'],
       )
       ..addFlag(
         'force',
@@ -40,6 +46,7 @@ class UpdateCommand extends Command<void> {
   Future<void> run() async {
     final isLocal = argResults!['local'] as bool;
     final target = argResults!['target'] as String;
+    final typeFilter = argResults!['type'] as String?;
     final force = argResults!['force'] as bool;
 
     final root = findRepoRoot(Directory.current);
@@ -112,6 +119,7 @@ class UpdateCommand extends Command<void> {
             root,
             isLocal,
             target,
+            typeFilter,
             force,
           );
 
@@ -135,6 +143,7 @@ class UpdateCommand extends Command<void> {
     final String root,
     final bool isLocal,
     final String target,
+    final String? typeFilter,
     final bool force,
   ) async {
     final repoUrl = source.startsWith('http')
@@ -209,7 +218,7 @@ class UpdateCommand extends Command<void> {
         }
 
         final destDir = _getDestDir(root, isLocal, skillName);
-        await _copySkillDirectory(srcDir, destDir, target, force);
+        await _copySkillDirectory(srcDir, destDir, target, typeFilter, force);
       }
     } finally {
       if (tempDir.existsSync()) {
@@ -229,17 +238,31 @@ class UpdateCommand extends Command<void> {
     return Directory(p.join(root, 'skills', skillName));
   }
 
-  Future<void> _copySkillDirectory(
+  Future<bool> _copySkillDirectory(
     final Directory src,
     final Directory dest,
     final String target,
+    final String? typeFilter,
     final bool force,
   ) async {
+    final skillMdFile = File(p.join(src.path, 'SKILL.md'));
+    if (skillMdFile.existsSync() && typeFilter != null) {
+      final content = await skillMdFile.readAsString();
+      final parsed = parseFrontmatter(content);
+      final skillType = parsed['type'];
+      if (skillType != typeFilter) {
+        stdout.writeln(
+          'Skipping skill "${p.basename(src.path)}" (type "$skillType" != filter "$typeFilter").',
+        );
+        return false;
+      }
+    }
+
     if (dest.existsSync() && !force) {
       stdout.writeln(
         'Local modifications may exist at ${dest.path}. Use --force to overwrite.',
       );
-      return;
+      return false;
     }
     if (dest.existsSync()) {
       await dest.delete(recursive: true);
@@ -248,14 +271,15 @@ class UpdateCommand extends Command<void> {
 
     await _copyDirectory(src, dest);
 
-    final skillMdFile = File(p.join(dest.path, 'SKILL.md'));
     if (skillMdFile.existsSync()) {
       final content = await skillMdFile.readAsString();
       final translated = InstallCommand.translateFrontmatter(content, target);
-      await skillMdFile.writeAsString(translated);
+      final finalSkillMdFile = File(p.join(dest.path, 'SKILL.md'));
+      await finalSkillMdFile.writeAsString(translated);
     }
 
     stdout.writeln('Successfully updated skill at ${dest.path}');
+    return true;
   }
 
   Future<void> _copyDirectory(final Directory src, final Directory dest) async {

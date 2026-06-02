@@ -129,6 +129,18 @@ List<String> validateLicense(final String? license) {
   return warnings;
 }
 
+/// Validates the `type` field if present.
+List<String> validateType(final String? type) {
+  final errors = <String>[];
+  if (type != null &&
+      type.isNotEmpty &&
+      type != 'governance' &&
+      type != 'developer') {
+    errors.add('type "$type" is invalid: must be "governance" or "developer"');
+  }
+  return errors;
+}
+
 /// Runs all structural checks (frontmatter, name/desc, length, sources, README presence)
 /// for a single skill directory.
 ///
@@ -172,7 +184,8 @@ Future<({List<String> errors, List<String> warnings})> validateSkillStructure(
 
   errors
     ..addAll(validateName(parsed['name'], dirName))
-    ..addAll(validateDescription(parsed['description']));
+    ..addAll(validateDescription(parsed['description']))
+    ..addAll(validateType(parsed['type']));
 
   // Proper line count using the value computed in parseFrontmatter.
   // This replaces the previous rough (body + raw splits + 2) formula and is more
