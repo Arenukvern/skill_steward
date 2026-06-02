@@ -55,9 +55,12 @@ curl -fsSL .../install.sh | bash -s -- --version vX.Y.Z
 ### 3. Curl-Friendly `install.sh` Mechanics
 A secure and robust `install.sh` must include the following logic:
 * **Platform/Architecture Detection:** Use `uname -s` and `uname -m` to determine OS and CPU arch, and fail gracefully if not supported.
-* **Fallback HTTP Clients:** Support both `curl` and `wget` gracefully.
+* **From-Source Compilation Fallback:** If run within a local git clone (or source directory) and compiler toolchains are available (e.g. Dart, Cargo, Go, C/C++), compile the binary locally instead of fetching from GitHub. This supports local developer versions and provides a path for host architectures without published precompiled releases.
+* **Resilient Version Resolution:** Do not rely exclusively on GitHub `/releases/latest` API (which is prone to rate-limiting and returns 404 if no release exists yet). Fallback to reading the version from the raw repository source manifest on the primary branch (e.g. `pubspec.yaml`, `package.json`, or `VERSION` file) or local manifests.
+* **Client-Resilient Fallbacks:** Both download operations and API/manifest lookups must support multiple tools (e.g., both `curl` and `wget`) gracefully.
+* **Diagnostic Error Interception:** Gracefully catch HTTP download and verification failures (such as 404 for unreleased tags) and output helpful, actionable diagnostics (recommending local compilation or cloning).
 * **SHA-256 Integrity Verification:** Prior to unpacking, fetch the `checksums.txt` file and verify the SHA-256 hash using `shasum -a 256` or `sha256sum`.
-* **Automatic PATH Configuration:** Detect the active shell environment (Zsh/Bash) and offer or perform appending the binary directory to the shell rc file (`.zshrc` / `.bashrc`).
+* **Profile-Safeguarded PATH Configuration:** Detect the active shell environment (Zsh/Bash) and check if the installation directory is already literally configured in the profile using `grep -F -q`. Only append the export statement if not already configured, preventing duplicate environment entries and profile file bloat.
 * **Self-Validating Smoke Test:** Execute the compiled tool with `--help` at the end of the installation to confirm viability.
 
 ### 4. Configuration Auto-Wiring
