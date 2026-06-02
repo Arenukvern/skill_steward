@@ -79,6 +79,10 @@ Pick one SSOT; sync everything else in the release PR:
 
 **Gate:** CI script fails if plugin manifest, embedded runtime version, and release asset names disagree.
 
+### Polyglot Tooling and Version Synchronization
+* **Language Parity:** If the repository uses a Node-based version manager (such as Changesets) but the CLI or executable product is built in another language (e.g. Dart, Rust, Go), write any version-synchronization or packaging scripts in the product's primary language (e.g. `.dart` or `.rs` scripts) rather than Node/JavaScript.
+* **Why:** This maintains toolchain uniformity, type safety, and avoids introducing alien runtime dependencies (like Node/npm packages) inside compiler-specific package directories. Run them via the package manager scripts (e.g. `"changeset:version": "changeset version && dart run tool/sync_versions.dart"`).
+
 ## MoE — is “don’t clone” always best?
 
 | Lens | Verdict |
