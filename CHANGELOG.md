@@ -1,5 +1,12 @@
 # skill-steward
 
+## 0.3.2
+
+### Patch Changes
+
+- 3b07e1a: Enhance root `install.sh` installer with local compilation fallback, version resolution fallback, rate-limit resilience, and PATH duplication safeguarding. Hook automatic version syncing into Changesets versioning. Update `release-changelog-harness` skill documentation to align with ADR 0014 and generalize these binary release contract design patterns.
+- 8cd626d: Migrate version synchronization script from Node.js to Dart, aligning with repository preferred tooling and ADR 0007. Update binary release contract documentation with polyglot tooling guidelines.
+
 ## 0.3.1
 
 ### Patch Changes
