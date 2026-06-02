@@ -17,7 +17,7 @@
     "steward:analyze": "cd packages/steward_cli && dart pub get && dart analyze --fatal-infos",
     "steward:test": "cd packages/steward_cli && dart pub get && dart test",
     "changeset": "changeset",
-    "changeset:version": "changeset version && node scripts/sync_versions.js",
+    "changeset:version": "changeset version && dart run packages/steward_cli/tool/sync_versions.dart",
     "changeset:status": "changeset status",
     "release:tag": "changeset tag && git push --tags"
   },
