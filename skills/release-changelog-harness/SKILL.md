@@ -98,7 +98,7 @@ Record choice in `docs/decisions/NNNN-release-changelog-tooling.md` when more th
 | **AGENTS.md** | One row in doc router—no full Changesets essay |
 | **CONTRIBUTING** | “Every user-facing PR adds a changeset or CHANGELOG entry” |
 
-### 4. Minimal Changesets shape (JS monorepos only)
+### 4. Minimal Changesets shape (JS monorepos and private packages)
 
 Contributor adds:
 
@@ -108,6 +108,16 @@ Contributor adds:
 ---
 
 Short imperative summary agents can quote in release notes.
+```
+
+#### Private Packages Tagging
+By default, Changesets ignores packages marked with `"private": true` in `package.json` for Git release tagging. To allow versioning and tagging for a private root package or private workspace modules, update `.changeset/config.json` to include:
+
+```json
+  "privatePackages": {
+    "version": true,
+    "tag": true
+  }
 ```
 
 Maintainer flow:

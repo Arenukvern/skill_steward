@@ -83,6 +83,13 @@ Pick one SSOT; sync everything else in the release PR:
 * **Language Parity:** If the repository uses a Node-based version manager (such as Changesets) but the CLI or executable product is built in another language (e.g. Dart, Rust, Go), write any version-synchronization or packaging scripts in the product's primary language (e.g. `.dart` or `.rs` scripts) rather than Node/JavaScript.
 * **Why:** This maintains toolchain uniformity, type safety, and avoids introducing alien runtime dependencies (like Node/npm packages) inside compiler-specific package directories. Run them via the package manager scripts (e.g. `"changeset:version": "changeset version && dart run tool/sync_versions.dart"`).
 
+### GitHub Actions Trigger Limitations (GITHUB_TOKEN vs. PAT)
+* **Problem:** When a release workflow (such as `changesets/action` or a version bump commit step) pushes a Git tag using the default GitHub `GITHUB_TOKEN` credentials, GitHub will **not** trigger subsequent workflows (like a binary compilation workflow) configured to run on tag push (`on: push: tags`). This is a security feature to prevent recursive actions.
+* **Solutions:**
+  1. **Configure a PAT/App Token:** Authenticate the checkout and release steps in the tagging workflow using a Personal Access Token (PAT) or GitHub App installation token. Pushes made using custom tokens will correctly trigger tag-based workflows.
+  2. **Trigger on Workflow Run:** Alternatively, configure the binary release workflow to trigger upon the successful completion of the release/tagging workflow using `on: workflow_run`.
+  3. **Provide Manual Fallbacks:** Support a manual trigger (`on: workflow_dispatch`) or a manual tag re-push step (deleting and pushing the tag from a developer machine) to trigger compilation if automatic triggers fail.
+
 ## MoE — is “don’t clone” always best?
 
 | Lens | Verdict |
