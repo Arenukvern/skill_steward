@@ -61,7 +61,7 @@ Before picking a tool, agree the repo obeys:
 | Rust workspace | [release-plz](https://github.com/MarcoIeni/release-plz) or cargo-release + git-cliff | Prefer automation that opens version PRs. |
 | Meta / skills-only (Skill Steward) | [Changesets](https://github.com/changesets/changesets) + `CHANGELOG.md` + git tag ([ADR 0009](../../docs/decisions/0009-adopt-changesets-for-repo-releases.mdx)) | Repo semver only; skills unversioned; document consumer impact in `.changeset/*.md`. |
 | Product harness w/ binaries | release-please + tag CI + `install.sh` | **Do not** add a second version source; follow [binary-release-contract.md](references/binary-release-contract.md) |
-| Meta / skills-only (Skill Steward) | Changesets + `npx skills` — **no** binary train | [ADR 0010](../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.mdx) |
+| Meta / skills-only (Skill Steward) | Changesets + tag CI + `install.sh` | Version synchronized with CLI binary releases via [binary-release-contract.md](references/binary-release-contract.md) per [ADR 0014](../../docs/decisions/0014-distribute-steward-cli-as-binary.mdx) |
 
 Full matrix: [ecosystem-tooling.md](references/ecosystem-tooling.md). Binary/install: [binary-release-contract.md](references/binary-release-contract.md).
 
@@ -129,7 +129,7 @@ Publish: project-specific (`changeset publish`, GitHub Action, or npm provenance
 | Skills only | `npx skills add owner/repo` — no repo tarball for consumers |
 | Libraries | pub.dev / npm / crates.io per ecosystem table |
 
-**Skill Steward:** skills via `npx skills`; `steward_cli` for maintainers with clone only ([ADR 0010](../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.mdx)).
+**Skill Steward:** skills via `npx skills`; `steward_cli` precompiled AOT binaries via GitHub Releases & `install.sh` ([ADR 0014](../../docs/decisions/0014-distribute-steward-cli-as-binary.mdx)).
 
 ### 6. Verify legibility
 

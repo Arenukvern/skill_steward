@@ -44,6 +44,8 @@ jobs:
       - name: Create Version PR or tag & GitHub Release
         uses: changesets/action@v1
         with:
+          # Custom version script to sync pubspec.yaml version
+          version: pnpm changeset:version
           # Script run in MODE B only — no npm publish, just git tag
           publish: pnpm run release:tag
           # PR title & commit message used in MODE A
