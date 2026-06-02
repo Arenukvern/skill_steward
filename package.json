@@ -1,6 +1,6 @@
 {
   "name": "skill-steward",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "private": true,
   "description": "Cross-agent skills marketplace (Cursor, Claude Code, Codex, npx skills)",
   "license": "MIT",

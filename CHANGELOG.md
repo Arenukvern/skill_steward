@@ -1,5 +1,11 @@
 # skill-steward
 
+## 0.3.3
+
+### Patch Changes
+
+- 2a97478: Fix Publish Binaries workflow tag trigger to match Changeset package-scoped format.
+
 ## 0.3.2
 
 ### Patch Changes
