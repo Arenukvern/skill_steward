@@ -1,5 +1,11 @@
 # skill-steward
 
+## 0.3.4
+
+### Patch Changes
+
+- b1f4305: ci: configure changesets to tag private packages to trigger release/binary pipelines
+
 ## 0.3.3
 
 ### Patch Changes
