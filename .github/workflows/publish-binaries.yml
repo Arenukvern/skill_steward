@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - 'v*'
+      - 'skill-steward@*'
 
 permissions:
   contents: write
@@ -39,7 +40,8 @@ jobs:
         env:
           VERSION: ${{ github.ref_name }}
         run: |
-          VERSION_NO_PREFIX="${VERSION#v}"
+          VERSION_NO_PREFIX="${VERSION##*@}"
+          VERSION_NO_PREFIX="${VERSION_NO_PREFIX#v}"
           bash scripts/build_release_artifacts.sh --version "$VERSION_NO_PREFIX" --triple "${{ matrix.triple }}"
 
       - name: Upload release tarball
