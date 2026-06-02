@@ -36,6 +36,10 @@ class InstallCommand extends Command<void> {
         'force',
         abbr: 'f',
         help: 'Overwrite existing local skills.',
+      )
+      ..addFlag(
+        'json',
+        help: 'Output structured diagnostic JSON instead of human-readable text.',
       );
   }
 
@@ -59,10 +63,7 @@ class InstallCommand extends Command<void> {
       // 1. Install all skills from local skills.json
       final skillsJsonFile = File(p.join(root, 'skills.json'));
       if (!skillsJsonFile.existsSync()) {
-        stderr.writeln(
-          'No skill specified and no skills.json found in project root.',
-        );
-        exit(1);
+        throw Exception('No skill specified and no skills.json found in project root.');
       }
 
       await _installFromConfig(
@@ -174,10 +175,7 @@ class InstallCommand extends Command<void> {
         force,
       );
     } else {
-      stderr.writeln(
-        'Invalid install target: $arg. Use local path or repo format (owner/repo/skill).',
-      );
-      exit(1);
+      throw Exception('Invalid install target: $arg. Use local path or repo format (owner/repo/skill).');
     }
   }
 
@@ -210,8 +208,7 @@ class InstallCommand extends Command<void> {
 
     final cloneRes = await Process.run('git', cloneArgs);
     if (cloneRes.exitCode != 0) {
-      stderr.writeln('Failed to clone repository: ${cloneRes.stderr}');
-      return;
+      throw Exception('Failed to clone repository: ${cloneRes.stderr}');
     }
 
     // Get the actual commit SHA for lock pinning
@@ -267,10 +264,7 @@ class InstallCommand extends Command<void> {
         }
 
         if (srcDir == null) {
-          stderr.writeln(
-            'Could not find skill "$skillName" in cloned repository.',
-          );
-          continue;
+          throw Exception('Could not find skill "$skillName" in cloned repository.');
         }
 
         final destDir = _getDestDir(root, isLocal, skillName);

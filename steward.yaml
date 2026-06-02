@@ -1,0 +1,10 @@
+branding:
+  banned_words: ["unlock", "supercharge", "ultimate", "leverage"]
+  ignored_paths: ["docs/brand.mdx"]
+
+governance:
+  adr_directory: "docs/decisions/"
+  faq_paths:
+    design: "docs/DESIGN_FAQ.mdx"
+    dx: "docs/DX_FAQ.mdx"
+  ethics_charter: "docs/NORTH_STAR.mdx"

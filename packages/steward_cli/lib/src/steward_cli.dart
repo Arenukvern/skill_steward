@@ -35,13 +35,27 @@ class StewardCli {
 
   /// Runs [args] and exits with the command status code.
   Future<void> run(final List<String> args) async {
+    final useJson = args.contains('--json');
     try {
       await _runner.run(args);
     } on UsageException catch (e) {
-      stderr
-        ..writeln(e)
-        ..writeln(_runner.usage);
+      if (useJson) {
+        stdout.writeln('{"error": "${e.message.replaceAll('"', '\\"')}", "type": "UsageException"}');
+      } else {
+        stderr
+          ..writeln(e)
+          ..writeln(_runner.usage);
+      }
       exit(64);
+    } catch (e, st) {
+      if (useJson) {
+        stdout.writeln('{"error": "${e.toString().replaceAll('"', '\\"')}", "type": "Exception"}');
+      } else {
+        stderr
+          ..writeln('Fatal Error: $e')
+          ..writeln(st);
+      }
+      exit(1);
     }
   }
 }

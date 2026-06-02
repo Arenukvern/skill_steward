@@ -32,6 +32,10 @@ class UpdateCommand extends Command<void> {
         'force',
         abbr: 'f',
         help: 'Force overwrite local changes.',
+      )
+      ..addFlag(
+        'json',
+        help: 'Output structured diagnostic JSON instead of human-readable text.',
       );
   }
 
@@ -53,10 +57,7 @@ class UpdateCommand extends Command<void> {
     final skillsJsonFile = File(p.join(root, 'skills.json'));
 
     if (!skillsJsonFile.existsSync()) {
-      stderr.writeln(
-        'No skills.json file found in project root. Run install command first.',
-      );
-      exit(1);
+      throw Exception('No skills.json file found in project root. Run install command first.');
     }
 
     final raw = await skillsJsonFile.readAsString();
@@ -91,14 +92,12 @@ class UpdateCommand extends Command<void> {
           'refs/heads/$ref',
         ]);
         if (lsRes.exitCode != 0) {
-          stderr.writeln('Failed to query remote for $source: ${lsRes.stderr}');
-          continue;
+          throw Exception('Failed to query remote for $source: ${lsRes.stderr}');
         }
 
         final stdoutStr = (lsRes.stdout as String).trim();
         if (stdoutStr.isEmpty) {
-          stderr.writeln('No ref found for branch "$ref" in $source.');
-          continue;
+          throw Exception('No ref found for branch "$ref" in $source.');
         }
 
         final latestCommit = stdoutStr.split(RegExp(r'\s+')).first;
@@ -157,10 +156,7 @@ class UpdateCommand extends Command<void> {
 
     final cloneRes = await Process.run('git', ['clone', repoUrl, tempDir.path]);
     if (cloneRes.exitCode != 0) {
-      stderr.writeln(
-        'Failed to clone repository during update: ${cloneRes.stderr}',
-      );
-      return;
+      throw Exception('Failed to clone repository during update: ${cloneRes.stderr}');
     }
 
     // Checkout specific commit SHA
@@ -171,11 +167,8 @@ class UpdateCommand extends Command<void> {
       commitSha,
     ]);
     if (checkoutRes.exitCode != 0) {
-      stderr.writeln(
-        'Failed to checkout commit $commitSha: ${checkoutRes.stderr}',
-      );
       await tempDir.delete(recursive: true);
-      return;
+      throw Exception('Failed to checkout commit $commitSha: ${checkoutRes.stderr}');
     }
 
     try {
@@ -213,8 +206,7 @@ class UpdateCommand extends Command<void> {
         }
 
         if (srcDir == null) {
-          stderr.writeln('Could not find skill "$skillName" in updated repo.');
-          continue;
+          throw Exception('Could not find skill "$skillName" in updated repo.');
         }
 
         final destDir = _getDestDir(root, isLocal, skillName);

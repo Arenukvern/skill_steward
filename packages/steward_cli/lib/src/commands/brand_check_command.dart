@@ -49,10 +49,18 @@ class BrandCheckCommand extends Command {
     if (fileArg != null) {
       final file = File(fileArg);
       if (!file.existsSync()) {
-        stdout.writeln('Error: File not found: \$fileArg');
+        stdout.writeln('Error: File not found: $fileArg');
         exitCode = 1;
         return;
       }
+      
+      final ignoredPaths = config.branding['ignored_paths'] as List<dynamic>? ?? [];
+      final isIgnored = ignoredPaths.any((p) => fileArg.contains(p.toString()));
+      if (isIgnored) {
+        stdout.writeln('✓ Brand identity check passed (ignored path).');
+        return;
+      }
+
       contentToCheck = await file.readAsString();
     } else if (textArg != null) {
       contentToCheck = textArg;
