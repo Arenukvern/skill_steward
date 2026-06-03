@@ -102,13 +102,16 @@ class UpdateCommand extends Command<void> {
 
         final latestCommit = stdoutStr.split(RegExp(r'\s+')).first;
 
+        final shortLocked = lockedCommit != null ? (lockedCommit.length >= 7 ? lockedCommit.substring(0, 7) : lockedCommit) : 'null';
+        final shortLatest = latestCommit.length >= 7 ? latestCommit.substring(0, 7) : latestCommit;
+
         if (latestCommit == lockedCommit) {
           stdout.writeln(
-            '✓ $source is up to date (locked at ${lockedCommit?.substring(0, 7)}).',
+            '✓ $source is up to date (locked at $shortLocked).',
           );
         } else {
           stdout.writeln(
-            'Updating $source: ${lockedCommit?.substring(0, 7)} -> ${latestCommit.substring(0, 7)}...',
+            'Updating $source: $shortLocked -> $shortLatest...',
           );
           // Run the git clone and installation routine for the new commit
           await _installFromSource(
