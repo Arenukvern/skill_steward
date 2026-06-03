@@ -1,6 +1,6 @@
 branding:
   banned_words: ["unlock", "supercharge", "ultimate", "leverage"]
-  ignored_paths: ["docs/brand.mdx"]
+  ignored_paths: ["docs/brand.mdx", "skills/"]
 
 governance:
   adr_directory: "docs/decisions/"

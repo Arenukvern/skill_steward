@@ -224,6 +224,17 @@ class StewardConfig {
 
       final governanceMap = data['governance'] as Map? ?? const {};
       final brandingMap = data['branding'] as Map? ?? const {};
+      
+      final bannedWords = brandingMap['banned_words'] as List?;
+      if (bannedWords != null && bannedWords.isNotEmpty) {
+        validators.add(CustomValidator(
+          type: 'disallowed-substrings',
+          files: ['**/*.md', '**/*.mdx'],
+          exclude: (brandingMap['ignored_paths'] as List?)?.cast<String>() ?? const [],
+          substrings: bannedWords.map((e) => e.toString()).toList(),
+          message: 'Brand identity violation (banned jargon)',
+        ));
+      }
 
       return StewardConfig(
         archetype: archetype,
