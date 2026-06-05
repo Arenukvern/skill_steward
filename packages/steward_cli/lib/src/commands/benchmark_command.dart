@@ -14,6 +14,17 @@ class BenchmarkCommand extends Command<void> {
   BenchmarkCommand([this.outputSink, this.startDirectory]) {
     argParser
       ..addFlag('json', negatable: false, help: 'Emit machine-readable JSON.')
+      ..addFlag(
+        'strict',
+        negatable: false,
+        help:
+            'Block execution when broad-read actions could observe dirty files.',
+      )
+      ..addOption(
+        'output',
+        help:
+            'Write the compact JSON benchmark summary to a repo-relative path.',
+      )
       ..addOption(
         'scenario',
         mandatory: true,
@@ -36,11 +47,19 @@ class BenchmarkCommand extends Command<void> {
     final result = await benchmarkPayload(
       root,
       argResults?['scenario'] as String,
+      strict: argResults?['strict'] == true,
     );
+    final encoded = const JsonEncoder.withIndent('  ').convert(result);
+    final outputPath = argResults?['output'] as String?;
+    if (outputPath != null && outputPath.trim().isNotEmpty) {
+      final outputFile = File(resolveUnderRoot(root, outputPath));
+      outputFile.parent.createSync(recursive: true);
+      outputFile.writeAsStringSync('$encoded\n');
+    }
 
     final sink = outputSink ?? stdout;
     if (argResults?['json'] == true) {
-      sink.writeln(const JsonEncoder.withIndent('  ').convert(result));
+      sink.writeln(encoded);
       return;
     }
 
@@ -53,8 +72,9 @@ class BenchmarkCommand extends Command<void> {
 
 Future<Map<String, dynamic>> benchmarkPayload(
   final String root,
-  final String scenarioId,
-) async {
+  final String scenarioId, {
+  final bool strict = false,
+}) async {
   final configResult = await StewardConfig.loadChecked(root);
   final config = configResult.config;
   final diagnostics = <Map<String, dynamic>>[
@@ -122,11 +142,20 @@ Future<Map<String, dynamic>> benchmarkPayload(
     selectedActions.add(action);
   }
 
+  final proof = _proofStatus(
+    strict: strict,
+    git: git,
+    selectedActions: selectedActions,
+    inputDigests: inputDigests,
+    diagnostics: diagnostics,
+  );
+
   final status = scenario.status;
   final executions = <Map<String, dynamic>>[];
   if (configResult.ok &&
       status == 'runnable' &&
       durability.status != 'blocked' &&
+      proof.status != 'blocked' &&
       rejectedActions.isEmpty) {
     for (final action in selectedActions) {
       executions.add(await _runAction(root, action));
@@ -138,6 +167,7 @@ Future<Map<String, dynamic>> benchmarkPayload(
     configValid: configResult.ok,
     status: status,
     durabilityStatus: durability.status,
+    proofStatus: proof.status,
     rejectedActions: rejectedActions,
     executions: executions,
     artifacts: artifacts,
@@ -170,6 +200,7 @@ Future<Map<String, dynamic>> benchmarkPayload(
     'artifacts': artifacts,
     'input_digests': inputDigests,
     'durability': durability.toJson(),
+    'proof': proof.toJson(),
     'owner': scenario.owner,
     'blocked_by': result == 'blocked'
         ? scenario.blockedBy ??
@@ -177,6 +208,7 @@ Future<Map<String, dynamic>> benchmarkPayload(
                 configResult.ok,
                 status,
                 durability.status,
+                proof.status,
                 rejectedActions,
               )
         : null,
@@ -608,6 +640,7 @@ String _benchmarkResult({
   required final bool configValid,
   required final String status,
   required final String durabilityStatus,
+  required final String proofStatus,
   required final List<Map<String, dynamic>> rejectedActions,
   required final List<Map<String, dynamic>> executions,
   required final List<Map<String, dynamic>> artifacts,
@@ -616,6 +649,7 @@ String _benchmarkResult({
     return 'blocked';
   }
   if (durabilityStatus == 'blocked') return 'blocked';
+  if (proofStatus == 'blocked') return 'blocked';
   if (rejectedActions.isNotEmpty) return 'blocked';
   if (executions.isEmpty) return 'blocked';
   if (executions.any((final run) => run['status'] != 'passed')) return 'fail';
@@ -628,16 +662,77 @@ String _benchmarkResult({
   return 'pass';
 }
 
+_ProofStatus _proofStatus({
+  required final bool strict,
+  required final _GitFacts git,
+  required final List<StewardAction> selectedActions,
+  required final Map<String, dynamic> inputDigests,
+  required final List<Map<String, dynamic>> diagnostics,
+}) {
+  final warnings = <String>[];
+  final blockingPaths = <String>[];
+  final broadReadActions = selectedActions
+      .where(_hasBroadFsRead)
+      .map((final action) => action.id)
+      .toList();
+  final checkedInputPaths = inputDigests.values
+      .whereType<Map>()
+      .map((final input) => input['path'])
+      .whereType<String>()
+      .toSet();
+
+  if (strict && broadReadActions.isNotEmpty && git.dirtyPaths.isNotEmpty) {
+    final undeclaredDirtyPaths = git.dirtyPaths
+        .where((final path) => !checkedInputPaths.contains(path))
+        .toList();
+    if (undeclaredDirtyPaths.isNotEmpty) {
+      blockingPaths.addAll(undeclaredDirtyPaths);
+      warnings.add(
+        'Strict proof blocks broad fs_read actions from observing undeclared dirty files.',
+      );
+    }
+  }
+
+  final status = blockingPaths.isEmpty ? 'ready' : 'blocked';
+  if (blockingPaths.isNotEmpty) {
+    diagnostics.add({
+      'severity': 'warning',
+      'path': 'proof',
+      'message':
+          'Benchmark proof status is blocked; inspect proof.blocking_paths and proof.broad_read_actions.',
+    });
+  }
+
+  return _ProofStatus(
+    mode: strict ? 'strict' : 'standard',
+    status: status,
+    broadReadActions: broadReadActions,
+    blockingPaths: blockingPaths,
+    warnings: warnings,
+  );
+}
+
+bool _hasBroadFsRead(final StewardAction action) {
+  final fsRead = action.effects['fs_read'];
+  if (fsRead is! List) return false;
+  return fsRead.any((final entry) {
+    final value = '$entry'.trim();
+    return value == '.' || value == './' || value == '*' || value == '**';
+  });
+}
+
 String _blockedReason(
   final bool configValid,
   final String status,
   final String durabilityStatus,
+  final String proofStatus,
   final List<Map<String, dynamic>> rejectedActions,
 ) {
   if (!configValid) return 'invalid_config';
   if (status == 'planned') return 'scenario_planned';
   if (status == 'blocked') return 'scenario_blocked';
   if (durabilityStatus == 'blocked') return 'durability_blocked';
+  if (proofStatus == 'blocked') return 'strict_proof_blocked';
   if (rejectedActions.isNotEmpty) return 'rejected_actions';
   return 'no_executions';
 }
@@ -761,17 +856,32 @@ Future<_GitFacts> _gitFacts(final String root) async {
       'status',
       '--porcelain',
     ], workingDirectory: root);
+    final dirtyPaths = statusResult.exitCode == 0
+        ? _dirtyPaths(statusResult.stdout.toString())
+        : const <String>[];
     return _GitFacts(
       commit: commitResult.exitCode == 0
           ? commitResult.stdout.toString().trim()
           : null,
-      dirty:
-          statusResult.exitCode == 0 &&
-          statusResult.stdout.toString().trim().isNotEmpty,
+      dirty: dirtyPaths.isNotEmpty,
+      dirtyPaths: dirtyPaths,
     );
   } on Object catch (_) {
-    return const _GitFacts(commit: null, dirty: null);
+    return const _GitFacts(commit: null, dirty: null, dirtyPaths: []);
   }
+}
+
+List<String> _dirtyPaths(final String porcelain) {
+  final paths = <String>[];
+  for (final line in porcelain.split('\n')) {
+    if (line.trim().isEmpty) continue;
+    final payload = line.length > 3 ? line.substring(3).trim() : line.trim();
+    final path = payload.contains(' -> ')
+        ? payload.split(' -> ').last.trim()
+        : payload;
+    if (path.isNotEmpty) paths.add(path);
+  }
+  return paths;
 }
 
 Future<String> _runnerVersion(final String root) async {
@@ -839,10 +949,39 @@ class _ScenarioManifest {
 }
 
 class _GitFacts {
-  const _GitFacts({required this.commit, required this.dirty});
+  const _GitFacts({
+    required this.commit,
+    required this.dirty,
+    required this.dirtyPaths,
+  });
 
   final String? commit;
   final bool? dirty;
+  final List<String> dirtyPaths;
+}
+
+class _ProofStatus {
+  const _ProofStatus({
+    required this.mode,
+    required this.status,
+    required this.broadReadActions,
+    required this.blockingPaths,
+    required this.warnings,
+  });
+
+  final String mode;
+  final String status;
+  final List<String> broadReadActions;
+  final List<String> blockingPaths;
+  final List<String> warnings;
+
+  Map<String, dynamic> toJson() => {
+    'mode': mode,
+    'status': status,
+    'broad_read_actions': broadReadActions,
+    'blocking_paths': blockingPaths,
+    'warnings': warnings,
+  };
 }
 
 class _Durability {

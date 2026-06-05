@@ -69,7 +69,7 @@ Rules:
 - `schema: steward/v1` requires stewardship pillar metadata.
 - Any executable automation declared in v1 must use typed `actions`.
 - Raw shell-only `pipelines.*.cmd` is invalid in v1.
-- `steward validate` should fail old shapes once v1 validation is implemented.
+- `steward validate` fails old shapes and includes `StewardConfig.loadChecked` diagnostics for `steward.yaml`.
 - `steward adopt` should write v1 only.
 - Runtime dogfood uses `steward benchmark` or `steward dogfood`.
 - Skill quality checks use `steward eval`.
@@ -82,9 +82,9 @@ Current implementation warning:
 - `steward bundle` for `schema: steward/v1` compiles validated `plugins/*/plugin.yaml` manifests into deterministic plugin bundle descriptors only; it must not install skills, merge hooks, chmod files, or mutate agent configuration.
 - JSON Schema artifacts are companion contracts for agents and non-Dart harnesses; Dart validation remains the executable gate.
 
-Activation gate:
+Current v1 gate:
 
-`schema: steward/v1` becomes normative only after these are true:
+`schema: steward/v1` is normative for adopted repos. The current gate is enforced by `StewardConfig.loadChecked` through `validate`, `doctor`, action discovery, probe, observe, diagnose, and benchmark flows:
 
 - `StewardConfig` loads and preserves `schema`, `repo`, `stewardship`, `harness`, `actions`, `probes`, `diagnostics`, `unknown_cases`, and `provenance`.
 - `steward validate` validates the v1 contract and fails legacy `pipelines.*.cmd`.
@@ -482,6 +482,8 @@ Skill Steward should ship:
 
 Non-Dart harnesses should consume schemas or invoke the validator CLI. They must not be required to import Dart code.
 
+Portable schemas should encode safety invariants where JSON Schema can express them: SHA shape, relative in-repo paths, required proof/durability fields, and known enum values. Cross-field checks such as action existence, safe-first-probe consistency, manifest self-reference, and dirty broad-read proof remain executable validator responsibilities.
+
 ## Local Harness-Stewards
 
 A local harness-steward is a repo-owned control plane. It may include local CLI, core, MCP, skills, plugin wiring, probes, docs, and benchmark fixtures, but only when those belong to the target repo.
@@ -584,8 +586,8 @@ Command status matrix:
 
 | Command | Status | Purpose |
 |---|---|---|
-| `steward validate` | implemented slice 0 | Skill validation and v1 contract validation. |
-| `steward validate --json` | available now | Machine-readable skill validation. |
+| `steward validate` | implemented slice 0 | Skill validation plus v1 repository contract diagnostics from `steward.yaml`. |
+| `steward validate --json` | implemented slice 0 | Machine-readable skill validation plus repository contract diagnostics; `ok: true` requires both to be clean. |
 | `steward eval` | available now | Tier-1 skill evals. |
 | `steward map` | available now | Human Markdown orientation; not an agent API. |
 | `steward mcp` | experimental legacy | Must not expand as execution surface before typed action discovery exists. |
@@ -599,14 +601,14 @@ Command status matrix:
 | `steward action-candidate create --from <unknown-case> --id <id> --argv-json <json> --benchmark <id> --json` | implemented slice 1 | Writes append-only pending action-candidate records without mutating `steward.yaml` or executing proposed commands. |
 | `steward action-candidate review --from <candidate> --json` | implemented slice 1 | Validates candidate shape, source unknown cases, promotion gates, and steward-owned write bounds without promotion. |
 | `steward diagnose --from <observation> --json` | implemented slice 2 | Read-only deterministic promoted-diagnostic matching with `unknown_case` fallback. |
-| `steward benchmark --scenario <id> --json` | implemented slice 3 | Runtime dogfood summary from `provenance.benchmarks`; separate from `eval`. |
+| `steward benchmark --scenario <id> --json [--strict] [--output <path>]` | implemented slice 3 | Runtime dogfood summary from `provenance.benchmarks`; `--strict` blocks broad-read actions when undeclared dirty paths could affect what the action observes; `--output` persists the compact summary to a repo-relative artifact path. |
 
 Implementation slices:
 
 1. Slice 0: v1 config loading, schema validation, `doctor`, `actions list`, and `action inspect`.
 2. Slice 1: `probe --profile quick`, local harness delegation policy, `observe`, `unknown-case create`, and pending action-candidate review artifacts.
 3. Slice 2: promoted-only `diagnose` is implemented.
-4. Slice 3: compact `benchmark --scenario` summaries are implemented; cross-repo dogfood scenarios remain next.
+4. Slice 3: compact `benchmark --scenario` summaries and the first cross-repo dogfood scenarios are implemented; deeper domain checks remain next.
 
 Target fresh-agent flow after all slices exist:
 
@@ -829,7 +831,7 @@ Raw traces, screenshots, and large artifacts remain in target repos or CI artifa
 
 ## Benchmark Summary
 
-Skill Steward stores compact benchmark summaries and candidate lessons. Target repos own raw traces, local artifacts, fixtures, and domain benchmark data.
+Skill Steward emits compact benchmark summaries and candidate lessons. Target repos own persisted summary artifacts, raw traces, local artifacts, fixtures, and domain benchmark data.
 
 Runtime dogfood benchmarks are separate from Tier-1 skill evals.
 
@@ -842,6 +844,12 @@ repo_commit: "resolved-git-commit-sha"
 dirty: false
 runner: steward@0.3.4
 scenario: ecsly.spark-t1-dry-run
+scenario_source:
+  git: https://github.com/Arenukvern/ecsly
+  commit: "subject-commit-sha"
+  steward_contract: steward.yaml
+scenario_manifest: steward/scenarios/ecsly.spark-t1-dry-run.yaml
+scenario_manifest_sha256: "sha256-hex-digest"
 run_id: "2026-06-05T10-30-00Z"
 mode: cold_start | promoted_diagnostic
 result: pass | fail | blocked | unknown_case
@@ -856,6 +864,32 @@ selection_trace:
 artifacts:
   - path: .steward/results/verify.json
     sha256: "sha256-hex-digest"
+execution_summaries:
+  - action_id: ecsly.verify.spark-t1-dry-run
+    status: passed
+    exit_code: 0
+    duration_ms: 120
+    stdout_sha256: "sha256-hex-digest"
+    stderr_sha256: "sha256-hex-digest"
+    output_truncated: false
+input_digests:
+  steward_contract:
+    path: steward.yaml
+    sha256: "sha256-hex-digest"
+  scenario_manifest:
+    path: steward/scenarios/ecsly.spark-t1-dry-run.yaml
+    sha256: "sha256-hex-digest"
+durability:
+  status: ready | blocked
+  checked_paths: []
+  blocking_paths: []
+  warnings: []
+proof:
+  mode: standard | strict
+  status: ready | blocked
+  broad_read_actions: []
+  blocking_paths: []
+  warnings: []
 owner: ecsly
 blocked_by: null
 lesson_status: none | candidate | promoted
@@ -875,11 +909,13 @@ Pass criteria:
 - verification confirms output
 - unknown symptoms return `unknown_case`, not a hallucinated diagnostic
 - inputs are frozen by git SHA or artifact digest
+- `durability.status` is `ready`
+- `proof.status` is `ready`
 - the run does not promote a diagnostic it created
 
 ## First Repo Scenarios
 
-Each target repo should adopt exactly one scenario first. The first scenario proves deterministic selection, safe execution, and compact evidence. Deeper graphics, MCP runtime, publish, visual, and citation-golden checks are promoted only after this first loop works.
+Each target repo should adopt exactly one scenario first. The first scenario proves a narrow cold-start smoke loop: deterministic action selection, quick-policy safety filtering, bounded execution, and compact summary evidence. It does not prove domain diagnosis, MCP parity, repair behavior, or multi-step agent workflows. Deeper graphics, MCP runtime, publish, visual, and citation-golden checks are promoted only after this first loop works.
 
 | Repo | Scenario | Current first proof | Status |
 |---|---|---|---|
@@ -889,9 +925,9 @@ Each target repo should adopt exactly one scenario first. The first scenario pro
 | `flutter-harness` | `flutter_harness.visual-warm-path-direct` | `flutter_harness.agent_doctor` sibling/tooling preflight. | committed; benchmark pass |
 | `shippic-steward` | `vitamins_quiz_bot.citation-judge-golden` | `shippic.inspect.redacted` contract check through `node tools/shippic_steward/bin/shippic-steward.mjs inspect --json`. | committed; benchmark pass |
 
-These statuses are declarations, not proof. A `runnable` scenario executes only when the contract inputs used by the runner are clean and tracked: `source.steward_contract` and, for file-backed scenarios, `steward/scenarios/*.yaml`. Untracked or modified contract inputs return a compact blocked benchmark summary with `blocked_by: durability_blocked`. Dirty unrelated files are warnings only.
+These statuses are declarations, not proof. A `runnable` scenario executes only when the contract inputs used by the runner are clean and tracked: `source.steward_contract` and, for file-backed scenarios, `steward/scenarios/*.yaml`. Untracked or modified contract inputs return a compact blocked benchmark summary with `blocked_by: durability_blocked`. In standard mode, dirty unrelated files are warnings unless they touch checked durability inputs. In strict mode, dirty undeclared paths block execution when any selected action has broad `fs_read` such as `.`, `./`, `*`, or `**`; blocked summaries use `blocked_by: strict_proof_blocked`.
 
-`source.commit` names the subject/source commit under test. It must not be treated as proof that the scenario manifest file contains itself at that same commit; that creates an impossible self-reference. Benchmark summaries prove the actual manifest input with `scenario_manifest_sha256`, `input_digests`, and `durability.checked_paths`.
+`source.commit` names the subject/source commit under test. It must not be treated as proof that the scenario manifest file contains itself at that same commit; that creates an impossible self-reference. `repo_commit` is the local checkout that executed the benchmark. Benchmark summaries prove the actual local manifest input with `scenario_manifest_sha256`, `input_digests`, `durability.checked_paths`, and `proof`. A benchmark summary must not claim remote reproducibility unless the runner verifies that the relevant commit is fetchable from `source.git`.
 
 Scenario rows are not runnable until a manifest binds them to durable evidence:
 
@@ -924,9 +960,9 @@ provenance:
       manifest: steward/scenarios/sample_repo.pwd-selection.yaml
 ```
 
-Committed manifest files should live under repo-owned paths such as `steward/scenarios/*.yaml`, not under generated/local `.steward` records. `runnable` scenarios execute only when durability is `ready` and declared required actions pass auto/quick safety policy; `planned`, `blocked`, and durability-blocked scenarios return compact blocked summaries without execution. Artifacts that influence execution should declare `durability: input` so the benchmark blocks on dirty or untracked inputs; generated outputs should use `durability: output` or omit the field until v1 needs stricter output policy. Benchmark summaries must not include raw stdout/stderr; use exit codes, durations, truncation flags, artifact digests, input digests, durability checks, and output digests instead.
+Committed manifest files should live under repo-owned paths such as `steward/scenarios/*.yaml`, not under generated/local `.steward` records. `runnable` scenarios execute only when config validation passes, durability is `ready`, proof is `ready`, and declared required actions pass auto/quick safety policy; `planned`, `blocked`, durability-blocked, and strict-proof-blocked scenarios return compact blocked summaries without execution. Artifacts that influence execution should declare `durability: input` so the benchmark blocks on dirty or untracked inputs; generated outputs should use `durability: output` or omit the field until v1 needs stricter output policy. Benchmark summaries must not include raw stdout/stderr; use exit codes, durations, truncation flags, artifact digests, input digests, durability checks, proof checks, and output digests instead.
 
-Planned repos, including `shippic-steward`, must remain `blocked` or `planned` until they expose a durable steward contract artifact. Local paths are not enough.
+Planned repos must remain `blocked` or `planned` until they expose a durable steward contract artifact. Repos with a committed steward contract, scenario manifest, and passing benchmark may move to `runnable`. Local paths are not enough.
 
 ## Data Ownership
 
@@ -981,7 +1017,7 @@ The first implementation plan should include validators for:
 - action candidates missing typed effects, limits, owner, validation proof, or benchmark proof
 - generated plugin artifacts without managed-block and uninstall metadata
 - scenario manifests missing remote/ref, steward contract path, required actions, artifact requirements, status, or blocked reason
-- benchmark summaries missing commit, dirty flag, runner, owner, artifacts, selection trace, or result
+- benchmark summaries missing commit, dirty flag, runner, owner, artifacts, selection trace, input digests, durability, proof block, or result
 - benchmark run attempting to promote a diagnostic created in the same run
 - benchmark run attempting to promote an action created in the same run
 
@@ -1026,8 +1062,18 @@ This spec must not become a permanent second North Star. Mitigation: extract acc
 11. Slice 3 done: validate scenario manifest shape during `steward.yaml` loading: durable git URL, resolved commit SHA, steward contract path, required actions, artifact requirements, status, blocked reason, owner, and safe first probe.
 12. Slice 3 done: hard-cut action effects to explicit `fs_read` and `fs_write` lists and require list-shaped output records with `id`, `kind`, `required`, and `retention`.
 13. Schema artifacts done: add language-neutral schemas for `steward.yaml` v1, scenario manifests, plugin manifests, doctor output, observations, unknown cases, action candidates, and benchmark summaries.
-14. Slice 3 committed: dogfood one scenario per target repo; `ecsly`, `mcp_flutter`, `intentcall`, `flutter_harness`, and `shippic-steward` have durability-ready passing first benchmarks. Deeper citation, graphics, MCP runtime, publish, and visual checks remain later promotions.
+14. Slice 3 committed: each target repo has one first benchmark that can produce `result: pass` with `durability.status: ready` and `proof.status: ready`; this is smoke evidence, not proof of deeper domain behavior. Deeper citation, graphics, MCP runtime, publish, and visual checks remain later promotions.
 15. Extraction: convert stable decisions into ADRs, schema docs, validators, and FAQ entries; then retire this spec as an active plan.
+
+## Next Dogfood Plan
+
+The next plan should move from smoke evidence to workflow evidence:
+
+1. Add remote reproducibility proof as a separate tier: verify that `repo_commit`, subject commits, and scenario/contract commits are fetchable from `source.git` before claiming remote reproducibility.
+2. Add least-privilege action review: warn on broad `fs_read` in standard validation, require `--strict` for dirty dogfood repos, and keep narrowing action read scopes from real command behavior.
+3. Persist benchmark summaries through `--output` in each target repo and aggregate them into a small cross-repo report; summaries remain compact and must not include raw stdout/stderr.
+4. Add one full agent workflow per repo: `doctor -> actions list -> action inspect -> probe -> benchmark`, with assertions that the agent does not fall back to raw shell spelunking.
+5. Promote second scenarios only after the first workflow is stable: graphics/splats for `ecsly`, MCP runtime parity for `flutter-mcp-toolkit`, adapter/resource behavior for `intentcall`, visual path checks for `flutter-harness`, and real citation-golden checks for `shippic-steward`.
 
 ## References
 

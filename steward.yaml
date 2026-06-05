@@ -97,7 +97,12 @@ actions:
       max_output_bytes: 200000
       max_files: 20000
       max_parallelism: 4
-    outputs: []
+    outputs:
+      - id: stdout
+        kind: stream
+        required: true
+        retention: summary
+        format: text
     evidence:
       redaction: steward/redaction/v1
       summary_fields: [exit_code, duration_ms, output_digest]
@@ -127,7 +132,12 @@ actions:
       max_output_bytes: 200000
       max_files: 20000
       max_parallelism: 4
-    outputs: []
+    outputs:
+      - id: stdout
+        kind: stream
+        required: true
+        retention: summary
+        format: text
     evidence:
       redaction: steward/redaction/v1
       summary_fields: [exit_code, duration_ms, output_digest]

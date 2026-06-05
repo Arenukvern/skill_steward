@@ -62,6 +62,71 @@ void main() {
     expect(await stewardFile.readAsString(), stewardBefore);
   });
 
+  test('strict benchmark blocks dirty broad-read actions', () async {
+    await File(
+      p.join(tempDir.path, 'steward.yaml'),
+    ).writeAsString(validStewardV1());
+    await _initGitRepo(tempDir);
+    await _commitAll(tempDir, 'clean benchmark inputs');
+    await File(p.join(tempDir.path, 'NOTES.md')).writeAsString('dirty note\n');
+    final buffer = StringBuffer();
+    final runner = CommandRunner<void>('steward', 'test')
+      ..addCommand(BenchmarkCommand(buffer, tempDir));
+
+    await runner.run([
+      'benchmark',
+      '--scenario',
+      'sample_repo.pwd-selection',
+      '--strict',
+      '--json',
+    ]);
+
+    final payload = jsonDecode(buffer.toString()) as Map<String, dynamic>;
+    expect(payload['result'], 'blocked');
+    expect(payload['blocked_by'], 'strict_proof_blocked');
+    expect(payload['actions_run'], isEmpty);
+    final proof = payload['proof'] as Map<String, dynamic>;
+    expect(proof['mode'], 'strict');
+    expect(proof['status'], 'blocked');
+    expect(proof['broad_read_actions'], ['repo.pwd']);
+    expect(proof['blocking_paths'], contains('NOTES.md'));
+  });
+
+  test('benchmark writes compact summary artifact', () async {
+    await File(
+      p.join(tempDir.path, 'steward.yaml'),
+    ).writeAsString(validStewardV1());
+    await _initGitRepo(tempDir);
+    await _commitAll(tempDir, 'clean benchmark inputs');
+    final buffer = StringBuffer();
+    final runner = CommandRunner<void>('steward', 'test')
+      ..addCommand(BenchmarkCommand(buffer, tempDir));
+    const outputPath = '.steward/benchmark-summaries/pwd-selection.json';
+
+    await runner.run([
+      'benchmark',
+      '--scenario',
+      'sample_repo.pwd-selection',
+      '--strict',
+      '--output',
+      outputPath,
+      '--json',
+    ]);
+
+    final stdoutPayload = jsonDecode(buffer.toString()) as Map<String, dynamic>;
+    final outputFile = File(p.join(tempDir.path, outputPath));
+    expect(outputFile.existsSync(), isTrue);
+    final artifactPayload =
+        jsonDecode(await outputFile.readAsString()) as Map<String, dynamic>;
+    expect(artifactPayload['run_id'], stdoutPayload['run_id']);
+    expect(artifactPayload['result'], 'pass');
+    expect(artifactPayload['proof'], containsPair('mode', 'strict'));
+    expect(artifactPayload.containsKey('executions'), isFalse);
+    final executionSummaries = artifactPayload['execution_summaries'] as List;
+    expect(executionSummaries.single, isNot(contains('stdout')));
+    expect(executionSummaries.single, isNot(contains('stderr')));
+  });
+
   test('benchmark loads scenario manifests from repo files', () async {
     final scenarioFile = File(
       p.join(tempDir.path, 'steward', 'scenarios', 'pwd-selection.yaml'),

@@ -217,8 +217,18 @@ Future<ValidationReport> validateAllSkills(final String skillsDir) async {
       );
     }
 
-    // Run custom validators from steward.json
-    final config = await StewardConfig.load(root);
+    // Run Steward contract checks and custom validators from steward.yaml.
+    final configResult = await StewardConfig.loadChecked(root);
+    final config = configResult.config;
+    if (config.configPath != null) {
+      warnings.addAll(
+        configResult.diagnostics
+            .where((final diagnostic) => diagnostic.isError)
+            .map(
+              (final diagnostic) => '${diagnostic.path}: ${diagnostic.message}',
+            ),
+      );
+    }
     for (final validator in config.validators) {
       final customErrors = await validator.validate(root);
       warnings.addAll(customErrors);

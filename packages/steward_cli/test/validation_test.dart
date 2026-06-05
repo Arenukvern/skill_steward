@@ -216,5 +216,81 @@ void main() {
         expect(report.registryWarnings, isNotEmpty);
       },
     );
+
+    test('validateAllSkills fails invalid central steward.yaml', () async {
+      final tempDir = Directory.systemTemp.createTempSync(
+        'steward_validate_all_contract_',
+      );
+      try {
+        await File(p.join(tempDir.path, 'skills.sh.json')).writeAsString('''
+{
+  "skills": ["contract-check"]
+}
+''');
+        final skillDir = Directory(
+          p.join(tempDir.path, 'skills', 'contract-check'),
+        )..createSync(recursive: true);
+        await File(p.join(skillDir.path, 'SKILL.md')).writeAsString('''
+---
+name: contract-check
+description: Checks that validateAllSkills includes Steward contract diagnostics.
+license: MIT
+type: governance
+---
+
+Use this fixture to prove central steward.yaml diagnostics are part of normal validation.
+''');
+        Directory(p.join(skillDir.path, 'references')).createSync();
+        await File(
+          p.join(skillDir.path, 'references', 'sources.md'),
+        ).writeAsString('- local fixture\n');
+        await File(p.join(tempDir.path, 'steward.yaml')).writeAsString('''
+schema: steward/v1
+repo: {id: contract_fixture}
+stewardship:
+  governance: {north_star: AGENTS.md}
+  knowledge: {docs_map: AGENTS.md}
+  skill_lifecycle: {installable_skills: true}
+  quality: {validate: steward validate}
+  harness: {enabled: true}
+  release: {changelog: CHANGELOG.md}
+  review_handoff: {moe_required_for_architecture: true}
+  strategic_alignment: {vision_source: AGENTS.md}
+  security: {action_effects: required}
+  org: {owners: AGENTS.md}
+actions:
+  invalid.local:
+    kind: command
+    desc: Invalid action with explicit empty outputs.
+    command: {argv: [steward, doctor, --json], shell: false}
+    effects:
+      fs_read: ["."]
+      fs_write: []
+      git: false
+      network: false
+      secrets: false
+      destructive: false
+    safety:
+      class: observe
+      default_policy: auto
+      requires_confirmation: false
+    outputs: []
+probes:
+  quick: {actions: [invalid.local]}
+''');
+
+        final report = await validateAllSkills(p.join(tempDir.path, 'skills'));
+
+        expect(report.ok, isFalse);
+        expect(
+          report.registryWarnings,
+          contains(
+            'actions.invalid.local.outputs: outputs must contain at least one output record.',
+          ),
+        );
+      } finally {
+        tempDir.deleteSync(recursive: true);
+      }
+    });
   });
 }
