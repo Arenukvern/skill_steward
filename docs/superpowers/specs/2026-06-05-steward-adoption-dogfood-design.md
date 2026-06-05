@@ -572,9 +572,9 @@ Do not collapse repo folder, public name, CLI command, MCP prefix, and package p
 | `flutter-mcp-toolkit` | `mcp_flutter` | `flutter-mcp-toolkit`, `flutter-mcp-toolkit-server` | `fmt_` | `mcp_toolkit`, `flutter_mcp_toolkit_*` | verified |
 | `intentcall` | `intentcall` | `tool/intentcall/bin/intentcall.dart` | adapter-specific | `intentcall_*` | verified |
 | `flutter-harness` | `flutter_harness` | `flutter_harness`, `harness_agent` | none | `flutter_harness` | CLI-only |
-| `shippic-steward` | `vitamins_quiz_bot` | not yet defined | not yet defined | `vitamin_shippic_app`, `shippic_server`, `shippic-landing` | planned |
+| `shippic-steward` | `vitamins_quiz_bot` | `tools/shippic_steward/bin/shippic-steward.mjs` | none | `vitamin_shippic_app`, `shippic_server`, `shippic-landing` | CLI-only |
 
-`shippic-steward` is accepted as the rollout/control-plane name, but it remains planned until the target repo creates a real CLI, package, plugin, or steward contract artifact.
+`shippic-steward` is accepted as the rollout/control-plane name. The first durable proof is a redacted local inspect CLI; deeper citation judging stays out of the first slice until benchmark capture is stable.
 
 ## Cold-Start Slice
 
@@ -887,7 +887,7 @@ Each target repo should adopt exactly one scenario first. The first scenario pro
 | `flutter-mcp-toolkit` | `mcp_flutter.web-dogfood-warm` | `fmt.check.tool-prefix` contract check plus `tool/contracts/expected_tool_surface.txt` digest. | committed; benchmark pass |
 | `intentcall` | `intentcall.adapter-contract` | `intentcall.validate` path-dependency, version, and plan-hygiene gate. | committed; benchmark pass |
 | `flutter-harness` | `flutter_harness.visual-warm-path-direct` | `flutter_harness.agent_doctor` sibling/tooling preflight. | committed; benchmark pass |
-| `shippic-steward` | `vitamins_quiz_bot.citation-judge-golden` | Steward contract and agent-map presence only. | committed; blocked until redacted `shippic-steward` CLI exists |
+| `shippic-steward` | `vitamins_quiz_bot.citation-judge-golden` | `shippic.inspect.redacted` contract check through `node tools/shippic_steward/bin/shippic-steward.mjs inspect --json`. | committed; benchmark pass |
 
 These statuses are declarations, not proof. A `runnable` scenario executes only when the contract inputs used by the runner are clean and tracked: `source.steward_contract` and, for file-backed scenarios, `steward/scenarios/*.yaml`. Untracked or modified contract inputs return a compact blocked benchmark summary with `blocked_by: durability_blocked`. Dirty unrelated files are warnings only.
 
@@ -1026,7 +1026,7 @@ This spec must not become a permanent second North Star. Mitigation: extract acc
 11. Slice 3 done: validate scenario manifest shape during `steward.yaml` loading: durable git URL, resolved commit SHA, steward contract path, required actions, artifact requirements, status, blocked reason, owner, and safe first probe.
 12. Slice 3 done: hard-cut action effects to explicit `fs_read` and `fs_write` lists and require list-shaped output records with `id`, `kind`, `required`, and `retention`.
 13. Schema artifacts done: add language-neutral schemas for `steward.yaml` v1, scenario manifests, plugin manifests, doctor output, observations, unknown cases, action candidates, and benchmark summaries.
-14. Slice 3 committed: dogfood one scenario per target repo; `ecsly`, `mcp_flutter`, `intentcall`, and `flutter_harness` have durability-ready passing benchmarks; `shippic-steward` has durability-ready contract inputs but remains scenario-blocked until a redacted local CLI exists.
+14. Slice 3 committed: dogfood one scenario per target repo; `ecsly`, `mcp_flutter`, `intentcall`, `flutter_harness`, and `shippic-steward` have durability-ready passing first benchmarks. Deeper citation, graphics, MCP runtime, publish, and visual checks remain later promotions.
 15. Extraction: convert stable decisions into ADRs, schema docs, validators, and FAQ entries; then retire this spec as an active plan.
 
 ## References
