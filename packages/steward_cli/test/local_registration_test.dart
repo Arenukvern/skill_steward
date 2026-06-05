@@ -1,11 +1,21 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:args/command_runner.dart';
 import 'package:path/path.dart' as p;
+import 'package:steward_cli/src/commands/action_candidate_command.dart';
+import 'package:steward_cli/src/commands/action_command.dart';
+import 'package:steward_cli/src/commands/actions_command.dart';
 import 'package:steward_cli/src/commands/adopt_command.dart';
+import 'package:steward_cli/src/commands/benchmark_command.dart';
+import 'package:steward_cli/src/commands/diagnose_command.dart';
+import 'package:steward_cli/src/commands/doctor_command.dart';
 import 'package:steward_cli/src/commands/install_command.dart';
 import 'package:steward_cli/src/commands/map_command.dart';
+import 'package:steward_cli/src/commands/observe_command.dart';
+import 'package:steward_cli/src/commands/probe_command.dart';
 import 'package:steward_cli/src/commands/uninstall_command.dart';
+import 'package:steward_cli/src/commands/unknown_case_command.dart';
 import 'package:steward_cli/src/commands/update_command.dart';
 import 'package:steward_cli/src/commands/validate_command.dart';
 
@@ -199,6 +209,72 @@ Body steps.
       expect(cmd.argParser.options.containsKey('target'), isTrue);
       expect(cmd.argParser.options.containsKey('force'), isTrue);
     });
+
+    test('adoption discovery commands are registered with JSON options', () {
+      final doctor = DoctorCommand();
+      final actions = ActionsCommand();
+      final action = ActionCommand();
+      final actionCandidate = ActionCandidateCommand();
+      final probe = ProbeCommand();
+      final observe = ObserveCommand();
+      final unknownCase = UnknownCaseCommand();
+      final diagnose = DiagnoseCommand();
+      final benchmark = BenchmarkCommand();
+
+      expect(doctor.argParser.options.containsKey('json'), isTrue);
+      expect(actions.subcommands.containsKey('list'), isTrue);
+      expect(
+        actions.subcommands['list']!.argParser.options.containsKey('json'),
+        isTrue,
+      );
+      expect(action.subcommands.containsKey('inspect'), isTrue);
+      expect(actionCandidate.subcommands.containsKey('create'), isTrue);
+      expect(actionCandidate.subcommands.containsKey('review'), isTrue);
+      expect(
+        action.subcommands['inspect']!.argParser.options.containsKey('json'),
+        isTrue,
+      );
+      expect(
+        actionCandidate.subcommands['create']!.argParser.options.containsKey(
+          'from',
+        ),
+        isTrue,
+      );
+      expect(
+        actionCandidate.subcommands['create']!.argParser.options.containsKey(
+          'argv-json',
+        ),
+        isTrue,
+      );
+      expect(
+        actionCandidate.subcommands['review']!.argParser.options.containsKey(
+          'from',
+        ),
+        isTrue,
+      );
+      expect(probe.argParser.options.containsKey('json'), isTrue);
+      expect(probe.argParser.options.containsKey('profile'), isTrue);
+      expect(observe.argParser.options.containsKey('json'), isTrue);
+      expect(observe.argParser.options.containsKey('profile'), isTrue);
+      expect(observe.argParser.options.containsKey('from'), isTrue);
+      expect(unknownCase.subcommands.containsKey('create'), isTrue);
+      expect(
+        unknownCase.subcommands['create']!.argParser.options.containsKey(
+          'json',
+        ),
+        isTrue,
+      );
+      expect(
+        unknownCase.subcommands['create']!.argParser.options.containsKey(
+          'from',
+        ),
+        isTrue,
+      );
+      expect(diagnose.argParser.options.containsKey('json'), isTrue);
+      expect(diagnose.argParser.options.containsKey('from'), isTrue);
+      expect(benchmark.argParser.options.containsKey('json'), isTrue);
+      expect(benchmark.argParser.options.containsKey('scenario'), isTrue);
+    });
   });
 
   group('InstallCommand Integration', () {
@@ -329,6 +405,12 @@ Instruction body.
         final skillsJson = File(p.join(tempDir.path, 'skills.json'));
         expect(skillsJson.existsSync(), isTrue);
 
+        final stewardYaml = File(p.join(tempDir.path, 'steward.yaml'));
+        expect(stewardYaml.existsSync(), isTrue);
+        final stewardContent = await stewardYaml.readAsString();
+        expect(stewardContent, contains('schema: steward/v1'));
+        expect(stewardContent, contains('doctor.local:'));
+
         final agentsMd = File(p.join(tempDir.path, 'AGENTS.md'));
         expect(agentsMd.existsSync(), isTrue);
         expect(await agentsMd.readAsString(), contains('steward map'));
@@ -418,7 +500,7 @@ Body steps
         await runnerMap.run(['map']);
 
         final output = buffer.toString();
-        expect(output, contains('# 🧭 Skill Steward Agent Map'));
+        expect(output, contains('Agent Map'));
         expect(output, contains('skill-a'));
         expect(output, contains('developer'));
         expect(output, contains('This is skill A.'));

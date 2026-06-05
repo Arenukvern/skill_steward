@@ -71,9 +71,35 @@ class MapCommand extends Command<void> {
         '- **Preferred Runner:** `$preferredRunner` (Run: `$runCmd`)',
       );
 
-      // Suggest standard tasks
-      buffer.writeln('- **Standard Pipelines:**');
-      if (config.pipelines.isNotEmpty) {
+      if (config.isV1) {
+        buffer.writeln('- **Typed Steward Actions:**');
+        if (config.typedActions.isEmpty) {
+          buffer.writeln(
+            '  - none declared; run `steward doctor --json` to inspect adoption state',
+          );
+        } else {
+          for (final action in config.typedActions) {
+            buffer.writeln(
+              '  - `${action.id}` '
+              '(${action.safetyClass}/${action.defaultPolicy}) : '
+              '${action.desc}',
+            );
+          }
+        }
+        if (config.probes.isNotEmpty) {
+          buffer.writeln('- **Typed Probes:**');
+          for (final entry in config.probes.entries) {
+            final probe = entry.value;
+            if (probe is Map) {
+              final actions = probe['actions'] as List? ?? const [];
+              buffer.writeln(
+                '  - `${entry.key}` : ${actions.map((final e) => '`$e`').join(", ")}',
+              );
+            }
+          }
+        }
+      } else if (config.pipelines.isNotEmpty) {
+        buffer.writeln('- **Legacy Pipelines:**');
         config.pipelines.forEach((final key, final val) {
           String cmd = '';
           String desc = '';
@@ -89,6 +115,7 @@ class MapCommand extends Command<void> {
           }
         });
       } else {
+        buffer.writeln('- **Standard Pipelines:**');
         buffer.writeln('  - `validate` : Check skills and repository hygiene');
         buffer.writeln('  - `test`     : Run test/evaluation suite');
       }
@@ -222,52 +249,46 @@ class MapCommand extends Command<void> {
     );
     buffer.writeln();
 
-    final installedNames = localSkills.map((final d) => p.basename(d.path)).toSet();
+    final installedNames = localSkills
+        .map((final d) => p.basename(d.path))
+        .toSet();
     final recs = <Map<String, String>>[];
 
-    if (!installedNames.contains('north-star-governance')) {
+    if (!installedNames.contains('repository-governance-lifecycle')) {
       recs.add({
-        'name': 'north-star-governance',
+        'name': 'repository-governance-lifecycle',
         'why':
-            'Governs plan hygiene, AGENTS.md routing maps, and docs.page structure. Essential for maintaining repository hygiene.',
+            'Governs charter, AGENTS.md maps, ADRs, FAQs, ethics, and plan hygiene. Essential for maintaining repository stewardship.',
       });
     }
-    if (!installedNames.contains('adr-records')) {
+    if (!installedNames.contains('skill-authoring-lifecycle')) {
       recs.add({
-        'name': 'adr-records',
+        'name': 'skill-authoring-lifecycle',
         'why':
-            'Provides templates for Architectural Decision Records (ADRs). Highly recommended to record design choices and keep them auditable.',
+            'Creates and audits installable SKILL.md packages while keeping skill boundaries small and discoverable.',
       });
     }
-    if (!installedNames.contains('faq-driven-docs')) {
+    if (!installedNames.contains('skill-source-citations')) {
       recs.add({
-        'name': 'faq-driven-docs',
+        'name': 'skill-source-citations',
         'why':
-            'Governs repo-level DESIGN_FAQ (why) and DX_FAQ (how) files, separating architectural reasons from operational guidelines.',
+            'Persists source links and provenance so skill knowledge survives beyond one agent session.',
       });
     }
-    if (!installedNames.contains('north-star-governance')) {
+    if (!installedNames.contains('skill-eval-improve')) {
       recs.add({
-        'name': 'north-star-governance',
+        'name': 'skill-eval-improve',
         'why':
-            'Helps connect folder-level READMEs and guides into a cohesive documentation lattice for incoming agents.',
+            'Adds Tier-1 rule-based evals, prompt suites, and bounded improvement loops for behavior-critical skills.',
       });
     }
     if (!installedNames.contains('mcp-harness-repo-maintainer')) {
-      recs.add({
-        'name': 'mcp-harness-repo-maintainer',
-        'why':
-            'Establishes task runners and automated validation gates. Highly useful for standardizing testing pipelines.',
-      });
-    }
-    if (!installedNames.contains('mcp-harness-repo-maintainer') &&
-        (archetype.contains('Product MCP') ||
-            archetype.contains('Meta steward'))) {
-      recs.add({
-        'name': 'mcp-harness-repo-maintainer',
-        'why':
-            'Tailored for MCP servers; manages JSON schema registry sync, contract checking, and release packaging.',
-      });
+      final harnessWhy =
+          (archetype.contains('Product MCP') ||
+              archetype.contains('Meta steward'))
+          ? 'Tailored for agent-facing repositories that need typed contracts, bounded tools, and validation surfaces.'
+          : 'Teaches CLI/MCP/core parity, mechanical gates, and local harness contracts without moving product runtime logic into Skill Steward.';
+      recs.add({'name': 'mcp-harness-repo-maintainer', 'why': harnessWhy});
     }
 
     if (recs.isNotEmpty) {

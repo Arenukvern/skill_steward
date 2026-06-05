@@ -4,11 +4,11 @@
 
 ## What we are
 
-**Skill Steward** is a **meta-layer** for the Agent Skills ecosystem: small **skills** and **plugins** that help teams **manage other skills**, validate quality, document decisions, and improve agent workflows.
+**Skill Steward** is an **engineering stewardship meta-layer** for the Agent Skills ecosystem: small **skills**, **plugins**, schemas, and validation patterns that help teams manage other skills, document decisions, enforce quality gates, package agent workflows, and grow repo-local harnesses without turning this repo into a product runtime.
 
 We are **not** a general domain skill catalog (React, Flutter, cloud recipes live elsewhere). We are **not** a skill package manager ([Skillkit](https://github.com/rohitg00/skillkit), [skills.sh](https://skills.sh)).
 
-Sibling work: Product harness repositories (such as product-level MCP/CLI toolkits) own runtime/framework harnesses. Skill Steward owns meta-skills and documentation patterns. Principles: [credo](https://dev.to/arenukvern/my-principles-at-work-credo-182c).
+Sibling work: Product harness repositories (such as product-level MCP/CLI toolkits) own runtime/framework harnesses. Skill Steward owns structural guidance, meta-skills, validation, packaging patterns, and documentation patterns. Principles: [credo](https://dev.to/arenukvern/my-principles-at-work-credo-182c).
 
 ## What we own
 
@@ -19,6 +19,23 @@ Sibling work: Product harness repositories (such as product-level MCP/CLI toolki
 | Doc patterns (FAQ, ADR, docs.page lattice) | Finished plan files as permanent docs |
 | Plugin manifests (`plugins/`) when wired | Copy-pasted API docs of other products |
 | Harness **culture** skill (how to build CLI/MCP harnesses) | Executable app/runtime code (except our meta CLI) |
+
+## Stewardship Pillars
+
+Harness engineering is one pillar, not the umbrella.
+
+| Pillar | Owns |
+|--------|------|
+| Governance | Charter, boundaries, ethics, ADRs, plan hygiene |
+| Knowledge | FAQ split, docs maps, source citations, durable provenance |
+| Skill lifecycle | Skill authoring, packaging, installability, marketplace readiness |
+| Quality gates | Validation, Tier-1 skill evals, prompt suites, bounded improvement loops |
+| Harness engineering | CLI/MCP/core parity, repo-local contracts, dogfood feedback loops |
+| Release legibility | Changelog, versioning, artifact provenance, release impact |
+| Review and handoff | MoE critique, multi-agent handoff, PR review patterns |
+| Strategic alignment | Vision vs implementation fit, usage evidence, future-fit analysis, falsifiers |
+| Security posture | Secret hygiene, action risk classes, provenance, supply-chain review |
+| Org patterns | Repo archetypes, ownership, operating model, agent routing |
 
 ## How we ship value
 
@@ -33,18 +50,18 @@ Sibling work: Product harness repositories (such as product-level MCP/CLI toolki
 - Skills in `skills/`; wiring in `plugins/`; templates in `templates/` (not installable).
 - **Behavior SSOT is code** — docs link inward; they do not paraphrase implementations.
 - New strategic **why** → ADR; standing **why** → [DESIGN_FAQ.mdx](DESIGN_FAQ); **how** → [DX_FAQ.mdx](DX_FAQ).
-- **Ethical governance model** — use [`ethical-stewardship`](https://github.com/arenukvern/skill_steward/blob/main/skills/ethical-stewardship/SKILL.md) to bootstrap, audit, and refine the credo and design constraints for this repo.
+- **Ethical governance model** — use [`repository-governance-lifecycle`](https://github.com/arenukvern/skill_steward/blob/main/skills/repository-governance-lifecycle/SKILL.md) and its charter references to bootstrap, audit, and refine the credo and design constraints for this repo.
 
 ## Success looks like
 
 - Agents and humans can install Skill Steward meta-skills without confusion about scope.
-- Product repos adopt our harness + FAQ patterns via installed skills.
+- Product repos adopt our stewardship patterns via installed skills: governance, FAQ/ADR shape, quality gates, release legibility, and local harness feedback loops.
 - The repo stays small enough to maintain; stale plans do not accumulate.
 
 ## References
 
 - [ADR 0001 — repository purpose](decisions/0001-repository-purpose-as-skills-meta-layer)
 - [ADR 0008 — Skill Steward product name](decisions/0008-adopt-skill-steward-product-name)
-- [Skill: ethical-stewardship](https://github.com/arenukvern/skill_steward/blob/main/skills/ethical-stewardship/SKILL.md) — governance model (Anti-Bloat, Reversibility, Legibility, Behavior-as-Truth, Artisan Restraint)
+- [Skill: repository-governance-lifecycle](https://github.com/arenukvern/skill_steward/blob/main/skills/repository-governance-lifecycle/SKILL.md) — governance model (Anti-Bloat, Reversibility, Legibility, Behavior-as-Truth, Artisan Restraint)
 - [Harness engineering (OpenAI)](https://openai.com/index/harness-engineering/)
 - [FAQ-driven development](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl)

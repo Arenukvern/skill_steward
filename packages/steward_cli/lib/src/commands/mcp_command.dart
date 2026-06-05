@@ -6,8 +6,6 @@ import 'package:args/command_runner.dart';
 import 'package:json_rpc_2/json_rpc_2.dart' as json_rpc;
 import 'package:path/path.dart' as p;
 import 'package:stream_channel/stream_channel.dart';
-import 'package:yaml/yaml.dart';
-import 'package:yaml_edit/yaml_edit.dart';
 
 import '../repo_root.dart';
 import '../validation/steward_config.dart';
@@ -40,16 +38,20 @@ class McpCommand extends Command<void> {
     );
 
     // Register Initialize
-    server.registerMethod('initialize', (final json_rpc.Parameters params) => {
+    server.registerMethod(
+      'initialize',
+      (final json_rpc.Parameters params) => {
         'protocolVersion': '2024-11-05',
         'capabilities': {'tools': {}, 'resources': {}},
         'serverInfo': {'name': 'steward-mcp', 'version': '0.3.4'},
         'instructions':
             'You are operating in a repository governed by Skill Steward. '
-            'Do not run complex bash scripts manually. '
-            'Use the provided steward_run_pipeline_* tools. '
-            'If you discover a new automation or complex fix, use the steward_declare_pipeline tool to permanently save it.',
-      });
+            'This MCP surface is experimental. '
+            'For steward/v1 repositories it exposes read-only action discovery only. '
+            'Do not permanently mutate steward.yaml through MCP. '
+            'If you discover a new automation or complex fix, capture an unknown case or propose a typed action candidate for review.',
+      },
+    );
 
     server.registerMethod('notifications/initialized', (
       final json_rpc.Parameters params,
@@ -61,81 +63,53 @@ class McpCommand extends Command<void> {
     server.registerMethod('tools/list', (final json_rpc.Parameters params) {
       final tools = <Map<String, dynamic>>[];
 
-      // Thin Router approach: Expose a single native tool for pipelines
-      tools.add({
-        'name': 'steward_run_pipeline',
-        'description':
-            'Execute a pipeline by its precise name. You must first read steward.yaml to find the exact pipeline name you want to run.',
-        'inputSchema': {
-          'type': 'object',
-          'properties': {
-            'name': {
-              'type': 'string',
-              'description':
-                  'The exact name of the pipeline from steward.yaml to execute.',
+      if (config.isV1) {
+        tools
+          ..add({
+            'name': 'steward_list_actions',
+            'description':
+                'List typed Steward actions without executing repository commands.',
+            'inputSchema': {'type': 'object', 'properties': {}},
+          })
+          ..add({
+            'name': 'steward_inspect_action',
+            'description':
+                'Inspect one typed Steward action by exact id without executing it.',
+            'inputSchema': {
+              'type': 'object',
+              'properties': {
+                'id': {
+                  'type': 'string',
+                  'description': 'The exact action id from steward.yaml.',
+                },
+              },
+              'required': ['id'],
             },
+          });
+      } else {
+        // Thin Router approach: expose a single native tool for legacy pipelines.
+        tools.add({
+          'name': 'steward_run_pipeline',
+          'description':
+              'Execute a legacy pipeline by precise name. Experimental unsafe path: use only after explicit human approval.',
+          'inputSchema': {
+            'type': 'object',
+            'properties': {
+              'name': {
+                'type': 'string',
+                'description':
+                    'The exact name of the pipeline from steward.yaml to execute.',
+              },
+              'confirm_legacy_unsafe': {
+                'type': 'boolean',
+                'description':
+                    'Must be true to acknowledge legacy bash execution without typed action policy.',
+              },
+            },
+            'required': ['name', 'confirm_legacy_unsafe'],
           },
-          'required': ['name'],
-        },
-      });
-
-      tools.add({
-        'name': 'steward_declare_pipeline',
-        'description':
-            'Declare a new pipeline permanently in steward.yaml so that all future agents can access it.',
-        'inputSchema': {
-          'type': 'object',
-          'properties': {
-            'name': {
-              'type': 'string',
-              'description':
-                  'A short identifier for the pipeline (e.g. fix_gltf_splat)',
-            },
-            'cmd': {
-              'type': 'string',
-              'description': 'The exact bash command to execute.',
-            },
-            'desc': {
-              'type': 'string',
-              'description':
-                  'A human-readable description of what this automation does.',
-            },
-          },
-          'required': ['name', 'cmd', 'desc'],
-        },
-      });
-
-      tools.add({
-        'name': 'steward_update_pipeline',
-        'description': 'Update an existing pipeline in steward.yaml.',
-        'inputSchema': {
-          'type': 'object',
-          'properties': {
-            'name': {
-              'type': 'string',
-              'description': 'The exact name of the pipeline to update.',
-            },
-            'cmd': {'type': 'string', 'description': 'The new bash command.'},
-            'desc': {'type': 'string', 'description': 'The new description.'},
-          },
-          'required': ['name', 'cmd', 'desc'],
-        },
-      });
-
-      tools.add({
-        'name': 'steward_delete_pipeline',
-        'description': 'Delete an existing pipeline from steward.yaml.',
-        'inputSchema': {
-          'type': 'object',
-          'properties': {
-            'name': {
-              'type': 'string',
-              'description': 'The exact name of the pipeline to delete.',
-            },
-          },
-          'required': ['name'],
-        },
-      });
+        });
+      }
 
       return {'tools': tools};
     });
@@ -147,7 +121,8 @@ class McpCommand extends Command<void> {
       final name = params['name'].asString;
 
       // Start tracing logic
-      final telemetryEnabled = config.telemetry['enabled'] == true;
+      final telemetryEnabled =
+          !config.isV1 && config.telemetry['enabled'] == true;
       final traceFile =
           config.telemetry['trace_file'] as String? ?? '.steward_trace.json';
 
@@ -174,9 +149,110 @@ class McpCommand extends Command<void> {
         }
       }
 
+      String capOutput(final String output) {
+        const maxOutputChars = 200000;
+        if (output.length <= maxOutputChars) return output;
+        return '${output.substring(0, maxOutputChars)}\n[steward: output truncated at $maxOutputChars characters]';
+      }
+
+      if (name == 'steward_declare_pipeline' ||
+          name == 'steward_update_pipeline' ||
+          name == 'steward_delete_pipeline') {
+        const message =
+            'Permanent steward.yaml mutation through MCP is disabled. Capture an unknown case or propose a typed action candidate for review.';
+        logTelemetry(true, message);
+        return {
+          'isError': true,
+          'content': [
+            {'type': 'text', 'text': message},
+          ],
+        };
+      }
+
+      if (name == 'steward_list_actions') {
+        if (!config.isV1) {
+          const message = 'Typed action discovery requires schema: steward/v1.';
+          logTelemetry(true, message);
+          return {
+            'isError': true,
+            'content': [
+              {'type': 'text', 'text': message},
+            ],
+          };
+        }
+        final payload = {
+          'schema_version': 'steward.actions.v1',
+          'actions': config.typedActions
+              .map((final action) => action.summaryJson())
+              .toList(),
+        };
+        final out = const JsonEncoder.withIndent('  ').convert(payload);
+        logTelemetry(false, out);
+        return {
+          'content': [
+            {'type': 'text', 'text': out},
+          ],
+        };
+      }
+
+      if (name == 'steward_inspect_action') {
+        if (!config.isV1) {
+          const message =
+              'Typed action inspection requires schema: steward/v1.';
+          logTelemetry(true, message);
+          return {
+            'isError': true,
+            'content': [
+              {'type': 'text', 'text': message},
+            ],
+          };
+        }
+        final arguments = params['arguments'].asMap as Map<String, dynamic>;
+        final actionId = arguments['id'] as String?;
+        StewardAction? action;
+        for (final candidate in config.typedActions) {
+          if (candidate.id == actionId) {
+            action = candidate;
+            break;
+          }
+        }
+        if (action == null) {
+          final message = 'Typed action "$actionId" not found.';
+          logTelemetry(true, message);
+          return {
+            'isError': true,
+            'content': [
+              {'type': 'text', 'text': message},
+            ],
+          };
+        }
+        final out = const JsonEncoder.withIndent('  ').convert({
+          'schema_version': 'steward.action.v1',
+          'action': action.toJson(),
+        });
+        logTelemetry(false, out);
+        return {
+          'content': [
+            {'type': 'text', 'text': out},
+          ],
+        };
+      }
+
       if (name == 'steward_run_pipeline') {
+        if (config.isV1) {
+          const message =
+              'Legacy pipeline execution is disabled for schema: steward/v1. Use typed action discovery instead.';
+          logTelemetry(true, message);
+          return {
+            'isError': true,
+            'content': [
+              {'type': 'text', 'text': message},
+            ],
+          };
+        }
         final arguments = params['arguments'].asMap as Map<String, dynamic>;
         final pipelineName = arguments['name'] as String?;
+        final confirmed = arguments['confirm_legacy_unsafe'] == true;
         if (pipelineName == null) {
           logTelemetry(true, 'Missing pipeline name.');
           return {
@@ -186,6 +262,17 @@ class McpCommand extends Command<void> {
                 'type': 'text',
                 'text': 'Error: Missing pipeline name argument.',
               },
+            ],
+          };
+        }
+        if (!confirmed) {
+          const message =
+              'Legacy pipeline execution requires confirm_legacy_unsafe: true after explicit human approval.';
+          logTelemetry(true, message);
+          return {
+            'isError': true,
+            'content': [
+              {'type': 'text', 'text': message},
             ],
           };
         }
@@ -207,11 +294,16 @@ class McpCommand extends Command<void> {
           }
 
           try {
-            final result = await Process.run('bash', [
-              '-c',
-              cmd,
-            ], workingDirectory: root);
-            final out = '${result.stdout}\n${result.stderr}'.trim();
+            final result =
+                await Process.run('bash', [
+                  '-c',
+                  cmd,
+                ], workingDirectory: root).timeout(
+                  const Duration(seconds: 120),
+                  onTimeout: () =>
+                      ProcessResult(0, 124, '', 'Timed out after 120 seconds.'),
+                );
+            final out = capOutput('${result.stdout}\n${result.stderr}'.trim());
             logTelemetry(result.exitCode != 0, out);
             return {
               'content': [
@@ -249,170 +341,6 @@ class McpCommand extends Command<void> {
         }
       }
 
-      if (name == 'steward_declare_pipeline') {
-        final arguments = params['arguments'].asMap as Map<String, dynamic>;
-        final pipelineName = arguments['name'] as String;
-        final cmd = arguments['cmd'] as String;
-        final desc = arguments['desc'] as String;
-
-        final file = File(p.join(root, 'steward.yaml'));
-        if (!file.existsSync()) {
-          logTelemetry(true, 'steward.yaml not found at root.');
-          return {
-            'isError': true,
-            'content': [
-              {'type': 'text', 'text': 'steward.yaml not found at root.'},
-            ],
-          };
-        }
-
-        final content = await file.readAsString();
-        final yamlEditor = YamlEditor(content);
-
-        // Check for duplicates
-        final doc = loadYaml(content);
-        if (doc is Map &&
-            doc['pipelines'] is Map &&
-            (doc['pipelines'] as Map).containsKey(pipelineName)) {
-          logTelemetry(
-            true,
-            'Pipeline "$pipelineName" already exists. Use steward_update_pipeline instead.',
-          );
-          return {
-            'isError': true,
-            'content': [
-              {
-                'type': 'text',
-                'text':
-                    'Pipeline "$pipelineName" already exists in steward.yaml. Use steward_update_pipeline to modify it.',
-              },
-            ],
-          };
-        }
-
-        yamlEditor.update(
-          ['pipelines', pipelineName],
-          {'cmd': cmd, 'desc': desc},
-        );
-        await file.writeAsString(yamlEditor.toString());
-
-        final msg =
-            'Pipeline "$pipelineName" successfully declared and saved to steward.yaml.';
-        logTelemetry(false, msg);
-        return {
-          'content': [
-            {'type': 'text', 'text': msg},
-          ],
-        };
-      }
-
-      if (name == 'steward_update_pipeline') {
-        final arguments = params['arguments'].asMap as Map<String, dynamic>;
-        final pipelineName = arguments['name'] as String;
-        final cmd = arguments['cmd'] as String;
-        final desc = arguments['desc'] as String;
-
-        final file = File(p.join(root, 'steward.yaml'));
-        if (!file.existsSync()) {
-          logTelemetry(true, 'steward.yaml not found at root.');
-          return {
-            'isError': true,
-            'content': [
-              {'type': 'text', 'text': 'steward.yaml not found at root.'},
-            ],
-          };
-        }
-
-        final content = await file.readAsString();
-        final doc = loadYaml(content);
-
-        if (doc is! Map ||
-            doc['pipelines'] is! Map ||
-            !(doc['pipelines'] as Map).containsKey(pipelineName)) {
-          logTelemetry(
-            true,
-            'Pipeline "$pipelineName" not found in steward.yaml.',
-          );
-          return {
-            'isError': true,
-            'content': [
-              {
-                'type': 'text',
-                'text':
-                    'Pipeline "$pipelineName" not found in steward.yaml to update.',
-              },
-            ],
-          };
-        }
-
-        final yamlEditor = YamlEditor(content);
-        yamlEditor.update(
-          ['pipelines', pipelineName],
-          {'cmd': cmd, 'desc': desc},
-        );
-        await file.writeAsString(yamlEditor.toString());
-
-        final msg =
-            'Pipeline "$pipelineName" successfully updated in steward.yaml.';
-        logTelemetry(false, msg);
-        return {
-          'content': [
-            {'type': 'text', 'text': msg},
-          ],
-        };
-      }
-
-      if (name == 'steward_delete_pipeline') {
-        final arguments = params['arguments'].asMap as Map<String, dynamic>;
-        final pipelineName = arguments['name'] as String;
-
-        final file = File(p.join(root, 'steward.yaml'));
-        if (!file.existsSync()) {
-          logTelemetry(true, 'steward.yaml not found at root.');
-          return {
-            'isError': true,
-            'content': [
-              {'type': 'text', 'text': 'steward.yaml not found at root.'},
-            ],
-          };
-        }
-
-        final content = await file.readAsString();
-        final doc = loadYaml(content);
-
-        if (doc is! Map ||
-            doc['pipelines'] is! Map ||
-            !(doc['pipelines'] as Map).containsKey(pipelineName)) {
-          logTelemetry(
-            true,
-            'Pipeline "$pipelineName" not found in steward.yaml.',
-          );
-          return {
-            'isError': true,
-            'content': [
-              {
-                'type': 'text',
-                'text':
-                    'Pipeline "$pipelineName" not found in steward.yaml to delete.',
-              },
-            ],
-          };
-        }
-
-        final yamlEditor = YamlEditor(content);
-        yamlEditor.remove(['pipelines', pipelineName]);
-        await file.writeAsString(yamlEditor.toString());
-
-        final msg =
-            'Pipeline "$pipelineName" successfully deleted from steward.yaml.';
-        logTelemetry(false, msg);
-        return {
-          'content': [
-            {'type': 'text', 'text': msg},
-          ],
-        };
-      }
-
       logTelemetry(true, 'Method not found');
       throw json_rpc.RpcException.methodNotFound(name);
     });
@@ -443,7 +371,20 @@ class McpCommand extends Command<void> {
         final docName = uri.replaceFirst('steward://docs/', '');
         final docPath = config.docs[docName];
         if (docPath != null) {
-          final file = File(p.join(root, docPath));
+          final resolvedPath = p.normalize(p.join(root, docPath));
+          final rootPath = p.normalize(root);
+          if (resolvedPath != rootPath && !p.isWithin(rootPath, resolvedPath)) {
+            return {
+              'contents': [
+                {
+                  'uri': uri,
+                  'mimeType': 'text/plain',
+                  'text': 'Document path is outside the repository root.',
+                },
+              ],
+            };
+          }
+          final file = File(resolvedPath);
           if (file.existsSync()) {
             final content = await file.readAsString();
             return {

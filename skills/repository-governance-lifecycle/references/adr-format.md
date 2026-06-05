@@ -1,5 +1,5 @@
 ---
-name: adr-records
+name: repository-governance-lifecycle-adr-reference
 description: Writes and maintains ADRs (MADR, Nygard, Y-Statement) and runs decision checkpoints before/during work—trigger matrix, option briefs, proposed ADRs. Use when creating or updating ADRs, facing a design fork, trade-off, boundary change, or when the user asks for key design decisions before implementing.
 license: MIT
 type: governance
@@ -47,7 +47,7 @@ When triggers fire, **stop and ask**—do not implement the most convenient opti
 
 **Output:** [decision brief](references/decision-checkpoints.md#decision-brief-template) in chat/PR, or ADR with `status: proposed`. Full matrix, severity, and exceptions: [references/decision-checkpoints.md](references/decision-checkpoints.md).
 
-Combine with `north-star-governance` (in scope?) and `mcp-harness-repo-maintainer` (harness shape) before large edits.
+Combine the ADR checkpoint with this skill's North Star rules and `mcp-harness-repo-maintainer` (harness shape) before large edits.
 
 ## Locate or bootstrap the decision log
 
@@ -160,7 +160,7 @@ Tell the user:
 ## Install
 
 ```bash
-npx skills add arenukvern/skill_steward --skill adr-records
+npx skills add arenukvern/skill_steward --skill repository-governance-lifecycle
 ```
 
 ## References

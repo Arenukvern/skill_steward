@@ -45,12 +45,12 @@ Agents / chat →  MCP ──┘
 
 Full layering: [core-and-interfaces.md](references/core-and-interfaces.md). **Parity:** every MCP tool must call the same core entrypoint as its CLI twin.
 
-**Progressive Automation (Agent-Driven Workflows):** MCP servers should not just execute static tools; they must empower agents to *write back* to the harness. If an agent discovers a complex fix or bash script, it should declare a pipeline (e.g. `steward_declare_pipeline`) permanently in `steward.yaml` so the friction is solved for all future agents.
+**Progressive Automation (Agent-Driven Workflows):** Harnesses should let agents turn repeated friction into reviewed, durable capability. If an agent discovers a complex fix or command sequence, it should capture an unknown case or typed action candidate with owner, risk class, inputs, outputs, effects, provenance, and verification. Permanent `steward.yaml` changes must go through reviewable diffs and validation; do not teach agents to save raw bash permanently from MCP.
 
 ## Core Beliefs & Culture
 
 1. **Missing capability → harness gap** — When an agent fails, ask what is not *legible* or *enforceable*, then add CLI command, MCP tool, linter, or skill.
-2. **Ambiguous design → decision checkpoint** — Before coding a fork, use `adr-records` layer 0; record `accepted` ADR after agreement.
+2. **Ambiguous design → decision checkpoint** — Before coding a fork, use `repository-governance-lifecycle`; record an accepted ADR after agreement.
 3. **Mechanical enforcement** — Linters, validate commands, schema validation at boundaries—error messages teach the agent how to fix. Use structured parsing (YAML, JSON, or AST).
 4. **Progressive disclosure** — Router → ADR / DESIGN_FAQ (why) → DX_FAQ (how) → skills (procedures) → code (behavior SSOT).
 
@@ -108,7 +108,7 @@ Route by **primary artifact**:
    - Conversational debug loop → **MCP tool** (reuse CLI core)
    - One-off guidance → **skill** in `skills/`
    - Event enforcement → **plugin** hook
-3. **Make legible** — JSON schema, `--json` output, stable error codes; document in DX_FAQ.
+3. **Make legible** — JSON schema, `--json` output, stable error codes, action effects, limits, and redaction policy; document in DX_FAQ.
 4. **Document why** — ADR or DESIGN_FAQ Q&A.
 5. **Wire map** — `AGENTS.md` / `docs_map` row.
 6. **Validate** — `pnpm run validate` or project contract tests.
@@ -140,7 +140,7 @@ Route by **primary artifact**:
 - [ ] CLI command exists for CI/gates (or documented why not)
 - [ ] MCP tool shares schema/validation with CLI
 - [ ] Failure messages say how to remediate
-- [ ] Design forks were checkpointed (`adr-records`)
+- [ ] Design forks were checkpointed (`repository-governance-lifecycle`)
 - [ ] Contract gate (validation scripts) pass
 
 ## Install

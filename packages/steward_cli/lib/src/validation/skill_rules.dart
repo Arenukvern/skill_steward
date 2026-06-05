@@ -12,7 +12,8 @@ final RegExp _nameRegex = RegExp(r'^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$');
 /// References:
 /// - https://spdx.org/licenses/
 /// - skills/skill-source-citations/SKILL.md (citation + provenance requirements)
-/// - skills/ethical-stewardship/SKILL.md (Artisan Credit & Craftsmanship principle)
+/// - skills/repository-governance-lifecycle/references/charter-and-ethics.md
+///   (Artisan Credit & Craftsmanship principle)
 const _knownSpdxIds = {
   'MIT',
   'Apache-2.0',
@@ -106,7 +107,8 @@ List<String> validateDescription(final String? description) {
 ///
 /// References:
 /// - skills/skill-source-citations/SKILL.md
-/// - skills/ethical-stewardship/SKILL.md (Artisan Credit & Craftsmanship)
+/// - skills/repository-governance-lifecycle/references/charter-and-ethics.md
+///   (Artisan Credit & Craftsmanship)
 List<String> validateLicense(final String? license) {
   final warnings = <String>[];
 

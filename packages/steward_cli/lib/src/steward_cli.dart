@@ -1,23 +1,32 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
 
+import 'commands/action_candidate_command.dart';
+import 'commands/action_command.dart';
+import 'commands/actions_command.dart';
 import 'commands/adopt_command.dart';
+import 'commands/benchmark_command.dart';
 import 'commands/brand_check_command.dart';
 import 'commands/bundle_command.dart';
+import 'commands/diagnose_command.dart';
+import 'commands/doctor_command.dart';
 import 'commands/eval_command.dart';
 import 'commands/install_command.dart';
 import 'commands/list_command.dart';
 import 'commands/map_command.dart';
 import 'commands/mcp_command.dart';
+import 'commands/observe_command.dart';
+import 'commands/probe_command.dart';
 import 'commands/uninstall_command.dart';
+import 'commands/unknown_case_command.dart';
 import 'commands/update_command.dart';
 import 'commands/validate_command.dart';
 import 'repo_root.dart';
 
 /// Entry point for the `steward` meta harness CLI.
 class StewardCli {
-
   StewardCli() {
     _runner =
         CommandRunner<void>(
@@ -26,6 +35,15 @@ class StewardCli {
           )
           ..addCommand(ValidateCommand())
           ..addCommand(EvalCommand())
+          ..addCommand(DoctorCommand())
+          ..addCommand(ActionsCommand())
+          ..addCommand(ActionCommand())
+          ..addCommand(ActionCandidateCommand())
+          ..addCommand(ProbeCommand())
+          ..addCommand(ObserveCommand())
+          ..addCommand(UnknownCaseCommand())
+          ..addCommand(DiagnoseCommand())
+          ..addCommand(BenchmarkCommand())
           ..addCommand(ListCommand())
           ..addCommand(InstallCommand())
           ..addCommand(UpdateCommand())
@@ -46,7 +64,7 @@ class StewardCli {
     } on UsageException catch (e) {
       if (useJson) {
         stdout.writeln(
-          '{"error": "${e.message.replaceAll('"', r'\"')}", "type": "UsageException"}',
+          jsonEncode({'error': e.message, 'type': 'UsageException'}),
         );
       } else {
         stderr
@@ -57,7 +75,7 @@ class StewardCli {
     } catch (e, st) {
       if (useJson) {
         stdout.writeln(
-          '{"error": "${e.toString().replaceAll('"', r'\"')}", "type": "Exception"}',
+          jsonEncode({'error': e.toString(), 'type': 'Exception'}),
         );
       } else {
         stderr

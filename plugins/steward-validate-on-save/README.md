@@ -2,6 +2,8 @@
 
 First Skill Steward **plugin** ([ADR 0004](../../docs/decisions/0004-plugin-packaging-and-install-path.mdx)): mechanical gate after skill edits.
 
+`plugin.yaml` is a Steward v1 plugin manifest. It references canonical skills in `skills/`; it does not copy `SKILL.md` files into this plugin.
+
 ## Why this plugin first?
 
 | Factor | Assessment |
@@ -45,6 +47,12 @@ First Skill Steward **plugin** ([ADR 0004](../../docs/decisions/0004-plugin-pack
 
    ```bash
    chmod +x plugins/steward-validate-on-save/hooks/validate-on-skill-edit.sh
+   ```
+
+4. Verify the manifest and skills from the repo root:
+
+   ```bash
+   pnpm run validate
    ```
 
 ## Behavior

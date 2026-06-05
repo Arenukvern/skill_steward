@@ -38,34 +38,121 @@ class AdoptCommand extends Command<void> {
     if (stewardYamlFile.existsSync() || stewardYmlFile.existsSync()) {
       stdout.writeln('✓ steward.yaml already exists in project root.');
     } else {
-      // Detect archetype to set a sensible default in steward.yaml
-      String archetype = 'B — Platform libs';
+      // Detect archetype to set a sensible default in steward.yaml.
+      String archetype = 'platform_lib';
       if (File(p.join(currentDir, 'plugin', 'mcp.json')).existsSync() ||
           File(p.join(currentDir, 'mcp.json')).existsSync()) {
-        archetype = 'A — Product MCP';
+        archetype = 'product_mcp';
       } else if (Directory(p.join(currentDir, 'tool')).existsSync() &&
           !Directory(p.join(currentDir, 'packages')).existsSync()) {
-        archetype = 'C — CLI harness';
+        archetype = 'cli_harness';
       } else if (File(p.join(currentDir, 'skills.sh.json')).existsSync()) {
-        archetype = 'E — Meta steward';
+        archetype = 'meta_steward';
       }
 
-      final template = '''archetype: "$archetype"
-preferredRunner: "" # E.g., just, make, npm
+      final repoId = p
+          .basename(currentDir)
+          .toLowerCase()
+          .replaceAll(RegExp('[^a-z0-9_-]+'), '_')
+          .replaceAll(RegExp('_+'), '_');
+      final template =
+          '''
+schema: steward/v1
+repo:
+  id: $repoId
+  archetype: $archetype
 
-# Declared workspace validation checks
-validators: []
-# Example validator configuration:
-# - type: disallowed-substrings
-#   files:
-#     - "**/pubspec.yaml"
-#   exclude:
-#     - "**/.dart_tool/**"
-#     - "**/build/**"
-#   substrings:
-#     - "forbidden-override"
-#   message: "FAIL: Forbidden path dependencies detected."
-''';
+harness:
+  name: steward
+  mode: cli
+  entrypoints:
+    cli: steward
+
+adoption:
+  status: adopting
+  owner: $repoId
+  gate:
+    pillar: quality
+
+stewardship:
+  governance:
+    charter: AGENTS.md
+    adr_dir: docs/decisions
+  knowledge:
+    docs_map: AGENTS.md
+    source_policy: required_for_external_claims
+  skill_lifecycle:
+    installable_skills: true
+    registry: skills.json
+  quality:
+    validate: steward validate --local
+    skill_eval: steward eval
+  harness:
+    enabled: true
+    action_contract: actions
+  release:
+    changelog: CHANGELOG.md
+    artifact_provenance: required
+  review_handoff:
+    moe_required_for_architecture: true
+  strategic_alignment:
+    vision_source: AGENTS.md
+    success_evidence: required
+  security:
+    action_effects: required
+    redaction: steward/redaction/v1
+  org:
+    owners: AGENTS.md
+
+actions:
+  doctor.local:
+    kind: command
+    desc: Inspect Steward adoption state without running repository actions.
+    command:
+      argv: [steward, doctor, --json]
+      shell: false
+    cwd: .
+    effects:
+      fs_read: ["."]
+      fs_write: []
+      git: false
+      network: false
+      secrets: false
+      destructive: false
+    safety:
+      class: observe
+      default_policy: auto
+      requires_confirmation: false
+    limits:
+      timeout_ms: 10000
+      max_output_bytes: 200000
+    outputs:
+      - id: stdout
+        kind: stream
+        required: true
+        retention: summary
+        format: json
+    evidence:
+      redact: []
+
+probes:
+  quick:
+    profile: quick
+    actions: [doctor.local]
+
+diagnostics:
+  cases: {}
+
+unknown_cases:
+  path: .steward/unknown-cases/
+  retention: local
+
+provenance:
+  dependencies: []
+  artifacts: []
+  benchmarks: []
+'''
+              .trimLeft();
       await stewardYamlFile.writeAsString(template);
       stdout.writeln('Created steward.yaml in project root.');
     }

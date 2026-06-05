@@ -22,6 +22,22 @@ RELEASE / CHANGELOG    → this file (Release desk) · ADR 0009 · ADR 0010 · s
 PLUGINS (hooks)        → ../plugins/README.md  (not via npx skills)
 ```
 
+## 🧱 Stewardship pillars
+
+Harness work is one part of engineering stewardship. Use the narrowest pillar that matches the job.
+
+| Pillar | Use | Skill / surface |
+|--------|-----|-----------------|
+| Governance | Charter, ADRs, FAQs, ethics, plan hygiene | `repository-governance-lifecycle` |
+| Knowledge | Source provenance and docs traceability | `skill-source-citations` |
+| Skill lifecycle | Authoring and auditing installable skills | `skill-authoring-lifecycle` |
+| Quality gates | Tier-1 skill evals and bounded improvement loops | `skill-eval-improve`, `pnpm run eval` |
+| Harness engineering | CLI/MCP/core parity and repo-local feedback loops | `mcp-harness-repo-maintainer`, `harness-engineering-lifecycle` |
+| Release legibility | Changelog, versioning, release artifacts | `release-changelog-harness` |
+| Review and handoff | MoE critique and agent handoff | `mixture-of-experts`, `multi-agent-handoff` |
+| Strategic alignment | Vision vs implementation fit, usage evidence, future-fit analysis | `vision-alignment-foresight` |
+| Packaging | Agent-specific plugin and skill distribution | `plugin-marketplace-setup`, `steward bundle` |
+
 ## 📦 Repo setup (maintainers)
 
 GitHub product name: **Skill Steward** (`Arenukvern/skill_steward`). Many workspaces clone it as **`agent_guild/`** beside harness repos (e.g. in `~/mcp/` or any sibling directory).
@@ -172,7 +188,7 @@ dart run :steward validate   # or pnpm run validate (now delegates to Dart)
 ```bash
 dart run :steward validate          # canonical (pure Dart implementation)
 dart run :steward validate --json   # machine-readable report
-pnpm run eval                       # Tier 1 rule-based cases (ADR 0011) — still Node for now
+pnpm run eval                       # Tier 1 rule-based skill cases (ADR 0011)
 pnpm run list                       # skill names + descriptions
 
 # Dart meta CLI (primary)
@@ -185,6 +201,8 @@ dart run :steward list
 Optional Cursor hook: `../plugins/steward-validate-on-save/README.md`.
 
 Fix all `error:` lines before merge. Warnings (long SKILL.md, missing skills.sh entry) should be addressed or justified in PR.
+
+`pnpm run eval` is for Tier-1 skill quality. Runtime dogfood and local harness benchmarks use `steward benchmark --scenario <id> --json`; do not put product runtime scenarios under skill evals. Benchmark execution is durability-gated: `source.steward_contract` and any file-backed scenario manifest must be clean and tracked before actions run.
 
 ## 📋 Registry shelf
 
@@ -253,6 +271,8 @@ Compose Skill Steward skills    → ../skills/mcp-harness-repo-maintainer/refere
 
 Product example: `<cli_harness> doctor`, `make check-contracts` — not shipped from Skill Steward.
 
+`steward mcp` is experimental until it uses production MCP transport and typed action policy. Prefer CLI/validator paths for deterministic gates.
+
 ## 📚 Doc styles desk
 
 | Need | Skill / doc |
@@ -267,14 +287,16 @@ Product example: `<cli_harness> doctor`, `make check-contracts` — not shipped 
 
 Article: [FAQ-driven development](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl).
 
-## 🔌 Plugins corner (future)
+## 🔌 Plugins corner
 
 ```text
-plugins/{id}/plugin.yaml   → references skill ids in skills/
+plugins/{id}/plugin.yaml   → schema: steward/plugin-manifest/v1; references skill ids in skills/
 CURSOR HOOKS           → ../.cursor/hooks.json (steward-validate-on-save; committed)
 install hooks elsewhere  → ../plugins/steward-validate-on-save/README.md
 template                   → ../templates/plugin/
 ```
+
+`pnpm run validate` checks plugin manifests for schema, referenced skill ids, target surfaces, lifecycle actions, and shipped wiring artifact hashes. `steward bundle` compiles those manifests into deterministic descriptors under `.steward/bundles/`; it does not install skills, merge hooks, or mutate agent configuration. Skills remain separately installable with `npx skills add ... --skill <id>`.
 
 ## 🤖 Agent ops
 
@@ -282,6 +304,7 @@ template                   → ../templates/plugin/
 Read first:  AGENTS.md, DESIGN_FAQ.mdx (why), DX_FAQ.mdx (how)
 Rules:       ../.cursor/rules/faq_usage.mdc
 After edit:  dart run :steward validate + update correct FAQ layer
+Schemas:     schemas/README.mdx
 ```
 
 Do not duplicate SKILL.md bodies in ADRs or FAQs—link to `../skills/{name}/`.

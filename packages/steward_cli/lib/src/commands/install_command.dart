@@ -150,8 +150,8 @@ class InstallCommand extends Command<void> {
     final bool force,
   ) async {
     // Expected formats:
-    // - local path: e.g. "skills/ethical-stewardship"
-    // - repo/skill: e.g. "Arenukvern/skill_steward/ethical-stewardship"
+    // - local path: e.g. "skills/repository-governance-lifecycle"
+    // - repo/skill: e.g. "Arenukvern/skill_steward/repository-governance-lifecycle"
     // - repo only (installs all): e.g. "Arenukvern/skill_steward"
 
     if (Directory(arg).existsSync()) {

@@ -167,10 +167,8 @@ Publish: project-specific (`changeset publish`, GitHub Action, or npm provenance
 | Skill | Use for |
 |-------|---------|
 | `mcp-harness-repo-maintainer` | Mechanical gates, docs as SSOT |
-| `faq-driven-docs` | DX_FAQ release commands |
-| `adr-records` | Record toolchain choice |
-| `mcp-harness-repo-maintainer` | Archetype + sibling release consistency |
-| `north-star-governance` | Don’t leave release plans as permanent plan files |
+| `repository-governance-lifecycle` | ADRs, DESIGN_FAQ/DX_FAQ updates, and plan hygiene |
+| `skill-source-citations` | Durable release-tooling sources |
 
 ## Install
 

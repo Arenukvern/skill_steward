@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/arenukvern/skill_steward/schemas/scenario-manifest-v1.schema.json",
+  "title": "Steward scenario manifest v1",
+  "type": "object",
+  "required": ["schema", "repo", "scenario", "status", "source", "safe_first_probe", "required_actions", "artifacts", "owner"],
+  "properties": {
+    "schema": { "const": "steward/scenario-manifest/v1" },
+    "repo": { "type": "string", "minLength": 1 },
+    "scenario": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["runnable", "blocked", "planned"] },
+    "source": {
+      "type": "object",
+      "required": ["git", "commit", "steward_contract"],
+      "properties": {
+        "git": { "type": "string", "minLength": 1 },
+        "commit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+        "steward_contract": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": true
+    },
+    "safe_first_probe": { "type": "string", "minLength": 1 },
+    "required_actions": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/artifact" }
+    },
+    "blocked_by": { "type": ["string", "null"] },
+    "owner": { "type": "string", "minLength": 1 }
+  },
+  "if": { "properties": { "status": { "const": "blocked" } } },
+  "then": { "required": ["blocked_by"] },
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "required": ["id", "kind", "path", "required"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "kind": { "type": "string", "minLength": 1 },
+        "path": { "type": "string", "minLength": 1 },
+        "required": { "type": "boolean" },
+        "durability": { "enum": ["input", "output", "summary"] }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

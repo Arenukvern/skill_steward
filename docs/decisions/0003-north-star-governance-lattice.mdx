@@ -24,7 +24,7 @@ How should Skill Steward teach agents to organize documentation in other reposit
 * **No duplicate “how code works”** — examples, tests, and source are SSOT for behavior; docs link inward.
 * **Human + agent clarity** — separate charter, decisions, concepts, and agent ops.
 * **Composable with FAQs** — lattice for repo navigation; DESIGN_FAQ/DX_FAQ for package compression.
-* **Reference implementation** — product harnesses analyzed and encoded in `north-star-governance` skill.
+* **Reference implementation** — product harnesses analyzed and encoded in `repository-governance-lifecycle`.
 
 ## Considered Options
 
@@ -36,7 +36,7 @@ How should Skill Steward teach agents to organize documentation in other reposit
 
 ## Decision Outcome
 
-Chosen option: **"Layered concept doc store + optional FAQs"**, shipped as skill `north-star-governance` with reference analysis of product harnesses.
+Chosen option: **"Layered concept doc store + optional FAQs"**, shipped through `repository-governance-lifecycle` with reference analysis of product harnesses.
 
 ### Consequences
 
@@ -49,8 +49,8 @@ Chosen option: **"Layered concept doc store + optional FAQs"**, shipped as skill
 
 ### Confirmation
 
-* Skill `skills/north-star-governance/` with lattice, SSOT, and bootstrap references.
-* Cross-link from `faq-driven-docs` and `adr-records` skills.
+* Skill `skills/repository-governance-lifecycle/` with lattice, SSOT, ADR, FAQ, and bootstrap references.
+* Cross-link from harness and skill-authoring skills.
 * Product harnesses cited as reference implementations in skill and this ADR.
 
 ## Layer summary (normative)
@@ -92,5 +92,5 @@ Chosen option: **"Layered concept doc store + optional FAQs"**, shipped as skill
 
 * **FAQ-driven development:** https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl
 * **Reference repo structure:** `docs/start_here/docs_map.mdx`, `docs/decisions/`, `docs/superpowers/`, `docs/NORTH_STAR.mdx`
-* **Skill:** [skills/north-star-governance/](https://github.com/arenukvern/skill_steward/blob/main/skills/north-star-governance)
+* **Skill:** [skills/repository-governance-lifecycle/](https://github.com/arenukvern/skill_steward/blob/main/skills/repository-governance-lifecycle)
 * **Related:** [ADR 0002 — FAQ-driven documentation](0002-adopt-faq-driven-documentation)

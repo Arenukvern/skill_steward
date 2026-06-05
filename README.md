@@ -4,7 +4,7 @@
 
 ![Cross-section of a cared-for ancient tree trunk at first light: precise growth rings, one clean radial extraction mark (plan hygiene), delicate geometric lattice threads emerging from the cut, and a single warm amber resin bead at the boundary — the visual symbol of long-term ethical stewardship and careful buildership for the Agent Skills meta-layer.](docs/brand/assets/hero/skill-steward-growth-rings-hero-16x9.jpg)
 
-**Meta skills for the [Agent Skills](https://agentskills.io/) ecosystem** — validate, govern, and document portable `SKILL.md` packages. Not a domain skill catalog (React, Flutter, cloud recipes live elsewhere). Not a skill installer ([Skillkit](https://github.com/rohitg00/skillkit) and [skills.sh](https://skills.sh) cover distribution).
+**Engineering stewardship for the [Agent Skills](https://agentskills.io/) ecosystem** — govern, validate, document, package, and improve portable `SKILL.md` workflows and repo-local harnesses. Not a domain skill catalog (React, Flutter, cloud recipes live elsewhere). Not a skill installer ([Skillkit](https://github.com/rohitg00/skillkit) and [skills.sh](https://skills.sh) cover distribution).
 
 Install on **Cursor**, **Claude Code**, **Codex**, **Zed**, **Windsurf**, **GitHub Copilot**, and 15+ tools via `npx skills`.
 
@@ -19,7 +19,7 @@ Install on **Cursor**, **Claude Code**, **Codex**, **Zed**, **Windsurf**, **GitH
 | Project                                                                              | Role                                                                                                                             |
 | ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
 | **Product Harnesses**                                                                 | Closed-loop tooling so agents can inspect and interact with running apps (CLI + agent integrations).                            |
-| **Skill Steward** (this repo)                                                        | **Meta layer** — skills that help teams manage *other* skills: validation, ADRs, FAQ-driven docs, plan hygiene, harness culture. |
+| **Skill Steward** (this repo)                                                        | **Engineering stewardship layer** — skills that help teams manage other skills and repo systems: governance, validation, ADRs, FAQ-driven docs, release legibility, review, and harness culture. |
 | **[Principles at work](https://dev.to/arenukvern/my-principles-at-work-credo-182c)** | **Why** — ethical AI boundaries, care for end users and builders, prototyping with feedback, artisan credit.                     |
 
 
@@ -108,6 +108,21 @@ More commands: [docs/DX_FAQ.mdx](docs/DX_FAQ.mdx) (section **Updating installed 
 
 Meta and process capabilities only — [inclusion criteria](docs/decisions/0001-repository-purpose-as-skills-meta-layer.mdx#inclusion-criteria-what-belongs-in-skill-steward). Domain skills live in other repositories.
 
+## Stewardship pillars
+
+Harness engineering is one pillar, not the umbrella. Skill Steward should help teams keep decisions recorded, docs searchable, gates mechanical, releases legible, reviews critical, security explicit, and harness feedback loops executable.
+
+| Pillar | Current skills |
+|--------|----------------|
+| Governance | [repository-governance-lifecycle](skills/repository-governance-lifecycle/) |
+| Knowledge | [skill-source-citations](skills/skill-source-citations/), governance FAQ/ADR flow |
+| Skill lifecycle | [skill-authoring-lifecycle](skills/skill-authoring-lifecycle/), [plugin-marketplace-setup](skills/plugin-marketplace-setup/) |
+| Quality gates | [skill-eval-improve](skills/skill-eval-improve/), `steward validate` |
+| Harness engineering | [mcp-harness-repo-maintainer](skills/mcp-harness-repo-maintainer/), [harness-engineering-lifecycle](skills/harness-engineering-lifecycle/) |
+| Release legibility | [release-changelog-harness](skills/release-changelog-harness/) |
+| Review and handoff | [mixture-of-experts](skills/mixture-of-experts/), [multi-agent-handoff](skills/multi-agent-handoff/) |
+| Strategic alignment | [vision-alignment-foresight](skills/vision-alignment-foresight/) |
+
 ## Available skills
 
 | Skill | Use when |
@@ -118,10 +133,11 @@ Meta and process capabilities only — [inclusion criteria](docs/decisions/0001-
 | [skill-eval-improve](skills/skill-eval-improve/)                   | Tiered evals—rule-based `pnpm run eval`, Chrome/SkillOpt patterns, plugin-eval, human prompt suites.                                                                      |
 | [mixture-of-experts](skills/mixture-of-experts/)                   | Run a multi-agent Mixture of Experts audit on any topic to detect and consolidate overlapping logic.                                                                        |
 | [repository-governance-lifecycle](skills/repository-governance-lifecycle/) | Complete loop: check ethics, write ADRs, update FAQs, and enforce brand tone.                                                                                      |
-| [release-changelog-harness](skills/release-changelog-harness/)     | Ecosystem-native versioning (Changesets, Melos) and binary distribution (`install.sh`).                                                                                    |
+| [release-changelog-harness](skills/release-changelog-harness/)     | Release legibility: ecosystem-native versioning, changelog intent, and binary distribution (`install.sh`).                                                                |
 | [mcp-harness-repo-maintainer](skills/mcp-harness-repo-maintainer/) | Teach agents mechanical bounds of the workspace (task runners, docs) over raw shell loops.                                                                                  |
 | [harness-engineering-lifecycle](skills/harness-engineering-lifecycle/) | Generalize a custom validation script and safely dogfood it across sibling repos.                                                                                           |
 | [multi-agent-handoff](skills/multi-agent-handoff/)                 | Context-sharing schemas so Agent B can resume where Agent A left off.                                                                                                      |
+| [vision-alignment-foresight](skills/vision-alignment-foresight/)   | Test a product, repo, skill, plugin, or harness vision against implementation reality, user intent, evidence, and likely future direction.                                  |
 
 
 ## Standards

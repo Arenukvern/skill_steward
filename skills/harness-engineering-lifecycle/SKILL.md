@@ -33,7 +33,7 @@ When engineering a harness for a massive polyrepo, you must follow the **Cascadi
 1. **Decouple transport from engine:** Command interfaces (CLI) and JSON-RPC (MCP) are thin wrappers. All logic lives in a reusable core package.
 2. **Declarative configuration:** Use a configuration file (like `steward.yaml`) to specify:
    - **Branding:** Name and description of the harness.
-   - **Pipelines:** Aliases mapping user tasks to shell commands.
+   - **Actions:** Typed, bounded repo-local commands with effects, limits, outputs, and evidence policy.
    - **Documentation lattice:** Maps of labels to specific doc files.
 3. **Pruned traversals:** Never perform recursive file-walking (`list(recursive: true)`) without pruning standard build/VCS folders early.
 4. **Generalized checks:** Do not hardcode linters. Use parameterized declarative engines (e.g. `disallowed-substrings`).

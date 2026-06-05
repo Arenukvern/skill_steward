@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/arenukvern/skill_steward/schemas/doctor-v1.schema.json",
+  "title": "Steward doctor output v1",
+  "type": "object",
+  "required": ["schema_version", "root", "config", "facts", "findings", "actions", "next_actions"],
+  "properties": {
+    "schema_version": { "const": "steward.doctor.v1" },
+    "root": { "type": "string", "minLength": 1 },
+    "config": { "type": "object" },
+    "facts": { "type": "object" },
+    "findings": { "type": "array" },
+    "actions": { "type": "array" },
+    "next_actions": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": true
+}

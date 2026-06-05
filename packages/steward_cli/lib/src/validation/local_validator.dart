@@ -116,9 +116,19 @@ Future<ValidationReport> validateLocalSkills(final String projectRoot) async {
     );
   }
 
-  // Run custom validators from steward.json
+  // Run Steward contract checks and custom validators from steward.yaml.
   try {
-    final config = await StewardConfig.load(projectRoot);
+    final configResult = await StewardConfig.loadChecked(projectRoot);
+    final config = configResult.config;
+    if (config.configPath != null) {
+      registryWarnings.addAll(
+        configResult.diagnostics
+            .where((final diagnostic) => diagnostic.isError)
+            .map(
+              (final diagnostic) => '${diagnostic.path}: ${diagnostic.message}',
+            ),
+      );
+    }
     for (final validator in config.validators) {
       final customErrors = await validator.validate(projectRoot);
       registryWarnings.addAll(customErrors);

@@ -42,7 +42,7 @@ Cursor scope (optional): activate when editing under `skills/**` or `scripts/val
 | **2 — Human** | Behavior | 3–5 prompts with/without skill | minutes |
 | **3 — Measured** | Usage | `plugin-eval benchmark` + `measurement-plan` | minutes–hours |
 | **4 — Evolve** | Text optimization | SkillOpt-style bounded edits + held-out gate | hours |
-| **5 — Navigate**| Telemetry | `steward eval` on `.steward_trace.json` | seconds |
+| **5 — Navigate**| Telemetry / dogfood | Future `steward benchmark` or `steward dogfood` on compact traces | seconds |
 
 Use the **cheapest layer that answers the question**. Do not skip layer 0.
 
@@ -59,7 +59,7 @@ Fix all `error:` lines. Treat `warn:` (missing `sources.md`, long SKILL.md) seri
 
 | Tier | Skills | CI |
 |------|--------|-----|
-| **1** | `north-star-governance`, `mcp-harness-repo-maintainer`, `mcp-harness-repo-maintainer`, `skill-authoring-lifecycle` | `pnpm run eval` + validate |
+| **1** | `mcp-harness-repo-maintainer`, `skill-authoring-lifecycle` | `pnpm run eval` + validate |
 | **2** | All others | `pnpm run validate` |
 
 Tier 1 requires `evals/cases/*.yaml` (≥2) + `references/evals.md`. Schema: [eval-case-schema.md](references/eval-case-schema.md).
@@ -68,7 +68,7 @@ Tier 1 requires `evals/cases/*.yaml` (≥2) + `references/evals.md`. Schema: [ev
 
 ```bash
 pnpm run eval
-pnpm run eval -- --skill north-star-governance
+pnpm run eval -- --skill mcp-harness-repo-maintainer
 pnpm run eval:json
 ```
 
@@ -140,15 +140,15 @@ Related: [SkillLens](https://microsoft.github.io/SkillOpt/) (model-generated ski
 | [skillgrade](https://github.com/mgechev/skillgrade) | Regression testing skill quality (mgechev) |
 | Claude authoring best practices | Eval-before-write workflow |
 
-## Layer 5 — Navigation Telemetry Evals
+## Layer 5 — Runtime Dogfood Benchmarks
 
-At 10,000x scale, NLP prompt evaluation fails because LLMs suffer **Cognitive Overload** navigating massive toolsets. We must objectively assert their logical trajectory using deterministic traces.
+At 10,000x scale, NLP prompt evaluation fails because LLMs suffer **Cognitive Overload** navigating massive toolsets. Runtime dogfood should objectively assert their logical trajectory using deterministic traces.
 
-1. **Enable Tracing:** Set `telemetry.enabled: true` in `steward.yaml`. `steward mcp` will now intercept every agent tool call and stream it to `.steward_trace.json`.
-2. **Define Assertions:** Update your `evals:` block in `steward.yaml` to enforce strict cognitive constraints (e.g., `max_tool_calls: 50`).
-3. **Run Evals:** Execute `steward eval <name>`. The CLI parses the JSON trace file to mathematically assert whether the agent navigated efficiently without hallucinating tools.
+1. **Capture compact traces:** Store action IDs, tool counts, artifact digests, and redacted excerpts, not raw product traces.
+2. **Define assertions:** Expected action trajectory, maximum tool calls, required artifacts, and negative checks for unrelated actions.
+3. **Run dogfood benchmarks:** Use a future `steward benchmark` / `steward dogfood` surface. Do not put product runtime scenarios under Tier-1 skill evals.
 
-*Note: Execution latency is largely solved (CLI parses 100,000 lines in < 1 second). The modern bottleneck is evaluating the Agent's navigation efficiency.*
+The current `steward eval --name` registered-eval path is legacy/experimental. Skill quality remains `pnpm run eval`; runtime dogfood belongs to benchmark/dogfood commands once implemented.
 
 ## Improve workflow (checklist)
 

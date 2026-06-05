@@ -4,37 +4,93 @@ import 'dart:io';
 import 'package:args/command_runner.dart';
 import 'package:path/path.dart' as p;
 
+import '../eval/eval.dart';
 import '../repo_root.dart';
 import '../validation/steward_config.dart';
 
 class EvalCommand extends Command<void> {
   EvalCommand() {
-    argParser.addOption('name', abbr: 'n', help: 'The name of the eval to run');
+    argParser
+      ..addOption(
+        'name',
+        abbr: 'n',
+        help:
+            'Run a registered telemetry/dogfood eval from steward.yaml. Legacy path; skill evals are the default.',
+      )
+      ..addFlag(
+        'json',
+        negatable: false,
+        help: 'Emit machine-readable JSON for Tier-1 skill evals.',
+      )
+      ..addFlag(
+        'skill',
+        negatable: false,
+        help:
+            'Run Tier-1 skill evals. This is the default when --name is omitted.',
+      );
   }
 
   @override
   final name = 'eval';
 
   @override
-  final description = 'Runs a registered verification eval from steward.yaml';
+  final description =
+      'Runs Tier-1 skill evals; --name runs a registered steward.yaml eval.';
 
   @override
   Future<void> run() async {
     final root = findRepoRoot(Directory.current);
-    final config = await StewardConfig.load(root);
-
     final String? evalName = argResults?['name'] as String?;
 
     if (evalName == null || evalName.isEmpty) {
-      print('Available evals:');
-      if (config.evals.isEmpty) {
-        print('  (None registered in steward.yaml)');
-      } else {
-        config.evals.forEach((final k, final v) {
-          final desc = (v as Map)['desc'] ?? '';
-          print('  $k: $desc');
-        });
+      await _runSkillEvals(root);
+      return;
+    }
+
+    await _runRegisteredEval(root, evalName);
+  }
+
+  Future<void> _runSkillEvals(final String root) async {
+    final useJson = argResults?['json'] as bool? ?? false;
+    final targets = argResults?.rest
+        .where((final value) => value.trim().isNotEmpty && value != '--')
+        .toList();
+    final report = await evalAllSkills(
+      p.join(root, 'skills'),
+      targets: targets == null || targets.isEmpty ? null : targets,
+    );
+
+    if (useJson) {
+      print(jsonEncode(report.toJson()));
+    } else {
+      print('Tier-1 skill evals');
+      for (final result in report.results) {
+        final status = result.isOk ? 'ok' : 'error';
+        print(
+          '$status ${result.skillName}: ${result.passed}/${result.total} cases passed',
+        );
+        for (final warning in result.warnings) {
+          print('  warn: $warning');
+        }
+        for (final error in result.errors) {
+          print('  error: $error');
+        }
       }
+    }
+
+    exit(report.ok ? 0 : 1);
+  }
+
+  Future<void> _runRegisteredEval(
+    final String root,
+    final String evalName,
+  ) async {
+    final config = await StewardConfig.load(root);
+
+    if (config.isV1) {
+      print(
+        'Error: registered runtime evals are disabled for schema: steward/v1. Use steward benchmark or steward dogfood for runtime scenarios.',
+      );
       exit(1);
     }
 

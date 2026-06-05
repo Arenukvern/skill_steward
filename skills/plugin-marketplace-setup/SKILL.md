@@ -151,7 +151,7 @@ Canonical skills stay in `skills/`. See [templates/plugin/](../../templates/plug
 
 | Concern | Skill Steward | Product (e.g. product MCP) |
 |---------|-------------|------------------------------|
-| Skills | Meta only (`skill-authoring-lifecycle`, `adr-records`, …) | Domain + MCP skills |
+| Skills | Meta only (`skill-authoring-lifecycle`, `repository-governance-lifecycle`, …) | Domain + MCP skills |
 | Plugins | Meta hooks (`steward-validate-on-save`) | Full bundle: MCP + skills + init |
 | CLI | `steward validate` | `[toolkit-cli] init <agent>` |
 | Marketplace | Public Git + skills.sh | Claude/Codex git + Cursor submit + Smithery |

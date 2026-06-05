@@ -5,11 +5,13 @@
 | Install | What |
 |---------|------|
 | `npx skills add arenukvern/skill_steward --skill <id>` | Skill only (portable, 50+ agents) |
-| Plugin README + `install` (per plugin) | Hooks and other wiring — **not** covered by `npx skills` on Cursor |
+| `plugins/{id}/plugin.yaml` + plugin README | Hooks and other wiring — **not** covered by `npx skills` on Cursor |
 
 **Specification:** [ADR 0004 — plugin packaging and install paths](../docs/decisions/0004-plugin-packaging-and-install-path.mdx)
 
 **Scaffold:** [`templates/plugin/`](../templates/plugin/)
+
+`plugin.yaml` uses `schema: steward/plugin-manifest/v1`: it must reference canonical skill ids, target agent surfaces, lifecycle actions, and any shipped wiring artifacts. `pnpm run validate` fails when plugin manifests drift.
 
 **Shipped:**
 

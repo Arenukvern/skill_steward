@@ -12,6 +12,7 @@
 library;
 
 export 'local_validator.dart' show validateLocalSkills;
+export 'plugin_manifest_validator.dart' show validatePluginManifests;
 export 'skill_frontmatter.dart';
 export 'skill_rules.dart';
 export 'skill_validator.dart'

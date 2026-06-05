@@ -31,7 +31,7 @@ It can be applied to literally anything: a codebase, a feature plan, a deploymen
    - *For repo governance:* "Codebase Auditor", "Skills Analyst"
    - *For a system architecture:* "Security Specialist", "Scalability Engineer", "Cost Analyst"
    - *For a frontend component:* "Accessibility Auditor", "Performance Expert"
-   - *For E2E Execution & Evals (Dogfooding):* **"Harness QA Expert"**. Any time a workflow, toolchain, or pipeline is updated, you MUST spawn a Harness QA Expert subagent. Its job is to simulate a user/agent experiencing the system in a real repository (e.g. attempting to run pipelines, trigger evals, or interact with `steward mcp`).
+   - *For E2E Execution & Evals (Dogfooding):* **"Harness QA Expert"**. Any time a workflow, toolchain, typed action, or benchmark loop is updated, you MUST spawn a Harness QA Expert subagent. Its job is to simulate a user/agent experiencing the system in a real repository (e.g. discovering actions, triggering skill evals, or checking MCP/CLI parity without relying on raw shell pipelines).
 3. **Spawn Subagents**
    Use the available subagent capability for the current host (for example Codex `spawn_agent`) to launch these experts independently. Give them explicit prompts to audit the target topic through their specific lens. If no subagent tool is available, run the expert lenses sequentially and label the output as a non-parallel MoE.
 4. **Cross-reference Findings**
