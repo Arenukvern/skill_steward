@@ -179,6 +179,10 @@
         {
           "title": "0015 — Agent CLI entrypoints",
           "href": "/decisions/0015-agent-cli-entrypoints-and-local-validation"
+        },
+        {
+          "title": "0016 — Skill cohesion",
+          "href": "/decisions/0016-skill-cohesion-and-lifecycle-boundaries"
         }
       ]
     },

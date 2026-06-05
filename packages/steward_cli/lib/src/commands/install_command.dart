@@ -32,14 +32,11 @@ class InstallCommand extends Command<void> {
         help: 'Lock/pin the commit hash in skills.json.',
         defaultsTo: true,
       )
-      ..addFlag(
-        'force',
-        abbr: 'f',
-        help: 'Overwrite existing local skills.',
-      )
+      ..addFlag('force', abbr: 'f', help: 'Overwrite existing local skills.')
       ..addFlag(
         'json',
-        help: 'Output structured diagnostic JSON instead of human-readable text.',
+        help:
+            'Output structured diagnostic JSON instead of human-readable text.',
       );
   }
 
@@ -63,7 +60,9 @@ class InstallCommand extends Command<void> {
       // 1. Install all skills from local skills.json
       final skillsJsonFile = File(p.join(root, 'skills.json'));
       if (!skillsJsonFile.existsSync()) {
-        throw Exception('No skill specified and no skills.json found in project root.');
+        throw Exception(
+          'No skill specified and no skills.json found in project root.',
+        );
       }
 
       await _installFromConfig(
@@ -78,7 +77,15 @@ class InstallCommand extends Command<void> {
     } else {
       // 2. Install a specific skill
       final arg = argResults!.rest.first;
-      await _installSpecific(arg, root, isLocal, target, typeFilter, lock, force);
+      await _installSpecific(
+        arg,
+        root,
+        isLocal,
+        target,
+        typeFilter,
+        lock,
+        force,
+      );
     }
   }
 
@@ -151,7 +158,13 @@ class InstallCommand extends Command<void> {
       // Local directory copy
       final skillName = p.basename(arg);
       final destDir = _getDestDir(root, isLocal, skillName);
-      await _copySkillDirectory(Directory(arg), destDir, target, typeFilter, force);
+      await _copySkillDirectory(
+        Directory(arg),
+        destDir,
+        target,
+        typeFilter,
+        force,
+      );
       return;
     }
 
@@ -175,7 +188,9 @@ class InstallCommand extends Command<void> {
         force,
       );
     } else {
-      throw Exception('Invalid install target: $arg. Use local path or repo format (owner/repo/skill).');
+      throw Exception(
+        'Invalid install target: $arg. Use local path or repo format (owner/repo/skill).',
+      );
     }
   }
 
@@ -264,18 +279,31 @@ class InstallCommand extends Command<void> {
         }
 
         if (srcDir == null) {
-          throw Exception('Could not find skill "$skillName" in cloned repository.');
+          throw Exception(
+            'Could not find skill "$skillName" in cloned repository.',
+          );
         }
 
         final destDir = _getDestDir(root, isLocal, skillName);
-        final success = await _copySkillDirectory(srcDir, destDir, target, typeFilter, force);
+        final success = await _copySkillDirectory(
+          srcDir,
+          destDir,
+          target,
+          typeFilter,
+          force,
+        );
         if (success) {
           successfullyInstalled.add(skillName);
         }
       }
 
       if (lock && commitSha != null && successfullyInstalled.isNotEmpty) {
-        await _updateSkillsJsonLock(root, source, commitSha, successfullyInstalled);
+        await _updateSkillsJsonLock(
+          root,
+          source,
+          commitSha,
+          successfullyInstalled,
+        );
       }
     } finally {
       if (tempDir.existsSync()) {

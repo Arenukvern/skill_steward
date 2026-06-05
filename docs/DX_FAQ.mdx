@@ -14,7 +14,7 @@ DOCS CI                → pnpm run docs:check  (@docs.page/cli)
 INSTALL for users      → npx skills add arenukvern/skill_steward
 UPDATE installed       → this file (Updating installed skills)
 ANALYZE steward_cli    → pnpm run steward:analyze  (xsoulspace_lints; CI on PR)
-VALIDATE before PR     → pnpm run steward:validate  (validate + eval; same as CI)
+VALIDATE before PR     → pnpm run validate  (skill structure; CI also runs analyze/test/eval/list)
 CITE / EVAL SKILLS     → skill-source-citations, skill-eval-improve
 EVAL CI (Tier 1)       → pnpm run eval · evals/cases/*.yaml · ADR 0011
 STEWARD CLI              → ../packages/steward_cli/README.md  (ADR 0007)
@@ -31,7 +31,7 @@ GitHub product name: **Skill Steward** (`Arenukvern/skill_steward`). Many worksp
 cd <workspace>/agent_guild
 pnpm install          # packageManager: pnpm@9 (see package.json)
 pnpm run steward:analyze
-pnpm run steward:validate
+pnpm run validate
 ```
 
 ### Consumer install from a local clone (sibling repo)
@@ -48,12 +48,10 @@ npx skills add <workspace>/agent_guild --skill mcp-harness-repo-maintainer -a cu
 
 | Skill | Role |
 |-------|------|
-| `north-star-governance` | Charter, AGENTS map, plan hygiene |
-| `mcp-harness-repo-maintainer` | CLI/MCP harness culture |
-| `mcp-harness-repo-maintainer` | Archetype checklists, sibling layout |
-| `adr-records` | ADRs in `decisions/` |
-| `faq-driven-docs` | DESIGN_FAQ + DX_FAQ |
-| `skill-authoring-lifecycle` / `skill-authoring-lifecycle` | Author and audit `plugin/skills/` |
+| `repository-governance-lifecycle` | Charter, AGENTS map, ADRs, FAQs, plan hygiene |
+| `mcp-harness-repo-maintainer` | CLI/MCP harness culture and sibling layout |
+| `skill-authoring-lifecycle` | Author and audit `skills/` |
+| `plugin-marketplace-setup` | Skill/plugin distribution across Cursor, Claude Code, Codex, Zed, and Open Plugin |
 
 ## 📦 Install Skill Steward (consumers)
 
@@ -62,10 +60,14 @@ npx skills add <workspace>/agent_guild --skill mcp-harness-repo-maintainer -a cu
 npx skills add arenukvern/skill_steward
 
 # One skill
-npx skills add arenukvern/skill_steward --skill adr-records
+npx skills add arenukvern/skill_steward --skill repository-governance-lifecycle
 
-# Cursor + Claude, project scope, non-interactive
-npx skills add arenukvern/skill_steward -a cursor -a claude-code -y
+# Cursor + Claude + Codex + Zed, project scope, non-interactive
+npx skills add arenukvern/skill_steward -a cursor -a claude-code -a codex -a zed -y
+
+# Local clone while iterating on Skill Steward before publishing
+npx skills add <workspace>/agent_guild -a cursor -a claude-code -a codex -a zed -y
+npx skills add <workspace>/agent_guild -g -y
 
 # Global (every project)
 npx skills add arenukvern/skill_steward -g
@@ -88,7 +90,7 @@ curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/insta
 
 ## 🔄 Updating installed skills
 
-After Skill Steward merges to `main`, consumers refresh installed `SKILL.md` files with [vercel-labs/skills](https://github.com/vercel-labs/skills) (`npx skills`). Installed paths depend on agent (e.g. `.cursor/skills/`, `.agents/skills/`); see [AGENTS.md](https://github.com/arenukvern/skill_steward/blob/main/AGENTS.md).
+After Skill Steward merges to `main`, consumers refresh installed `SKILL.md` files with [vercel-labs/skills](https://github.com/vercel-labs/skills) (`npx skills`). While iterating locally, reinstall from `<workspace>/agent_guild` so project/global skills reflect the local checkout. Installed paths depend on agent (e.g. `.agents/skills/`, `.cursor/skills/`, `~/.codex/skills/`); see [AGENTS.md](https://github.com/arenukvern/skill_steward/blob/main/AGENTS.md).
 
 ```bash
 # List what is installed (project)
@@ -107,7 +109,7 @@ npx skills update -g -y
 npx skills update -p -y
 
 # Update one skill by directory name (from `skills list`)
-npx skills update north-star-governance -y
+npx skills update repository-governance-lifecycle -y
 npx skills update skill-authoring-lifecycle -y
 ```
 
@@ -118,13 +120,19 @@ npx skills update skill-authoring-lifecycle -y
 npx skills add arenukvern/skill_steward -y
 
 # One skill
-npx skills add arenukvern/skill_steward --skill adr-records -y
+npx skills add arenukvern/skill_steward --skill repository-governance-lifecycle -y
 
 # Target agents, project scope
-npx skills add arenukvern/skill_steward -a cursor -a claude-code -y
+npx skills add arenukvern/skill_steward -a cursor -a claude-code -a codex -a zed -y
+
+# Same from a local clone
+npx skills add <workspace>/agent_guild -a cursor -a claude-code -a codex -a zed -y
 
 # Global reinstall
 npx skills add arenukvern/skill_steward -g -y
+
+# Global reinstall from local clone
+npx skills add <workspace>/agent_guild -g -y
 ```
 
 **When to use which**
@@ -136,6 +144,7 @@ npx skills add arenukvern/skill_steward -g -y
 | One skill you use heavily | `npx skills update <skill-name> -y` |
 | Force full marketplace refresh | `npx skills add arenukvern/skill_steward -y` |
 | Pin to a branch or local clone | `npx skills add <path-or-url> --skill <name> -y` |
+| Refresh global skills from local clone | `npx skills add <workspace>/agent_guild -g -y` |
 
 **Not covered by `npx skills`:** Cursor hook plugins — `../plugins/README.md`.
 
@@ -151,7 +160,7 @@ cp -r templates/skill skills/my-skill-name
 dart run :steward validate   # or pnpm run validate (now delegates to Dart)
 
 # 4. Register
-#    - skills.sh.json groupings
+#    - skills.sh.json (current repo schema)
 #    - README.md skill table
 #    - optional DESIGN_FAQ Q&A if repo-level why changed
 ```
@@ -189,15 +198,7 @@ Fix all `error:` lines before merge. Warnings (long SKILL.md, missing skills.sh 
 
 ## 📜 ADR desk
 
-```bash
-# Next ADR number
-bash skills/adr-records/scripts/next-adr-number.sh docs/decisions
-
-# Authoring
-# Use skill adr-records or references in skills/adr-records/
-```
-
-Index: `decisions/README.mdx`.
+Use `repository-governance-lifecycle` for ADRs and governance decisions. ADRs live in `docs/decisions/`; keep durable "why" there and update `DESIGN_FAQ.mdx` only when the answer becomes standing guidance.
 
 ## 🧭 North Star desk
 
@@ -206,7 +207,7 @@ Edit charter           → NORTH_STAR.mdx
 Wire agent map         → ../AGENTS.md (~100 lines max)
 docs.page sidebar      → ../docs.json + docs_map.mdx
 Close a plan           → merge to ADR/FAQ/code/skill → delete docs/exec-plans/active/* (if used)
-Skill                  → north-star-governance
+Skill                  → repository-governance-lifecycle
 ```
 
 ## 🚀 Release desk (Changesets)
@@ -258,9 +259,9 @@ Product example: `<cli_harness> doctor`, `make check-contracts` — not shipped 
 |------|-------------|
 | Harness / CLI / MCP culture | `mcp-harness-repo-maintainer` |
 | Release / changelog tooling | `release-changelog-harness` |
-| Package DESIGN + DX FAQ | `faq-driven-docs` |
-| Repo lattice (router, SSOT) | `north-star-governance` |
-| ADR format | `adr-records` |
+| DESIGN + DX FAQ | `repository-governance-lifecycle` |
+| Repo lattice (router, SSOT) | `repository-governance-lifecycle` |
+| ADR format | `repository-governance-lifecycle` |
 | Spec compliance | `skill-authoring-lifecycle` |
 | Agent handoffs | `multi-agent-handoff` |
 

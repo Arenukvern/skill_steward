@@ -12,7 +12,8 @@ class ListCommand extends Command<void> {
   final name = 'list';
 
   @override
-  final description = 'List available or installed skills with their descriptions.';
+  final description =
+      'List available or installed skills with their descriptions.';
 
   @override
   Future<void> run() async {
@@ -28,19 +29,20 @@ class ListCommand extends Command<void> {
         exit(1);
       }
 
-      final entries = skillsDir
-          .listSync()
-          .whereType<Directory>()
-          .where(
-            (final d) =>
-                !p.basename(d.path).startsWith('_') &&
-                !p.basename(d.path).startsWith('.'),
-          )
-          .toList()
-        ..sort(
-          (final a, final b) =>
-              p.basename(a.path).compareTo(p.basename(b.path)),
-        );
+      final entries =
+          skillsDir
+              .listSync()
+              .whereType<Directory>()
+              .where(
+                (final d) =>
+                    !p.basename(d.path).startsWith('_') &&
+                    !p.basename(d.path).startsWith('.'),
+              )
+              .toList()
+            ..sort(
+              (final a, final b) =>
+                  p.basename(a.path).compareTo(p.basename(b.path)),
+            );
 
       for (final dir in entries) {
         final skillName = p.basename(dir.path);
@@ -60,19 +62,27 @@ class ListCommand extends Command<void> {
       // 2. Consumer Mode: list local skills in .agents/skills
       final localSkillsDir = Directory(p.join(root, '.agents', 'skills'));
       if (!localSkillsDir.existsSync()) {
-        stdout.writeln('No skills installed under .agents/skills/ in this project.');
+        stdout.writeln(
+          'No skills installed under .agents/skills/ in this project.',
+        );
         return;
       }
 
-      final entries = localSkillsDir
-          .listSync()
-          .whereType<Directory>()
-          .where((final d) => !p.basename(d.path).startsWith('.'))
-          .toList()
-        ..sort((final a, final b) => p.basename(a.path).compareTo(p.basename(b.path)));
+      final entries =
+          localSkillsDir
+              .listSync()
+              .whereType<Directory>()
+              .where((final d) => !p.basename(d.path).startsWith('.'))
+              .toList()
+            ..sort(
+              (final a, final b) =>
+                  p.basename(a.path).compareTo(p.basename(b.path)),
+            );
 
       if (entries.isEmpty) {
-        stdout.writeln('No skills installed under .agents/skills/ in this project.');
+        stdout.writeln(
+          'No skills installed under .agents/skills/ in this project.',
+        );
         return;
       }
 

@@ -1,5 +1,5 @@
-id: create-skill-scaffold-trigger
-skill: create-skill
+id: skill-authoring-scaffold-trigger
+skill: skill-authoring-lifecycle
 routing: should_trigger
 input: "Create a new skill called faq-driven-docs in the Skill Steward repo"
 rules:

@@ -58,11 +58,14 @@ Create or update `HANDOFF.md` (or a section in the task issue) with:
 - Handoffs longer than one screen (split into `references/` or issues)
 - Duplicate conflicting instructions across parent and child agents
 
-## Subagent hints (Cursor / Claude Code)
+## Subagent hints (Codex / Cursor / Zed)
 
 - Use read-only agents for exploration and review
 - Pass the handoff block verbatim in the subagent prompt
 - Prefer `disable-model-invocation: true` on skills that must run only when invoked
+- Codex custom agents live in `.codex/agents/*.toml` or `~/.codex/agents/*.toml`; define `name`, `description`, and `developer_instructions`, and spawn subagents only when the user explicitly asks for subagent delegation.
+- Cursor custom subagents live in `.cursor/agents/*.md` or `~/.cursor/agents/*.md`; each run has isolated context, and background/parallel execution is useful for independent slices.
+- Zed parallel work uses separate agent threads or worktrees; use skills for repeatable single-context procedures and threads for independent concurrent work.
 
 ## Install
 

@@ -1,40 +1,14 @@
 {
-  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
-  "notGrouped": "bottom",
-  "groupings": [
-    {
-      "title": "Marketplace",
-      "description": "Authoring, reviewing, and publishing skills for the Skill Steward marketplace.",
-      "skills": [
-        "skill-authoring-lifecycle",
-        "skill-source-citations",
-        "skill-eval-improve",
-        "plugin-marketplace-setup"
-      ]
-    },
-    {
-      "title": "Documentation",
-      "description": "Architecture knowledge and decision logs aligned with adr.github.io.",
-      "skills": [
-        "mixture-of-experts",
-        "repository-governance-lifecycle"
-      ]
-    },
-    {
-      "title": "Harness",
-      "description": "Agent-first engineering culture—CLI, MCP, contracts, and docs as system of record.",
-      "skills": [
-        "release-changelog-harness",
-        "mcp-harness-repo-maintainer",
-        "harness-engineering-lifecycle"
-      ]
-    },
-    {
-      "title": "Multi-agent",
-      "description": "Patterns for coordinating multiple AI agents on shared work.",
-      "skills": [
-        "multi-agent-handoff"
-      ]
-    }
+  "skills": [
+    "harness-engineering-lifecycle",
+    "mcp-harness-repo-maintainer",
+    "mixture-of-experts",
+    "multi-agent-handoff",
+    "plugin-marketplace-setup",
+    "release-changelog-harness",
+    "repository-governance-lifecycle",
+    "skill-authoring-lifecycle",
+    "skill-eval-improve",
+    "skill-source-citations"
   ]
 }

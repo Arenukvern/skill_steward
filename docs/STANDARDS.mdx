@@ -10,12 +10,14 @@ This document consolidates rules from the open ecosystem so skills in this repo 
 | Specification (full) | https://github.com/agentskills/agentskills/blob/main/docs/specification.mdx |
 | Vercel skills CLI | https://github.com/vercel-labs/skills |
 | Cursor skills docs | https://cursor.com/docs/skills |
+| Codex skills docs | https://developers.openai.com/codex/skills |
+| Zed skills docs | https://zed.dev/docs/ai/skills |
 | skills.sh registry | https://skills.sh |
 | skills.sh customization | https://www.skills.sh/docs/customize |
 
 ## Skill Cohesion and Boundaries
 
-To prevent cognitive overload for agents and users, skills must adhere to the **Skill Cohesion** standard ([ADR 0016](decisions/0016-skill-cohesion-and-lifecycle-boundaries.mdx)):
+To prevent cognitive overload for agents and users, skills must adhere to the **Skill Cohesion** standard ([ADR 0016](decisions/0016-skill-cohesion-and-lifecycle-boundaries)):
 
 1. **Lifecycle Journeys over Atomic Actions:** Skills must encapsulate complete lifecycles (e.g., authoring + reviewing). Avoid creating separate skills for two halves of the same process.
 2. **Intent Overlap:** Group tools by the user's high-level goal, not by the specific files they touch. If two skills share the same intent (e.g., governing the doc lattice), merge them.
@@ -41,7 +43,7 @@ Every skill must include **`references/sources.md`** listing URLs for specs, pap
 
 | Tier | Skills | Required |
 |------|--------|----------|
-| **1 — Behavioral** | `north-star-governance`, `mcp-harness-repo-maintainer`, `mcp-harness-repo-maintainer`, `skill-authoring-lifecycle` | `references/evals.md` + ≥2 files in `evals/cases/*.yaml`; `pnpm run eval` passes |
+| **1 — Behavioral** | `mcp-harness-repo-maintainer`, `skill-authoring-lifecycle` | `references/evals.md` + ≥2 files in `evals/cases/*.yaml`; `pnpm run eval` passes when the eval command wiring is available |
 | **2 — Structural** | All other skills under `skills/` | `pnpm run validate`; optional `evals.md` when behavior-critical |
 
 Case schema: [eval-case-schema.md](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-eval-improve/references/eval-case-schema.md). Skill: `skill-eval-improve`.
@@ -55,26 +57,42 @@ Case schema: [eval-case-schema.md](https://github.com/arenukvern/skill_steward/b
 | `name` | Yes | 1–64 chars; `a-z`, `0-9`, `-` only; no leading/trailing `-`; no `--`; **must match parent directory** |
 | `description` | Yes | 1–1024 chars; what it does **and** when to use it |
 | `license` | No | SPDX id or pointer to bundled license file |
+| `type` | No | Skill Steward repo-local classification such as `governance`; portable agents may ignore it |
 | `compatibility` | No | Max 500 chars; env / product requirements |
 | `metadata` | No | String key-value map (`author`, `version`, `category`, `tags`) |
 | `allowed-tools` | No | Experimental; space-separated tool list |
+| `paths` | No | Agent-specific file scoping; Cursor supports top-level globs, other agents may ignore |
+| `disable-model-invocation` | No | Agent-specific explicit-invocation control; Cursor/Zed support top-level, Codex uses `agents/openai.yaml` policy |
 
-### Cursor extensions (optional, portable agents ignore)
+### Agent-specific activation controls (optional)
 
-To maintain standard-compliance while supporting agent-specific extensions, it is **strongly recommended** to nest these fields inside the `metadata` object. During local installation/export, the CLI relocates these to the top level for target profiles if needed:
+Use top-level fields only when the target agent documents them. Portable agents that do not support them should ignore them, but do not depend on that for safety-critical gating.
 
 ```yaml
-metadata:
-  cursor:
-    paths:
-      - "docs/**"
-    disable-model-invocation: true
+paths:
+  - "docs/**"
+disable-model-invocation: true
 ```
 
-| Field | Purpose | Nested Path |
-|-------|---------|-------------|
-| `paths` | Glob list — skill only surfaces for matching files | `metadata.cursor.paths` |
-| `disable-model-invocation` | `true` = user must invoke `/skill-name` manually | `metadata.cursor.disable-model-invocation` |
+| Field | Purpose | Placement |
+|-------|---------|-----------|
+| `paths` | Glob list — skill only surfaces for matching files in agents that support it | top-level |
+| `disable-model-invocation` | `true` = user must invoke `/skill-name` manually in agents that support it | top-level |
+
+### Codex `agents/openai.yaml` (optional)
+
+Use `agents/openai.yaml` for Codex app UI metadata, invocation policy, and tool dependencies. Keep it optional so Skill Steward remains cross-agent.
+
+```yaml
+interface:
+  display_name: "Skill Name"
+  short_description: "One-line user-facing summary"
+  default_prompt: "Use this skill to ..."
+policy:
+  allow_implicit_invocation: false
+```
+
+`allow_implicit_invocation: false` is the Codex equivalent of making a skill explicit-invocation only.
 
 ### Claude Code extensions (optional)
 
@@ -124,7 +142,7 @@ To manage and lock skills, place a `skills.json` file in the root of your projec
     {
       "source": "Arenukvern/skill_steward",
       "commit": "ec76d3ba063543418bd8e60b8448ee81e21b0ebd",
-      "skills": ["ethical-stewardship", "north-star-governance"]
+      "skills": ["repository-governance-lifecycle", "skill-authoring-lifecycle"]
     }
   ]
 }
@@ -141,7 +159,7 @@ To manage and lock skills, place a `skills.json` file in the root of your projec
 dart run steward install
 
 # Install a specific skill from a repository
-dart run steward install Arenukvern/skill_steward/ethical-stewardship --target cursor
+dart run steward install Arenukvern/skill_steward/repository-governance-lifecycle --target cursor
 
 # Update installed skills to their latest upstream branch refs, pinning commits in skills.json
 dart run steward update

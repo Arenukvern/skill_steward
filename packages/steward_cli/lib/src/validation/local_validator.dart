@@ -95,8 +95,9 @@ Future<ValidationReport> validateLocalSkills(final String projectRoot) async {
   if (planFile.existsSync()) {
     activePlans.add('implementation_plan.md');
   }
-  final activePlansDir =
-      Directory(p.join(projectRoot, 'docs', 'exec-plans', 'active'));
+  final activePlansDir = Directory(
+    p.join(projectRoot, 'docs', 'exec-plans', 'active'),
+  );
   if (activePlansDir.existsSync()) {
     try {
       final planFiles = activePlansDir.listSync().whereType<File>();

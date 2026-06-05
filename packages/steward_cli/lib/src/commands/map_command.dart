@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
@@ -18,7 +17,8 @@ class MapCommand extends Command<void> {
   final name = 'map';
 
   @override
-  final description = 'Print a Markdown map of active skills, task runners, and docs for agents.';
+  final description =
+      'Print a Markdown map of active skills, task runners, and docs for agents.';
 
   @override
   Future<void> run() async {
@@ -37,11 +37,13 @@ class MapCommand extends Command<void> {
     String preferredRunner = '';
     String runCmd = '';
 
-    if (File(p.join(root, 'Justfile')).existsSync() || File(p.join(root, 'justfile')).existsSync()) {
+    if (File(p.join(root, 'Justfile')).existsSync() ||
+        File(p.join(root, 'justfile')).existsSync()) {
       taskConfigs.add('Justfile');
       preferredRunner = 'just';
       runCmd = 'just <task>';
-    } else if (File(p.join(root, 'Makefile')).existsSync() || File(p.join(root, 'makefile')).existsSync()) {
+    } else if (File(p.join(root, 'Makefile')).existsSync() ||
+        File(p.join(root, 'makefile')).existsSync()) {
       taskConfigs.add('Makefile');
       preferredRunner = 'make';
       runCmd = 'make <target>';
@@ -65,12 +67,14 @@ class MapCommand extends Command<void> {
 
     if (taskConfigs.isNotEmpty) {
       buffer.writeln('- **Configs detected:** ${taskConfigs.join(", ")}');
-      buffer.writeln('- **Preferred Runner:** `$preferredRunner` (Run: `$runCmd`)');
-      
+      buffer.writeln(
+        '- **Preferred Runner:** `$preferredRunner` (Run: `$runCmd`)',
+      );
+
       // Suggest standard tasks
       buffer.writeln('- **Standard Pipelines:**');
       if (config.pipelines.isNotEmpty) {
-        config.pipelines.forEach((key, val) {
+        config.pipelines.forEach((final key, final val) {
           String cmd = '';
           String desc = '';
           if (val is String) {
@@ -98,49 +102,63 @@ class MapCommand extends Command<void> {
     buffer.writeln();
     String archetype = 'B — Platform libs'; // Default or fallback
     String details = '';
-    
-    if (File(p.join(root, 'plugin', 'mcp.json')).existsSync() || File(p.join(root, 'mcp.json')).existsSync()) {
+
+    if (File(p.join(root, 'plugin', 'mcp.json')).existsSync() ||
+        File(p.join(root, 'mcp.json')).existsSync()) {
       archetype = 'A — Product MCP';
-      details = 'This is a toolkit + MCP server repository. It implements agent capabilities and registers them in `plugin/mcp.json`.';
+      details =
+          'This is a toolkit + MCP server repository. It implements agent capabilities and registers them in `plugin/mcp.json`.';
     } else if (File(p.join(root, 'skills.sh.json')).existsSync()) {
       try {
         final content = File(p.join(root, 'skills.sh.json')).readAsStringSync();
-        if (content.contains('https://skills.sh/schemas/skills.sh.schema.json') || content.contains('skill_steward')) {
+        if (content.contains(
+              'https://skills.sh/schemas/skills.sh.schema.json',
+            ) ||
+            content.contains('skill_steward')) {
           archetype = 'E — Meta steward';
-          details = 'This is a meta-repository for agent skills and validation. It maintains governance guidelines and the `steward` CLI tool.';
+          details =
+              'This is a meta-repository for agent skills and validation. It maintains governance guidelines and the `steward` CLI tool.';
         }
       } catch (_) {}
     }
-    
+
     if (archetype == 'B — Platform libs') {
       final packagesDir = Directory(p.join(root, 'packages'));
       final toolDir = Directory(p.join(root, 'tool'));
-      if (packagesDir.existsSync() && (File(p.join(root, 'pubspec.yaml')).existsSync() || File(p.join(root, 'package.json')).existsSync())) {
+      if (packagesDir.existsSync() &&
+          (File(p.join(root, 'pubspec.yaml')).existsSync() ||
+              File(p.join(root, 'package.json')).existsSync())) {
         archetype = 'B — Platform libs';
-        details = 'This is a platform library workspace containing modular packages/adapters. Central logic lives in core packages, mapped to transport/surface adapters.';
+        details =
+            'This is a platform library workspace containing modular packages/adapters. Central logic lives in core packages, mapped to transport/surface adapters.';
       } else if (toolDir.existsSync()) {
         archetype = 'C — CLI harness';
-        details = 'This is a CLI-first harness workspace. It provides command-line interfaces for agents or test runners without hosting public MCP APIs directly.';
+        details =
+            'This is a CLI-first harness workspace. It provides command-line interfaces for agents or test runners without hosting public MCP APIs directly.';
       } else {
         details = 'Platform / general codebase workspace.';
       }
     }
-    
+
     if (config.archetype != null && config.archetype!.isNotEmpty) {
       archetype = config.archetype!;
       if (archetype.startsWith('A')) {
-        details = 'This is a toolkit + MCP server repository. It implements agent capabilities and registers them in `plugin/mcp.json` or equivalent.';
+        details =
+            'This is a toolkit + MCP server repository. It implements agent capabilities and registers them in `plugin/mcp.json` or equivalent.';
       } else if (archetype.startsWith('B')) {
-        details = 'This is a platform library workspace containing modular packages/adapters. Central logic lives in core packages, mapped to transport/surface adapters.';
+        details =
+            'This is a platform library workspace containing modular packages/adapters. Central logic lives in core packages, mapped to transport/surface adapters.';
       } else if (archetype.startsWith('C')) {
-        details = 'This is a CLI-first harness workspace. It provides command-line interfaces for agents or test runners without hosting public MCP APIs directly.';
+        details =
+            'This is a CLI-first harness workspace. It provides command-line interfaces for agents or test runners without hosting public MCP APIs directly.';
       } else if (archetype.startsWith('E')) {
-        details = 'This is a meta-repository for agent skills and validation. It maintains governance guidelines and the `steward` CLI tool.';
+        details =
+            'This is a meta-repository for agent skills and validation. It maintains governance guidelines and the `steward` CLI tool.';
       } else {
         details = 'Configured repository archetype.';
       }
     }
-    
+
     buffer.writeln('- **Detected Archetype:** `$archetype`');
     buffer.writeln('- **Role:** $details');
     buffer.writeln();
@@ -156,7 +174,8 @@ class MapCommand extends Command<void> {
         final entries = skillsDir.listSync().whereType<Directory>();
         for (final entry in entries) {
           final name = p.basename(entry.path);
-          if (!name.startsWith('.') && File(p.join(entry.path, 'SKILL.md')).existsSync()) {
+          if (!name.startsWith('.') &&
+              File(p.join(entry.path, 'SKILL.md')).existsSync()) {
             localSkills.add(entry);
           }
         }
@@ -164,7 +183,9 @@ class MapCommand extends Command<void> {
     }
 
     if (localSkills.isNotEmpty) {
-      localSkills.sort((a, b) => p.basename(a.path).compareTo(p.basename(b.path)));
+      localSkills.sort(
+        (final a, final b) => p.basename(a.path).compareTo(p.basename(b.path)),
+      );
       buffer.writeln('| Skill | Type | Description | Path |');
       buffer.writeln('|---|---|---|---|');
       for (final dir in localSkills) {
@@ -183,56 +204,69 @@ class MapCommand extends Command<void> {
           type = parsed['type'] ?? 'developer';
         } catch (_) {}
 
-        buffer.writeln('| `$name` | `$type` | $desc | `.agents/skills/$name/` |');
+        buffer.writeln(
+          '| `$name` | `$type` | $desc | `.agents/skills/$name/` |',
+        );
       }
     } else {
-      buffer.writeln('_No skills installed. Run `steward install` to add skills._');
+      buffer.writeln(
+        '_No skills installed. Run `steward install` to add skills._',
+      );
     }
     buffer.writeln();
 
     // 2a. Recommended Skills to Adopt
     buffer.writeln('## 💡 Recommended Skills to Adopt');
-    buffer.writeln('These base skills are recommended for installation to guide agents and maintain repository hygiene:');
+    buffer.writeln(
+      'These base skills are recommended for installation to guide agents and maintain repository hygiene:',
+    );
     buffer.writeln();
 
-    final installedNames = localSkills.map((d) => p.basename(d.path)).toSet();
+    final installedNames = localSkills.map((final d) => p.basename(d.path)).toSet();
     final recs = <Map<String, String>>[];
 
     if (!installedNames.contains('north-star-governance')) {
       recs.add({
         'name': 'north-star-governance',
-        'why': 'Governs plan hygiene, AGENTS.md routing maps, and docs.page structure. Essential for maintaining repository hygiene.'
+        'why':
+            'Governs plan hygiene, AGENTS.md routing maps, and docs.page structure. Essential for maintaining repository hygiene.',
       });
     }
     if (!installedNames.contains('adr-records')) {
       recs.add({
         'name': 'adr-records',
-        'why': 'Provides templates for Architectural Decision Records (ADRs). Highly recommended to record design choices and keep them auditable.'
+        'why':
+            'Provides templates for Architectural Decision Records (ADRs). Highly recommended to record design choices and keep them auditable.',
       });
     }
     if (!installedNames.contains('faq-driven-docs')) {
       recs.add({
         'name': 'faq-driven-docs',
-        'why': 'Governs repo-level DESIGN_FAQ (why) and DX_FAQ (how) files, separating architectural reasons from operational guidelines.'
+        'why':
+            'Governs repo-level DESIGN_FAQ (why) and DX_FAQ (how) files, separating architectural reasons from operational guidelines.',
       });
     }
     if (!installedNames.contains('north-star-governance')) {
       recs.add({
         'name': 'north-star-governance',
-        'why': 'Helps connect folder-level READMEs and guides into a cohesive documentation lattice for incoming agents.'
+        'why':
+            'Helps connect folder-level READMEs and guides into a cohesive documentation lattice for incoming agents.',
       });
     }
     if (!installedNames.contains('mcp-harness-repo-maintainer')) {
       recs.add({
         'name': 'mcp-harness-repo-maintainer',
-        'why': 'Establishes task runners and automated validation gates. Highly useful for standardizing testing pipelines.'
+        'why':
+            'Establishes task runners and automated validation gates. Highly useful for standardizing testing pipelines.',
       });
     }
     if (!installedNames.contains('mcp-harness-repo-maintainer') &&
-        (archetype.contains('Product MCP') || archetype.contains('Meta steward'))) {
+        (archetype.contains('Product MCP') ||
+            archetype.contains('Meta steward'))) {
       recs.add({
         'name': 'mcp-harness-repo-maintainer',
-        'why': 'Tailored for MCP servers; manages JSON schema registry sync, contract checking, and release packaging.'
+        'why':
+            'Tailored for MCP servers; manages JSON schema registry sync, contract checking, and release packaging.',
       });
     }
 
@@ -243,7 +277,9 @@ class MapCommand extends Command<void> {
         buffer.writeln('| `${rec['name']}` | ${rec['why']} |');
       }
     } else {
-      buffer.writeln('✓ Excellent: All recommended base skills are currently installed.');
+      buffer.writeln(
+        '✓ Excellent: All recommended base skills are currently installed.',
+      );
     }
     buffer.writeln();
 
@@ -255,7 +291,8 @@ class MapCommand extends Command<void> {
         final entries = repoSkillsDir.listSync().whereType<Directory>();
         for (final entry in entries) {
           final name = p.basename(entry.path);
-          if (!name.startsWith('.') && File(p.join(entry.path, 'SKILL.md')).existsSync()) {
+          if (!name.startsWith('.') &&
+              File(p.join(entry.path, 'SKILL.md')).existsSync()) {
             exportedSkills.add(entry);
           }
         }
@@ -264,9 +301,13 @@ class MapCommand extends Command<void> {
 
     if (exportedSkills.isNotEmpty) {
       buffer.writeln('## 📦 Exported Repository Skills');
-      buffer.writeln('These are custom agent skills authored in this repository to assist developers/agents:');
+      buffer.writeln(
+        'These are custom agent skills authored in this repository to assist developers/agents:',
+      );
       buffer.writeln();
-      exportedSkills.sort((a, b) => p.basename(a.path).compareTo(p.basename(b.path)));
+      exportedSkills.sort(
+        (final a, final b) => p.basename(a.path).compareTo(p.basename(b.path)),
+      );
       buffer.writeln('| Skill | Type | Description | Path |');
       buffer.writeln('|---|---|---|---|');
       for (final dir in exportedSkills) {
@@ -305,7 +346,7 @@ class MapCommand extends Command<void> {
       'docs/DESIGN_FAQ.mdx',
       'docs/DX_FAQ.mdx',
       'docs/decisions/README.mdx',
-      'docs/decisions/README.md'
+      'docs/decisions/README.md',
     ]) {
       if (File(p.join(root, relPath)).existsSync()) {
         final name = p.basename(relPath);
@@ -314,15 +355,16 @@ class MapCommand extends Command<void> {
     }
 
     if (config.docs.isNotEmpty) {
-      config.docs.forEach((name, relPath) {
-        if (File(p.join(root, relPath)).existsSync() || Directory(p.join(root, relPath)).existsSync()) {
+      config.docs.forEach((final name, final relPath) {
+        if (File(p.join(root, relPath)).existsSync() ||
+            Directory(p.join(root, relPath)).existsSync()) {
           docFiles[name] = relPath;
         }
       });
     }
 
     if (docFiles.isNotEmpty) {
-      docFiles.forEach((name, path) {
+      docFiles.forEach((final name, final path) {
         buffer.writeln('- **$name**: [`$path`]($path)');
       });
     } else {
@@ -338,7 +380,9 @@ class MapCommand extends Command<void> {
     final planFile = File(p.join(root, 'implementation_plan.md'));
     if (planFile.existsSync()) activePlans.add('implementation_plan.md');
 
-    final activePlansDir = Directory(p.join(root, 'docs', 'exec-plans', 'active'));
+    final activePlansDir = Directory(
+      p.join(root, 'docs', 'exec-plans', 'active'),
+    );
     if (activePlansDir.existsSync()) {
       try {
         final planFiles = activePlansDir.listSync().whereType<File>();
@@ -355,14 +399,18 @@ class MapCommand extends Command<void> {
       buffer.writeln('## ⚠️ Active Plan Hygiene Alerts');
       buffer.writeln();
       buffer.writeln('> [!WARNING]');
-      buffer.writeln('> Stale/active plan files are present in the workspace. Clean these up before merging:');
+      buffer.writeln(
+        '> Stale/active plan files are present in the workspace. Clean these up before merging:',
+      );
       for (final plan in activePlans) {
         buffer.writeln('> - `$plan`');
       }
     } else {
       buffer.writeln('## ✅ Plan Hygiene Status');
       buffer.writeln();
-      buffer.writeln('✓ Clean: No active or stale plan files detected in the workspace.');
+      buffer.writeln(
+        '✓ Clean: No active or stale plan files detected in the workspace.',
+      );
     }
     buffer.writeln();
 

@@ -9,7 +9,7 @@ Read [docs/DX_FAQ.mdx](docs/DX_FAQ.mdx) for commands; [docs/DESIGN_FAQ.mdx](docs
 1. Fork and clone the repo.
 2. Copy the template: `templates/skill/` → `skills/your-skill-name/`.
 3. Edit `SKILL.md` (frontmatter + instructions).
-4. Run `pnpm run steward:analyze` and `pnpm run steward:validate` (or `pnpm run validate`).
+4. Run `pnpm run steward:analyze` and `pnpm run validate`.
 5. Update `skills.sh.json` and `README.md`.
 6. If the PR changes consumer-facing surfaces, run `pnpm changeset` and commit the generated `.changeset/*.md` ([ADR 0009](docs/decisions/0009-adopt-changesets-for-repo-releases.mdx)).
 7. Open a pull request.
@@ -24,11 +24,11 @@ Read [docs/DX_FAQ.mdx](docs/DX_FAQ.mdx) for commands; [docs/DESIGN_FAQ.mdx](docs
 ## Pull request checklist
 
 - [ ] `pnpm run steward:analyze` passes (same as CI)
-- [ ] `pnpm run steward:validate` passes (same as CI)
+- [ ] `pnpm run validate` passes
 - [ ] Changeset added when required (or PR title `[skip changeset]` with justification)
 - [ ] `pnpm run docs:check` passes (if you changed `docs/` or `docs.json`)
 - [ ] Visual/brand changes cite `docs/brand.mdx` + [ADR 0012](docs/decisions/0012-adopt-visual-brand-identity-system.mdx)
-- [ ] Skill added to `skills.sh.json` groupings
+- [ ] Skill added to `skills.sh.json` using the current repo schema
 - [ ] `README.md` skill table updated
 - [ ] No unrelated changes
 - [ ] License compatible with MIT (repo default)

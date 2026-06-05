@@ -28,14 +28,11 @@ class UpdateCommand extends Command<void> {
         help: 'Filter skill updates by type (governance | developer).',
         allowed: ['governance', 'developer'],
       )
-      ..addFlag(
-        'force',
-        abbr: 'f',
-        help: 'Force overwrite local changes.',
-      )
+      ..addFlag('force', abbr: 'f', help: 'Force overwrite local changes.')
       ..addFlag(
         'json',
-        help: 'Output structured diagnostic JSON instead of human-readable text.',
+        help:
+            'Output structured diagnostic JSON instead of human-readable text.',
       );
   }
 
@@ -57,7 +54,9 @@ class UpdateCommand extends Command<void> {
     final skillsJsonFile = File(p.join(root, 'skills.json'));
 
     if (!skillsJsonFile.existsSync()) {
-      throw Exception('No skills.json file found in project root. Run install command first.');
+      throw Exception(
+        'No skills.json file found in project root. Run install command first.',
+      );
     }
 
     final raw = await skillsJsonFile.readAsString();
@@ -92,7 +91,9 @@ class UpdateCommand extends Command<void> {
           'refs/heads/$ref',
         ]);
         if (lsRes.exitCode != 0) {
-          throw Exception('Failed to query remote for $source: ${lsRes.stderr}');
+          throw Exception(
+            'Failed to query remote for $source: ${lsRes.stderr}',
+          );
         }
 
         final stdoutStr = (lsRes.stdout as String).trim();
@@ -102,17 +103,19 @@ class UpdateCommand extends Command<void> {
 
         final latestCommit = stdoutStr.split(RegExp(r'\s+')).first;
 
-        final shortLocked = lockedCommit != null ? (lockedCommit.length >= 7 ? lockedCommit.substring(0, 7) : lockedCommit) : 'null';
-        final shortLatest = latestCommit.length >= 7 ? latestCommit.substring(0, 7) : latestCommit;
+        final shortLocked = lockedCommit != null
+            ? (lockedCommit.length >= 7
+                  ? lockedCommit.substring(0, 7)
+                  : lockedCommit)
+            : 'null';
+        final shortLatest = latestCommit.length >= 7
+            ? latestCommit.substring(0, 7)
+            : latestCommit;
 
         if (latestCommit == lockedCommit) {
-          stdout.writeln(
-            '✓ $source is up to date (locked at $shortLocked).',
-          );
+          stdout.writeln('✓ $source is up to date (locked at $shortLocked).');
         } else {
-          stdout.writeln(
-            'Updating $source: $shortLocked -> $shortLatest...',
-          );
+          stdout.writeln('Updating $source: $shortLocked -> $shortLatest...');
           // Run the git clone and installation routine for the new commit
           await _installFromSource(
             source,
@@ -159,7 +162,9 @@ class UpdateCommand extends Command<void> {
 
     final cloneRes = await Process.run('git', ['clone', repoUrl, tempDir.path]);
     if (cloneRes.exitCode != 0) {
-      throw Exception('Failed to clone repository during update: ${cloneRes.stderr}');
+      throw Exception(
+        'Failed to clone repository during update: ${cloneRes.stderr}',
+      );
     }
 
     // Checkout specific commit SHA
@@ -171,7 +176,9 @@ class UpdateCommand extends Command<void> {
     ]);
     if (checkoutRes.exitCode != 0) {
       await tempDir.delete(recursive: true);
-      throw Exception('Failed to checkout commit $commitSha: ${checkoutRes.stderr}');
+      throw Exception(
+        'Failed to checkout commit $commitSha: ${checkoutRes.stderr}',
+      );
     }
 
     try {

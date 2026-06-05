@@ -3,20 +3,20 @@ import 'package:path/path.dart' as p;
 import 'package:yaml/yaml.dart';
 
 /// Glob-to-RegExp translation utility to avoid external package dependencies.
-RegExp globToRegex(String pattern) {
+RegExp globToRegex(final String pattern) {
   var escaped = pattern
       .replaceAll(r'\', r'\\')
-      .replaceAll(r'.', r'\.')
-      .replaceAll(r'+', r'\+')
+      .replaceAll('.', r'\.')
+      .replaceAll('+', r'\+')
       .replaceAll(r'$', r'\$')
-      .replaceAll(r'^', r'\^')
-      .replaceAll(r'[', r'\[')
-      .replaceAll(r']', r'\]')
-      .replaceAll(r'(', r'\(')
-      .replaceAll(r')', r'\)')
-      .replaceAll(r'{', r'\{')
-      .replaceAll(r'}', r'\}')
-      .replaceAll(r'|', r'\|');
+      .replaceAll('^', r'\^')
+      .replaceAll('[', r'\[')
+      .replaceAll(']', r'\]')
+      .replaceAll('(', r'\(')
+      .replaceAll(')', r'\)')
+      .replaceAll('{', r'\{')
+      .replaceAll('}', r'\}')
+      .replaceAll('|', r'\|');
 
   escaped = escaped.replaceAll('**/', 'DOUBLE_STAR_SLASH');
   escaped = escaped.replaceAll('/**', 'SLASH_DOUBLE_STAR');
@@ -35,9 +35,8 @@ class CustomValidator {
   CustomValidator({
     required this.type,
     required this.files,
-    this.exclude = const [],
+    required this.message, this.exclude = const [],
     this.substrings = const [],
-    required this.message,
   });
 
   final String type;
@@ -46,7 +45,7 @@ class CustomValidator {
   final List<String> substrings;
   final String message;
 
-  static CustomValidator? fromMap(Map<String, dynamic> map) {
+  static CustomValidator? fromMap(final Map<String, dynamic> map) {
     final type = map['type'] as String?;
     final filesList = map['files'] as List?;
     final excludeList = map['exclude'] as List?;
@@ -65,7 +64,7 @@ class CustomValidator {
   }
 
   /// Runs this validator over the workspace root.
-  Future<List<String>> validate(String rootPath) async {
+  Future<List<String>> validate(final String rootPath) async {
     final errors = <String>[];
     if (type != 'disallowed-substrings') return errors;
 
@@ -95,14 +94,16 @@ class CustomValidator {
     );
 
     for (final file in filesToScan) {
-      final relPath = p.relative(file.path, from: rootPath).replaceAll('\\', '/');
+      final relPath = p
+          .relative(file.path, from: rootPath)
+          .replaceAll(r'\', '/');
 
       // Check if file matches file patterns
-      final matchesFile = filePatterns.any((p) => p.hasMatch(relPath));
+      final matchesFile = filePatterns.any((final p) => p.hasMatch(relPath));
       if (!matchesFile) continue;
 
       // Check if file matches exclude patterns
-      final matchesExclude = excludePatterns.any((p) => p.hasMatch(relPath));
+      final matchesExclude = excludePatterns.any((final p) => p.hasMatch(relPath));
       if (matchesExclude) continue;
 
       // Scan file content
@@ -127,26 +128,38 @@ class CustomValidator {
   }
 
   Future<void> _findFilesRecursive(
-    Directory dir,
-    String rootPath,
-    List<File> filesList,
-    Set<String> ignoreDirNames,
-    List<RegExp> excludePatterns,
+    final Directory dir,
+    final String rootPath,
+    final List<File> filesList,
+    final Set<String> ignoreDirNames,
+    final List<RegExp> excludePatterns,
   ) async {
     try {
-      final entities = await dir.list(recursive: false, followLinks: false).toList();
+      final entities = await dir
+          .list(followLinks: false)
+          .toList();
       for (final entity in entities) {
         if (entity is Directory) {
           final name = p.basename(entity.path);
           if (ignoreDirNames.contains(name)) {
             continue;
           }
-          final relPath = p.relative(entity.path, from: rootPath).replaceAll('\\', '/');
-          final matchesExclude = excludePatterns.any((p) => p.hasMatch(relPath) || p.hasMatch('$relPath/'));
+          final relPath = p
+              .relative(entity.path, from: rootPath)
+              .replaceAll(r'\', '/');
+          final matchesExclude = excludePatterns.any(
+            (final p) => p.hasMatch(relPath) || p.hasMatch('$relPath/'),
+          );
           if (matchesExclude) {
             continue;
           }
-          await _findFilesRecursive(entity, rootPath, filesList, ignoreDirNames, excludePatterns);
+          await _findFilesRecursive(
+            entity,
+            rootPath,
+            filesList,
+            ignoreDirNames,
+            excludePatterns,
+          );
         } else if (entity is File) {
           filesList.add(entity);
         }
@@ -168,6 +181,9 @@ class StewardConfig {
     this.docs = const {},
     this.governance = const {},
     this.branding = const {},
+    this.skillsDistribution = const {},
+    this.evals = const {},
+    this.telemetry = const {},
   });
 
   final String? archetype;
@@ -179,8 +195,11 @@ class StewardConfig {
   final Map<String, String> docs;
   final Map<String, dynamic> governance;
   final Map<String, dynamic> branding;
+  final Map<String, dynamic> skillsDistribution;
+  final Map<String, dynamic> evals;
+  final Map<String, dynamic> telemetry;
 
-  static Future<StewardConfig> load(String rootPath) async {
+  static Future<StewardConfig> load(final String rootPath) async {
     var file = File(p.join(rootPath, 'steward.yaml'));
     if (!file.existsSync()) {
       file = File(p.join(rootPath, 'steward.yml'));
@@ -218,22 +237,28 @@ class StewardConfig {
       final pipelinesMap = data['pipelines'] as Map? ?? const {};
       final docsMap = data['docs'] as Map? ?? const {};
       final docs = <String, String>{};
-      docsMap.forEach((key, value) {
+      docsMap.forEach((final key, final value) {
         docs[key.toString()] = value.toString();
       });
 
       final governanceMap = data['governance'] as Map? ?? const {};
       final brandingMap = data['branding'] as Map? ?? const {};
-      
+      final skillsDistributionMap =
+          data['skills_distribution'] as Map? ?? const {};
+
       final bannedWords = brandingMap['banned_words'] as List?;
       if (bannedWords != null && bannedWords.isNotEmpty) {
-        validators.add(CustomValidator(
-          type: 'disallowed-substrings',
-          files: ['**/*.md', '**/*.mdx'],
-          exclude: (brandingMap['ignored_paths'] as List?)?.cast<String>() ?? const [],
-          substrings: bannedWords.map((e) => e.toString()).toList(),
-          message: 'Brand identity violation (banned jargon)',
-        ));
+        validators.add(
+          CustomValidator(
+            type: 'disallowed-substrings',
+            files: ['**/*.md', '**/*.mdx'],
+            exclude:
+                (brandingMap['ignored_paths'] as List?)?.cast<String>() ??
+                const [],
+            substrings: bannedWords.map((final e) => e.toString()).toList(),
+            message: 'Brand identity violation (banned jargon)',
+          ),
+        );
       }
 
       return StewardConfig(
@@ -246,6 +271,11 @@ class StewardConfig {
         docs: docs,
         governance: Map<String, dynamic>.from(governanceMap),
         branding: Map<String, dynamic>.from(brandingMap),
+        skillsDistribution: Map<String, dynamic>.from(skillsDistributionMap),
+        evals: Map<String, dynamic>.from(data['evals'] as Map? ?? const {}),
+        telemetry: Map<String, dynamic>.from(
+          data['telemetry'] as Map? ?? const {},
+        ),
       );
     } catch (_) {
       return StewardConfig();
@@ -253,9 +283,11 @@ class StewardConfig {
   }
 }
 
-dynamic _yamlToDart(dynamic node) {
+dynamic _yamlToDart(final node) {
   if (node is YamlMap) {
-    return node.map((key, value) => MapEntry(key.toString(), _yamlToDart(value)));
+    return node.map(
+      (final key, final value) => MapEntry(key.toString(), _yamlToDart(value)),
+    );
   } else if (node is YamlList) {
     return node.map(_yamlToDart).toList();
   }

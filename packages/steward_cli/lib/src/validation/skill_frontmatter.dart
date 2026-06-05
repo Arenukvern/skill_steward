@@ -56,7 +56,7 @@ ParsedFrontmatter parseFrontmatter(final String content) {
   try {
     final doc = loadYaml(raw);
     if (doc is Map) {
-      doc.forEach((key, value) {
+      doc.forEach((final key, final value) {
         if (value is! Map && value is! List && value != null) {
           // Standardize and flatten description fields to single line if multi-line
           var parsedValue = value.toString();

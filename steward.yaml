@@ -8,3 +8,16 @@ governance:
     design: "docs/DESIGN_FAQ.mdx"
     dx: "docs/DX_FAQ.mdx"
   ethics_charter: "docs/NORTH_STAR.mdx"
+
+skills_distribution:
+  source_dir: "skills/"
+  output: "skills.sh.json"
+
+pipelines:
+  test_declare:
+    cmd: "echo test"
+    desc: "Testing declare pipeline"
+
+  test_pipeline:
+    cmd: "echo 'Hello from pipeline'"
+    desc: "A test pipeline"

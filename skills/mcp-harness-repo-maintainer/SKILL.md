@@ -45,6 +45,8 @@ Agents / chat →  MCP ──┘
 
 Full layering: [core-and-interfaces.md](references/core-and-interfaces.md). **Parity:** every MCP tool must call the same core entrypoint as its CLI twin.
 
+**Progressive Automation (Agent-Driven Workflows):** MCP servers should not just execute static tools; they must empower agents to *write back* to the harness. If an agent discovers a complex fix or bash script, it should declare a pipeline (e.g. `steward_declare_pipeline`) permanently in `steward.yaml` so the friction is solved for all future agents.
+
 ## Core Beliefs & Culture
 
 1. **Missing capability → harness gap** — When an agent fails, ask what is not *legible* or *enforceable*, then add CLI command, MCP tool, linter, or skill.
@@ -96,7 +98,7 @@ Route by **primary artifact**:
 4. **Mechanical gates** — contract checks / validate commands / unit tests before merge.
 5. **Plan hygiene** — extract to ADR/FAQ/code/skill then **delete** plan files.
 6. **Version honesty** — single `VERSION` or release-please manifest.
-7. **Distribution** — document per channel: `npx skills`, `init <agent>`, git marketplace.
+7. **Distribution & Universal Translation** — Document per channel (`npx skills`, git marketplace). Avoid proprietary ecosystem lock-in. Ensure CLI tools natively compile governance to upstream IDE formats (e.g., `steward bundle` generating `.cursor/rules` and `.clinerules`).
 
 ## Workflow: Add Agent-First Capability
 

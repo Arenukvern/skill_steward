@@ -156,12 +156,13 @@ Future<ValidationReport> validateAllSkills(final String skillsDir) async {
   }
 
   final entries = await dir.list().toList();
-  final skillDirs = entries
-      .whereType<Directory>()
-      .map((final d) => d.path)
-      .where((final path) => !p.basename(path).startsWith('.'))
-      .toList()
-    ..sort();
+  final skillDirs =
+      entries
+          .whereType<Directory>()
+          .map((final d) => d.path)
+          .where((final path) => !p.basename(path).startsWith('.'))
+          .toList()
+        ..sort();
 
   final results = <SkillValidationResult>[];
 
@@ -183,7 +184,7 @@ Future<ValidationReport> validateAllSkills(final String skillsDir) async {
 
     final aug = augmentWithRegistryWarnings(results, registryIds);
     finalSkills = aug.augmentedResults;
-    
+
     final warnings = List<String>.from(aug.registryWarnings);
 
     // Plan hygiene scan
@@ -194,7 +195,9 @@ Future<ValidationReport> validateAllSkills(final String skillsDir) async {
         activePlans.add(planName);
       }
     }
-    final activePlansDir = Directory(p.join(root, 'docs', 'exec-plans', 'active'));
+    final activePlansDir = Directory(
+      p.join(root, 'docs', 'exec-plans', 'active'),
+    );
     if (activePlansDir.existsSync()) {
       try {
         final files = activePlansDir.listSync().whereType<File>();

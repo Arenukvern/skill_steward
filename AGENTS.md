@@ -19,10 +19,10 @@ You are in **Skill Steward**: a meta-layer for the Agent Skills ecosystem. Read 
 
 ```bash
 npx skills add arenukvern/skill_steward
-npx skills add arenukvern/skill_steward --skill north-star-governance
+npx skills add arenukvern/skill_steward --skill repository-governance-lifecycle
 ```
 
-[Listed agents](https://github.com/vercel-labs/skills#supported-agents). Project: `.agents/skills/` → `.cursor/skills/`. Global: `-g`.
+[Listed agents](https://github.com/vercel-labs/skills#supported-agents). Project default: `.agents/skills/`; global default: `~/.agents/skills/` via `-g`. Use agent flags when a target needs its own path.
 
 ## Non-negotiables
 
@@ -31,28 +31,27 @@ npx skills add arenukvern/skill_steward --skill north-star-governance
 3. **Plan hygiene** — any planning tool is fine; when done, extract into ADR / FAQ / code / harness, then delete stale plan files ([doctrine](docs/start_here/executable-plans.mdx)).
 4. **AGENTS.md stays a map** — skill authoring: [docs/STANDARDS.mdx](docs/STANDARDS.mdx); do not bloat this file.
 5. **Docs ≠ code** — link to behavior SSOT; do not paraphrase implementations in prose.
-6. **Ethical governance** — all design decisions must be auditable against [`ethical-stewardship`](skills/ethical-stewardship/SKILL.md) principles (Anti-Bloat, Reversibility, Legibility, Behavior-as-Truth, Artisan Restraint).
+6. **Ethical governance** — all design decisions must be auditable against [`charter-and-ethics`](skills/repository-governance-lifecycle/references/charter-and-ethics.md) principles (Anti-Bloat, Reversibility, Legibility, Behavior-as-Truth, Artisan Restraint).
 
 ## Guild skills (in-repo)
 
 | Skill | Use when |
 |-------|----------|
-| `north-star-governance` | Charter, AGENTS map, plan lifecycle, docs.json |
-| `ethical-stewardship` | Bootstrapping ethics, auditing decisions against moral/design boundaries, defining repo credo |
-| `mcp-harness-repo-maintainer` | CLI/MCP harness, agent-first culture |
-| `release-changelog-harness` | Release/changelog tooling per ecosystem (Changesets, Melos, …) |
-| `skill-authoring-lifecycle` | New skill under `skills/` |
-| `skill-eval-improve` | Tiered evals, `evals/cases/*.yaml`, improve loops ([ADR 0011](docs/decisions/0011-tiered-skill-evals-and-rule-based-ci.mdx)) |
-| `skill-authoring-lifecycle` | Audit SKILL.md before merge |
-| `faq-driven-docs` | DESIGN_FAQ + DX_FAQ |
-| `adr-records` | New ADR in `docs/decisions/` |
-| `north-star-governance` | Doc lattice for larger repos |
-| `multi-agent-handoff` | HANDOFF between agents |
+| `repository-governance-lifecycle` | Architectural decisions (ADRs), FAQs, ethical auditing, charter, AGENTS map |
+| `harness-engineering-lifecycle` | Engineering agentic developer harnesses and sandboxes |
+| `mcp-harness-repo-maintainer` | CLI/MCP harness configuration, agent-first workflows |
+| `release-changelog-harness` | Release and changelog tooling per ecosystem (Changesets, Melos, etc.) |
+| `skill-authoring-lifecycle` | Creating, auditing, and maintaining SKILL.md under `skills/` |
+| `skill-eval-improve` | Tiered evaluations (`evals/cases/*.yaml`) and CI improve loops |
+| `mixture-of-experts` | Parallel agent reasoning, critical evaluation, and self-auditing |
+| `multi-agent-handoff` | Spawning and communicating with subagents, handoffs |
+| `plugin-marketplace-setup` | Skill and plugin marketplace distribution setup |
+| `skill-source-citations` | Sourcing, attribution, and managing knowledge provenance |
 
 ## Add or change a skill (checklist)
 
 1. `skills/{name}/SKILL.md` — `name` == directory; see [STANDARDS](docs/STANDARDS.mdx).
-2. `pnpm run validate` (Tier 1: also `pnpm run eval`)
+2. `pnpm run validate` (Tier 1: also run eval when the eval harness is wired)
 3. `skills.sh.json` + [README](README.md) table
 4. No secrets; no domain tutorials
 
@@ -68,9 +67,9 @@ CI: `.github/workflows/validate-skills.yml`
 
 | Agent | Project | Global |
 |-------|---------|--------|
-| Cursor | `.cursor/skills/` | `~/.cursor/skills/` |
+| Universal / Zed | `.agents/skills/` | `~/.agents/skills/` |
+| Cursor | `.agents/skills/` or `.cursor/skills/` | `~/.cursor/skills/` |
 | Claude Code | `.claude/skills/` | `~/.claude/skills/` |
-| Codex | `.codex/skills/` | `~/.codex/skills/` |
-| Universal | `.agents/skills/` | `~/.agents/skills/` |
+| Codex | `.agents/skills/` | `~/.codex/skills/` |
 
 Plugins (hooks) are **not** installed by `npx skills` on Cursor — [plugins/README.md](plugins/README.md).

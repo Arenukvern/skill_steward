@@ -6,8 +6,6 @@ library;
 
 /// Skills that require Tier 1 rule-based eval cases.
 const List<String> tier1Skills = [
-  'north-star-governance',
-  'mcp-harness-repo-maintainer',
   'mcp-harness-repo-maintainer',
   'skill-authoring-lifecycle',
 ];

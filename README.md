@@ -6,7 +6,7 @@
 
 **Meta skills for the [Agent Skills](https://agentskills.io/) ecosystem** — validate, govern, and document portable `SKILL.md` packages. Not a domain skill catalog (React, Flutter, cloud recipes live elsewhere). Not a skill installer ([Skillkit](https://github.com/rohitg00/skillkit) and [skills.sh](https://skills.sh) cover distribution).
 
-Install on **Cursor**, **Claude Code**, **Codex**, **Windsurf**, **GitHub Copilot**, and 15+ tools via `npx skills`.
+Install on **Cursor**, **Claude Code**, **Codex**, **Zed**, **Windsurf**, **GitHub Copilot**, and 15+ tools via `npx skills`.
 
 **Charter:** [docs/NORTH_STAR.mdx](docs/NORTH_STAR.mdx) · **Docs:** [docs.page/arenukvern/skill_steward](https://docs.page/arenukvern/skill_steward) · [docs.json](docs.json)  
 **Why / how:** [docs/DESIGN_FAQ.mdx](docs/DESIGN_FAQ.mdx) · [docs/DX_FAQ.mdx](docs/DX_FAQ.mdx) · [Decisions](docs/decisions/) · [AGENTS.md](AGENTS.md) (agent map)
@@ -42,8 +42,12 @@ npx skills add arenukvern/skill_steward --skill skill-authoring-lifecycle
 # Install globally (across all projects)
 npx skills add arenukvern/skill_steward -g
 
-# Target specific agents (e.g. Cursor & Claude Code, non-interactive)
-npx skills add arenukvern/skill_steward -a cursor -a claude-code -y
+# Target specific agents (Cursor, Claude Code, Codex, Zed; non-interactive)
+npx skills add arenukvern/skill_steward -a cursor -a claude-code -a codex -a zed -y
+
+# Install from a local clone while iterating on Skill Steward
+npx skills add <workspace>/agent_guild -a cursor -a claude-code -a codex -a zed -y
+npx skills add <workspace>/agent_guild -g -y
 ```
 
 Discover available skills on [skills.sh](https://skills.sh/arenukvern/skill_steward) or search them in the terminal:
@@ -60,7 +64,7 @@ curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/insta
 
 ## Updating installed skills
 
-Skills install as copies or symlinks under agent directories (for example `.cursor/skills/` or `.agents/skills/`). When **Skill Steward** changes on GitHub, refresh your install with the [skills CLI](https://github.com/vercel-labs/skills):
+Skills install as copies or symlinks under agent directories (for example `.agents/skills/`, `.cursor/skills/`, or `~/.codex/skills/`). When **Skill Steward** changes on GitHub, refresh your install with the [skills CLI](https://github.com/vercel-labs/skills):
 
 ```bash
 # Update every Skill Steward skill you have installed (project scope)
@@ -73,7 +77,7 @@ npx skills update -g -y
 npx skills update -p -y
 
 # Update one skill by name (as shown in `npx skills list`)
-npx skills update north-star-governance -y
+npx skills update repository-governance-lifecycle -y
 ```
 
 Re-install from GitHub when you want a clean pull of the whole marketplace or a single skill:
@@ -85,8 +89,8 @@ npx skills add arenukvern/skill_steward -y
 # Refresh one skill
 npx skills add arenukvern/skill_steward --skill mcp-harness-repo-maintainer -y
 
-# Same, but only for Cursor in this repo
-npx skills add arenukvern/skill_steward -a cursor -y
+# Same, but from this local clone while testing unpublished skill edits
+npx skills add <workspace>/agent_guild --skill mcp-harness-repo-maintainer -a cursor -a codex -y
 ```
 
 See what is installed before updating:
@@ -109,7 +113,7 @@ Meta and process capabilities only — [inclusion criteria](docs/decisions/0001-
 | Skill | Use when |
 |-------|----------|
 | [skill-authoring-lifecycle](skills/skill-authoring-lifecycle/)     | Scaffold a new skill that passes validation and works with `npx skills`.                                                                                                   |
-| [plugin-marketplace-setup](skills/plugin-marketplace-setup/)       | Public/private skill & plugin marketplaces for Cursor, Claude, Codex, and `npx skills`.                                                                                    |
+| [plugin-marketplace-setup](skills/plugin-marketplace-setup/)       | Public/private skill & plugin marketplaces for Cursor, Claude Code, Codex, Zed, Open Plugin, and `npx skills`.                                                            |
 | [skill-source-citations](skills/skill-source-citations/)           | Cite and persist URLs in `references/sources.md` when authoring skills.                                                                                                    |
 | [skill-eval-improve](skills/skill-eval-improve/)                   | Tiered evals—rule-based `pnpm run eval`, Chrome/SkillOpt patterns, plugin-eval, human prompt suites.                                                                      |
 | [mixture-of-experts](skills/mixture-of-experts/)                   | Run a multi-agent Mixture of Experts audit on any topic to detect and consolidate overlapping logic.                                                                        |
@@ -144,7 +148,7 @@ skill_steward/              # GitHub: Arenukvern/skill_steward
 ├── scripts/                # Utility shell scripts (e.g. build_release_artifacts.sh)
 ├── install.sh              # Precompiled binary bootstrapper script
 ├── docs.json               # docs.page configuration
-├── skills.sh.json          # skills.sh directory groupings
+├── skills.sh.json          # skills.sh directory configuration
 ├── CHANGELOG.md            # Version changelog (via Changesets)
 ├── .changeset/             # In-flight changelog fragments
 └── AGENTS.md               # Agent entry map
@@ -162,7 +166,7 @@ skill_steward/              # GitHub: Arenukvern/skill_steward
 
 ```bash
 pnpm install
-pnpm run steward:validate
+pnpm run validate
 ```
 
 Dart CLI directly ([ADR 0006](docs/decisions/0006-guild-harness-meta-vs-product-clis.mdx) / [0007](docs/decisions/0007-dart-for-guild-cli-and-harness-tooling.mdx)):

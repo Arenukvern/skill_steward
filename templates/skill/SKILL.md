@@ -1,6 +1,6 @@
 ---
 name: your-skill-name
-description: Replace with what this skill does and when to use it. Include phrases users say, e.g. "audit my API", "scaffold a skill".
+description: Replace with what this skill does and when to use it. Include trigger phrases users say, e.g. "audit my API", "scaffold a skill"; activation-critical routing belongs here.
 license: MIT
 metadata:
   author: skill-steward
@@ -12,10 +12,11 @@ metadata:
 
 One paragraph explaining the outcome for the user.
 
-## When to use
+## Trigger examples
 
-- User asks to ...
-- Working on ...
+- Should trigger: "..."
+- Should trigger: "..."
+- Should not trigger: "..."
 
 ## Instructions
 

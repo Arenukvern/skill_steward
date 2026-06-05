@@ -1,11 +1,12 @@
-# Skill Steward plugin manifest (v1 draft — see ADR 0004)
+# Skill Steward local meta-plugin manifest (v1 draft — see ADR 0004).
+# This is not a Codex, Cursor, Claude, or Open Plugin marketplace manifest.
 id: your-plugin-id
 version: "0.1.0"
 description: One line — what wiring this bundle adds beyond skills alone.
 
 # Skills already in repo skills/ — installed separately via npx skills
 skills:
-  - skill-spec-review
+  - skill-authoring-lifecycle
 
 targets:
   cursor:

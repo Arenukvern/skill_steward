@@ -42,6 +42,7 @@ Cursor scope (optional): activate when editing under `skills/**` or `scripts/val
 | **2 — Human** | Behavior | 3–5 prompts with/without skill | minutes |
 | **3 — Measured** | Usage | `plugin-eval benchmark` + `measurement-plan` | minutes–hours |
 | **4 — Evolve** | Text optimization | SkillOpt-style bounded edits + held-out gate | hours |
+| **5 — Navigate**| Telemetry | `steward eval` on `.steward_trace.json` | seconds |
 
 Use the **cheapest layer that answers the question**. Do not skip layer 0.
 
@@ -138,6 +139,16 @@ Related: [SkillLens](https://microsoft.github.io/SkillOpt/) (model-generated ski
 | [SkillsBench](https://arxiv.org/abs/2602.12670) | Inspiration for paired vanilla vs skill-augmented tasks |
 | [skillgrade](https://github.com/mgechev/skillgrade) | Regression testing skill quality (mgechev) |
 | Claude authoring best practices | Eval-before-write workflow |
+
+## Layer 5 — Navigation Telemetry Evals
+
+At 10,000x scale, NLP prompt evaluation fails because LLMs suffer **Cognitive Overload** navigating massive toolsets. We must objectively assert their logical trajectory using deterministic traces.
+
+1. **Enable Tracing:** Set `telemetry.enabled: true` in `steward.yaml`. `steward mcp` will now intercept every agent tool call and stream it to `.steward_trace.json`.
+2. **Define Assertions:** Update your `evals:` block in `steward.yaml` to enforce strict cognitive constraints (e.g., `max_tool_calls: 50`).
+3. **Run Evals:** Execute `steward eval <name>`. The CLI parses the JSON trace file to mathematically assert whether the agent navigated efficiently without hallucinating tools.
+
+*Note: Execution latency is largely solved (CLI parses 100,000 lines in < 1 second). The modern bottleneck is evaluating the Agent's navigation efficiency.*
 
 ## Improve workflow (checklist)
 

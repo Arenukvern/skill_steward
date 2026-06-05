@@ -8,6 +8,10 @@ npx skills add arenukvern/skill_steward
 
 # Install one skill by name
 npx skills add arenukvern/skill_steward --skill <name>
+
+# Install from a local clone while iterating
+npx skills add <workspace>/agent_guild -a cursor -a claude-code -a codex -a zed -y
+npx skills add <workspace>/agent_guild -g -y
 ```
 
 See [DX_FAQ](DX_FAQ) for full install, update, and listing commands.
@@ -20,11 +24,10 @@ See [DX_FAQ](DX_FAQ) for full install, update, and listing commands.
 
 | Skill | What it does |
 |-------|-------------|
-| [`skill-authoring-lifecycle`](https://github.com/arenukvern/skill_steward/tree/main/skills/skill-authoring-lifecycle) | Scaffold a new Agent Skill with valid SKILL.md, directory layout, and registry entries. Use when adding a skill or contributing to skill_steward. |
-| [`skill-authoring-lifecycle`](https://github.com/arenukvern/skill_steward/tree/main/skills/skill-authoring-lifecycle) | Audit SKILL.md and skill directories for Agent Skills spec, Cursor extensions, and npx skills compatibility. Use when reviewing or checking marketplace readiness. |
+| [`skill-authoring-lifecycle`](https://github.com/arenukvern/skill_steward/tree/main/skills/skill-authoring-lifecycle) | Scaffold and formally review Agent Skills with valid SKILL.md, resource planning, sources, evals, registry entries, and marketplace readiness. |
 | [`skill-source-citations`](https://github.com/arenukvern/skill_steward/tree/main/skills/skill-source-citations) | Requires durable citations when authoring skills — maintain `references/sources.md` per skill, link external research, and record provenance. |
 | [`skill-eval-improve`](https://github.com/arenukvern/skill_steward/tree/main/skills/skill-eval-improve) | Improves Agent Skills via validate → rule-based eval cases → plugin-eval → prompt evals → bounded edits with held-out gates. |
-| [`plugin-marketplace-setup`](https://github.com/arenukvern/skill_steward/tree/main/skills/plugin-marketplace-setup) | Designs public or private AI skill and plugin marketplaces for Cursor, Claude Code, Codex, and npx skills. |
+| [`plugin-marketplace-setup`](https://github.com/arenukvern/skill_steward/tree/main/skills/plugin-marketplace-setup) | Designs public or private Agent Skill and plugin marketplaces for Cursor, Claude Code, Codex, Zed, Open Plugin, and `npx skills`. |
 
 ---
 
@@ -34,11 +37,7 @@ See [DX_FAQ](DX_FAQ) for full install, update, and listing commands.
 
 | Skill | What it does |
 |-------|-------------|
-| [`adr-records`](https://github.com/arenukvern/skill_steward/tree/main/skills/adr-records) | Writes and maintains ADRs (MADR, Nygard, Y-Statement) and runs decision checkpoints before/during work. Use when creating ADRs or facing a design fork. |
-| [`faq-driven-docs`](https://github.com/arenukvern/skill_steward/tree/main/skills/faq-driven-docs) | Creates and maintains DESIGN_FAQ (why) and DX_FAQ (how) in FAQ-driven development style. Use when writing docs or bootstrapping FAQ rules. |
-| [`north-star-governance`](https://github.com/arenukvern/skill_steward/tree/main/skills/north-star-governance) | Bootstraps a layered documentation store for concepts, architecture, and decisions without duplicating how code works. |
-| [`repo-brand-identity`](https://github.com/arenukvern/skill_steward/tree/main/skills/repo-brand-identity) | Establishes, maintains, and governs visual brand identity systems — palettes, vector logos, README badges, and documentation tone. |
-| [`ethical-stewardship`](https://github.com/arenukvern/skill_steward/tree/main/skills/ethical-stewardship) | Establishes, audits, and maintains core ethical systems in software repositories. Use when defining repository culture, drafting ethical manifestos, or auditing decisions against moral design boundaries. |
+| [`repository-governance-lifecycle`](https://github.com/arenukvern/skill_steward/tree/main/skills/repository-governance-lifecycle) | Guides architectural decisions, ADRs, FAQs, stale-plan cleanup, ethics, and brand-tone governance. |
 
 ---
 
@@ -48,10 +47,9 @@ See [DX_FAQ](DX_FAQ) for full install, update, and listing commands.
 
 | Skill | What it does |
 |-------|-------------|
-| [`north-star-governance`](https://github.com/arenukvern/skill_steward/tree/main/skills/north-star-governance) | Maintains `docs/NORTH_STAR.mdx`, wires `AGENTS.md` as a short agent map, and applies plan hygiene. Use when updating charter, repo navigation, or closing work. |
+| [`harness-engineering-lifecycle`](https://github.com/arenukvern/skill_steward/tree/main/skills/harness-engineering-lifecycle) | Generalizes validation harnesses across producer-consumer boundaries and safely dogfoods them in sibling repos. |
 | [`mcp-harness-repo-maintainer`](https://github.com/arenukvern/skill_steward/tree/main/skills/mcp-harness-repo-maintainer) | Develops agent-first engineering culture via harness design — CLI and MCP with shared contracts, mechanical gates, and in-repo docs. |
 | [`release-changelog-harness`](https://github.com/arenukvern/skill_steward/tree/main/skills/release-changelog-harness) | Chooses ecosystem-native release and changelog tooling (Changesets, Melos, release-plz) and binary distribution. Use for release CI, CHANGELOGs, or versioning. |
-| [`mcp-harness-repo-maintainer`](https://github.com/arenukvern/skill_steward/tree/main/skills/mcp-harness-repo-maintainer) | Maintains MCP-and-harness repositories where CLI and MCP are thin agent-facing interfaces and core libraries hold domain logic. |
 
 ---
 
@@ -61,6 +59,7 @@ See [DX_FAQ](DX_FAQ) for full install, update, and listing commands.
 
 | Skill | What it does |
 |-------|-------------|
+| [`mixture-of-experts`](https://github.com/arenukvern/skill_steward/tree/main/skills/mixture-of-experts) | Runs a Mixture of Experts audit using parallel or sequential expert lenses to detect drift, overlap, and missing checks. |
 | [`multi-agent-handoff`](https://github.com/arenukvern/skill_steward/tree/main/skills/multi-agent-handoff) | Plan and document handoffs between specialized AI agents (foreman, workers, reviewers). Use for multi-agent workflows or guild-style agent coordination. |
 
 ---

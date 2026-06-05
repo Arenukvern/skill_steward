@@ -17,7 +17,9 @@ class UninstallCommand extends Command<void> {
   @override
   Future<void> run() async {
     if (argResults!.rest.isEmpty) {
-      stderr.writeln('Error: Please specify the name of the skill to uninstall.');
+      stderr.writeln(
+        'Error: Please specify the name of the skill to uninstall.',
+      );
       exit(1);
     }
 
@@ -25,7 +27,9 @@ class UninstallCommand extends Command<void> {
     final root = findRepoRoot(Directory.current);
 
     // 1. Delete the local skill folder
-    final localSkillDir = Directory(p.join(root, '.agents', 'skills', skillName));
+    final localSkillDir = Directory(
+      p.join(root, '.agents', 'skills', skillName),
+    );
     bool deletedAny = false;
 
     if (localSkillDir.existsSync()) {
@@ -41,7 +45,8 @@ class UninstallCommand extends Command<void> {
     if (skillsJsonFile.existsSync()) {
       try {
         final raw = await skillsJsonFile.readAsString();
-        final Map<String, dynamic> data = jsonDecode(raw) as Map<String, dynamic>;
+        final Map<String, dynamic> data =
+            jsonDecode(raw) as Map<String, dynamic>;
         final skillsArray = data['skills'] as List?;
 
         if (skillsArray != null) {
