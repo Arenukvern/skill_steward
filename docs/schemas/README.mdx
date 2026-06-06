@@ -4,21 +4,65 @@ Language-neutral JSON Schema artifacts for Steward contracts.
 
 These schemas are companion contracts for agents, repo maintainers, and non-Dart harnesses. The Dart validator remains the executable gate, but these files make the data shapes portable.
 
-| Contract | Schema |
-|---|---|
-| `steward.yaml` v1 | [steward-v1.schema.json](steward-v1.schema.json) |
-| Scenario manifest | [scenario-manifest-v1.schema.json](scenario-manifest-v1.schema.json) |
-| Plugin manifest | [plugin-manifest-v1.schema.json](plugin-manifest-v1.schema.json) |
-| Plugin bundle | [plugin-bundle-v1.schema.json](plugin-bundle-v1.schema.json) |
-| Plugin bundle index | [plugin-bundle-index-v1.schema.json](plugin-bundle-index-v1.schema.json) |
-| Doctor output | [doctor-v1.schema.json](doctor-v1.schema.json) |
-| Observation record | [observation-v1.schema.json](observation-v1.schema.json) |
-| Unknown case record | [unknown-case-v1.schema.json](unknown-case-v1.schema.json) |
-| Action candidate record | [action-candidate-v1.schema.json](action-candidate-v1.schema.json) |
-| Benchmark summary | [benchmark-summary-v1.schema.json](benchmark-summary-v1.schema.json) |
+For the broader Engineering Stewardship baseline that applies before a repo needs typed actions or benchmark scenarios, see [Repo quality contracts](../repo-quality-contracts). This schema directory covers the machine-readable contract layer; it does not replace type-native app/library/tool validation.
+
+| Contract | Schema | Validated by |
+|---|---|---|
+| `steward.yaml` v1 | [steward-v1.schema.json](steward-v1.schema.json) | `steward doctor`, action/probe/benchmark validators |
+| Scenario manifest | [scenario-manifest-v1.schema.json](scenario-manifest-v1.schema.json) | `steward benchmark --scenario <id>` |
+| Plugin manifest | [plugin-manifest-v1.schema.json](plugin-manifest-v1.schema.json) | `steward bundle` plugin validation |
+| Plugin bundle | [plugin-bundle-v1.schema.json](plugin-bundle-v1.schema.json) | `steward bundle` output validation |
+| Plugin bundle index | [plugin-bundle-index-v1.schema.json](plugin-bundle-index-v1.schema.json) | bundle index validation |
+| Doctor output | [doctor-v1.schema.json](doctor-v1.schema.json) | `steward doctor --json` |
+| Observation record | [observation-v1.schema.json](observation-v1.schema.json) | observation/action-candidate validators |
+| Unknown case record | [unknown-case-v1.schema.json](unknown-case-v1.schema.json) | unknown-case promotion validators |
+| Action candidate record | [action-candidate-v1.schema.json](action-candidate-v1.schema.json) | action-candidate promotion validators |
+| Benchmark summary | [benchmark-summary-v1.schema.json](benchmark-summary-v1.schema.json) | `steward benchmark --json` |
 
 Schema policy:
 
 - Required fields match the current v1 hard-cut validator.
 - Product-specific extension fields are allowed unless they would hide unsafe execution or provenance.
 - Runtime payload schemas describe compact summaries, not raw logs, screenshots, or product artifacts.
+
+## Steward vs local harness ownership
+
+Skill Steward owns structural contracts only:
+
+- schema definitions and validator behavior
+- `doctor`, action discovery, action inspection, and compact summary shapes
+- skill and plugin packaging rules
+- promotion criteria and domain-neutral lesson format
+- repo-quality contract patterns and evidence expectations
+
+Target repos own execution:
+
+- action implementation and local runner behavior
+- raw traces, app artifacts, screenshots, fixtures, and product logs
+- product diagnostics, redaction rules, and retention
+- repo-local CLI/core/MCP/package layout
+
+Global Steward may delegate only through declared local harness entrypoints and safety gates. It must not interpret product output as domain truth; interpretation belongs to the target repo or to promoted diagnostics backed by reviewed evidence.
+
+## Scenario and benchmark policy
+
+- Scenario manifests live under repo-owned paths such as `steward/scenarios/*.yaml`, not generated `.steward/` records.
+- `source.steward_contract` and file-backed scenario manifests must be clean and tracked before actions run.
+- `durability_blocked` is a valid benchmark result when contract inputs are modified or untracked.
+- Strict proof blocks broad-read actions when undeclared dirty files could affect what the action observes.
+- `source.commit` is the subject commit under test. It must not be treated as proof that a scenario manifest contains itself at that same commit.
+- Benchmark summaries prove the manifest input with `scenario_manifest_sha256`, `input_digests`, durability, proof, and result. They do not prove remote reproducibility unless the runner verifies fetchability from `source.git`.
+- Benchmark summaries must not include raw stdout/stderr, raw product traces, screenshots, secrets, or large artifacts.
+
+## Validator responsibilities
+
+JSON Schema covers portable shape checks. Executable validators remain responsible for cross-field and repository-state checks, including:
+
+- action references exist and are quick-eligible before quick probes run
+- scenario manifests use durable git URLs, resolved commit SHAs, steward contract paths, owners, and required actions
+- local paths are not used as durable provenance
+- action effects declare explicit `fs_read` and `fs_write`
+- auto/quick actions do not require confirmation, shell, network, secrets, destructive behavior, or repo mutation
+- plugin artifacts use managed blocks and uninstall metadata
+- diagnostics and action candidates follow the promotion state machine
+- benchmark runs do not promote diagnostics or actions created in the same run

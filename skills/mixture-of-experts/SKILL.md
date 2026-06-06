@@ -36,10 +36,12 @@ It can be applied to literally anything: a codebase, a feature plan, a deploymen
    Use the available subagent capability for the current host (for example Codex `spawn_agent`) to launch these experts independently. Give them explicit prompts to audit the target topic through their specific lens. If no subagent tool is available, run the expert lenses sequentially and label the output as a non-parallel MoE.
 4. **Cross-reference Findings**
    Wait for all subagents to report back. Synthesize their independent critiques. Look for structural contradictions, missed edge cases, or (in the case of repo skills) duplicated intent.
-5. **Draft Learnings or Plan**
-   Generate a formal artifact (`consolidation_learnings.md` or `implementation_plan.md`) summarizing the multi-faceted critique and proposing actionable changes.
+5. **Choose output mode**
+   - **Read-only critique mode:** If the user asks to analyze, discuss, criticize, or validate only, summarize findings in chat. Do not create files or plans.
+   - **Implementation planning mode:** If the user asks for a plan or approved changes, draft a concise implementation plan or learning artifact.
+   - **Execution mode:** If the user explicitly approves implementation, apply the smallest scoped changes and validate them.
 6. **Present to User**
-   Stop and ask the user to approve the proposed actions.
+   Lead with critical findings, contradictions, and actionable recommendations. Ask for approval only when the next step would mutate files or widen scope.
 
 ## Install
 

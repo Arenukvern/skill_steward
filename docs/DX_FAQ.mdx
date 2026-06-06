@@ -6,6 +6,7 @@ _How to work in this repo and install Skill Steward meta-skills elsewhere. Walk 
 
 ```text
 CHARTER / scope        → NORTH_STAR.mdx
+REPO QUALITY CONTRACT → repo-quality-contracts.mdx
 WHY / ADRs             → DESIGN_FAQ.mdx, decisions/
 HOW contribute         → this file, ../AGENTS.md, ../CONTRIBUTING.md
 PLAN HYGIENE (any format) → start_here/executable-plans.mdx
@@ -22,17 +23,33 @@ RELEASE / CHANGELOG    → this file (Release desk) · ADR 0009 · ADR 0010 · s
 PLUGINS (hooks)        → ../plugins/README.md  (not via npx skills)
 ```
 
+## 📦 Distribution stack
+
+Use the smallest distribution surface that matches the job.
+
+| Need | Use | Boundary |
+|------|-----|----------|
+| Install/update portable skills for a human or agent | `npx skills add/update` | Public skill distribution and local/global agent paths |
+| Discover public skills | skills.sh | Catalog only; not a repo harness contract |
+| Give a repo deterministic agent structure | `steward install/update` with `skills.json` | Repo-local registration, copy/symlink layout, commit pinning; not a public package manager |
+| Validate Skill Steward skills | `pnpm run validate`, `pnpm run eval` | Skill structure and Tier-1 routing cases |
+| Adopt general repo stewardship | `repo-quality-system-lifecycle` + repo-quality-contracts.mdx | Charter, docs lattice, type-native gates, evidence, safety, maturity proof |
+| Prove a repo-local harness contract | `steward doctor/actions/probe/benchmark` | Runtime dogfood evidence; separate from skill evals |
+| Generate plugin/rule descriptors | `steward bundle` | Validated wiring artifacts; host install remains explicit |
+
 ## 🧱 Stewardship pillars
 
 Harness work is one part of engineering stewardship. Use the narrowest pillar that matches the job.
 
 | Pillar | Use | Skill / surface |
 |--------|-----|-----------------|
+| Repo quality contracts | Type-native gates, evidence, action safety, maturity proof | `repo-quality-system-lifecycle`, repo-quality-contracts.mdx |
 | Governance | Charter, ADRs, FAQs, ethics, plan hygiene | `repository-governance-lifecycle` |
 | Knowledge | Source provenance and docs traceability | `skill-source-citations` |
 | Skill lifecycle | Authoring and auditing installable skills | `skill-authoring-lifecycle` |
 | Quality gates | Tier-1 skill evals and bounded improvement loops | `skill-eval-improve`, `pnpm run eval` |
-| Harness engineering | CLI/MCP/core parity and repo-local feedback loops | `mcp-harness-repo-maintainer`, `harness-engineering-lifecycle` |
+| Local harness adoption | `steward.yaml`, typed actions, quick probes, benchmark smoke loops | `mcp-harness-repo-maintainer` |
+| Cross-repo harness engineering | Producer/consumer generalization and sibling dogfood | `harness-engineering-lifecycle` |
 | Release legibility | Changelog, versioning, release artifacts | `release-changelog-harness` |
 | Review and handoff | MoE critique and agent handoff | `mixture-of-experts`, `multi-agent-handoff` |
 | Strategic alignment | Vision vs implementation fit, usage evidence, future-fit analysis | `vision-alignment-foresight` |
@@ -65,9 +82,37 @@ npx skills add <workspace>/agent_guild --skill mcp-harness-repo-maintainer -a cu
 | Skill | Role |
 |-------|------|
 | `repository-governance-lifecycle` | Charter, AGENTS map, ADRs, FAQs, plan hygiene |
-| `mcp-harness-repo-maintainer` | CLI/MCP harness culture and sibling layout |
+| `repo-quality-system-lifecycle` | General stewardship baseline, repo archetype, native gates, evidence path |
+| `mcp-harness-repo-maintainer` | Local harness contract adoption and first proof loop |
+| `harness-engineering-lifecycle` | Cross-repo generalization after the local contract exists |
 | `skill-authoring-lifecycle` | Author and audit `skills/` |
 | `plugin-marketplace-setup` | Skill/plugin distribution across Cursor, Claude Code, Codex, Zed, and Open Plugin |
+
+### Local harness naming
+
+Do not collapse repo folder, public product name, CLI command, MCP prefix, and package prefix into one field. Product repos may use product branding; orchestration-heavy apps may use a local steward name.
+
+| Repo | Local harness name | First proof intent |
+|------|--------------------|--------------------|
+| `ecsly` | `ecsly` | Product-branded powerhouse; first proof is a bounded observe/preflight action. |
+| `mcp_flutter` | `flutter-mcp-toolkit` | Toolkit-branded contract surface; first proof is tool-prefix or expected-surface verification. |
+| `agentkit` / IntentCall | `intentcall` | Adapter contract; first proof is dependency/version/plan-hygiene validation. |
+| `flutter_harness` | `flutter-harness` | CLI-only visual harness; first proof is local agent doctor/preflight. |
+| `vitamins_quiz_bot` | `shippic-steward` | Local steward control plane; first proof is redacted inspect output before deeper citation judging. |
+
+### Integration roadmap desk
+
+When a roadmap crosses sibling repositories, record the dependency order before claiming a repo is green. A local contract can pass while a downstream consumer is still blocked by an unpublished package or stale override.
+
+Current `~/mcp` / `~/xs` order:
+
+| Step | Repo | Role | Allowed next action | Required evidence | Do not touch |
+|------|------|------|---------------------|-------------------|--------------|
+| 1 | `agentkit` / IntentCall | Platform libraries | Make the release tree clean, configure pub.dev credentials, run real publish dry-run, then publish packages in documented order. | `just validate`, `just analyze`, `just test`, real `just publish-dry-run`, then pub.dev package pages for `intentcall_*`. | Do not fix `mcp_flutter` against local-only API shape before publish. |
+| 2 | `mcp_flutter` | Product MCP/toolkit consumer | Cut over from local path dependencies to hosted `intentcall_*` packages after publish. | `make check-intentcall-integration`, `make check-contracts`, and hosted dependency lockfile proof. | Do not publish IntentCall from this repo; `agentkit` is the publish SSOT. |
+| 3 | `flutter_harness` | CLI harness consumer | Refresh stale local overrides or hosted deps after `mcp_flutter` cutover. | `just check` plus a strict harness benchmark when contract inputs are stable. | Do not preserve old `agentkit_*` package paths after the IntentCall rename. |
+| 4 | `vitamins_quiz_bot` | App-local steward | Stabilize only contract inputs and redacted inspect proof. | `steward action inspect shippic.inspect.redacted --json` and redacted benchmark proof. | Keep `.env` and SQLite DB/WAL/SHM files as protected temporary local state; do not read, remove, or add them as contract inputs. |
+| 5 | `ecsly` | Product app | Refresh proof after higher-priority integration blockers are clear. | Native validation plus strict Steward benchmark when needed. | Do not treat a dirty product worktree as harness failure without contract evidence. |
 
 ## 📦 Install Skill Steward (consumers)
 
@@ -94,13 +139,15 @@ npx skills add . --list
 
 ### Install steward CLI (Global Binary)
 
-For zero-dependency installation of the `steward` CLI tool (which manages skill installation and checks locally without requiring a clone or Dart SDK):
+For zero-dependency installation of the `steward` CLI tool without requiring a clone or Dart SDK:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash
 # Pinned version:
 curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash -s -- --version v0.1.0
 ```
+
+`steward install/update` intentionally manages repo-local `skills.json` registration, agent folder layout, and commit pinning. Use `npx skills` for broad public skill install/update and skills.sh discovery.
 
 **Note:** Hooks/plugins are **not** installed by `npx skills` on Cursor—see `../plugins/README.md` and [ADR 0004](decisions/0004-plugin-packaging-and-install-path).
 
@@ -202,7 +249,46 @@ Optional Cursor hook: `../plugins/steward-validate-on-save/README.md`.
 
 Fix all `error:` lines before merge. Warnings (long SKILL.md, missing skills.sh entry) should be addressed or justified in PR.
 
-`pnpm run eval` is for Tier-1 skill quality. Runtime dogfood and local harness benchmarks use `steward benchmark --scenario <id> --json`; do not put product runtime scenarios under skill evals. Benchmark execution is durability-gated: `source.steward_contract` and any file-backed scenario manifest must be clean and tracked before actions run.
+`pnpm run eval` is for Tier-1 skill routing and docs-SSOT quality. Runtime dogfood and local harness benchmarks use `steward benchmark --scenario <id> --json`; do not put product runtime scenarios under skill evals. Benchmark execution is durability-gated: `source.steward_contract` and any file-backed scenario manifest must be clean and tracked before actions run.
+
+### Validation matrix
+
+| Change | Required validation | Notes |
+|--------|---------------------|-------|
+| Skill text/frontmatter | `pnpm run validate` + `pnpm run eval` when Tier 1 | Update `evals/cases/*.yaml` when routing changed. |
+| Docs only | `pnpm run docs:check` + targeted link/readthrough | Keep docs as pointers to behavior SSOT. |
+| Steward CLI code | `pnpm run steward:analyze` + relevant Dart tests + `pnpm run validate` | Use GitNexus impact before symbol edits. |
+| Local harness contract | `steward doctor/actions/probe/benchmark` in the target repo | Record `durability_blocked` honestly when inputs are dirty. |
+| Release/distribution | Changesets check + README/DX install/update commands | Keep `npx skills` and `steward install/update` boundaries explicit. |
+
+Cold-start proof loop for a local Steward contract:
+
+```bash
+cd packages/steward_cli
+dart run :steward doctor --json
+dart run :steward actions list --json
+dart run :steward action inspect steward.contract.status.quick --json
+dart run :steward probe --profile quick --json
+dart run :steward benchmark \
+  --scenario skill_steward.contract-status-smoke \
+  --output .steward/benchmark-summaries/skill-steward-contract-status-smoke.json \
+  --json
+```
+
+Interpretation: `doctor` and `actions list` prove contract discovery, `action inspect` proves the exact executable boundary, `probe` proves the safe first observation, and `benchmark` proves or blocks durable execution. A `durability_blocked` benchmark is a truthful result when `steward.yaml` or the scenario manifest is modified/untracked; track or commit those inputs, then rerun the same command. The built-in `contract-status-smoke` scenario is a first contract proof, not a claim that full agent navigation, diagnosis, or repair is proven.
+
+Harness/action-contract maturity is staged (general repo stewardship uses `S0`-`S5` in [North Star](NORTH_STAR#general-stewardship-maturity-ladder); local harness contracts use `H0`-`H5`):
+
+| Stage | Name | Proof |
+|-------|------|-------|
+| **H0** | Skills installed | Agent can discover Skill Steward skills from project/global agent paths. |
+| **H1** | Local contract declared | `steward.yaml` exists with one quick-safe action and docs point to it. |
+| **H2** | Smoke benchmark proven | Cold-start loop above runs or reports `durability_blocked` for a clean reason. |
+| **H3** | Repo feedback loop | Benchmark summaries, unknown cases, and action candidates accumulate in the target repo. |
+| **H4** | Full agent workflow | A fresh agent completes one repo-specific workflow without raw shell spelunking. |
+| **H5** | Promoted harness capability | Repeated evidence promotes a diagnostic/action/eval/local harness feature with owner, risk, redaction, and validation. |
+
+Daily skill validation (`validate`/`eval`) and runtime dogfood (`benchmark`) are intentionally separate. A repo can pass skill validation while still being only H0/H1 for local harness adoption.
 
 ## 📋 Registry shelf
 
@@ -263,7 +349,8 @@ Skip (maintainer only) → PR title contains [skip changeset]
 ## 🏗️ Harness workshop
 
 ```text
-Agent-first culture     → skill mcp-harness-repo-maintainer
+Repo stewardship        → skill repo-quality-system-lifecycle
+Agent-first harness culture → skill mcp-harness-repo-maintainer
 OpenAI principles       → ../skills/mcp-harness-repo-maintainer/references/harness-principles.md
 CLI+MCP dual surface    → ../skills/mcp-harness-repo-maintainer/references/cli-mcp-pattern.md (product MCP / platform libs)
 Compose Skill Steward skills    → ../skills/mcp-harness-repo-maintainer/references/steward-composition.md
@@ -277,6 +364,7 @@ Product example: `<cli_harness> doctor`, `make check-contracts` — not shipped 
 
 | Need | Skill / doc |
 |------|-------------|
+| Repo quality contract | `repo-quality-system-lifecycle` |
 | Harness / CLI / MCP culture | `mcp-harness-repo-maintainer` |
 | Release / changelog tooling | `release-changelog-harness` |
 | DESIGN + DX FAQ | `repository-governance-lifecycle` |

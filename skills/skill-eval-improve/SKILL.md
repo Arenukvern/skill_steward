@@ -22,12 +22,12 @@ Improve skills **measurably**: baseline → measure → bounded edit → re-vali
 - Skill triggers wrong or never loads (description routing)
 - Bloated `SKILL.md`, high token cost, weak outcomes
 - After adding a new procedure—need regression checks
-- Porting patterns from product MCP / plugin-eval research into Guild skills
+- Porting patterns from product MCP / plugin-eval research into Skill Steward skills
 
 ## When not to use
 
 - **Bulk repo validation** — e.g. “validate every skill in this repo” → `pnpm run validate` only ([skill-authoring-lifecycle](../skill-authoring-lifecycle/SKILL.md) for audit); do not start benchmark or SkillOpt loops.
-- **Automated SkillOpt / cluster training** — Guild documents a **manual** bounded-edit loop; no overnight optimizer pipeline.
+- **Automated SkillOpt / cluster training** — Skill Steward documents a **manual** bounded-edit loop; no overnight optimizer pipeline.
 - **Creating a new skill** — use [skill-authoring-lifecycle](../skill-authoring-lifecycle/SKILL.md) first; eval-improve applies after a skill exists.
 
 Cursor scope (optional): activate when editing under `skills/**` or `scripts/validate-skills.mjs`.
@@ -42,11 +42,11 @@ Cursor scope (optional): activate when editing under `skills/**` or `scripts/val
 | **2 — Human** | Behavior | 3–5 prompts with/without skill | minutes |
 | **3 — Measured** | Usage | `plugin-eval benchmark` + `measurement-plan` | minutes–hours |
 | **4 — Evolve** | Text optimization | SkillOpt-style bounded edits + held-out gate | hours |
-| **5 — Navigate**| Telemetry / dogfood | Future `steward benchmark` or `steward dogfood` on compact traces | seconds |
+| **5 — Navigate**| Telemetry / dogfood | Current `steward benchmark` scenarios on compact traces | seconds |
 
 Use the **cheapest layer that answers the question**. Do not skip layer 0.
 
-## Layer 0 — Guild validator (always)
+## Layer 0 — Skill Steward validator (always)
 
 ```bash
 pnpm run validate
@@ -59,10 +59,10 @@ Fix all `error:` lines. Treat `warn:` (missing `sources.md`, long SKILL.md) seri
 
 | Tier | Skills | CI |
 |------|--------|-----|
-| **1** | `mcp-harness-repo-maintainer`, `skill-authoring-lifecycle` | `pnpm run eval` + validate |
+| **1** | Behavior-critical routing skills: harness adoption, skill authoring, governance, harness generalization, marketplace setup, MoE, and vision alignment | `pnpm run eval` + validate |
 | **2** | All others | `pnpm run validate` |
 
-Tier 1 requires `evals/cases/*.yaml` (≥2) + `references/evals.md`. Schema: [eval-case-schema.md](references/eval-case-schema.md).
+Tier 1 currently includes `mcp-harness-repo-maintainer`, `skill-authoring-lifecycle`, `skill-eval-improve`, `repository-governance-lifecycle`, `repo-quality-system-lifecycle`, `harness-engineering-lifecycle`, `plugin-marketplace-setup`, `mixture-of-experts`, and `vision-alignment-foresight`. Each requires `evals/cases/*.yaml` (≥2) + `references/evals.md`. Schema: [eval-case-schema.md](references/eval-case-schema.md).
 
 ## Layer 0b — Rule-based cases (Tier 1 CI)
 
@@ -117,7 +117,7 @@ Rollout (tasks + current skill) → Reflect (failures vs successes)
   → Bounded edit (add/delete/replace under budget) → Held-out gate (keep only if better)
 ```
 
-Guild **manual** adaptation (no GPU cluster required):
+Skill Steward **manual** adaptation (no GPU cluster required):
 
 | Step | Action |
 |------|--------|
@@ -146,9 +146,9 @@ At 10,000x scale, NLP prompt evaluation fails because LLMs suffer **Cognitive Ov
 
 1. **Capture compact traces:** Store action IDs, tool counts, artifact digests, and redacted excerpts, not raw product traces.
 2. **Define assertions:** Expected action trajectory, maximum tool calls, required artifacts, and negative checks for unrelated actions.
-3. **Run dogfood benchmarks:** Use a future `steward benchmark` / `steward dogfood` surface. Do not put product runtime scenarios under Tier-1 skill evals.
+3. **Run dogfood benchmarks:** Use `steward benchmark --scenario <id> --json` for runtime dogfood scenarios. Do not put product runtime scenarios under Tier-1 skill evals.
 
-The current `steward eval --name` registered-eval path is legacy/experimental. Skill quality remains `pnpm run eval`; runtime dogfood belongs to benchmark/dogfood commands once implemented.
+The current `steward eval --name` registered-eval path is legacy/experimental. Skill quality remains `pnpm run eval`; runtime dogfood belongs to `steward benchmark`, where `durability_blocked` is a valid result when contract inputs are modified or untracked.
 
 ## Improve workflow (checklist)
 

@@ -1,0 +1,70 @@
+# 0017. Cold-start contracts before diagnostics
+
+Date: 2026-06-05
+
+## Status
+
+Accepted
+
+## Context
+
+Skill Steward is adding repo-local `steward.yaml` contracts, typed actions, quick probes, and runtime benchmark summaries so fresh agents can work in large repositories without rediscovering the system from scratch.
+
+The main risk is overclaiming. A newly adopted repo has no trustworthy symptom catalog yet. If agents diagnose before the repo exposes bounded actions and durable evidence, they will turn one-off observations into folklore.
+
+## Decision
+
+Adopted repos must prove cold-start legibility before promoted diagnostics:
+
+1. `steward doctor --json` discovers the contract without running actions.
+2. `steward actions list --json` exposes action ids and safety summaries.
+3. `steward action inspect <id> --json` exposes the exact executable boundary.
+4. `steward probe --profile quick --json` runs only quick-eligible observations.
+5. `steward benchmark --scenario <id> --json` either executes a durable scenario or truthfully blocks with a reason such as `durability_blocked`.
+
+Scenario names must not overclaim. A first scenario that only checks contract state should use smoke-test language such as `contract-status-smoke`; reserve `cold-start` or diagnostic names for benchmarks that actually prove navigation, observation capture, unknown-case behavior, or diagnostic refusal.
+
+Runtime dogfood belongs to `steward benchmark`, not Tier-1 skill evals. Tier-1 skill evals measure skill routing and static rules; benchmark summaries measure repo-local action evidence.
+
+## Considered Options
+
+* **Symptom-first diagnostics.** Rejected because fresh repos lack reviewed cases, so agents would encode guesses as doctrine.
+* **Reuse Tier-1 skill evals for runtime dogfood.** Rejected because rule-based skill routing checks cannot prove repo-local action selection, durability, or artifact evidence.
+* **Benchmark-first without contract inspection.** Rejected because executing a scenario before action discovery and inspection hides the executable boundary from fresh agents.
+* **Cold-start contract proof before diagnostics.** Accepted because it separates discovery, safety inspection, bounded observation, durable execution, and later promotion.
+
+## Decision Outcome
+
+Chosen: **cold-start contract proof before diagnostics.** The first proof may be a narrow smoke scenario, but it must name itself honestly and must not claim diagnosis, repair, MCP parity, or full agent navigation until those behaviors are actually benchmarked.
+
+## Consequences
+
+* Good, because fresh agents get a deterministic first path through a repo.
+* Good, because `durability_blocked` becomes a truthful proof state instead of a failure to hide.
+* Good, because diagnostics can be promoted from repeated evidence rather than guessed symptoms.
+* Bad, because first adoption may feel slower: maintainers must declare actions, scenario manifests, ownership, limits, and durability before claiming proof.
+* Mitigation: `mcp-harness-repo-maintainer` owns the local adoption loop; `harness-engineering-lifecycle` starts after local contracts exist and cross-repo generalization is needed.
+
+## Deferred Proof Tiers
+
+The first smoke proof is not the end state. Later work should add stronger tiers without changing the basic separation:
+
+1. **Remote reproducibility:** verify that `repo_commit`, subject commits, and scenario/contract commits are fetchable from `source.git` before claiming remote proof.
+2. **Least-privilege action review:** warn on broad `fs_read`, require strict mode for dirty dogfood repos, and keep narrowing action scopes from real command behavior.
+3. **Persisted target summaries:** each target repo writes compact benchmark summaries with `--output`; aggregate reports must not include raw stdout/stderr.
+4. **Full workflow evidence:** benchmark one agent workflow per repo: `doctor -> actions list -> action inspect -> probe -> benchmark`, with assertions that the agent does not fall back to raw shell spelunking.
+5. **Second scenarios only after smoke:** graphics/splats, MCP runtime parity, adapter/resource behavior, visual checks, and citation-golden checks wait until the first contract smoke loop is stable.
+
+## Confirmation
+
+* `steward.yaml` exposes quick-safe actions and benchmark scenarios.
+* Scenario manifests live under `steward/scenarios/*.yaml`.
+* Benchmark summaries omit raw stdout/stderr and include action selection, input digests, durability, proof, owner, and result.
+* `docs/DX_FAQ.mdx` documents the command loop and interpretation.
+* `skills/mcp-harness-repo-maintainer` teaches the agent procedure.
+
+## More Information
+
+* [North Star](../NORTH_STAR)
+* [DX FAQ](../DX_FAQ)
+* Skill: `mcp-harness-repo-maintainer`

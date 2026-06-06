@@ -1,6 +1,6 @@
 ---
 name: mcp-harness-repo-maintainer
-description: Maintains MCP-and-harness repositories where CLI and MCP are thin agent-facing interfaces and core libraries hold domain logic. Develops agent-first engineering culture via shared contracts, mechanical gates, and in-repo docs. Use when refactoring adapters, enforcing CLI/MCP/core parity, building agentic tooling, or maintaining sibling repo layout.
+description: Maintains repo-local action contracts and harness repositories where product CLI and MCP adapters stay thin over core libraries. Use when adopting or improving steward.yaml actions, cold-start proof loops, probes, benchmarks, CLI/MCP/core parity, adapter refactors, packages/core boundaries, or sibling harness layout; use repo-quality-system-lifecycle first for general app/library/tool stewardship baselines.
 license: MIT
 type: governance
 metadata:
@@ -29,11 +29,11 @@ paths:
   - "scripts/**"
 ---
 
-# MCP & Harness Repo Maintainer (Architecture & Culture)
+# Action Contract & Harness Repo Maintainer (Architecture & Culture)
 
-Build and maintain **agent-first repos** where agents execute and humans steer. Avoid copying the wrong shape into the wrong repo.
+Build and maintain repo-local action contracts and harnesses where agents execute and humans steer. For general app, library, tool, plugin, or meta-repo stewardship baselines, use `repo-quality-system-lifecycle` first; use this skill when typed actions, probes, benchmarks, or CLI/MCP parity are in scope.
 
-## Core principle (all archetypes)
+## Core principle (action-contract and harness repos)
 
 **MCP and CLI are thin interfaces—APIs for agents and CI.** **Core** contains the real logic, schemas, and registries. Adapters parse wire format (argv, MCP JSON-RPC); they delegate immediately.
 
@@ -79,7 +79,7 @@ Human intent (prompt, plan, review)
 
 ## Mixture of experts (pick one lead)
 
-Route by **primary artifact**:
+Route by **primary artifact** when the repo is harness or action-contract shaped. For the broader app/library/tool taxonomy, use `repo-quality-system-lifecycle`.
 
 | Expert lens | Repo examples | Owns | Does not own |
 |-------------|---------------|------|----------------|
@@ -114,6 +114,40 @@ Route by **primary artifact**:
 6. **Validate** — `pnpm run validate` or project contract tests.
 7. **Human collab** — PR describes harness change.
 
+## Cold-start local harness proof loop
+
+Use this loop before claiming a repo is harness-ready or diagnosing repo-specific symptoms. A fresh repo has no meaningful symptom catalog yet; first prove that agents can discover and safely execute declared contracts.
+
+1. **Declare a small contract** — Add or update `steward.yaml` with one quick-safe action. The first action should inspect state, not mutate it.
+2. **Expose the action** — Put the action under `probes.quick.actions` only when it passes quick policy: `default_policy: auto`, no confirmation, no shell, no network/secrets/destructive effects, no repo mutation, no `fs_write`.
+3. **Add a scenario manifest** — Put committed scenarios under `steward/scenarios/*.yaml`; use a precise name such as `contract-status-smoke` until the scenario proves navigation or diagnosis.
+4. **Run the proof loop**:
+
+   ```bash
+   steward doctor --json
+   steward actions list --json
+   steward action inspect <action-id> --json
+   steward probe --profile quick --json
+   steward benchmark --scenario <scenario-id> --output .steward/benchmark-summaries/<scenario-id>.json --json
+   ```
+
+5. **Interpret honestly** — `doctor`/`actions list` prove discovery, `action inspect` proves the executable boundary, `probe` proves the safe first observation, and `benchmark` proves or blocks durable execution. `durability_blocked` is a truthful result when `steward.yaml` or `steward/scenarios/*.yaml` is modified or untracked.
+6. **Protect local state** — If the repo has temporary dirty files that must remain in place, write a do-not-touch exception and keep those files out of action inputs. Protected local state is not a benchmark blocker unless it is declared as a contract or scenario input.
+7. **Grow from evidence** — If the probe exposes an unknown failure, capture an unknown case first. Promote a typed action candidate only after owner, effects, limits, redaction, validation command, and benchmark evidence exist. Do not promote diagnostics from the same run that discovered them.
+
+## Adoption maturity ladder
+
+Do not call a repository harness-ready until the proof stage matches the claim.
+
+| Stage | Name | Proof |
+|-------|------|-------|
+| **H0** | Skills installed | Agent can discover the relevant Skill Steward skills. |
+| **H1** | Local contract declared | `steward.yaml` exists with one quick-safe action and docs point to it. |
+| **H2** | Smoke benchmark proven | Cold-start proof loop runs or truthfully reports `durability_blocked`. |
+| **H3** | Repo feedback loop | Benchmark summaries, unknown cases, and action candidates accumulate from real work. |
+| **H4** | Full agent workflow | A fresh agent completes one repo workflow without raw shell spelunking. |
+| **H5** | Promoted harness capability | Repeated evidence promotes a diagnostic, action, eval, or local harness feature. |
+
 ## Archetypes Details
 
 - **Archetype A (Product MCP):** `plugin/` is SSOT. Ship a **custom** server, do not patch community servers for product logic.
@@ -136,12 +170,24 @@ Route by **primary artifact**:
 
 ## Checklist before claiming “harness ready”
 
+Common proof:
+
 - [ ] Agent can discover what to run from in-repo docs alone
-- [ ] CLI command exists for CI/gates (or documented why not)
-- [ ] MCP tool shares schema/validation with CLI
+- [ ] Repo is at least **H2** on the adoption maturity ladder
 - [ ] Failure messages say how to remediate
 - [ ] Design forks were checkpointed (`repository-governance-lifecycle`)
-- [ ] Contract gate (validation scripts) pass
+- [ ] Contract gate or validation scripts pass
+
+Archetype-specific proof:
+
+| Archetype | Required proof |
+|-----------|----------------|
+| Product MCP | MCP tools and CLI commands share the same core schema/validation entrypoints. |
+| Platform libs | Protocol adapters are thin, core tests cover behavior, and no product-specific fork is embedded. |
+| CLI harness | CLI command exists for CI/gates; MCP parity is not required unless the repo exposes MCP. |
+| Visual sidecar | Profile/config schemas and compare/deconstruct commands are validated; MCP parity is not required. |
+| Meta steward | Skill/plugin/validator surfaces pass skill validation and Tier-1 routing cases; no product runtime is bundled. |
+| Security/Ops | Mutation surfaces require explicit risk class, redaction, and authorization policy. |
 
 ## Install
 

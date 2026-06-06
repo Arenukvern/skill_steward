@@ -8,5 +8,6 @@ node_modules/
 .cursor/skills/
 .claude/skills/
 .codex/skills/
+.steward/
 dist/
 coverage/

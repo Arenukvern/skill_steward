@@ -1,7 +1,7 @@
 {
   "$schema": "https://docs.page/schema.json",
   "name": "Skill Steward",
-  "description": "Meta skills for the Agent Skills ecosystem—validate, govern, document SKILL.md packages, ADRs, FAQ-driven docs, and harness culture.",
+  "description": "Engineering Stewardship for agent-operated repositories: charter, decisions, docs, quality contracts, release legibility, handoff, and harness feedback.",
   "github": "https://github.com/arenukvern/skill_steward",
   "theme": {
     "defaultTheme": "system",
@@ -58,153 +58,65 @@
     {
       "group": "Start Here",
       "pages": [
-        {
-          "title": "Overview",
-          "href": "/"
-        },
-        {
-          "title": "North Star",
-          "href": "/NORTH_STAR"
-        },
-        {
-          "title": "DESIGN_FAQ",
-          "href": "/DESIGN_FAQ"
-        },
-        {
-          "title": "DX_FAQ",
-          "href": "/DX_FAQ"
-        },
-        {
-          "title": "Skills Catalog",
-          "href": "/skills-catalog"
-        },
-        {
-          "title": "Docs Map",
-          "href": "/start_here/docs_map"
-        },
-        {
-          "title": "Plan hygiene (extract & remove)",
-          "href": "/start_here/executable-plans"
-        },
-        {
-          "title": "Schemas",
-          "href": "/schemas/README"
-        },
-        {
-          "title": "Brand identity",
-          "href": "/brand"
-        }
+        { "title": "Overview", "href": "/" },
+        { "title": "North Star", "href": "/NORTH_STAR" },
+        { "title": "Repo quality contracts", "href": "/repo-quality-contracts" },
+        { "title": "DESIGN_FAQ", "href": "/DESIGN_FAQ" },
+        { "title": "DX_FAQ", "href": "/DX_FAQ" },
+        { "title": "Skills Catalog", "href": "/skills-catalog" },
+        { "title": "Docs Map", "href": "/start_here/docs_map" },
+        { "title": "Plan hygiene (extract & remove)", "href": "/start_here/executable-plans" },
+        { "title": "Schemas", "href": "/schemas/README" },
+        { "title": "Brand identity", "href": "/brand" }
+      ]
+    },
+    {
+      "group": "Core Concepts",
+      "pages": [
+        { "title": "Stewardship loop", "href": "/core/stewardship-loop" },
+        { "title": "Distribution boundaries", "href": "/core/distribution-boundaries" },
+        { "title": "Evidence ladder", "href": "/core/evidence-ladder" },
+        { "title": "Doc lattice", "href": "/core/doc-lattice" }
       ]
     },
     {
       "group": "Contributing",
       "pages": [
-        {
-          "title": "Enable docs.page",
-          "href": "/contributing/enable_docs_page"
-        },
-        {
-          "title": "CONTRIBUTING.md",
-          "href": "https://github.com/arenukvern/skill_steward/blob/main/CONTRIBUTING.md"
-        },
-        {
-          "title": "STANDARDS (skill format)",
-          "href": "/STANDARDS"
-        }
+        { "title": "Enable docs.page", "href": "/contributing/enable_docs_page" },
+        { "title": "CONTRIBUTING.md", "href": "https://github.com/arenukvern/skill_steward/blob/main/CONTRIBUTING.md" },
+        { "title": "STANDARDS (skill format)", "href": "/STANDARDS" }
       ]
     },
     {
       "group": "Decisions",
       "pages": [
-        {
-          "title": "Index",
-          "href": "/decisions/README"
-        },
-        {
-          "title": "0000 — Use ADRs",
-          "href": "/decisions/0000-use-markdown-architectural-decision-records"
-        },
-        {
-          "title": "0001 — Meta-layer purpose",
-          "href": "/decisions/0001-repository-purpose-as-skills-meta-layer"
-        },
-        {
-          "title": "0002 — FAQ-driven docs",
-          "href": "/decisions/0002-adopt-faq-driven-documentation"
-        },
-        {
-          "title": "0003 — Concept doc store",
-          "href": "/decisions/0003-north-star-governance-lattice"
-        },
-        {
-          "title": "0004 — Plugins vs skills",
-          "href": "/decisions/0004-plugin-packaging-and-install-path"
-        },
-        {
-          "title": "0005 — Plan hygiene + docs.page",
-          "href": "/decisions/0005-executable-plans-and-docs-page"
-        },
-        {
-          "title": "0006 — Meta harness vs product CLIs",
-          "href": "/decisions/0006-guild-harness-meta-vs-product-clis"
-        },
-        {
-          "title": "0007 — Dart for meta CLI",
-          "href": "/decisions/0007-dart-for-guild-cli-and-harness-tooling"
-        },
-        {
-          "title": "0008 — Skill Steward product name",
-          "href": "/decisions/0008-adopt-skill-steward-product-name"
-        },
-        {
-          "title": "0009 — Changesets for releases",
-          "href": "/decisions/0009-adopt-changesets-for-repo-releases"
-        },
-        {
-          "title": "0010 — Binary release scope",
-          "href": "/decisions/0010-binary-releases-for-product-harness-not-meta-steward"
-        },
-        {
-          "title": "0011 — Rule-based CI",
-          "href": "/decisions/0011-tiered-skill-evals-and-rule-based-ci"
-        },
-        {
-          "title": "0012 — Visual identity",
-          "href": "/decisions/0012-adopt-visual-brand-identity-system"
-        },
-        {
-          "title": "0013 — Automated release",
-          "href": "/decisions/0013-automated-release-via-changesets-action"
-        },
-        {
-          "title": "0014 — Native binary distribution",
-          "href": "/decisions/0014-distribute-steward-cli-as-binary"
-        },
-        {
-          "title": "0015 — Agent CLI entrypoints",
-          "href": "/decisions/0015-agent-cli-entrypoints-and-local-validation"
-        },
-        {
-          "title": "0016 — Skill cohesion",
-          "href": "/decisions/0016-skill-cohesion-and-lifecycle-boundaries"
-        }
+        { "title": "Index", "href": "/decisions/README" },
+        { "title": "0000 — Use ADRs", "href": "/decisions/0000-use-markdown-architectural-decision-records" },
+        { "title": "0001 — Engineering stewardship purpose", "href": "/decisions/0001-repository-purpose-as-skills-meta-layer" },
+        { "title": "0002 — FAQ-driven docs", "href": "/decisions/0002-adopt-faq-driven-documentation" },
+        { "title": "0003 — Concept doc store", "href": "/decisions/0003-north-star-governance-lattice" },
+        { "title": "0004 — Plugins vs skills", "href": "/decisions/0004-plugin-packaging-and-install-path" },
+        { "title": "0005 — Plan hygiene + docs.page", "href": "/decisions/0005-executable-plans-and-docs-page" },
+        { "title": "0006 — Meta harness vs product CLIs", "href": "/decisions/0006-guild-harness-meta-vs-product-clis" },
+        { "title": "0007 — Dart for meta CLI", "href": "/decisions/0007-dart-for-guild-cli-and-harness-tooling" },
+        { "title": "0008 — Skill Steward product name", "href": "/decisions/0008-adopt-skill-steward-product-name" },
+        { "title": "0009 — Changesets for releases", "href": "/decisions/0009-adopt-changesets-for-repo-releases" },
+        { "title": "0010 — Binary release scope", "href": "/decisions/0010-binary-releases-for-product-harness-not-meta-steward" },
+        { "title": "0011 — Rule-based CI", "href": "/decisions/0011-tiered-skill-evals-and-rule-based-ci" },
+        { "title": "0012 — Visual identity", "href": "/decisions/0012-adopt-visual-brand-identity-system" },
+        { "title": "0013 — Automated release", "href": "/decisions/0013-automated-release-via-changesets-action" },
+        { "title": "0014 — Native binary distribution", "href": "/decisions/0014-distribute-steward-cli-as-binary" },
+        { "title": "0015 — Agent CLI entrypoints", "href": "/decisions/0015-agent-cli-entrypoints-and-local-validation" },
+        { "title": "0016 — Skill cohesion", "href": "/decisions/0016-skill-cohesion-and-lifecycle-boundaries" },
+        { "title": "0017 — Cold-start contracts", "href": "/decisions/0017-cold-start-contracts-before-diagnostics" }
       ]
     },
     {
       "group": "Repo Root (GitHub) — agent workspace files",
       "pages": [
-        {
-          "title": "README",
-          "href": "https://github.com/arenukvern/skill_steward/blob/main/README.md"
-        },
-        {
-          "title": "AGENTS.md",
-          "href": "https://github.com/arenukvern/skill_steward/blob/main/AGENTS.md"
-        },
-        {
-          "title": "Brand",
-          "href": "https://github.com/arenukvern/skill_steward/blob/main/docs/brand.mdx"
-        }
+        { "title": "README", "href": "https://github.com/arenukvern/skill_steward/blob/main/README.md" },
+        { "title": "AGENTS.md", "href": "https://github.com/arenukvern/skill_steward/blob/main/AGENTS.md" },
+        { "title": "Brand", "href": "https://github.com/arenukvern/skill_steward/blob/main/docs/brand.mdx" }
       ]
     }
   ]

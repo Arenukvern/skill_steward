@@ -1,25 +1,27 @@
 # Skill Steward
 
-Meta-skills and harness patterns for the open [Agent Skills](https://agentskills.io/) ecosystem—manage skills, document decisions, and build agent-first tooling (CLI + MCP).
+Engineering Stewardship for agent-operated engineering repositories: apps, libraries, tools, plugins, harnesses, and meta repos.
+
+Skill Steward helps humans and agents understand and improve the software ecology around a repository: charter, decisions, docs, quality gates, release legibility, safe handoff, security posture, and harness feedback. It ships as portable Agent Skills, repo-local specs, plugins, and the `steward` CLI.
 
 ## Choose your path
 
 | Audience | Start here |
 |----------|------------|
+| Understand the charter | [North Star](NORTH_STAR) |
+| Adopt stewardship in a repo | [Repo quality contracts](repo-quality-contracts) · [DX FAQ](DX_FAQ) |
 | Human contributor | [DX FAQ](DX_FAQ) · [Contributing](https://github.com/arenukvern/skill_steward/blob/main/CONTRIBUTING.md) |
-| AI agent in this repo | [AGENTS.md](https://github.com/arenukvern/skill_steward/blob/main/AGENTS.md) · [North Star](NORTH_STAR) |
+| AI agent in this repo | [AGENTS.md](https://github.com/arenukvern/skill_steward/blob/main/AGENTS.md) · [Docs map](start_here/docs_map) |
 | Install skills only | `npx skills add arenukvern/skill_steward` |
 | Publish / preview docs | [Enable docs.page](contributing/enable_docs_page) · [live site](https://docs.page/arenukvern/skill_steward) |
 | Full doc index | [Docs map](start_here/docs_map) |
 
-## North Star
+## Core specs
 
-Charter, boundaries, and what belongs in Skill Steward: **[North Star](NORTH_STAR)**.
-
-## Decisions
-
-Architectural decision records: **[Decisions index](decisions/README)**.
-
-## Standards
-
-Skill format checklist: **[STANDARDS](STANDARDS)** (repo root).
+| Spec | Owns |
+|------|------|
+| [North Star](NORTH_STAR) | Mission, scope, boundaries, maturity ladders |
+| [Repo quality contracts](repo-quality-contracts) | General stewardship quality proof for any repo type |
+| [STANDARDS](STANDARDS) | Agent Skills package format |
+| [Skills Catalog](skills-catalog) | Installable Skill Steward skills |
+| [Decisions](decisions/README) | Architectural decision records |

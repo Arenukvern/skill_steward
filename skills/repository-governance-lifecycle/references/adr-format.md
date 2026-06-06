@@ -47,7 +47,7 @@ When triggers fire, **stop and ask**—do not implement the most convenient opti
 
 **Output:** [decision brief](references/decision-checkpoints.md#decision-brief-template) in chat/PR, or ADR with `status: proposed`. Full matrix, severity, and exceptions: [references/decision-checkpoints.md](references/decision-checkpoints.md).
 
-Combine the ADR checkpoint with this skill's North Star rules and `mcp-harness-repo-maintainer` (harness shape) before large edits.
+Combine the ADR checkpoint with this skill's North Star rules and `repo-quality-system-lifecycle` before large edits; add `mcp-harness-repo-maintainer` only for action-contract or harness changes.
 
 ## Locate or bootstrap the decision log
 

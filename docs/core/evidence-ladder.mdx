@@ -1,0 +1,14 @@
+# Concept: evidence ladder
+
+A stewardship claim needs evidence appropriate to the claim.
+
+| Claim | Minimum evidence |
+|-------|------------------|
+| Skill is structurally valid | `pnpm run validate` |
+| Tier-1 skill routing is covered | `pnpm run eval` plus `evals/cases/*.yaml` |
+| Docs site is wired | `pnpm run docs:check` or documented blocked state |
+| Repo has quality contract | Type-native validation command or blocked evidence |
+| Repo is harness-ready | `doctor`, `actions list`, `action inspect`, `probe`, and benchmark/scenario evidence |
+| Agent workflow is proven | Fresh-agent run completes without hidden local context |
+
+Rule-based evals are useful but narrow. They prevent obvious drift; they do not prove production agent behavior. Harness benchmarks are stronger, but only for repos with declared action contracts.

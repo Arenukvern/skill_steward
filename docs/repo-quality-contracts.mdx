@@ -1,0 +1,113 @@
+# Repo quality contracts
+
+**Audience:** maintainers and agents adopting Engineering Stewardship in an app, library, tool, plugin, harness, or meta repo.
+
+This is the sibling spec to [STANDARDS](STANDARDS). `STANDARDS` defines the Agent Skills package format. This file defines the broader repo-level quality contract: what a repository must make legible before humans or agents can safely claim it is stewarded.
+
+## Contract goal
+
+A repo quality contract answers five questions:
+
+1. **What is this repo for?** Charter, archetype, boundaries, non-goals.
+2. **Where is truth?** Behavior SSOT, docs lattice, decisions, schemas, source provenance.
+3. **How is quality proven?** Type-native validation commands, tests, evals, probes, or truthful blocked evidence.
+4. **How can agents act safely?** Actions, effects, limits, redaction, permissions, rollback, and owner review.
+5. **How does learning persist?** Failures become ADRs, FAQs, tests, eval cases, action candidates, or harness improvements.
+
+## Required baseline
+
+| Area | Minimum proof |
+|------|---------------|
+| Charter | `docs/NORTH_STAR.mdx`, README section, or equivalent scope pointer |
+| Agent map | `AGENTS.md`, `CLAUDE.md`, `.cursor/rules`, or equivalent entry map |
+| Docs map | Clear router showing canonical owners for why/how/spec/behavior |
+| Decisions | ADR directory or issue/decision record policy for structural changes |
+| Behavior SSOT | Code/schemas/tests identified as truth; docs link inward instead of paraphrasing behavior |
+| Validation | One command or documented blocked state for the repo's native quality gate |
+| Release | Versioning/changelog/artifact provenance path, even if unreleased |
+| Safety | For agent-executable actions: effects, limits, redaction, network/secrets/destructive policy |
+| Evidence | Place where validation output, benchmark summaries, unknown cases, or eval outcomes are persisted |
+
+## Repo archetypes
+
+| Archetype | Primary artifact | Type-native gate examples |
+|-----------|------------------|---------------------------|
+| App | Product runtime and user behavior | unit/integration/UI tests, preview build, logs, screenshot or runtime harness |
+| Library | Public API and compatibility | tests, API docs, package dry-run, compatibility matrix |
+| CLI/tool | Commands and outputs | `--help`, `--json`, golden output tests, release artifact checksum |
+| Plugin | Host integration | manifest validation, install/rollback test, permissions review |
+| Harness/action contract | Agent-facing actions and probes | `steward doctor/actions/probe/benchmark`, scenario manifests |
+| Meta/governance | Skills, docs, policies, validators | `pnpm run validate`, `pnpm run eval`, docs check, registry check |
+
+## Steward contract shape
+
+Use `steward.yaml` when a repo needs machine-readable contract discovery. Keep it small and honest.
+
+```yaml
+schema: steward/v1
+
+repo:
+  id: example_repo
+  archetype: app
+
+stewardship:
+  governance:
+    north_star: docs/NORTH_STAR.mdx
+    adr_dir: docs/decisions
+  knowledge:
+    docs_map: AGENTS.md
+  quality:
+    validate: pnpm run validate
+    evidence: .steward/evidence
+  release:
+    changelog: CHANGELOG.md
+  security:
+    action_effects: required
+
+adoption:
+  status: adopting
+  gate:
+    pillar: quality
+```
+
+For harness/action-contract repos, add typed `actions`, `probes`, and `benchmarks` only after the repo has a safe first observation path. Do not store raw shell improvisation as permanent automation.
+
+## Sequenced integration claims
+
+For multi-repo work, a per-repo green check is not enough. Before saying an integration roadmap is ready, record:
+
+| Field | Required proof |
+|-------|----------------|
+| Dependency order | Which repo must publish, tag, or stabilize before the next repo can move. |
+| Source of truth | Which repo owns the package, binary, schema, contract, or public API. |
+| Consumer gate | The downstream command that proves the published or tagged artifact works for its consumer. |
+| Dirty-state policy | Which local changes block durable proof and which files are protected temporary state. |
+| Do-not-touch exceptions | Files or resources agents must not read, clean, delete, or add to action inputs. |
+
+Example: a library repo can pass tests while its consumer still must wait for a package publish. Publish evidence belongs to the library repo; cutover evidence belongs to the consumer. Do not replace this with local path dependency success.
+
+## Maturity levels
+
+| Stage | Name | Proof |
+|-------|------|-------|
+| **S0** | Baseline mapped | Charter, agent map, and validation command are discoverable. |
+| **S1** | Knowledge lattice declared | Why/how/spec/docs/behavior ownership is clear. |
+| **S2** | Quality contract proven | Type-native checks run or truthfully report why blocked. |
+| **S3** | Feedback loop active | Repeated failures create durable artifacts. |
+| **S4** | Fresh-agent workflow | A fresh agent completes one workflow without hidden local context. |
+| **S5** | Promoted capability | Repeated evidence becomes a reusable skill, action, eval, diagnostic, or harness feature. |
+
+## Claims to avoid
+
+- Do not call a repo harness-ready just because docs exist.
+- Do not call a repo stewarded if no validation command or blocked evidence is recorded.
+- Do not claim `pnpm run eval` proves real agent behavior; it proves rule-based routing cases.
+- Do not promote diagnostics from a single observed failure; capture unknown cases first.
+- Do not put domain tutorials in Skill Steward when the domain belongs to the governed repo.
+
+## Related skills
+
+- `repo-quality-system-lifecycle` — adopt or audit this contract for any repo type.
+- `repository-governance-lifecycle` — ADR/FAQ/ethics/plan hygiene loop.
+- `mcp-harness-repo-maintainer` — harness/action-contract proof after a repo needs typed actions.
+- `harness-engineering-lifecycle` — producer/consumer harness generalization after local proof exists.

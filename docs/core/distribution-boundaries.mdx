@@ -1,0 +1,14 @@
+# Concept: distribution boundaries
+
+Skill Steward separates mission from delivery surface.
+
+| Layer | Purpose | Boundary |
+|-------|---------|----------|
+| Engineering Stewardship | Structural governance and quality for repos | Applies to apps, libraries, tools, plugins, harnesses, and meta repos |
+| Agent Skills | Portable agent procedures | Does not contain full domain/runtime knowledge |
+| `npx skills` / skills.sh | Public install and discovery | Does not validate repo-local contracts |
+| `steward install/update` | Deterministic repo-local skill registration | Does not replace public package managers |
+| `steward doctor/actions/probe/benchmark` | Machine-readable contract proof | Does not bless raw shell automation without review |
+| Product harnesses | Runtime/framework visibility and actuation | Owned by product/harness repos, not Skill Steward |
+
+The practical rule: broaden the stewardship audience, but keep this repo's artifacts small, structural, and reusable.

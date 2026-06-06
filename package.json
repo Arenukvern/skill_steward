@@ -2,7 +2,7 @@
   "name": "skill-steward",
   "version": "0.3.4",
   "private": true,
-  "description": "Cross-agent skills marketplace (Cursor, Claude Code, Codex, npx skills)",
+  "description": "Engineering Stewardship for agent-operated repositories",
   "license": "MIT",
   "type": "module",
   "packageManager": "pnpm@9.15.4",

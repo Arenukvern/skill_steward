@@ -1,8 +1,8 @@
-# Binary release contract (product harness)
+# Binary release contract
 
-Normative pattern for repos whose **primary consumer artifact is an executable** (CLI, MCP server binary).
+Normative pattern for repos whose **primary consumer artifact includes an executable** (CLI, MCP server binary).
 
-Meta repos that ship **only** `SKILL.md` + docs (Skill Steward) use `npx skills` — see [ADR 0010](../../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.mdx).
+Meta repos that ship **only** `SKILL.md` + docs use `npx skills`. Skill Steward is the explicit exception: skills still ship through `npx skills`, while the `steward` CLI can also ship as a precompiled binary when synchronized with the repo release contract (see [ADR 0014](../../../docs/decisions/0014-distribute-steward-cli-as-binary.mdx)).
 
 ## When to use binaries vs other surfaces
 
@@ -11,7 +11,8 @@ Meta repos that ship **only** `SKILL.md` + docs (Skill Steward) use `npx skills`
 | MCP/CLI server | GitHub Release tarballs + checksums + `install.sh` | Full git clone for end users |
 | Product library | Package manager registries (e.g. pub, npm, crates.io) | Duplicate server binary in library package |
 | Agent skills | `npx skills add owner/repo` | Tarball of entire monorepo for skill-only consumers |
-| Meta validate CLI tied to repo tree | CI + maintainer clone | Global binary without repo ([ADR 0010](../../../docs/decisions/0010-binary-releases-for-product-harness-not-meta-steward.mdx)) |
+| Meta validate CLI tied to repo tree | CI + maintainer clone | Global binary without a stable consumer contract |
+| Skill Steward `steward` CLI | GitHub Release tarballs + checksums + `install.sh` when release-synchronized | Treating binaries as a replacement for `npx skills` |
 
 ## Release legibility + binaries (both required)
 
@@ -124,5 +125,5 @@ Pick one SSOT; sync everything else in the release PR:
 |------|-------------------|
 | **Product MCP** | Release binaries + `npx skills` for skills |
 | **Platform Libs** | Package manager registries (pub, npm, crates.io, etc.) |
-| **Meta Steward** | `npx skills` only; no binary train |
+| **Meta Steward** | `npx skills` for skills; optional release-synchronized CLI binary when the repo owns an executable consumer surface |
 | **CLI Harness** | CLI from source (or packaged binaries when shipping standalone executable) |

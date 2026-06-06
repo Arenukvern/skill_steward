@@ -6,6 +6,7 @@
     "multi-agent-handoff",
     "plugin-marketplace-setup",
     "release-changelog-harness",
+    "repo-quality-system-lifecycle",
     "repository-governance-lifecycle",
     "skill-authoring-lifecycle",
     "skill-eval-improve",

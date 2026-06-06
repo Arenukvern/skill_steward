@@ -1,28 +1,47 @@
 # Docs map
 
-Full index for the Skill Steward documentation site and repo.
+Full index for the Skill Steward documentation site and repo. Use this as the canonical-owner map before editing docs.
 
 ## Quick router
 
-| I want to… | Go to |
-|------------|--------|
-| Understand charter and scope | [North Star](../NORTH_STAR) |
-| Install or contribute skills | [DX_FAQ](../DX_FAQ) |
-| Why Guild is shaped this way | [DESIGN_FAQ](../DESIGN_FAQ) · [Decisions](../decisions/README) |
-| Plan hygiene (extract & remove) | [Plan hygiene](executable-plans) — not a plan format |
-| Visual brand identity | [Brand](../brand) (hero prompts, palette, marks) · [ADR 0012](../decisions/0012-adopt-visual-brand-identity-system) |
-| Skill/plugin marketplaces | Skill `plugin-marketplace-setup` · [ADR 0004](../decisions/0004-plugin-packaging-and-install-path) |
-| MCP/harness repo maintenance | Skill `mcp-harness-repo-maintainer` · [ADR 0006](../decisions/0006-guild-harness-meta-vs-product-clis) |
-| Steward contract schemas | [Schemas](../schemas/README) |
-| Agent entry map | [AGENTS.md](https://github.com/arenukvern/skill_steward/blob/main/AGENTS.md) |
-| Skill format rules | [STANDARDS.mdx](https://github.com/arenukvern/skill_steward/blob/main/docs/STANDARDS.mdx) |
-| Harness culture (CLI, MCP, docs) | Skill `mcp-harness-repo-maintainer` · [OpenAI harness engineering](https://openai.com/index/harness-engineering/) |
-| Enable / preview docs.page | [Enable docs.page](../contributing/enable_docs_page) |
+| I want to... | Canonical owner | Go to |
+|--------------|-----------------|-------|
+| Understand charter and scope | Charter | [North Star](../NORTH_STAR) |
+| Adopt stewardship in any repo | Repo quality spec | [Repo quality contracts](../repo-quality-contracts) |
+| Install or update skills | Operational how-to | [DX_FAQ](../DX_FAQ) |
+| Add or review Agent Skills | Skill package spec | [STANDARDS](../STANDARDS) |
+| Understand why the repo is shaped this way | Rationale | [DESIGN_FAQ](../DESIGN_FAQ) · [Decisions](../decisions/README) |
+| Choose which FAQ/doc to edit | Docs lattice | [Doc lattice](../core/doc-lattice) |
+| Understand stewardship concepts | Concept layer | [Stewardship loop](../core/stewardship-loop) · [Evidence ladder](../core/evidence-ladder) |
+| Plan hygiene (extract & remove) | Workflow doctrine | [Plan hygiene](executable-plans) |
+| Skill/plugin marketplaces | Distribution skill | Skill `plugin-marketplace-setup` · [ADR 0004](../decisions/0004-plugin-packaging-and-install-path) |
+| Local harness/action contract adoption | Harness skill | Skill `mcp-harness-repo-maintainer` · [ADR 0017](../decisions/0017-cold-start-contracts-before-diagnostics) |
+| Cross-repo harness generalization | Harness lifecycle | Skill `harness-engineering-lifecycle` · [ADR 0006](../decisions/0006-guild-harness-meta-vs-product-clis) |
+| Steward contract schemas | Schema reference | [Schemas](../schemas/README) |
+| Visual brand identity | Brand reference | [Brand](../brand) · [ADR 0012](../decisions/0012-adopt-visual-brand-identity-system) |
+| Agent entry map | Agent workspace map | [AGENTS.md](https://github.com/arenukvern/skill_steward/blob/main/AGENTS.md) |
+| Enable / preview docs.page | Docs publishing | [Enable docs.page](../contributing/enable_docs_page) |
+
+## Executable truth
+
+Docs should point here instead of paraphrasing behavior.
+
+| Behavior | Executable owner | Notes |
+|----------|------------------|-------|
+| Maintainer commands | [`package.json`](https://github.com/arenukvern/skill_steward/blob/main/package.json) | Script names are the command SSOT; DX_FAQ explains usage. |
+| Steward CLI behavior | [`packages/steward_cli/`](https://github.com/arenukvern/skill_steward/tree/main/packages/steward_cli) | Dart code is the runtime truth for validate/eval/list/contract commands. |
+| Repo-local contract | [`steward.yaml`](https://github.com/arenukvern/skill_steward/blob/main/steward.yaml) | Declares local actions, probes, evidence policy, and descriptive suites. |
+| Portable data shapes | [`docs/schemas/*.json`](../schemas/README) | JSON Schema covers shape; Dart validators enforce cross-field and repo-state rules. |
+| Tier-1 skill routing | [`packages/steward_cli/lib/src/eval/eval_tiers.dart`](https://github.com/arenukvern/skill_steward/blob/main/packages/steward_cli/lib/src/eval/eval_tiers.dart) + `skills/*/evals/cases/*.yaml` | Eval tier list and case files are the CI gate. |
+| Skill/package validation | [`packages/steward_cli/lib/src/validation/`](https://github.com/arenukvern/skill_steward/tree/main/packages/steward_cli/lib/src/validation) | `docs/STANDARDS.mdx` explains the contract; validators enforce it. |
+| Benchmark scenarios | [`steward/scenarios/`](https://github.com/arenukvern/skill_steward/tree/main/steward/scenarios) | Durable execution proof is blocked unless contract inputs are clean and tracked. |
+| CI/release gates | [`.github/workflows/`](https://github.com/arenukvern/skill_steward/tree/main/.github/workflows) | Workflow files define what remote automation actually runs. |
 
 ## Published site (`docs/`)
 
 - [Overview](/)
 - [North Star](../NORTH_STAR)
+- [Repo quality contracts](../repo-quality-contracts)
 - [Skills Catalog](../skills-catalog)
 - [Plan hygiene (extract & remove)](executable-plans)
 - [Schemas](../schemas/README)
@@ -31,15 +50,26 @@ Full index for the Skill Steward documentation site and repo.
 - [STANDARDS](../STANDARDS)
 - [Decisions](../decisions/README)
 
+## Concept layer
+
+| Concept | Use for |
+|---------|---------|
+| [Stewardship loop](../core/stewardship-loop) | How friction becomes durable repo knowledge or tooling |
+| [Distribution boundaries](../core/distribution-boundaries) | How mission differs from skills, CLI, plugins, and product harnesses |
+| [Evidence ladder](../core/evidence-ladder) | What proof is required before making quality or readiness claims |
+| [Doc lattice](../core/doc-lattice) | Which docs own charter, why, how, specs, maps, behavior, and procedures |
+
 ## Repo root (GitHub)
 
 | File | Role |
 |------|------|
-| `README.md` | Install commands, skill table |
+| `README.md` | Landing page, adoption summary, shortest install path |
 | `docs/DESIGN_FAQ.mdx` | Why (compressed) |
-| `docs/DX_FAQ.mdx` | How (Memory Palace) |
+| `docs/DX_FAQ.mdx` | How (commands and contributor workflow) |
+| `docs/STANDARDS.mdx` | Agent Skills package spec |
+| `docs/repo-quality-contracts.mdx` | General repo quality contract spec |
 | `AGENTS.md` | Agent map (~100 lines) |
-| `docs/brand.mdx` | Visual identity reference (prompts, palette, hero) |
+| `docs/brand.mdx` | Visual identity reference |
 | `skills/` | Installable packages |
 | `plugins/` | Hook/wiring bundles |
 | `docs.json` | [docs.page](https://docs.page) config |

@@ -10,8 +10,11 @@ A: [NORTH_STAR.mdx](NORTH_STAR) is canonical; published via [docs.json](https://
 **Q: Why are plans and roadmaps not kept after implementation?**  
 A: Any plan format is fine (Superpowers, session plans, Issues, etc.)—Skill Steward does not define a template. When done, **extract** durable knowledge to ADR, FAQ, code, or harness, then **remove** the plan file so agents are not misled. [Plan hygiene](start_here/executable-plans) · [ADR 0005](decisions/0005-executable-plans-and-docs-page).
 
+**Q: Why Engineering Stewardship for any repository?**  
+A: Agent-operated engineering work depends on more than agent internals or product code. Repositories need a shared software ecology: charter, decisions, docs, specs, validation gates, release evidence, debugging paths, handoffs, safety policy, and harness feedback. Skill Steward provides that structural layer for apps, libraries, tools, plugins, harnesses, and meta repos. Agent Skills are one delivery surface, not the mission boundary.
+
 **Q: Why does Skill Steward exist instead of another skills catalog?**  
-A: The open skills ecosystem has huge domain libraries; Guild is a **meta-layer**—managing, validating, and improving skills and processes—not competing on React/Flutter/cloud recipes. Domain skills stay in other repos.
+A: The open skills ecosystem has huge domain libraries; Skill Steward is an **Engineering Stewardship layer**—governing, validating, documenting, packaging, and improving repo systems and agent workflows—not competing on React/Flutter/cloud recipes. Domain skills stay in the governed product or domain repos.
 
 **Q: Why describe Skill Steward as engineering stewardship instead of a harness project?**
 A: Harnesses are only the executable feedback lane. Skill Steward also owns governance, ADRs, FAQs, source provenance, skill lifecycle, quality gates, release legibility, review patterns, security posture, and repo archetypes. The promise is broader: decisions are recorded, docs are searchable, gates are mechanical, releases are legible, reviews are critical, security is explicit, and harnesses provide feedback.
@@ -23,7 +26,7 @@ A: **Skills** are portable instructions (`SKILL.md`, `npx skills`). **Plugins** 
 A: **Public skills:** public Git + `npx skills add` + skills.sh. **Public plugins:** Editor marketplace manifests (`.cursor-plugin/`, `.claude-plugin/`). **Private:** private Git with team install (editor team marketplaces, agent `/plugin` commands + tokens, same `npx skills` if clone access). Skill `plugin-marketplace-setup` has the full matrix.
 
 **Q: How should sibling repos differ?**  
-A: One archetype per repo (agent-enabled product, platform libs, CLI harness, visual sidecar, meta steward). Product-centric repos own plugin SSOT + `init`; skill_steward owns meta-skills only. Skill `mcp-harness-repo-maintainer` documents layout, contract gates, and production agent patterns.
+A: One primary archetype per repo: app, library, CLI/tool, plugin, harness/action contract, or meta/governance. Product-centric repos own their runtime and domain guidance; Skill Steward owns structural stewardship patterns, skills, specs, and quality contracts. Skill `mcp-harness-repo-maintainer` documents layout, contract gates, and production agent patterns.
 
 **Q: Why both CLI and agent-protocol in product harnesses?**  
 A: They are **thin interfaces** to the same **core**—CLI for CI and scripts, agent-protocols for in-chat agents. Logic belongs in core packages (e.g. product packages or core libraries); adapters must not diverge. Repos without agent-protocols (CLI harnesses, visual sidecars) still use CLI → core only.
@@ -44,7 +47,7 @@ A: **Zero-dependency consumer access.** While primary artifacts are portable ski
 A: **Tiered:** Tier-1 charter skills require `evals/cases/*.yaml` + `pnpm run eval` (rule-based, no LLM in CI). Behavioral suites and judges stay offline (`references/evals.md`, plugin-eval, SkillOpt loop). Design language from [Chrome evals](https://developer.chrome.com/docs/ai/evals/design). [ADR 0011](decisions/0011-tiered-skill-evals-and-rule-based-ci) · skill `skill-eval-improve`.
 
 **Q: Where does GitHub profile / bio copy live?**  
-A: **Not in this repo.** Public bio should point at the product harness and [skill_steward](https://github.com/Arenukvern/skill_steward) ([ADR 0008](decisions/0008-adopt-skill-steward-product-name)). Repo-shape audits use `repository-governance-lifecycle` plus `mcp-harness-repo-maintainer`, not product-specific boundary audits.
+A: **Not in this repo.** Public bio should point at the product harness and [skill_steward](https://github.com/Arenukvern/skill_steward) ([ADR 0008](decisions/0008-adopt-skill-steward-product-name)). Repo-shape audits use `repo-quality-system-lifecycle` plus `repository-governance-lifecycle`; use `mcp-harness-repo-maintainer` only when typed action contracts or harness proof are in scope.
 
 ## Documentation
 
@@ -54,8 +57,8 @@ A: Durable **why** for repo evolution; PR-reviewable. FAQs hold operational comp
 **Q: Why DESIGN_FAQ and DX_FAQ at repo root?**  
 A: [FAQ-driven development](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl) separates **why** (this file) from **how** (DX_FAQ). No duplication between them. [ADR 0002](decisions/0002-adopt-faq-driven-documentation).
 
-**Q: Why a concept doc lattice skill but no full `docs/superpowers/` in Guild?**  
-A: Guild is small; router + ADRs + FAQs suffice. Teams may still use Superpowers (or any planner) in Guild or product repos—`repository-governance-lifecycle` teaches the layered doc lattice when you need it. [ADR 0003](decisions/0003-north-star-governance-lattice).
+**Q: Why a concept doc lattice skill but no full `docs/superpowers/` in Skill Steward?**
+A: Skill Steward is small; router + ADRs + FAQs suffice. Teams may still use Superpowers (or any planner) in Skill Steward or product repos—`repository-governance-lifecycle` teaches the layered doc lattice when you need it. [ADR 0003](decisions/0003-north-star-governance-lattice).
 
 **Q: Where is the visual brand identity documented?**  
 A: Practical reference + hero prompts in [brand.mdx](brand) · strategic decision, palette, and exact prompts in [ADR 0012](decisions/0012-adopt-visual-brand-identity-system). Wired into README hero and `docs.json` (`socialPreview` + theme).
@@ -77,10 +80,13 @@ A: Skills are canonical in `skills/`; plugins reference skill ids in `plugin.yam
 ## Harness
 
 **Q: Why a mcp-harness-repo-maintainer skill instead of only product CLIs?**  
-A: Guild teaches **how to build** agent-first harnesses (CLI+MCP parity, docs map, Guild skill composition). Product repos ship the actual tools; see [OpenAI harness engineering](https://openai.com/index/harness-engineering/).
+A: Skill Steward teaches **how to build** agent-first harnesses (CLI+MCP parity, docs map, Skill Steward skill composition). Product repos ship the actual tools; see [OpenAI harness engineering](https://openai.com/index/harness-engineering/).
 
 **Q: Why emphasize CLI before MCP in harness docs?**  
 A: Deterministic gates (`doctor`, contracts, validate) belong in terminal/CI; MCP is the conversational layer on the same catalog—standard CLI vs MCP parity pattern.
+
+**Q: Why cold-start contract proof before diagnosis?**
+A: Fresh repos do not yet have trustworthy symptom catalogs. First prove that an agent can discover declared actions, inspect the executable boundary, run a bounded quick probe, and benchmark or truthfully block durable execution. Only then should repeated observations become unknown cases, action candidates, or promoted diagnostics. This prevents agents from inventing diagnoses from one-off symptoms. Decision: [ADR 0017](decisions/0017-cold-start-contracts-before-diagnostics). How-to: [DX_FAQ cold-start proof loop](DX_FAQ#validate-desk).
 
 **Q: Is `steward mcp` production-ready?**
 A: Not yet. The current MCP surface is dogfood/experimental until it uses production MCP transport, typed action effects, timeouts, output caps, redaction, and permission gates. Product repos should treat MCP as a thin adapter over a validated core, not as a place to run raw shell or permanently mutate `steward.yaml`.

@@ -2,15 +2,17 @@
 
 Claude Code loads this map via `CLAUDE.md` (symlink to this file).
 
-You are in **Skill Steward**: a meta-layer for the Agent Skills ecosystem. Read the charter before large changes.
+You are in **Skill Steward**: an Engineering Stewardship layer for agent-operated engineering repositories. Read the charter before large changes.
 
 ## Start here
 
 | I need… | Read |
 |---------|------|
 | **Charter, scope, boundaries** | [docs/NORTH_STAR.mdx](docs/NORTH_STAR.mdx) |
+| **Repo quality contract** | [docs/repo-quality-contracts.mdx](docs/repo-quality-contracts.mdx) |
 | **Why** (standing decisions) | [docs/DESIGN_FAQ.mdx](docs/DESIGN_FAQ.mdx) · [docs/decisions/](docs/decisions/) |
 | **How** (install, validate, contribute, release) | [docs/DX_FAQ.mdx](docs/DX_FAQ.mdx) |
+| **Concepts** (stewardship loop, evidence, docs lattice) | [docs/core/](docs/core/) |
 | **Full doc index** | [docs/start_here/docs_map.mdx](docs/start_here/docs_map.mdx) |
 | **Plan hygiene** | [docs/start_here/executable-plans.mdx](docs/start_here/executable-plans.mdx) — any format; extract & remove when done |
 | **Which FAQ to edit** | [.cursor/rules/faq_usage.mdc](.cursor/rules/faq_usage.mdc) |
@@ -26,20 +28,22 @@ npx skills add arenukvern/skill_steward --skill repository-governance-lifecycle
 
 ## Non-negotiables
 
-1. **Meta only** — no domain framework skills (React, Flutter, …); see North Star.
+1. **Structural stewardship only** — no domain framework tutorial packs (React, Flutter, …); see North Star.
 2. **`pnpm run validate`** before merging skill changes.
-3. **Plan hygiene** — any planning tool is fine; when done, extract into ADR / FAQ / code / harness, then delete stale plan files ([doctrine](docs/start_here/executable-plans.mdx)).
-4. **AGENTS.md stays a map** — skill authoring: [docs/STANDARDS.mdx](docs/STANDARDS.mdx); do not bloat this file.
-5. **Docs ≠ code** — link to behavior SSOT; do not paraphrase implementations in prose.
-6. **Ethical governance** — all design decisions must be auditable against [`charter-and-ethics`](skills/repository-governance-lifecycle/references/charter-and-ethics.md) principles (Anti-Bloat, Reversibility, Legibility, Behavior-as-Truth, Artisan Restraint).
+3. **Repo quality claims need evidence** — use [docs/repo-quality-contracts.mdx](docs/repo-quality-contracts.mdx); do not claim harness readiness without contract proof.
+4. **Plan hygiene** — any planning tool is fine; when done, extract into ADR / FAQ / code / harness, then delete stale plan files ([doctrine](docs/start_here/executable-plans.mdx)).
+5. **AGENTS.md stays a map** — skill authoring: [docs/STANDARDS.mdx](docs/STANDARDS.mdx); do not bloat this file.
+6. **Docs ≠ code** — link to behavior SSOT; do not paraphrase implementations in prose.
+7. **Ethical governance** — all design decisions must be auditable against [`charter-and-ethics`](skills/repository-governance-lifecycle/references/charter-and-ethics.md) principles (Anti-Bloat, Reversibility, Legibility, Behavior-as-Truth, Artisan Restraint).
 
 ## Guild skills (in-repo)
 
 | Skill | Use when |
 |-------|----------|
 | `repository-governance-lifecycle` | Architectural decisions (ADRs), FAQs, ethical auditing, charter, AGENTS map |
-| `harness-engineering-lifecycle` | Engineering agentic developer harnesses and sandboxes |
-| `mcp-harness-repo-maintainer` | CLI/MCP harness configuration, agent-first workflows |
+| `repo-quality-system-lifecycle` | General stewardship baseline for apps, libraries, tools, plugins, harnesses, and meta repos |
+| `mcp-harness-repo-maintainer` | Local action-contract/harness adoption: `steward.yaml`, typed actions, quick probes, benchmark smoke loops |
+| `harness-engineering-lifecycle` | Cross-repo harness generalization after a local contract exists |
 | `release-changelog-harness` | Release and changelog tooling per ecosystem (Changesets, Melos, etc.) |
 | `skill-authoring-lifecycle` | Creating, auditing, and maintaining SKILL.md under `skills/` |
 | `skill-eval-improve` | Tiered evaluations (`evals/cases/*.yaml`) and CI improve loops |
@@ -52,7 +56,7 @@ npx skills add arenukvern/skill_steward --skill repository-governance-lifecycle
 ## Add or change a skill (checklist)
 
 1. `skills/{name}/SKILL.md` — `name` == directory; see [STANDARDS](docs/STANDARDS.mdx).
-2. `pnpm run validate` (Tier 1: also run eval when the eval harness is wired)
+2. `pnpm run validate` (Tier 1 skill changes also require `pnpm run eval`)
 3. `skills.sh.json` + [README](README.md) table
 4. No secrets; no domain tutorials
 
@@ -78,7 +82,7 @@ Plugins (hooks) are **not** installed by `npx skills` on Cursor — [plugins/REA
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
 
-This project is indexed by GitNexus as **skill_steward** (1698 symbols, 2995 relationships, 140 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+This project is indexed by GitNexus as **skill_steward** (1800 symbols, 3286 relationships, 148 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
 
 > If any GitNexus tool warns the index is stale, run `npx gitnexus analyze` in terminal first.
 

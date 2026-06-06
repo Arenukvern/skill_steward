@@ -71,13 +71,13 @@ Full matrix: [ecosystem-tooling.md](references/ecosystem-tooling.md). Binary/ins
 - “We should use Changesets like the JS community”
 - Release process is unclear, versions drift, or agents can’t tell what shipped
 - Adding release CI, versioning policy, or monorepo publish workflow
-- Auditing whether changelog tooling matches repo archetype (`mcp-harness-repo-maintainer`)
+- Auditing whether changelog tooling matches repo archetype (`repo-quality-system-lifecycle`)
 
 ## Workflow
 
 ### 1. Classify the repo
 
-Use `mcp-harness-repo-maintainer` archetype (product MCP, platform lib, harness, meta steward). **Meta and harness repos** need legibility; **app repos** need legibility **and** runtime compatibility notes.
+Use `repo-quality-system-lifecycle` archetypes (app, library, CLI/tool, plugin, harness, meta/governance). **Meta and harness repos** need legibility; **app repos** need legibility **and** runtime compatibility notes.
 
 ### 2. Choose generator (ADR if non-obvious)
 
@@ -166,7 +166,8 @@ Publish: project-specific (`changeset publish`, GitHub Action, or npm provenance
 
 | Skill | Use for |
 |-------|---------|
-| `mcp-harness-repo-maintainer` | Mechanical gates, docs as SSOT |
+| `repo-quality-system-lifecycle` | Repo archetype, mechanical gates, evidence path |
+| `mcp-harness-repo-maintainer` | Typed actions, probes, benchmarks, CLI/MCP parity |
 | `repository-governance-lifecycle` | ADRs, DESIGN_FAQ/DX_FAQ updates, and plan hygiene |
 | `skill-source-citations` | Durable release-tooling sources |
 

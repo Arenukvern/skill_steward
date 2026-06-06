@@ -4,200 +4,178 @@
 
 ![Cross-section of a cared-for ancient tree trunk at first light: precise growth rings, one clean radial extraction mark (plan hygiene), delicate geometric lattice threads emerging from the cut, and a single warm amber resin bead at the boundary — the visual symbol of long-term ethical stewardship and careful buildership for the Agent Skills meta-layer.](docs/brand/assets/hero/skill-steward-growth-rings-hero-16x9.jpg)
 
-**Engineering stewardship for the [Agent Skills](https://agentskills.io/) ecosystem** — govern, validate, document, package, and improve portable `SKILL.md` workflows and repo-local harnesses. Not a domain skill catalog (React, Flutter, cloud recipes live elsewhere). Not a skill installer ([Skillkit](https://github.com/rohitg00/skillkit) and [skills.sh](https://skills.sh) cover distribution).
+**Engineering Stewardship for agent-operated repositories** — apps, libraries, tools, plugins, harnesses, and meta repos. Skill Steward gives humans and agents a shared structural layer for charter, decisions, docs, quality gates, release legibility, safe handoff, and evidence-backed contract proof.
 
-Install on **Cursor**, **Claude Code**, **Codex**, **Zed**, **Windsurf**, **GitHub Copilot**, and 15+ tools via `npx skills`.
+It ships through [Agent Skills](https://agentskills.io/) plus a narrow `steward` CLI for repo-local registration, validation, and contract proof. Agent Skills are the portable delivery surface; the object of stewardship is the repository as a whole.
 
 **Charter:** [docs/NORTH_STAR.mdx](docs/NORTH_STAR.mdx) · **Docs:** [docs.page/arenukvern/skill_steward](https://docs.page/arenukvern/skill_steward) · [docs.json](docs.json)  
-**Why / how:** [docs/DESIGN_FAQ.mdx](docs/DESIGN_FAQ.mdx) · [docs/DX_FAQ.mdx](docs/DX_FAQ.mdx) · [Decisions](docs/decisions/) · [AGENTS.md](AGENTS.md) (agent map)
+**Why / how:** [docs/DESIGN_FAQ.mdx](docs/DESIGN_FAQ.mdx) · [docs/DX_FAQ.mdx](docs/DX_FAQ.mdx) · [Repo quality contracts](docs/repo-quality-contracts.mdx) · [Decisions](docs/decisions/) · [AGENTS.md](AGENTS.md)
 
 [skills.sh](https://skills.sh/arenukvern/skill_steward)
 
+## Adopt this when
+
+| Your repo is... | Skill Steward should help you... |
+|-----------------|----------------------------------|
+| An app | Preserve product intent, architecture decisions, validation gates, release evidence, and debugging paths. |
+| A library | Keep API contracts, compatibility decisions, package releases, and consumer proof legible. |
+| A CLI/tool | Make commands, `--json` output, effects, limits, and release artifacts agent-readable. |
+| A plugin | Document host integration, permissions, install/rollback steps, and compatibility boundaries. |
+| A harness/action-contract repo | Prove quick-safe actions, probes, benchmarks, and CLI/MCP/core parity. |
+| A meta/governance repo | Maintain skills, policies, docs, evals, and stewardship patterns without becoming a domain cookbook. |
+
+Skill Steward does not make those repos good by assertion; it gives them a structure for proving what is good.
+
 ## How this fits my other work
 
+| Project | Role |
+|---------|------|
+| **Product Harnesses** | Runtime/framework tooling so agents can inspect and interact with running apps. |
+| **Skill Steward** (this repo) | **Engineering stewardship layer** — structural governance and quality patterns for agent-operated repositories. |
+| **[Principles at work](https://dev.to/arenukvern/my-principles-at-work-credo-182c)** | **Why** — ethical AI boundaries, care for end users and builders, prototyping with feedback, artisan credit. |
 
-| Project                                                                              | Role                                                                                                                             |
-| ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
-| **Product Harnesses**                                                                 | Closed-loop tooling so agents can inspect and interact with running apps (CLI + agent integrations).                            |
-| **Skill Steward** (this repo)                                                        | **Engineering stewardship layer** — skills that help teams manage other skills and repo systems: governance, validation, ADRs, FAQ-driven docs, release legibility, review, and harness culture. |
-| **[Principles at work](https://dev.to/arenukvern/my-principles-at-work-credo-182c)** | **Why** — ethical AI boundaries, care for end users and builders, prototyping with feedback, artisan credit.                     |
-
-
-Same thread: useful docs for humans and agents, mechanical gates, and work worth people’s time. See [FAQ-driven development](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl) for the documentation shape this repo dogfoods.
-
-**How the name was chosen:** public product name and GitHub repo are **Skill Steward** ([ADR 0008](docs/decisions/0008-adopt-skill-steward-product-name.mdx)).
+Same thread: useful docs for humans and agents, mechanical gates, and work worth people's time. See [FAQ-driven development](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl) for the documentation shape this repo dogfoods.
 
 ## Install
 
-### Skills (npx skills)
-To install portable skills via the `skills` CLI:
+### Skills (`npx skills`)
 
 ```bash
-# Install all meta-skills (project scope)
+# Install all stewardship skills (project scope)
 npx skills add arenukvern/skill_steward
 
-# Install a specific skill (e.g. skill-authoring-lifecycle)
-npx skills add arenukvern/skill_steward --skill skill-authoring-lifecycle
+# Install a specific skill
+npx skills add arenukvern/skill_steward --skill repo-quality-system-lifecycle
+npx skills add arenukvern/skill_steward --skill repository-governance-lifecycle
 
-# Install globally (across all projects)
+# Install globally
 npx skills add arenukvern/skill_steward -g
 
-# Target specific agents (Cursor, Claude Code, Codex, Zed; non-interactive)
+# Target specific agents while iterating
 npx skills add arenukvern/skill_steward -a cursor -a claude-code -a codex -a zed -y
-
-# Install from a local clone while iterating on Skill Steward
 npx skills add <workspace>/agent_guild -a cursor -a claude-code -a codex -a zed -y
-npx skills add <workspace>/agent_guild -g -y
 ```
 
 Discover available skills on [skills.sh](https://skills.sh/arenukvern/skill_steward) or search them in the terminal:
+
 ```bash
 npx skills find steward
 ```
 
-### Steward CLI (Global Binary)
-To install the zero-dependency `steward` CLI globally as a precompiled native binary (which validates project-local skills and handles installation/updates without requiring the Dart SDK or a full repo clone):
+### Steward CLI
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash
 ```
 
+The CLI validates Skill Steward skills and can apply repo-local `skills.json` installs/updates with pinned refs. Use `npx skills` for normal public skill installation and updates.
+
 ## Updating installed skills
 
-Skills install as copies or symlinks under agent directories (for example `.agents/skills/`, `.cursor/skills/`, or `~/.codex/skills/`). When **Skill Steward** changes on GitHub, refresh your install with the [skills CLI](https://github.com/vercel-labs/skills):
-
 ```bash
-# Update every Skill Steward skill you have installed (project scope)
 npx skills update -y
-
-# Update only global installs
 npx skills update -g -y
-
-# Update only project-scoped installs
-npx skills update -p -y
-
-# Update one skill by name (as shown in `npx skills list`)
 npx skills update repository-governance-lifecycle -y
-```
-
-Re-install from GitHub when you want a clean pull of the whole marketplace or a single skill:
-
-```bash
-# Refresh all meta-skills from main
 npx skills add arenukvern/skill_steward -y
-
-# Refresh one skill
-npx skills add arenukvern/skill_steward --skill mcp-harness-repo-maintainer -y
-
-# Same, but from this local clone while testing unpublished skill edits
-npx skills add <workspace>/agent_guild --skill mcp-harness-repo-maintainer -a cursor -a codex -y
 ```
 
-See what is installed before updating:
-
-```bash
-npx skills list
-npx skills list -g
-```
-
-**Note:** `npx skills update` tracks the source you installed from (GitHub `main` by default). It does not run Skill Steward’s `pnpm run validate`—that is for [contributors](CONTRIBUTING.md). Hooks under `plugins/` are separate; see [plugins/README.md](plugins/README.md).
-
-More commands: [docs/DX_FAQ.mdx](docs/DX_FAQ.mdx) (section **Updating installed skills**).
+Installed paths depend on the agent, for example `.agents/skills/`, `.cursor/skills/`, `.claude/skills/`, or `~/.codex/skills/`. Hooks under `plugins/` are separate; see [plugins/README.md](plugins/README.md). More commands live in [docs/DX_FAQ.mdx](docs/DX_FAQ.mdx).
 
 ## What belongs here
 
-Meta and process capabilities only — [inclusion criteria](docs/decisions/0001-repository-purpose-as-skills-meta-layer.mdx#inclusion-criteria-what-belongs-in-skill-steward). Domain skills live in other repositories.
+Meta, governance, and process capabilities only. Domain content belongs in the governed product/domain repository when it is that repo's product. Skill Steward should not become a React, Flutter, cloud, or vendor API tutorial catalog.
 
 ## Stewardship pillars
 
-Harness engineering is one pillar, not the umbrella. Skill Steward should help teams keep decisions recorded, docs searchable, gates mechanical, releases legible, reviews critical, security explicit, and harness feedback loops executable.
-
-| Pillar | Current skills |
-|--------|----------------|
+| Pillar | Current surface |
+|--------|-----------------|
 | Governance | [repository-governance-lifecycle](skills/repository-governance-lifecycle/) |
-| Knowledge | [skill-source-citations](skills/skill-source-citations/), governance FAQ/ADR flow |
+| Knowledge | [skill-source-citations](skills/skill-source-citations/), ADR/FAQ/docs lattice |
+| Repo quality contracts | [repo-quality-system-lifecycle](skills/repo-quality-system-lifecycle/), [docs/repo-quality-contracts.mdx](docs/repo-quality-contracts.mdx) |
 | Skill lifecycle | [skill-authoring-lifecycle](skills/skill-authoring-lifecycle/), [plugin-marketplace-setup](skills/plugin-marketplace-setup/) |
-| Quality gates | [skill-eval-improve](skills/skill-eval-improve/), `steward validate` |
+| Quality gates | [skill-eval-improve](skills/skill-eval-improve/), `steward validate`, `steward eval` |
 | Harness engineering | [mcp-harness-repo-maintainer](skills/mcp-harness-repo-maintainer/), [harness-engineering-lifecycle](skills/harness-engineering-lifecycle/) |
 | Release legibility | [release-changelog-harness](skills/release-changelog-harness/) |
 | Review and handoff | [mixture-of-experts](skills/mixture-of-experts/), [multi-agent-handoff](skills/multi-agent-handoff/) |
 | Strategic alignment | [vision-alignment-foresight](skills/vision-alignment-foresight/) |
+| Security posture | Developing through action effects, redaction, provenance, and risk classes in repo-quality contracts. |
+| Org patterns | Developing through repo archetypes, ownership, and routing guidance. |
 
 ## Available skills
 
 | Skill | Use when |
 |-------|----------|
-| [skill-authoring-lifecycle](skills/skill-authoring-lifecycle/)     | Scaffold a new skill that passes validation and works with `npx skills`.                                                                                                   |
-| [plugin-marketplace-setup](skills/plugin-marketplace-setup/)       | Public/private skill & plugin marketplaces for Cursor, Claude Code, Codex, Zed, Open Plugin, and `npx skills`.                                                            |
-| [skill-source-citations](skills/skill-source-citations/)           | Cite and persist URLs in `references/sources.md` when authoring skills.                                                                                                    |
-| [skill-eval-improve](skills/skill-eval-improve/)                   | Tiered evals—rule-based `pnpm run eval`, Chrome/SkillOpt patterns, plugin-eval, human prompt suites.                                                                      |
-| [mixture-of-experts](skills/mixture-of-experts/)                   | Run a multi-agent Mixture of Experts audit on any topic to detect and consolidate overlapping logic.                                                                        |
-| [repository-governance-lifecycle](skills/repository-governance-lifecycle/) | Complete loop: check ethics, write ADRs, update FAQs, and enforce brand tone.                                                                                      |
-| [release-changelog-harness](skills/release-changelog-harness/)     | Release legibility: ecosystem-native versioning, changelog intent, and binary distribution (`install.sh`).                                                                |
-| [mcp-harness-repo-maintainer](skills/mcp-harness-repo-maintainer/) | Teach agents mechanical bounds of the workspace (task runners, docs) over raw shell loops.                                                                                  |
-| [harness-engineering-lifecycle](skills/harness-engineering-lifecycle/) | Generalize a custom validation script and safely dogfood it across sibling repos.                                                                                           |
-| [multi-agent-handoff](skills/multi-agent-handoff/)                 | Context-sharing schemas so Agent B can resume where Agent A left off.                                                                                                      |
-| [vision-alignment-foresight](skills/vision-alignment-foresight/)   | Test a product, repo, skill, plugin, or harness vision against implementation reality, user intent, evidence, and likely future direction.                                  |
+| [repo-quality-system-lifecycle](skills/repo-quality-system-lifecycle/) | Establish or audit a structural quality contract for any agent-operated app, library, tool, plugin, harness, or meta repo. |
+| [repository-governance-lifecycle](skills/repository-governance-lifecycle/) | Govern architectural decisions, ADRs, FAQs, ethics, brand tone, and plan hygiene. |
+| [vision-alignment-foresight](skills/vision-alignment-foresight/) | Test repo/product/skill vision against implementation reality, user intent, evidence, and future direction. |
+| [mcp-harness-repo-maintainer](skills/mcp-harness-repo-maintainer/) | Adopt or maintain repo-local action contracts, `steward.yaml`, probes, benchmarks, and CLI/MCP/core parity. |
+| [harness-engineering-lifecycle](skills/harness-engineering-lifecycle/) | Generalize a proven local harness across producer/consumer repos and dogfood it safely. |
+| [skill-authoring-lifecycle](skills/skill-authoring-lifecycle/) | Scaffold and review Agent Skills with valid `SKILL.md`, sources, evals, and registry entries. |
+| [skill-source-citations](skills/skill-source-citations/) | Maintain durable citations in `references/sources.md` when authoring skills. |
+| [skill-eval-improve](skills/skill-eval-improve/) | Improve Agent Skills through validate, rule-based eval cases, plugin-eval, prompt suites, and bounded edits. |
+| [plugin-marketplace-setup](skills/plugin-marketplace-setup/) | Design public/private skill and plugin distribution across supported agents and marketplaces. |
+| [release-changelog-harness](skills/release-changelog-harness/) | Maintain release legibility, changelog intent, versioning, and binary distribution. |
+| [mixture-of-experts](skills/mixture-of-experts/) | Run multi-lens critique to detect drift, overlap, and missing checks. |
+| [multi-agent-handoff](skills/multi-agent-handoff/) | Transfer context between specialized agents without losing ownership or evidence. |
 
+## Standards and specs
 
-## Standards
-
-- Format: [Agent Skills specification](https://agentskills.io/) (`SKILL.md` + optional `scripts/`, `references/`, `assets/`)
-- Registry: [skills.sh](https://skills.sh) indexes public repos with valid skills
-- CLI: [vercel-labs/skills](https://github.com/vercel-labs/skills) (`npx skills`)
-
-See [docs/STANDARDS.mdx](docs/STANDARDS.mdx) for the checklist used in this repo.
+| Spec | Owns |
+|------|------|
+| [docs/STANDARDS.mdx](docs/STANDARDS.mdx) | Agent Skills package format and validation checklist. |
+| [docs/repo-quality-contracts.mdx](docs/repo-quality-contracts.mdx) | General repo stewardship quality contracts for apps, libraries, tools, plugins, harnesses, and meta repos. |
+| [docs/start_here/docs_map.mdx](docs/start_here/docs_map.mdx) | Canonical owner map for docs and maintenance decisions. |
 
 ## Repository layout
 
-```
+```text
 skill_steward/              # GitHub: Arenukvern/skill_steward
 ├── docs/
+│   ├── NORTH_STAR.mdx      # Charter, scope, boundaries
 │   ├── DESIGN_FAQ.mdx      # Why (standing decisions)
 │   ├── DX_FAQ.mdx          # How (install, validate, contribute)
-│   ├── brand.mdx           # Visual identity guidelines
+│   ├── repo-quality-contracts.mdx
+│   ├── core/               # Concept docs for stewardship mental models
 │   └── decisions/          # ADRs (strategic decisions)
-├── skills/                 # Meta-skills only (installable)
-├── packages/steward_cli/   # Dart `steward` CLI package (source & tests)
+├── skills/                 # Installable stewardship skills
+├── packages/steward_cli/   # Dart `steward` CLI package
 ├── plugins/                # Editor plugins and wiring hooks
 ├── templates/              # Scaffolding templates for skills/plugins
-├── scripts/                # Utility shell scripts (e.g. build_release_artifacts.sh)
+├── scripts/                # Utility shell scripts
 ├── install.sh              # Precompiled binary bootstrapper script
 ├── docs.json               # docs.page configuration
 ├── skills.sh.json          # skills.sh directory configuration
 ├── CHANGELOG.md            # Version changelog (via Changesets)
-├── .changeset/             # In-flight changelog fragments
 └── AGENTS.md               # Agent entry map
 ```
 
 ## Contributing
 
-1. Read [AGENTS.md](AGENTS.md) and [CONTRIBUTING.md](CONTRIBUTING.md).
-2. Add a skill under `skills/{kebab-case-name}/` with `SKILL.md`.
-3. Run `pnpm run validate`.
-4. Update `skills.sh.json` and the skill table in this README.
-5. Open a PR.
+1. Read [AGENTS.md](AGENTS.md), [docs/NORTH_STAR.mdx](docs/NORTH_STAR.mdx), and [CONTRIBUTING.md](CONTRIBUTING.md).
+2. Use [docs/start_here/docs_map.mdx](docs/start_here/docs_map.mdx) to find the canonical owner before changing docs.
+3. For skill changes, follow [docs/STANDARDS.mdx](docs/STANDARDS.mdx).
+4. For repo-quality contract changes, follow [docs/repo-quality-contracts.mdx](docs/repo-quality-contracts.mdx).
+5. Run the relevant validation before PR.
 
 ## Validate locally
 
 ```bash
 pnpm install
 pnpm run validate
+pnpm run eval
 ```
 
-Dart CLI directly ([ADR 0006](docs/decisions/0006-guild-harness-meta-vs-product-clis.mdx) / [0007](docs/decisions/0007-dart-for-guild-cli-and-harness-tooling.mdx)):
+Dart CLI directly:
 
 ```bash
 cd packages/steward_cli && dart pub get && dart run :steward validate
 ```
 
-Or using the globally installed `steward` binary:
+Or using the globally installed binary:
 
 ```bash
 steward validate
 ```
-
-Cursor validates `skills/**/SKILL.md` on save via `[.cursor/hooks.json](.cursor/hooks.json)`.
 
 ## License
 

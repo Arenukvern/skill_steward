@@ -1,6 +1,6 @@
 ---
 name: plugin-marketplace-setup
-description: Designs public or private Agent Skill and plugin marketplaces for Cursor, Claude Code, Codex, Zed, Open Plugin, and npx skills—manifest layout, install matrix, and Guild vs product boundaries. Use when setting up a marketplace, distributing skills/plugins to a team, private registry, .cursor-plugin, .codex-plugin, .plugin, .claude-plugin, or skills.sh publishing.
+description: Designs public or private Agent Skill and plugin marketplaces for Cursor, Claude Code, Codex, Zed, Open Plugin, and npx skills—manifest layout, install matrix, and Skill Steward vs product boundaries. Use when setting up a marketplace, distributing skills/plugins to a team, private registry, .cursor-plugin, .codex-plugin, .plugin, .claude-plugin, or skills.sh publishing.
 license: MIT
 type: governance
 metadata:
@@ -19,9 +19,11 @@ Ship **skills** (portable instructions), **plugins** (runtime wiring), and **mar
 |-------|------------|--------------|------------------|
 | **Skill** | `SKILL.md` per [agentskills.io](https://agentskills.io/) | `npx skills add owner/repo --skill name` | `skills/{name}/` |
 | **Plugin** | Open Plugin or vendor manifest + hooks/MCP/rules/commands | Per-agent (see matrix) | `plugins/{id}/` ([ADR 0004](../../docs/decisions/0004-plugin-packaging-and-install-path.mdx)) |
-| **Marketplace** | Catalog of plugins/skills | Add marketplace, then install plugin | Product repos; Guild uses public Git + skills.sh |
+| **Marketplace** | Catalog of plugins/skills | Add marketplace, then install plugin | Product repos; Skill Steward uses public Git + skills.sh |
 
 **Rule:** Instructions only → **skill**. Event hooks or multi-file wiring → **plugin** (references skills by id, do not fork `SKILL.md`).
+
+**Skill Steward meta-plugin means:** a declarative manifest, referenced skill IDs, hook/rule snippets, and validated wiring artifacts. It does not mean a host marketplace submission has happened, and it must not silently mutate Cursor/Codex/Claude configuration. Host-specific install steps remain explicit in README/docs.
 
 ## Public vs private (decision)
 
@@ -85,7 +87,7 @@ Reference product layout: product repository marketplace distribution configs.
 
 - Use `.plugin/plugin.json` when a plugin should be vendor-neutral across Open Plugin hosts.
 - Add `.codex-plugin/plugin.json`, `.cursor-plugin/plugin.json`, or `.claude-plugin/plugin.json` only when the host needs a vendor-specific manifest.
-- Do not confuse Skill Steward `plugin.yaml` with a host marketplace manifest. It is a local meta-plugin manifest for documenting Guild wiring.
+- Do not confuse Skill Steward `plugin.yaml` with a host marketplace manifest. It is a local meta-plugin manifest for documenting Skill Steward wiring.
 
 ## Scaffold a new marketplace repo
 
@@ -156,9 +158,9 @@ Canonical skills stay in `skills/`. See [templates/plugin/](../../templates/plug
 | CLI | `steward validate` | `[toolkit-cli] init <agent>` |
 | Marketplace | Public Git + skills.sh | Claude/Codex git + Cursor submit + Smithery |
 
-Do not put product MCP servers in Guild. Cross-promote: `npx skills add arenukvern/skill_steward --skill mcp-harness-repo-maintainer`.
+Do not put product MCP servers in Skill Steward. Cross-promote: `npx skills add arenukvern/skill_steward --skill mcp-harness-repo-maintainer`.
 
-## Workflow: add a distributable skill to Guild
+## Workflow: add a distributable skill to Skill Steward
 
 1. Follow [skill-authoring-lifecycle](../skill-authoring-lifecycle/SKILL.md) — `skills/{name}/SKILL.md`.
 2. Register in `skills.sh.json` + root `README.md`.
@@ -166,7 +168,7 @@ Do not put product MCP servers in Guild. Cross-promote: `npx skills add arenukve
 4. After merge to `main`, public repo is installable via `npx skills add arenukvern/skill_steward --skill {name}`.
 5. Optional: submit to skills.sh leaderboard (automatic for public repos with valid skills).
 
-## Workflow: add a Guild plugin
+## Workflow: add a Skill Steward plugin
 
 1. Copy `templates/plugin/` → `plugins/{id}/`.
 2. List referenced skills in `plugin.yaml` (ids only).

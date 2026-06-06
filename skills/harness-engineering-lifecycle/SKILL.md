@@ -1,6 +1,6 @@
 ---
 name: harness-engineering-lifecycle
-description: Design, implement, and integrate generalized validation harnesses across a producer-consumer boundary. Use when refactoring custom validation CLIs/MCPs for large polyrepos, or when deploying a local tool to a sibling project for dogfooding and testing.
+description: Design, implement, and integrate generalized validation harnesses across a producer-consumer boundary after a local harness contract exists. Use when refactoring custom validation CLIs/MCPs for large polyrepos, extending Steward across sibling repos, or deploying a local tool to a consumer project for dogfooding and testing; use mcp-harness-repo-maintainer first for initial steward.yaml adoption and cold-start proof.
 license: MIT
 type: governance
 metadata:
@@ -11,13 +11,20 @@ metadata:
 
 # Harness Engineering Lifecycle
 
-Evolve repository-specific validation scripts into a generalized, high-performance, declarative harness system, and safely test those changes across a producer-consumer repository boundary.
+Evolve a proven repo-local contract into a generalized, high-performance, declarative harness system, then safely dogfood those changes across a producer-consumer repository boundary. Start here only after the target repo has a `steward.yaml` contract and at least an H2 smoke proof; use `mcp-harness-repo-maintainer` before that.
 
 ## When to use
 
 - Evolving custom validation scripts into a central linter engine.
 - Extending `steward` CLI features for large polyrepos.
 - Testing a local CLI/harness build against a sibling repository to catch path-resolution crashes or integration friction.
+- Turning repeated local benchmark/probe findings into a reusable harness feature.
+
+## When not to use
+
+- Initial `steward.yaml` adoption or first quick probe in one repo — use `mcp-harness-repo-maintainer`.
+- Skill creation, registry updates, or marketplace packaging — use `skill-authoring-lifecycle` or `plugin-marketplace-setup`.
+- Product-specific diagnostics before a cold-start contract exists — first add a bounded action, probe, and scenario in the target repo.
 
 ## Part 1: The Cascading Agent Surface (Architecture & Generalization)
 
@@ -49,6 +56,20 @@ When you make changes to the harness (Producer), you must validate it against de
 5. **Consumer Configuration Remediation:** Update the *Consumer* repository to leverage the new generalized features (e.g. updating its `steward.yaml`).
 6. **Dual Verification:** Verify that the consumer suite passes, and the producer suite passes.
 7. **Durable Knowledge:** Extract any learnings to ADRs or FAQs using the `repository-governance-lifecycle` skill.
+
+## Producer/consumer proof artifacts
+
+Before promoting a generalized harness change, capture the proof from both sides.
+
+| Side | Required artifact | Purpose |
+|------|-------------------|---------|
+| Producer | Changed schema/action/rule with tests or validator output | Shows the generalized feature works in the source harness. |
+| Consumer | Updated `steward.yaml` or scenario manifest | Shows adoption does not require local-path magic. |
+| Consumer | Benchmark summary or truthful `durability_blocked` output | Shows a fresh agent can see what is proven and what is blocked. |
+| Both | Validation commands and versions | Makes failures reproducible across repos. |
+| Docs | ADR/FAQ update when the boundary changed | Keeps future agents from rediscovering the same split. |
+
+Do not promote a local fix into the generalized harness when only one consumer has a private path workaround. Keep it local until the contract, schema, or rule has a reusable shape.
 
 ## Install
 

@@ -1,4 +1,6 @@
-# Skill Steward — Skills standards
+# Skill Steward — Agent Skills package standards
+
+This is the package-format spec for installable Agent Skills in this repository. For the broader quality contract that applies to apps, libraries, tools, plugins, harnesses, and meta repos, see [repo-quality-contracts.mdx](repo-quality-contracts).
 
 This document consolidates rules from the open ecosystem so skills in this repo install reliably via `npx skills` and appear on [skills.sh](https://skills.sh).
 
@@ -43,7 +45,7 @@ Every skill must include **`references/sources.md`** listing URLs for specs, pap
 
 | Tier | Skills | Required |
 |------|--------|----------|
-| **1 — Behavioral** | `mcp-harness-repo-maintainer`, `skill-authoring-lifecycle` | `references/evals.md` + ≥2 files in `evals/cases/*.yaml`; `pnpm run eval` passes |
+| **1 — Behavioral** | `mcp-harness-repo-maintainer`, `skill-authoring-lifecycle`, `skill-eval-improve`, `repository-governance-lifecycle`, `repo-quality-system-lifecycle`, `harness-engineering-lifecycle`, `plugin-marketplace-setup`, `mixture-of-experts`, `vision-alignment-foresight` | `references/evals.md` + ≥2 files in `evals/cases/*.yaml`; `pnpm run eval` passes |
 | **2 — Structural** | All other skills under `skills/` | `pnpm run validate`; optional `evals.md` when behavior-critical |
 
 Case schema: [eval-case-schema.md](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-eval-improve/references/eval-case-schema.md). Skill: `skill-eval-improve`.
@@ -117,7 +119,10 @@ metadata:
 
 ## Repository-local registration (team workflow)
 
-For teams and shared projects, Skill Steward supports **repo-local skill registration** using a standard configuration manifest in the root of the consumer project.
+This section is about installing Agent Skills into a repo. It is not the general repo-quality contract. For repo-level stewardship proof, use [repo-quality-contracts.mdx](repo-quality-contracts).
+
+
+For teams and shared projects, Skill Steward supports **repo-local skill registration** using a standard configuration manifest in the root of the consumer project. This is a deterministic structure helper for agents and maintainers; public install/update distribution remains `npx skills`.
 
 ### Recommended Layout
 
@@ -167,6 +172,8 @@ dart run steward update
 # Validate that the local skills are present and valid
 dart run steward validate --local
 ```
+
+These commands keep a project’s agent skill layer reproducible. They do not replace skills.sh discovery or `npx skills add/update` for ordinary public installs.
 
 ## Installation (end users)
 

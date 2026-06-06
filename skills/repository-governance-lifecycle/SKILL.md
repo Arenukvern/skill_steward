@@ -11,7 +11,7 @@ metadata:
 
 # Repository Governance Lifecycle
 
-This is the central nervous system for governing the repository. It unifies ethics, branding, architectural decision logs (ADRs), and living documentation (FAQs) into a single, cohesive loop: **Decide → Document → Cleanup**.
+This is the central nervous system for governing an agent-operated repository. It applies to apps, libraries, tools, plugins, harnesses, and meta repos; Skill Steward itself remains a structural stewardship repo, not a domain tutorial catalog. It unifies ethics, branding, architectural decision logs (ADRs), and living documentation (FAQs) into a single, cohesive loop: **Decide → Document → Cleanup**.
 
 Whenever an agent proposes or executes a structural shift, they must walk this loop.
 
@@ -19,7 +19,7 @@ Whenever an agent proposes or executes a structural shift, they must walk this l
 
 ### 1. Check Ethics & Boundaries (NORTH_STAR)
 Before making any decision, check the repository's foundational charter and ethical baseline.
-- Read [Charter and Ethics](references/charter-and-ethics.md) to ensure your proposed changes do not violate the repository's moral boundaries (e.g. no hype, no domain tutorials).
+- Read [Charter and Ethics](references/charter-and-ethics.md) to ensure your proposed changes do not violate the repository's moral boundaries (e.g. no hype; no domain tutorials inside Skill Steward; domain docs belong in the governed product repo when they are that repo's product).
 - Read [North Star Rules](references/north-star-rules.md) to understand the extension model.
 
 ### 2. Log the Decision (ADRs)

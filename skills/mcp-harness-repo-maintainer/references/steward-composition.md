@@ -23,7 +23,7 @@
 ```bash
 npx skills add arenukvern/skill_steward -a cursor -a claude-code -y
 # Prioritize for harness builds:
-#   repository-governance-lifecycle, mcp-harness-repo-maintainer,
+#   repo-quality-system-lifecycle, repository-governance-lifecycle, mcp-harness-repo-maintainer,
 #   skill-authoring-lifecycle, skill-source-citations
 ```
 

@@ -3,6 +3,7 @@ schema: steward/v1
 repo:
   id: skill_steward
   archetype: meta_steward
+  supported_archetypes: [app, library, cli_tool, plugin, harness, meta_governance]
 
 harness:
   name: steward
@@ -24,14 +25,28 @@ stewardship:
       design: "docs/DESIGN_FAQ.mdx"
       dx: "docs/DX_FAQ.mdx"
   knowledge:
-    docs_map: "AGENTS.md"
+    docs_map: "docs/start_here/docs_map.mdx"
+    agent_map: "AGENTS.md"
     source_policy: required_for_external_claims
+  repo_quality:
+    contract_spec: "docs/repo-quality-contracts.mdx"
+    maturity_model: general_stewardship
+    evidence_ladder: "docs/core/evidence-ladder.mdx"
   skill_lifecycle:
     installable_skills: true
     registry: "skills.sh.json"
   quality:
     validate: "pnpm run validate"
     skill_eval: "pnpm run eval"
+    eval_suites:
+      - id: skill-routing-tier1
+        command: "pnpm run eval"
+        scope: "skills/*/evals/cases/*.yaml"
+        runner_ssot: "packages/steward_cli/lib/src/eval/eval_tiers.dart"
+        proves: "rule-based Tier-1 skill routing coverage, not real agent behavior"
+      - id: repo-quality-baseline
+        spec: "docs/repo-quality-contracts.mdx"
+        proves: "repo stewardship baseline when paired with type-native gates"
   harness:
     enabled: true
     action_contract: actions
@@ -50,6 +65,7 @@ stewardship:
     redaction: steward/redaction/v1
   org:
     owners: "CODEOWNERS"
+    repo_taxonomy: "docs/NORTH_STAR.mdx#repo-archetypes"
 
 branding:
   banned_words: ["unlock", "supercharge", "ultimate", "leverage"]
@@ -69,9 +85,62 @@ skills_distribution:
 provenance:
   dependencies: []
   artifacts: []
-  benchmarks: []
+  benchmarks:
+    - id: skill_steward.contract-status-smoke
+      manifest: steward/scenarios/skill-steward-contract-status-smoke.yaml
 
 actions:
+  steward.contract.status.quick:
+    kind: command
+    desc: Inspect the git status of Steward contract inputs without running repository validators.
+    command:
+      argv:
+        - git
+        - --no-optional-locks
+        - status
+        - --no-renames
+        - --short
+        - --untracked-files=normal
+        - --no-ahead-behind
+        - --
+        - steward.yaml
+        - steward/scenarios/skill-steward-contract-status-smoke.yaml
+        - skills.sh.json
+        - packages/steward_cli/pubspec.yaml
+        - packages/steward_cli/pubspec.lock
+      shell: false
+    cwd: "."
+    effects:
+      fs_read:
+        - "steward.yaml"
+        - "steward/scenarios/skill-steward-contract-status-smoke.yaml"
+        - "skills.sh.json"
+        - "packages/steward_cli/pubspec.yaml"
+        - "packages/steward_cli/pubspec.lock"
+      fs_write: []
+      git: read
+      network: false
+      secrets: false
+      destructive: false
+    safety:
+      class: observe
+      default_policy: auto
+      requires_confirmation: false
+    limits:
+      timeout_ms: 10000
+      max_output_bytes: 200000
+      max_files: 16
+      max_parallelism: 1
+    outputs:
+      - id: stdout
+        kind: stream
+        required: true
+        retention: summary
+        format: text
+    evidence:
+      redaction: steward/redaction/v1
+      summary_fields: [exit_code, duration_ms, output_digest]
+
   validate.skills:
     kind: command
     desc: Validate installable Skill Steward skills and generated indexes.
@@ -145,7 +214,7 @@ actions:
 probes:
   quick:
     profile: quick
-    actions: []
+    actions: [steward.contract.status.quick]
   standard:
     profile: standard
     actions: [validate.skills, eval.skills]

@@ -68,7 +68,8 @@ Run this spine **before** a multi-file feature, new integration, or repo reshape
 ```text
 1. North Star — still in scope? (own / do-not-own)
 2. repository-governance-lifecycle — any trigger T1–T8? → decision brief or proposed ADR
-3. mcp-harness-repo-maintainer — thin CLI/MCP, mechanical gate planned?
+3. repo-quality-system-lifecycle — repo archetype, native gate, evidence path?
+4. mcp-harness-repo-maintainer — typed actions, CLI/MCP, benchmark proof needed?
 4. Implement — only after checkpoint answered or waived by user
 5. Close — extract to ADR/FAQ/code; delete plan scratch
 ```
