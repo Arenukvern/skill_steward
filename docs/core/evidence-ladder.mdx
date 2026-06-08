@@ -2,13 +2,20 @@
 
 A stewardship claim needs evidence appropriate to the claim.
 
-| Claim | Minimum evidence |
-|-------|------------------|
-| Skill is structurally valid | `pnpm run validate` |
-| Tier-1 skill routing is covered | `pnpm run eval` plus `evals/cases/*.yaml` |
-| Docs site is wired | `pnpm run docs:check` or documented blocked state |
-| Repo has quality contract | Type-native validation command or blocked evidence |
-| Repo is harness-ready | `doctor`, `actions list`, `action inspect`, `probe`, and benchmark/scenario evidence |
-| Agent workflow is proven | Fresh-agent run completes without hidden local context |
+| Exact claim | Minimum evidence | Does not prove |
+|-------------|------------------|----------------|
+| Skill is structurally valid | `pnpm run validate` | Runtime behavior |
+| Tier-1 skill routing is covered | `pnpm run eval` plus `evals/cases/*.yaml` | Production agent behavior |
+| Docs site is wired | `pnpm run docs:check` or documented blocked state | Repo correctness |
+| Repo quality contract is proven | Type-native validation command passes, or blocked evidence explains why it cannot | Harness readiness |
+| H2 smoke loop is proven | `doctor`, `actions list`, `action inspect`, `probe`, and benchmark summary with `result: "pass"` | H4 fresh-agent workflow |
+| H2 smoke loop is blocked | Benchmark summary with `result: "blocked"` and `blocked_by: "durability_blocked"` | H2 proof |
+| H4 agent workflow is proven | Fresh-agent run artifact or transcript completes one repo-specific workflow without hidden local context | Product-wide correctness |
 
 Rule-based evals are useful but narrow. They prevent obvious drift; they do not prove production agent behavior. Harness benchmarks are stronger, but only for repos with declared action contracts.
+
+## Adoption check
+
+Use this concept before making a readiness claim. Minimum artifact: pair the exact claim with the weakest evidence that truthfully proves it.
+
+Do not use a green skill eval, docs check, or smoke benchmark to claim product runtime correctness or H4 fresh-agent workflow proof.

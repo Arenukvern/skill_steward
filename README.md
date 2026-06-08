@@ -2,7 +2,7 @@
 
 [![skills.sh](https://skills.sh/b/arenukvern/skill_steward)](https://skills.sh/arenukvern/skill_steward) [![maintained with Skill Steward](docs/brand/assets/svg/badge-solid.svg)](https://github.com/Arenukvern/skill_steward)
 
-![Cross-section of a cared-for ancient tree trunk at first light: precise growth rings, one clean radial extraction mark (plan hygiene), delicate geometric lattice threads emerging from the cut, and a single warm amber resin bead at the boundary — the visual symbol of long-term ethical stewardship and careful buildership for the Agent Skills meta-layer.](docs/brand/assets/hero/skill-steward-growth-rings-hero-16x9.jpg)
+![Cross-section of a cared-for ancient tree trunk at first light: precise growth rings, one clean radial extraction mark (plan hygiene), delicate geometric lattice threads emerging from the cut, and a single warm amber resin bead at the boundary — the visual symbol of long-term ethical stewardship and careful buildership for agent-operated repositories.](docs/brand/assets/hero/skill-steward-growth-rings-hero-16x9.jpg)
 
 **Engineering Stewardship for agent-operated repositories** — apps, libraries, tools, plugins, harnesses, and meta repos. Skill Steward gives humans and agents a shared structural layer for charter, decisions, docs, quality gates, release legibility, safe handoff, and evidence-backed contract proof.
 
@@ -70,6 +70,38 @@ curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/insta
 
 The CLI validates Skill Steward skills and can apply repo-local `skills.json` installs/updates with pinned refs. Use `npx skills` for normal public skill installation and updates.
 
+## First repo proof
+
+Start with the broad repo-quality baseline; add harness proof only when the repo needs typed actions, probes, or benchmark evidence.
+
+```bash
+# In the repo you want to steward
+steward adopt
+steward map
+
+# Install the flagship baseline skill for agents
+npx skills add arenukvern/skill_steward --skill repo-quality-system-lifecycle
+```
+
+When a fresh repo is already ready for an action contract, start with the harness scaffold instead:
+
+```bash
+steward adopt --with-harness
+steward doctor --json
+steward actions list --json
+steward action inspect doctor.local --json
+steward probe --profile quick --json
+steward benchmark \
+  --scenario <repo-id>.contract-status-smoke \
+  --strict \
+  --json \
+  --output .steward/benchmark-summaries/contract-status-smoke.json
+```
+
+`adopt` creates the S0/S1 stewardship baseline with `stewardship.harness.enabled: false`, `actions: {}`, and `probes: {}`. Those empty maps are valid baseline state, not missing harness proof. `adopt --with-harness` adds the first quick-safe action and probe; it also adds a smoke scenario when a durable git remote and HEAD commit are available. A `durability_blocked` benchmark is useful blocked evidence when contract inputs are dirty or untracked; it is not H2 proof until rerun cleanly.
+
+Canonical reference: [First adopter golden path](docs/evidence/first-adopter-golden-path.mdx).
+
 ## Updating installed skills
 
 ```bash
@@ -102,6 +134,8 @@ Meta, governance, and process capabilities only. Domain content belongs in the g
 | Org patterns | Developing through repo archetypes, ownership, and routing guidance. |
 
 ## Available skills
+
+Start with [`repo-quality-system-lifecycle`](skills/repo-quality-system-lifecycle/) for broad repo adoption. Use the other skills as supporting modules for a narrower job.
 
 | Skill | Use when |
 |-------|----------|

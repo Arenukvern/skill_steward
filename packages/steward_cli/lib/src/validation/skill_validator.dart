@@ -208,7 +208,7 @@ Future<ValidationReport> validateAllSkills(final String skillsDir) async {
             activePlans.add('docs/exec-plans/active/$name');
           }
         }
-      } catch (_) {}
+      } on Object catch (_) {}
     }
 
     for (final plan in activePlans) {

@@ -25,14 +25,15 @@ class MapCommand extends Command<void> {
     final root = findRepoRoot(Directory.current);
     final config = await StewardConfig.load(root);
     final buffer = StringBuffer();
+    void write([final Object? object = '']) => buffer.writeln(object);
 
     final harnessName = config.harnessName ?? 'Skill Steward';
-    buffer.writeln('# 🧭 $harnessName Agent Map');
-    buffer.writeln();
+    write('# 🧭 $harnessName Agent Map');
+    write();
 
     // 1. Task Runner & Commands detection
-    buffer.writeln('## 🛠️ Detected Task Runner & Pipelines');
-    buffer.writeln();
+    write('## 🛠️ Detected Task Runner & Pipelines');
+    write();
     final taskConfigs = <String>[];
     String preferredRunner = '';
     String runCmd = '';
@@ -66,20 +67,18 @@ class MapCommand extends Command<void> {
     }
 
     if (taskConfigs.isNotEmpty) {
-      buffer.writeln('- **Configs detected:** ${taskConfigs.join(", ")}');
-      buffer.writeln(
-        '- **Preferred Runner:** `$preferredRunner` (Run: `$runCmd`)',
-      );
+      write('- **Configs detected:** ${taskConfigs.join(", ")}');
+      write('- **Preferred Runner:** `$preferredRunner` (Run: `$runCmd`)');
 
       if (config.isV1) {
-        buffer.writeln('- **Typed Steward Actions:**');
+        write('- **Typed Steward Actions:**');
         if (config.typedActions.isEmpty) {
-          buffer.writeln(
+          write(
             '  - none declared; run `steward doctor --json` to inspect adoption state',
           );
         } else {
           for (final action in config.typedActions) {
-            buffer.writeln(
+            write(
               '  - `${action.id}` '
               '(${action.safetyClass}/${action.defaultPolicy}) : '
               '${action.desc}',
@@ -87,19 +86,19 @@ class MapCommand extends Command<void> {
           }
         }
         if (config.probes.isNotEmpty) {
-          buffer.writeln('- **Typed Probes:**');
+          write('- **Typed Probes:**');
           for (final entry in config.probes.entries) {
             final probe = entry.value;
             if (probe is Map) {
               final actions = probe['actions'] as List? ?? const [];
-              buffer.writeln(
+              write(
                 '  - `${entry.key}` : ${actions.map((final e) => '`$e`').join(", ")}',
               );
             }
           }
         }
       } else if (config.pipelines.isNotEmpty) {
-        buffer.writeln('- **Legacy Pipelines:**');
+        write('- **Legacy Pipelines:**');
         config.pipelines.forEach((final key, final val) {
           String cmd = '';
           String desc = '';
@@ -111,30 +110,33 @@ class MapCommand extends Command<void> {
           }
           if (cmd.isNotEmpty) {
             final descStr = desc.isNotEmpty ? ' : $desc' : '';
-            buffer.writeln('  - `$key` (Run: `$cmd`)$descStr');
+            write('  - `$key` (Run: `$cmd`)$descStr');
           }
         });
       } else {
-        buffer.writeln('- **Standard Pipelines:**');
-        buffer.writeln('  - `validate` : Check skills and repository hygiene');
-        buffer.writeln('  - `test`     : Run test/evaluation suite');
+        write('- **Standard Pipelines:**');
+        write('  - `validate` : Check skills and repository hygiene');
+        write('  - `test`     : Run test/evaluation suite');
       }
     } else {
-      buffer.writeln('_No standard task runner config found in project root._');
+      write('_No standard task runner config found in project root._');
     }
-    buffer.writeln();
+    write();
 
     // Archetype detection
-    buffer.writeln('## 🧭 Repository Archetype');
-    buffer.writeln();
-    String archetype = 'B — Platform libs'; // Default or fallback
+    write('## 🧭 Repository Archetype');
+    write();
+    String archetype = 'library';
     String details = '';
+    String archetypeSource = 'inferred from repository files';
+    String archetypeConfidence = 'low';
 
     if (File(p.join(root, 'plugin', 'mcp.json')).existsSync() ||
         File(p.join(root, 'mcp.json')).existsSync()) {
-      archetype = 'A — Product MCP';
+      archetype = 'plugin';
+      archetypeConfidence = 'medium';
       details =
-          'This is a toolkit + MCP server repository. It implements agent capabilities and registers them in `plugin/mcp.json`.';
+          'This repository exposes host integration metadata or agent-facing plugin wiring.';
     } else if (File(p.join(root, 'skills.sh.json')).existsSync()) {
       try {
         final content = File(p.join(root, 'skills.sh.json')).readAsStringSync();
@@ -142,57 +144,83 @@ class MapCommand extends Command<void> {
               'https://skills.sh/schemas/skills.sh.schema.json',
             ) ||
             content.contains('skill_steward')) {
-          archetype = 'E — Meta steward';
+          archetype = 'meta_governance';
+          archetypeConfidence = 'medium';
           details =
-              'This is a meta-repository for agent skills and validation. It maintains governance guidelines and the `steward` CLI tool.';
+              'This is a meta/governance repository for skills, docs, policies, validators, or stewardship patterns.';
         }
-      } catch (_) {}
+      } on Object catch (_) {}
     }
 
-    if (archetype == 'B — Platform libs') {
+    if (archetype == 'library') {
       final packagesDir = Directory(p.join(root, 'packages'));
       final toolDir = Directory(p.join(root, 'tool'));
-      if (packagesDir.existsSync() &&
+      if (Directory(p.join(root, 'apps')).existsSync() ||
+          Directory(p.join(root, 'app')).existsSync() ||
+          Directory(p.join(root, 'web')).existsSync() ||
+          Directory(p.join(root, 'ios')).existsSync() ||
+          Directory(p.join(root, 'android')).existsSync()) {
+        archetype = 'app';
+        archetypeConfidence = 'medium';
+        details =
+            'This is an app repository. Product behavior, runtime validation, release evidence, and debugging paths are the primary stewardship surface.';
+      } else if (packagesDir.existsSync() &&
           (File(p.join(root, 'pubspec.yaml')).existsSync() ||
               File(p.join(root, 'package.json')).existsSync())) {
-        archetype = 'B — Platform libs';
+        archetype = 'library';
+        archetypeConfidence = 'medium';
         details =
-            'This is a platform library workspace containing modular packages/adapters. Central logic lives in core packages, mapped to transport/surface adapters.';
+            'This is a library or package workspace. Public APIs, tests, release notes, and consumer proof are the primary stewardship surface.';
       } else if (toolDir.existsSync()) {
-        archetype = 'C — CLI harness';
+        archetype = 'cli_tool';
+        archetypeConfidence = 'medium';
         details =
-            'This is a CLI-first harness workspace. It provides command-line interfaces for agents or test runners without hosting public MCP APIs directly.';
+            'This is a CLI/tool workspace. Commands, machine-readable output, effects, limits, and release artifacts are the primary stewardship surface.';
       } else {
-        details = 'Platform / general codebase workspace.';
+        details = 'General library or codebase workspace.';
       }
     }
 
     if (config.archetype != null && config.archetype!.isNotEmpty) {
       archetype = config.archetype!;
-      if (archetype.startsWith('A')) {
+      archetypeSource = 'configured in steward.yaml';
+      archetypeConfidence = 'high';
+      if (archetype == 'plugin') {
         details =
-            'This is a toolkit + MCP server repository. It implements agent capabilities and registers them in `plugin/mcp.json` or equivalent.';
-      } else if (archetype.startsWith('B')) {
+            'This repository exposes host integration metadata or agent-facing plugin wiring.';
+      } else if (archetype == 'library') {
         details =
-            'This is a platform library workspace containing modular packages/adapters. Central logic lives in core packages, mapped to transport/surface adapters.';
-      } else if (archetype.startsWith('C')) {
+            'This is a library or package workspace. Public APIs, tests, release notes, and consumer proof are the primary stewardship surface.';
+      } else if (archetype == 'cli_tool') {
         details =
-            'This is a CLI-first harness workspace. It provides command-line interfaces for agents or test runners without hosting public MCP APIs directly.';
-      } else if (archetype.startsWith('E')) {
+            'This is a CLI/tool workspace. Commands, machine-readable output, effects, limits, and release artifacts are the primary stewardship surface.';
+      } else if (archetype == 'harness') {
         details =
-            'This is a meta-repository for agent skills and validation. It maintains governance guidelines and the `steward` CLI tool.';
+            'This is a harness/action-contract workspace. Typed actions, probes, benchmarks, and adapter parity are the primary stewardship surface.';
+      } else if (archetype == 'meta_governance') {
+        details =
+            'This is a meta/governance repository for skills, docs, policies, validators, or stewardship patterns.';
+      } else if (archetype == 'app') {
+        details =
+            'This is an app repository. Product behavior, runtime validation, release evidence, and debugging paths are the primary stewardship surface.';
       } else {
         details = 'Configured repository archetype.';
       }
     }
 
-    buffer.writeln('- **Detected Archetype:** `$archetype`');
-    buffer.writeln('- **Role:** $details');
-    buffer.writeln();
+    write('- **Detected Archetype:** `$archetype`');
+    write('- **Archetype Source:** $archetypeSource');
+    write('- **Confidence:** $archetypeConfidence');
+    write('- **Role:** $details');
+    final quality = config.stewardship['quality'];
+    if (quality is Map && quality['validate'] is String) {
+      write('- **Native Quality Gate:** `${quality['validate']}`');
+    }
+    write();
 
     // 2. Active Local Skills
-    buffer.writeln('## 📚 Active Installed Skills');
-    buffer.writeln();
+    write('## 📚 Active Installed Skills');
+    write();
     final skillsDir = Directory(p.join(root, '.agents', 'skills'));
     final List<Directory> localSkills = [];
 
@@ -206,15 +234,15 @@ class MapCommand extends Command<void> {
             localSkills.add(entry);
           }
         }
-      } catch (_) {}
+      } on Object catch (_) {}
     }
 
     if (localSkills.isNotEmpty) {
       localSkills.sort(
         (final a, final b) => p.basename(a.path).compareTo(p.basename(b.path)),
       );
-      buffer.writeln('| Skill | Type | Description | Path |');
-      buffer.writeln('|---|---|---|---|');
+      write('| Skill | Type | Description | Path |');
+      write('|---|---|---|---|');
       for (final dir in localSkills) {
         final name = p.basename(dir.path);
         final skillMd = File(p.join(dir.path, 'SKILL.md'));
@@ -229,31 +257,37 @@ class MapCommand extends Command<void> {
             desc = '${desc.substring(0, 57)}...';
           }
           type = parsed['type'] ?? 'developer';
-        } catch (_) {}
+        } on Object catch (_) {}
 
-        buffer.writeln(
-          '| `$name` | `$type` | $desc | `.agents/skills/$name/` |',
-        );
+        write('| `$name` | `$type` | $desc | `.agents/skills/$name/` |');
       }
     } else {
-      buffer.writeln(
-        '_No skills installed. Run `steward install` to add skills._',
-      );
+      write('_No skills installed. Run `steward install` to add skills._');
     }
-    buffer.writeln();
+    write();
 
     // 2a. Recommended Skills to Adopt
-    buffer.writeln('## 💡 Recommended Skills to Adopt');
-    buffer.writeln(
+    write('## 💡 Recommended Skills to Adopt');
+    write(
       'These base skills are recommended for installation to guide agents and maintain repository hygiene:',
     );
-    buffer.writeln();
+    write();
 
     final installedNames = localSkills
         .map((final d) => p.basename(d.path))
         .toSet();
+    final skillLifecycle = config.stewardship['skill_lifecycle'];
+    final installableSkills =
+        skillLifecycle is Map && skillLifecycle['installable_skills'] == true;
     final recs = <Map<String, String>>[];
 
+    if (!installedNames.contains('repo-quality-system-lifecycle')) {
+      recs.add({
+        'name': 'repo-quality-system-lifecycle',
+        'why':
+            'Establishes the broad repo stewardship baseline: archetype, docs lattice, native gates, evidence path, and maturity proof.',
+      });
+    }
     if (!installedNames.contains('repository-governance-lifecycle')) {
       recs.add({
         'name': 'repository-governance-lifecycle',
@@ -261,7 +295,8 @@ class MapCommand extends Command<void> {
             'Governs charter, AGENTS.md maps, ADRs, FAQs, ethics, and plan hygiene. Essential for maintaining repository stewardship.',
       });
     }
-    if (!installedNames.contains('skill-authoring-lifecycle')) {
+    if (installableSkills &&
+        !installedNames.contains('skill-authoring-lifecycle')) {
       recs.add({
         'name': 'skill-authoring-lifecycle',
         'why':
@@ -275,7 +310,7 @@ class MapCommand extends Command<void> {
             'Persists source links and provenance so skill knowledge survives beyond one agent session.',
       });
     }
-    if (!installedNames.contains('skill-eval-improve')) {
+    if (installableSkills && !installedNames.contains('skill-eval-improve')) {
       recs.add({
         'name': 'skill-eval-improve',
         'why':
@@ -284,25 +319,24 @@ class MapCommand extends Command<void> {
     }
     if (!installedNames.contains('mcp-harness-repo-maintainer')) {
       final harnessWhy =
-          (archetype.contains('Product MCP') ||
-              archetype.contains('Meta steward'))
+          (archetype == 'plugin' || archetype == 'meta_governance')
           ? 'Tailored for agent-facing repositories that need typed contracts, bounded tools, and validation surfaces.'
           : 'Teaches CLI/MCP/core parity, mechanical gates, and local harness contracts without moving product runtime logic into Skill Steward.';
       recs.add({'name': 'mcp-harness-repo-maintainer', 'why': harnessWhy});
     }
 
     if (recs.isNotEmpty) {
-      buffer.writeln('| Skill | Why it is useful / when to adopt |');
-      buffer.writeln('|---|---|');
+      write('| Skill | Why it is useful / when to adopt |');
+      write('|---|---|');
       for (final rec in recs) {
-        buffer.writeln('| `${rec['name']}` | ${rec['why']} |');
+        write('| `${rec['name']}` | ${rec['why']} |');
       }
     } else {
-      buffer.writeln(
+      write(
         '✓ Excellent: All recommended base skills are currently installed.',
       );
     }
-    buffer.writeln();
+    write();
 
     // 2b. Exported Repository Skills (locally defined under skills/)
     final repoSkillsDir = Directory(p.join(root, 'skills'));
@@ -317,20 +351,20 @@ class MapCommand extends Command<void> {
             exportedSkills.add(entry);
           }
         }
-      } catch (_) {}
+      } on Object catch (_) {}
     }
 
     if (exportedSkills.isNotEmpty) {
-      buffer.writeln('## 📦 Exported Repository Skills');
-      buffer.writeln(
+      write('## 📦 Exported Repository Skills');
+      write(
         'These are custom agent skills authored in this repository to assist developers/agents:',
       );
-      buffer.writeln();
+      write();
       exportedSkills.sort(
         (final a, final b) => p.basename(a.path).compareTo(p.basename(b.path)),
       );
-      buffer.writeln('| Skill | Type | Description | Path |');
-      buffer.writeln('|---|---|---|---|');
+      write('| Skill | Type | Description | Path |');
+      write('|---|---|---|---|');
       for (final dir in exportedSkills) {
         final name = p.basename(dir.path);
         final skillMd = File(p.join(dir.path, 'SKILL.md'));
@@ -345,16 +379,16 @@ class MapCommand extends Command<void> {
             desc = '${desc.substring(0, 57)}...';
           }
           type = parsed['type'] ?? 'developer';
-        } catch (_) {}
+        } on Object catch (_) {}
 
-        buffer.writeln('| `$name` | `$type` | $desc | `skills/$name/` |');
+        write('| `$name` | `$type` | $desc | `skills/$name/` |');
       }
-      buffer.writeln();
+      write();
     }
 
     // 3. Documentation Lattice
-    buffer.writeln('## 🧭 Documentation Lattice');
-    buffer.writeln();
+    write('## 🧭 Documentation Lattice');
+    write();
     final docFiles = <String, String>{};
 
     for (final relPath in [
@@ -386,12 +420,12 @@ class MapCommand extends Command<void> {
 
     if (docFiles.isNotEmpty) {
       docFiles.forEach((final name, final path) {
-        buffer.writeln('- **$name**: [`$path`]($path)');
+        write('- **$name**: [`$path`]($path)');
       });
     } else {
-      buffer.writeln('_No core documentation guides detected._');
+      write('_No core documentation guides detected._');
     }
-    buffer.writeln();
+    write();
 
     // 4. Plan Hygiene (unmerged plans warning)
     final activePlans = <String>[];
@@ -413,29 +447,28 @@ class MapCommand extends Command<void> {
             activePlans.add('docs/exec-plans/active/$name');
           }
         }
-      } catch (_) {}
+      } on Object catch (_) {}
     }
 
     if (activePlans.isNotEmpty) {
-      buffer.writeln('## ⚠️ Active Plan Hygiene Alerts');
-      buffer.writeln();
-      buffer.writeln('> [!WARNING]');
-      buffer.writeln(
+      write('## ⚠️ Active Plan Hygiene Alerts');
+      write();
+      write('> [!WARNING]');
+      write(
         '> Stale/active plan files are present in the workspace. Clean these up before merging:',
       );
       for (final plan in activePlans) {
-        buffer.writeln('> - `$plan`');
+        write('> - `$plan`');
       }
     } else {
-      buffer.writeln('## ✅ Plan Hygiene Status');
-      buffer.writeln();
-      buffer.writeln(
+      write('## ✅ Plan Hygiene Status');
+      write();
+      write(
         '✓ Clean: No active or stale plan files detected in the workspace.',
       );
     }
-    buffer.writeln();
+    write();
 
-    final sink = outputSink ?? stdout;
-    sink.write(buffer.toString());
+    (outputSink ?? stdout).write(buffer.toString());
   }
 }

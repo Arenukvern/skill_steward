@@ -19,6 +19,7 @@ VALIDATE before PR     → pnpm run validate  (skill structure; CI also runs ana
 CITE / EVAL SKILLS     → skill-source-citations, skill-eval-improve
 EVAL CI (Tier 1)       → pnpm run eval · evals/cases/*.yaml · ADR 0011
 STEWARD CLI              → ../packages/steward_cli/README.md  (ADR 0007)
+FIRST ADOPTER PROOF     → this file (First adopter golden path) · evidence/first-adopter-golden-path
 RELEASE / CHANGELOG    → this file (Release desk) · ADR 0009 · ADR 0010 · skill release-changelog-harness
 PLUGINS (hooks)        → ../plugins/README.md  (not via npx skills)
 ```
@@ -47,7 +48,7 @@ Harness work is one part of engineering stewardship. Use the narrowest pillar th
 | Governance | Charter, ADRs, FAQs, ethics, plan hygiene | `repository-governance-lifecycle` |
 | Knowledge | Source provenance and docs traceability | `skill-source-citations` |
 | Skill lifecycle | Authoring and auditing installable skills | `skill-authoring-lifecycle` |
-| Quality gates | Tier-1 skill evals and bounded improvement loops | `skill-eval-improve`, `pnpm run eval` |
+| Quality gates | Tier-1 static skill evals and bounded improvement loops | `skill-eval-improve`, `pnpm run eval` |
 | Local harness adoption | `steward.yaml`, typed actions, quick probes, benchmark smoke loops | `mcp-harness-repo-maintainer` |
 | Cross-repo harness engineering | Producer/consumer generalization and sibling dogfood | `harness-engineering-lifecycle` |
 | Release legibility | Changelog, versioning, release artifacts | `release-changelog-harness` |
@@ -70,12 +71,48 @@ pnpm run validate
 ### Consumer install from a local clone (sibling repo)
 
 ```bash
-# Project scope (example: <cli_harness>)
-cd <workspace>/<cli_harness>
+# Project scope (example: <cli_tool_repo>)
+cd <workspace>/<cli_tool_repo>
 make agent-skills
 # or install from the cloned local copy:
 npx skills add <workspace>/agent_guild --skill mcp-harness-repo-maintainer -a cursor -y
 ```
+
+### First adopter golden path
+
+Use this path for a repo that does not yet know whether it needs a harness. It proves the stewardship baseline first and reserves typed actions for a separate decision.
+
+```bash
+# In the target repo
+steward adopt
+steward map
+npx skills add arenukvern/skill_steward --skill repo-quality-system-lifecycle
+```
+
+Expected first result:
+
+| Step | Proof |
+|------|-------|
+| `steward adopt` | `skills.json`, `steward.yaml`, and `AGENTS.md` exist. `stewardship.harness.enabled` is `false` by default, with valid empty `actions: {}` and `probes: {}`. |
+| `steward map` | The repo archetype, task runner, docs pointers, and recommended skills are visible. |
+| `repo-quality-system-lifecycle` | Agents get the broad S0/S1 baseline workflow before action-contract work. |
+
+Use the harness flag only when the repo is ready to declare typed actions, probes, and benchmark evidence from the start. The smoke scenario is generated only when the repo has a durable git remote and resolved HEAD commit; otherwise add the scenario after those facts exist.
+
+```bash
+steward adopt --with-harness
+steward doctor --json
+steward actions list --json
+steward action inspect doctor.local --json
+steward probe --profile quick --json
+steward benchmark \
+  --scenario <repo-id>.contract-status-smoke \
+  --strict \
+  --output .steward/benchmark-summaries/contract-status-smoke.json \
+  --json
+```
+
+Interpretation: a passing smoke benchmark proves only H2 contract discovery and safe first observation. A `durability_blocked` result is useful blocked evidence when it points to dirty or untracked contract inputs, but it is not H2 proof and not H4 fresh-agent workflow proof. Sanitized reference: [First adopter golden path](evidence/first-adopter-golden-path).
 
 ### Harness bundle (recommended for product repos)
 
@@ -100,19 +137,11 @@ Do not collapse repo folder, public product name, CLI command, MCP prefix, and p
 | `flutter_harness` | `flutter-harness` | CLI-only visual harness; first proof is local agent doctor/preflight. |
 | `vitamins_quiz_bot` | `shippic-steward` | Local steward control plane; first proof is redacted inspect output before deeper citation judging. |
 
-### Integration roadmap desk
+### Maintainer-local integration roadmap desk
 
-When a roadmap crosses sibling repositories, record the dependency order before claiming a repo is green. A local contract can pass while a downstream consumer is still blocked by an unpublished package or stale override.
+This is maintainer-local context, not general consumer adoption guidance. When a roadmap crosses sibling repositories, record dependency order before claiming a repo is green. A local contract can pass while a downstream consumer is still blocked by an unpublished package or stale override.
 
-Current `~/mcp` / `~/xs` order:
-
-| Step | Repo | Role | Allowed next action | Required evidence | Do not touch |
-|------|------|------|---------------------|-------------------|--------------|
-| 1 | `agentkit` / IntentCall | Platform libraries | Make the release tree clean, configure pub.dev credentials, run real publish dry-run, then publish packages in documented order. | `just validate`, `just analyze`, `just test`, real `just publish-dry-run`, then pub.dev package pages for `intentcall_*`. | Do not fix `mcp_flutter` against local-only API shape before publish. |
-| 2 | `mcp_flutter` | Product MCP/toolkit consumer | Cut over from local path dependencies to hosted `intentcall_*` packages after publish. | `make check-intentcall-integration`, `make check-contracts`, and hosted dependency lockfile proof. | Do not publish IntentCall from this repo; `agentkit` is the publish SSOT. |
-| 3 | `flutter_harness` | CLI harness consumer | Refresh stale local overrides or hosted deps after `mcp_flutter` cutover. | `just check` plus a strict harness benchmark when contract inputs are stable. | Do not preserve old `agentkit_*` package paths after the IntentCall rename. |
-| 4 | `vitamins_quiz_bot` | App-local steward | Stabilize only contract inputs and redacted inspect proof. | `steward action inspect shippic.inspect.redacted --json` and redacted benchmark proof. | Keep `.env` and SQLite DB/WAL/SHM files as protected temporary local state; do not read, remove, or add them as contract inputs. |
-| 5 | `ecsly` | Product app | Refresh proof after higher-priority integration blockers are clear. | Native validation plus strict Steward benchmark when needed. | Do not treat a dirty product worktree as harness failure without contract evidence. |
+Current dated note: [Maintainer-local integration roadmap — 2026-06-08](evidence/maintainer-local-integration-roadmap-2026-06-08).
 
 ## 📦 Install Skill Steward (consumers)
 
@@ -272,21 +301,13 @@ dart run :steward probe --profile quick --json
 dart run :steward benchmark \
   --scenario skill_steward.contract-status-smoke \
   --output .steward/benchmark-summaries/skill-steward-contract-status-smoke.json \
+  --strict \
   --json
 ```
 
-Interpretation: `doctor` and `actions list` prove contract discovery, `action inspect` proves the exact executable boundary, `probe` proves the safe first observation, and `benchmark` proves or blocks durable execution. A `durability_blocked` benchmark is a truthful result when `steward.yaml` or the scenario manifest is modified/untracked; track or commit those inputs, then rerun the same command. The built-in `contract-status-smoke` scenario is a first contract proof, not a claim that full agent navigation, diagnosis, or repair is proven.
+Interpretation: `doctor` and `actions list` prove contract discovery, `action inspect` proves the exact executable boundary, `probe` proves the safe first observation, and `benchmark` proves durable execution only when it returns `result: "pass"`. A `durability_blocked` benchmark is truthful blocked evidence when `steward.yaml` or the scenario manifest is modified/untracked; track or commit those inputs, then rerun the same command. The built-in `contract-status-smoke` scenario is first contract evidence, not a claim that full agent navigation, diagnosis, or repair is proven.
 
-Harness/action-contract maturity is staged (general repo stewardship uses `S0`-`S5` in [North Star](NORTH_STAR#general-stewardship-maturity-ladder); local harness contracts use `H0`-`H5`):
-
-| Stage | Name | Proof |
-|-------|------|-------|
-| **H0** | Skills installed | Agent can discover Skill Steward skills from project/global agent paths. |
-| **H1** | Local contract declared | `steward.yaml` exists with one quick-safe action and docs point to it. |
-| **H2** | Smoke benchmark proven | Cold-start loop above runs or reports `durability_blocked` for a clean reason. |
-| **H3** | Repo feedback loop | Benchmark summaries, unknown cases, and action candidates accumulate in the target repo. |
-| **H4** | Full agent workflow | A fresh agent completes one repo-specific workflow without raw shell spelunking. |
-| **H5** | Promoted harness capability | Repeated evidence promotes a diagnostic/action/eval/local harness feature with owner, risk, redaction, and validation. |
+Harness/action-contract maturity is staged in [North Star](NORTH_STAR#harnessaction-contract-maturity-ladder). Operational shorthand: H0/H1 means installed and declared, H2 means the cold-start loop above runs or truthfully blocks, H3-H5 require real feedback, fresh-agent workflow proof, and promoted reusable capability.
 
 Daily skill validation (`validate`/`eval`) and runtime dogfood (`benchmark`) are intentionally separate. A repo can pass skill validation while still being only H0/H1 for local harness adoption.
 
@@ -356,7 +377,7 @@ CLI+MCP dual surface    → ../skills/mcp-harness-repo-maintainer/references/cli
 Compose Skill Steward skills    → ../skills/mcp-harness-repo-maintainer/references/steward-composition.md
 ```
 
-Product example: `<cli_harness> doctor`, `make check-contracts` — not shipped from Skill Steward.
+Product example: `<cli_tool_repo> doctor`, `make check-contracts` — not shipped from Skill Steward.
 
 `steward mcp` is experimental until it uses production MCP transport and typed action policy. Prefer CLI/validator paths for deterministic gates.
 

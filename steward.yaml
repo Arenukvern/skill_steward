@@ -2,14 +2,14 @@ schema: steward/v1
 
 repo:
   id: skill_steward
-  archetype: meta_steward
+  archetype: meta_governance
   supported_archetypes: [app, library, cli_tool, plugin, harness, meta_governance]
 
 harness:
   name: steward
   mode: cli
   entrypoints:
-    cli: steward
+    cli: cd packages/steward_cli && dart run :steward
 
 adoption:
   status: adopting
@@ -215,9 +215,6 @@ probes:
   quick:
     profile: quick
     actions: [steward.contract.status.quick]
-  standard:
-    profile: standard
-    actions: [validate.skills, eval.skills]
 
 diagnostics:
   cases: {}

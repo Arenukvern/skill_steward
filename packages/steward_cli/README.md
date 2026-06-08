@@ -14,6 +14,8 @@ Meta stewardship CLI for [Skill Steward](https://github.com/arenukvern/skill_ste
 | `steward validate` | Validate installable skills and generated registry/index consistency |
 | `steward eval --json` | Run Tier-1 rule-based skill routing evals; runtime dogfood belongs to `benchmark` |
 | `steward list` | List installable skills |
+| `steward adopt` | Create the baseline `skills.json`, `steward.yaml`, and `AGENTS.md` without typed actions |
+| `steward adopt --with-harness` | Create baseline files plus a quick-safe action and probe; add a contract smoke scenario when durable git source facts exist |
 | `steward install` | Apply repo-local `skills.json` registrations into agent-readable folders |
 | `steward update` | Refresh pinned repo-local skill registrations and update `skills.json` commits |
 
@@ -27,10 +29,11 @@ dart run :steward probe --profile quick --json
 dart run :steward benchmark \
   --scenario skill_steward.contract-status-smoke \
   --output .steward/benchmark-summaries/skill-steward-contract-status-smoke.json \
+  --strict \
   --json
 ```
 
-Benchmark execution is durability-gated. If `source.steward_contract` or a file-backed scenario manifest is modified or untracked, the summary must return `result: blocked` with `blocked_by: durability_blocked`; track or commit those contract inputs, then rerun the same benchmark for executable proof. The built-in `contract-status-smoke` scenario proves contract discovery and durability gating only; it does not prove full agent navigation or diagnosis.
+Benchmark execution is durability-gated. If `source.steward_contract` or a file-backed scenario manifest is modified or untracked, the summary must return `result: blocked` with `blocked_by: durability_blocked`; track or commit those contract inputs, then rerun the same benchmark for executable proof. The built-in `contract-status-smoke` scenario proves contract discovery and durability gating only when it returns `result: "pass"`; it does not prove full agent navigation or diagnosis.
 
 ## Development
 

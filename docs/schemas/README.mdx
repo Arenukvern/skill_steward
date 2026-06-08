@@ -48,7 +48,7 @@ Global Steward may delegate only through declared local harness entrypoints and 
 
 - Scenario manifests live under repo-owned paths such as `steward/scenarios/*.yaml`, not generated `.steward/` records.
 - `source.steward_contract` and file-backed scenario manifests must be clean and tracked before actions run.
-- `durability_blocked` is a valid benchmark result when contract inputs are modified or untracked.
+- `durability_blocked` is a valid blocked benchmark result when contract inputs are modified or untracked; it is not H2 proof.
 - Strict proof blocks broad-read actions when undeclared dirty files could affect what the action observes.
 - `source.commit` is the subject commit under test. It must not be treated as proof that a scenario manifest contains itself at that same commit.
 - Benchmark summaries prove the manifest input with `scenario_manifest_sha256`, `input_digests`, durability, proof, and result. They do not prove remote reproducibility unless the runner verifies fetchability from `source.git`.

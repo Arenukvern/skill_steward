@@ -558,15 +558,37 @@ List<ConfigDiagnostic> _validateContract(
   requireMap('harness', config.harness);
   requireMap('adoption', config.adoption);
   requireMap('stewardship', config.stewardship);
-  requireMap('actions', config.actions);
-  requireMap('probes', config.probes);
   requireMap('diagnostics', config.diagnostics);
   requireMap('unknown_cases', config.unknownCases);
   requireMap('provenance', config.provenance);
   _validateStewardshipPillars(config.stewardship, diagnostics);
+  final harnessPillar = _stringMap(config.stewardship['harness']);
+  final harnessEnabled = harnessPillar?['enabled'] == true;
+  if (harnessEnabled) {
+    requireMap('actions', config.actions);
+    requireMap('probes', config.probes);
+  }
 
   _requireString(config.repo, 'repo', 'id', diagnostics);
   _requireString(config.repo, 'repo', 'archetype', diagnostics);
+  final archetype = config.repo['archetype'];
+  const allowedArchetypes = {
+    'app',
+    'library',
+    'cli_tool',
+    'plugin',
+    'harness',
+    'meta_governance',
+  };
+  if (archetype is String && !allowedArchetypes.contains(archetype)) {
+    diagnostics.add(
+      ConfigDiagnostic.error(
+        path: 'repo.archetype',
+        message:
+            'repo.archetype must be one of: ${allowedArchetypes.join(", ")}.',
+      ),
+    );
+  }
   _requireString(config.harness, 'harness', 'name', diagnostics);
   _requireString(config.harness, 'harness', 'mode', diagnostics);
   _requireString(config.adoption, 'adoption', 'status', diagnostics);
@@ -626,6 +648,7 @@ void _validateStewardshipPillars(
   const requiredPillars = {
     'governance',
     'knowledge',
+    'repo_quality',
     'skill_lifecycle',
     'quality',
     'harness',

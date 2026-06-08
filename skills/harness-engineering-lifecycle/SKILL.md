@@ -28,7 +28,7 @@ Evolve a proven repo-local contract into a generalized, high-performance, declar
 
 ## Part 1: The Cascading Agent Surface (Architecture & Generalization)
 
-When engineering a harness for a massive polyrepo, you must follow the **Cascading Agent Surface** guidelines. A strict separation of tools vs skills fails at this scale. Instead, seamlessly link them using domain-agnostic abstractions:
+When engineering a harness beyond one local contract, follow the **Cascading Agent Surface** guidelines. A strict separation of tools vs skills can fail once repo workflows span multiple packages, adapters, or consumers. Instead, link them using domain-agnostic abstractions:
 
 1. **Layer 0 (The Embedded Agent Surface)**: The target application or engine must natively expose its internal state via explicit hooks (e.g., RPC or memory probes). Do not rely on brittle UI scraping or black-box testing.
 2. **Layer 1 (The Protocol Adapter)**: Build generalized MCP servers or protocol adapters to connect to Layer 0. These tools provide raw visibility and actuation (e.g., taking screenshots, reading memory) but must contain NO business logic.

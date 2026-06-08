@@ -36,9 +36,12 @@ class McpCommand extends Command<void> {
           }),
       ),
     );
+    void registerRpc(final String method, final Function callback) {
+      server.registerMethod(method, callback);
+    }
 
     // Register Initialize
-    server.registerMethod(
+    registerRpc(
       'initialize',
       (final json_rpc.Parameters params) => {
         'protocolVersion': '2024-11-05',
@@ -53,14 +56,14 @@ class McpCommand extends Command<void> {
       },
     );
 
-    server.registerMethod('notifications/initialized', (
+    registerRpc('notifications/initialized', (
       final json_rpc.Parameters params,
     ) {
       // Just ack
     });
 
     // Register Tools List
-    server.registerMethod('tools/list', (final json_rpc.Parameters params) {
+    registerRpc('tools/list', (final json_rpc.Parameters params) {
       final tools = <Map<String, dynamic>>[];
 
       if (config.isV1) {
@@ -115,9 +118,7 @@ class McpCommand extends Command<void> {
     });
 
     // Register Tools Call
-    server.registerMethod('tools/call', (
-      final json_rpc.Parameters params,
-    ) async {
+    registerRpc('tools/call', (final json_rpc.Parameters params) async {
       final name = params['name'].asString;
 
       // Start tracing logic
@@ -126,7 +127,10 @@ class McpCommand extends Command<void> {
       final traceFile =
           config.telemetry['trace_file'] as String? ?? '.steward_trace.json';
 
-      void logTelemetry(final bool isError, final String resultOrError) {
+      void logTelemetry({
+        required final bool isError,
+        required final String resultOrError,
+      }) {
         if (!telemetryEnabled) return;
         try {
           final file = File(p.join(root, traceFile));
@@ -160,7 +164,7 @@ class McpCommand extends Command<void> {
           name == 'steward_delete_pipeline') {
         const message =
             'Permanent steward.yaml mutation through MCP is disabled. Capture an unknown case or propose a typed action candidate for review.';
-        logTelemetry(true, message);
+        logTelemetry(isError: true, resultOrError: message);
         return {
           'isError': true,
           'content': [
@@ -172,7 +176,7 @@ class McpCommand extends Command<void> {
       if (name == 'steward_list_actions') {
         if (!config.isV1) {
           const message = 'Typed action discovery requires schema: steward/v1.';
-          logTelemetry(true, message);
+          logTelemetry(isError: true, resultOrError: message);
           return {
             'isError': true,
             'content': [
@@ -187,7 +191,7 @@ class McpCommand extends Command<void> {
               .toList(),
         };
         final out = const JsonEncoder.withIndent('  ').convert(payload);
-        logTelemetry(false, out);
+        logTelemetry(isError: false, resultOrError: out);
         return {
           'content': [
             {'type': 'text', 'text': out},
@@ -199,7 +203,7 @@ class McpCommand extends Command<void> {
         if (!config.isV1) {
           const message =
               'Typed action inspection requires schema: steward/v1.';
-          logTelemetry(true, message);
+          logTelemetry(isError: true, resultOrError: message);
           return {
             'isError': true,
             'content': [
@@ -218,7 +222,7 @@ class McpCommand extends Command<void> {
         }
         if (action == null) {
           final message = 'Typed action "$actionId" not found.';
-          logTelemetry(true, message);
+          logTelemetry(isError: true, resultOrError: message);
           return {
             'isError': true,
             'content': [
@@ -230,7 +234,7 @@ class McpCommand extends Command<void> {
           'schema_version': 'steward.action.v1',
           'action': action.toJson(),
         });
-        logTelemetry(false, out);
+        logTelemetry(isError: false, resultOrError: out);
         return {
           'content': [
             {'type': 'text', 'text': out},
@@ -242,7 +246,7 @@ class McpCommand extends Command<void> {
         if (config.isV1) {
           const message =
               'Legacy pipeline execution is disabled for schema: steward/v1. Use typed action discovery instead.';
-          logTelemetry(true, message);
+          logTelemetry(isError: true, resultOrError: message);
           return {
             'isError': true,
             'content': [
@@ -254,7 +258,7 @@ class McpCommand extends Command<void> {
         final pipelineName = arguments['name'] as String?;
         final confirmed = arguments['confirm_legacy_unsafe'] == true;
         if (pipelineName == null) {
-          logTelemetry(true, 'Missing pipeline name.');
+          logTelemetry(isError: true, resultOrError: 'Missing pipeline name.');
           return {
             'isError': true,
             'content': [
@@ -268,7 +272,7 @@ class McpCommand extends Command<void> {
         if (!confirmed) {
           const message =
               'Legacy pipeline execution requires confirm_legacy_unsafe: true after explicit human approval.';
-          logTelemetry(true, message);
+          logTelemetry(isError: true, resultOrError: message);
           return {
             'isError': true,
             'content': [
@@ -281,7 +285,10 @@ class McpCommand extends Command<void> {
         if (pipelineConfig is Map) {
           final cmd = pipelineConfig['cmd'] as String?;
           if (cmd == null) {
-            logTelemetry(true, 'Pipeline "$pipelineName" has no cmd field.');
+            logTelemetry(
+              isError: true,
+              resultOrError: 'Pipeline "$pipelineName" has no cmd field.',
+            );
             return {
               'isError': true,
               'content': [
@@ -304,7 +311,7 @@ class McpCommand extends Command<void> {
                       ProcessResult(0, 124, '', 'Timed out after 120 seconds.'),
                 );
             final out = capOutput('${result.stdout}\n${result.stderr}'.trim());
-            logTelemetry(result.exitCode != 0, out);
+            logTelemetry(isError: result.exitCode != 0, resultOrError: out);
             return {
               'content': [
                 {
@@ -315,7 +322,7 @@ class McpCommand extends Command<void> {
               if (result.exitCode != 0) 'isError': true,
             };
           } on Exception catch (e) {
-            logTelemetry(true, e.toString());
+            logTelemetry(isError: true, resultOrError: e.toString());
             return {
               'isError': true,
               'content': [
@@ -325,8 +332,9 @@ class McpCommand extends Command<void> {
           }
         } else {
           logTelemetry(
-            true,
-            'Pipeline "$pipelineName" not found in steward.yaml.',
+            isError: true,
+            resultOrError:
+                'Pipeline "$pipelineName" not found in steward.yaml.',
           );
           return {
             'isError': true,
@@ -341,12 +349,12 @@ class McpCommand extends Command<void> {
         }
       }
 
-      logTelemetry(true, 'Method not found');
+      logTelemetry(isError: true, resultOrError: 'Method not found');
       throw json_rpc.RpcException.methodNotFound(name);
     });
 
     // Register Resources List
-    server.registerMethod('resources/list', (final json_rpc.Parameters params) {
+    registerRpc('resources/list', (final json_rpc.Parameters params) {
       final resources = <Map<String, dynamic>>[];
       if (config.docs.isNotEmpty) {
         for (final entry in config.docs.entries) {
@@ -363,9 +371,7 @@ class McpCommand extends Command<void> {
     });
 
     // Register Resources Read
-    server.registerMethod('resources/read', (
-      final json_rpc.Parameters params,
-    ) async {
+    registerRpc('resources/read', (final json_rpc.Parameters params) async {
       final uri = params['uri'].asString;
       if (uri.startsWith('steward://docs/')) {
         final docName = uri.replaceFirst('steward://docs/', '');

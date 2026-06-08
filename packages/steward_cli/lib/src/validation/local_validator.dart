@@ -107,7 +107,7 @@ Future<ValidationReport> validateLocalSkills(final String projectRoot) async {
           activePlans.add('docs/exec-plans/active/$name');
         }
       }
-    } catch (_) {}
+    } on Object catch (_) {}
   }
 
   for (final plan in activePlans) {
@@ -133,7 +133,7 @@ Future<ValidationReport> validateLocalSkills(final String projectRoot) async {
       final customErrors = await validator.validate(projectRoot);
       registryWarnings.addAll(customErrors);
     }
-  } catch (_) {}
+  } on Object catch (_) {}
 
   final failedCount = results.where((final r) => !r.isValid).length;
   final ok = failedCount == 0 && registryWarnings.isEmpty;

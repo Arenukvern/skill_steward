@@ -31,9 +31,9 @@ It can be applied to literally anything: a codebase, a feature plan, a deploymen
    - *For repo governance:* "Codebase Auditor", "Skills Analyst"
    - *For a system architecture:* "Security Specialist", "Scalability Engineer", "Cost Analyst"
    - *For a frontend component:* "Accessibility Auditor", "Performance Expert"
-   - *For E2E Execution & Evals (Dogfooding):* **"Harness QA Expert"**. Any time a workflow, toolchain, typed action, or benchmark loop is updated, you MUST spawn a Harness QA Expert subagent. Its job is to simulate a user/agent experiencing the system in a real repository (e.g. discovering actions, triggering skill evals, or checking MCP/CLI parity without relying on raw shell pipelines).
+   - *For E2E Execution & Evals (Dogfooding):* **"Harness QA Expert"**. When a workflow, toolchain, typed action, or benchmark loop changes, include a Harness QA lens. Use a subagent when available; otherwise run the lens sequentially and label it. If the change claims H2+ maturity or changes action/benchmark behavior, capture a review artifact in the final or PR summary: scope, repo used, commands/actions exercised, evidence level reached, and remaining non-proof. Docs-only alignment can use softer wording and does not need a separate artifact unless it changes a readiness claim.
 3. **Spawn Subagents**
-   Use the available subagent capability for the current host (for example Codex `spawn_agent`) to launch these experts independently. Give them explicit prompts to audit the target topic through their specific lens. If no subagent tool is available, run the expert lenses sequentially and label the output as a non-parallel MoE.
+   Use the available subagent capability for the current host to launch these experts independently. Give them explicit prompts to audit the target topic through their specific lens. If no subagent tool is available, run the expert lenses sequentially and label the output as a non-parallel MoE.
 4. **Cross-reference Findings**
    Wait for all subagents to report back. Synthesize their independent critiques. Look for structural contradictions, missed edge cases, or (in the case of repo skills) duplicated intent.
 5. **Choose output mode**

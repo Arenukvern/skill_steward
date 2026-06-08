@@ -36,6 +36,19 @@ void main() {
     }
   });
 
+  Future<void> runGit(final List<String> arguments) async {
+    final result = await Process.run(
+      'git',
+      arguments,
+      workingDirectory: tempDir.path,
+    );
+    expect(
+      result.exitCode,
+      0,
+      reason: 'git ${arguments.join(' ')} failed: ${result.stderr}',
+    );
+  }
+
   group('Local Validation and Manifest Parsing', () {
     test('reports missing skills.json', () async {
       final report = await validateLocalSkills(tempDir.path);
@@ -211,6 +224,7 @@ Body steps.
     });
 
     test('adoption discovery commands are registered with JSON options', () {
+      final adopt = AdoptCommand();
       final doctor = DoctorCommand();
       final actions = ActionsCommand();
       final action = ActionCommand();
@@ -221,6 +235,8 @@ Body steps.
       final diagnose = DiagnoseCommand();
       final benchmark = BenchmarkCommand();
 
+      expect(adopt.argParser.options.containsKey('archetype'), isTrue);
+      expect(adopt.argParser.options.containsKey('with-harness'), isTrue);
       expect(doctor.argParser.options.containsKey('json'), isTrue);
       expect(actions.subcommands.containsKey('list'), isTrue);
       expect(
@@ -409,7 +425,24 @@ Instruction body.
         expect(stewardYaml.existsSync(), isTrue);
         final stewardContent = await stewardYaml.readAsString();
         expect(stewardContent, contains('schema: steward/v1'));
-        expect(stewardContent, contains('doctor.local:'));
+        expect(stewardContent, contains('archetype: library'));
+        expect(stewardContent, contains('archetype_detection:'));
+        expect(stewardContent, contains('confidence: 0.4'));
+        expect(stewardContent, contains('default fallback'));
+        expect(stewardContent, contains('installable_skills: false'));
+        expect(
+          stewardContent,
+          contains(
+            "validate: 'blocked: native validation command not detected'",
+          ),
+        );
+        expect(stewardContent, contains('enabled: false'));
+        expect(stewardContent, contains('actions: {}'));
+        expect(stewardContent, isNot(contains('doctor.local:')));
+        expect(
+          Directory(p.join(tempDir.path, 'steward', 'scenarios')).existsSync(),
+          isFalse,
+        );
 
         final agentsMd = File(p.join(tempDir.path, 'AGENTS.md'));
         expect(agentsMd.existsSync(), isTrue);
@@ -418,6 +451,115 @@ Instruction body.
         Directory.current = originalCwd;
       }
     });
+
+    test('steward adopt accepts explicit archetype and native gate', () async {
+      final originalCwd = Directory.current;
+      try {
+        Directory.current = tempDir;
+        await File(p.join(tempDir.path, 'package.json')).writeAsString(
+          jsonEncode({
+            'scripts': {'validate': 'node validate.js'},
+          }),
+        );
+
+        final runner = CommandRunner<void>('steward', 'test')
+          ..addCommand(AdoptCommand());
+        await runner.run(['adopt', '--archetype', 'app']);
+
+        final stewardYaml = File(p.join(tempDir.path, 'steward.yaml'));
+        final stewardContent = await stewardYaml.readAsString();
+        expect(stewardContent, contains('archetype: app'));
+        expect(stewardContent, contains('confidence: 1.0'));
+        expect(stewardContent, contains('explicit --archetype'));
+        expect(stewardContent, contains("validate: 'pnpm run validate'"));
+      } finally {
+        Directory.current = originalCwd;
+      }
+    });
+
+    test('steward adopt detects common native validation gates', () async {
+      final fixtures = <String, Future<void> Function(Directory)>{
+        "validate: 'just check'": (final dir) async {
+          await File(p.join(dir.path, 'Justfile')).writeAsString('check:\n');
+        },
+        "validate: 'make test'": (final dir) async {
+          await File(p.join(dir.path, 'Makefile')).writeAsString('test:\n');
+        },
+        "validate: 'dart test'": (final dir) async {
+          await File(
+            p.join(dir.path, 'pubspec.yaml'),
+          ).writeAsString('name: fixture\n');
+        },
+      };
+
+      for (final entry in fixtures.entries) {
+        final fixtureDir = Directory.systemTemp.createTempSync('steward_gate_');
+        final originalCwd = Directory.current;
+        try {
+          Directory.current = fixtureDir;
+          await entry.value(fixtureDir);
+
+          final runner = CommandRunner<void>('steward', 'test')
+            ..addCommand(AdoptCommand());
+          await runner.run(['adopt']);
+
+          final stewardContent = await File(
+            p.join(fixtureDir.path, 'steward.yaml'),
+          ).readAsString();
+          expect(stewardContent, contains(entry.key));
+        } finally {
+          Directory.current = originalCwd;
+          if (fixtureDir.existsSync()) {
+            fixtureDir.deleteSync(recursive: true);
+          }
+        }
+      }
+    });
+
+    test(
+      'steward adopt --with-harness initializes quick proof scaffold',
+      () async {
+        final originalCwd = Directory.current;
+        try {
+          Directory.current = tempDir;
+          await File(
+            p.join(tempDir.path, 'README.md'),
+          ).writeAsString('fixture');
+          await runGit(['init']);
+          await runGit(['config', 'user.email', 'test@example.invalid']);
+          await runGit(['config', 'user.name', 'Skill Steward Test']);
+          await runGit([
+            'remote',
+            'add',
+            'origin',
+            'https://example.invalid/steward-fixture.git',
+          ]);
+          await runGit(['add', 'README.md']);
+          await runGit(['commit', '-m', 'fixture']);
+
+          final runner = CommandRunner<void>('steward', 'test')
+            ..addCommand(AdoptCommand());
+          await runner.run(['adopt', '--with-harness']);
+
+          final stewardYaml = File(p.join(tempDir.path, 'steward.yaml'));
+          final stewardContent = await stewardYaml.readAsString();
+          expect(stewardContent, contains('enabled: true'));
+          expect(stewardContent, contains('doctor.local:'));
+          expect(stewardContent, contains('benchmarks:'));
+
+          final scenariosDir = Directory(
+            p.join(tempDir.path, 'steward', 'scenarios'),
+          );
+          final scenarios = scenariosDir.listSync().whereType<File>().toList();
+          expect(scenarios, hasLength(1));
+          final scenarioContent = await scenarios.single.readAsString();
+          expect(scenarioContent, contains('safe_first_probe: doctor.local'));
+          expect(scenarioContent, contains('https://example.invalid'));
+        } finally {
+          Directory.current = originalCwd;
+        }
+      },
+    );
 
     test(
       'steward uninstall removes skill directory and configuration',
@@ -501,9 +643,14 @@ Body steps
 
         final output = buffer.toString();
         expect(output, contains('Agent Map'));
+        expect(output, contains('Archetype Source'));
+        expect(output, contains('Confidence'));
+        expect(output, contains('Native Quality Gate'));
         expect(output, contains('skill-a'));
         expect(output, contains('developer'));
         expect(output, contains('This is skill A.'));
+        expect(output, isNot(contains('skill-authoring-lifecycle')));
+        expect(output, isNot(contains('skill-eval-improve')));
         expect(output, contains('NORTH_STAR.mdx'));
       } finally {
         Directory.current = originalCwd;

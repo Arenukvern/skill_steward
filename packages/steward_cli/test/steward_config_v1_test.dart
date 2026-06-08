@@ -39,6 +39,49 @@ void main() {
     expect(result.config.typedActions.single.id, 'doctor.local');
   });
 
+  test(
+    'loads baseline steward/v1 contract before harness actions exist',
+    () async {
+      await writeStewardYaml(validStewardV1Baseline());
+
+      final result = await StewardConfig.loadChecked(tempDir.path);
+
+      expect(result.ok, isTrue);
+      expect(result.config.isV1, isTrue);
+      expect(result.config.typedActions, isEmpty);
+    },
+  );
+
+  test('requires actions and probes when harness proof is enabled', () async {
+    await writeStewardYaml(
+      validStewardV1Baseline().replaceFirst('enabled: false', 'enabled: true'),
+    );
+
+    final result = await StewardConfig.loadChecked(tempDir.path);
+    final paths = result.diagnostics.map((final diagnostic) => diagnostic.path);
+
+    expect(result.ok, isFalse);
+    expect(paths, contains('actions'));
+    expect(paths, contains('probes'));
+  });
+
+  test('rejects unsupported steward/v1 archetypes', () async {
+    await writeStewardYaml(
+      validStewardV1Baseline().replaceFirst(
+        'archetype: library',
+        'archetype: unknown_kind',
+      ),
+    );
+
+    final result = await StewardConfig.loadChecked(tempDir.path);
+
+    expect(result.ok, isFalse);
+    expect(
+      result.diagnostics.map((final diagnostic) => diagnostic.path),
+      contains('repo.archetype'),
+    );
+  });
+
   test('reports malformed steward.yaml instead of swallowing it', () async {
     await writeStewardYaml('schema: [');
 
@@ -209,7 +252,7 @@ String validStewardV1() => '''
 schema: steward/v1
 repo:
   id: sample_repo
-  archetype: cli_harness
+  archetype: cli_tool
 harness:
   name: steward
   mode: cli
@@ -226,6 +269,9 @@ stewardship:
     charter: AGENTS.md
   knowledge:
     docs_map: AGENTS.md
+  repo_quality:
+    contract_spec: steward.yaml
+    maturity_model: general_stewardship
   skill_lifecycle:
     installable_skills: true
   quality:
@@ -276,6 +322,59 @@ probes:
   quick:
     profile: quick
     actions: [doctor.local]
+diagnostics:
+  cases: {}
+unknown_cases:
+  path: .steward/unknown-cases/
+  retention: local
+provenance:
+  dependencies: []
+  artifacts: []
+  benchmarks: []
+''';
+
+String validStewardV1Baseline() => '''
+schema: steward/v1
+repo:
+  id: sample_repo
+  archetype: library
+harness:
+  name: steward
+  mode: cli
+  entrypoints:
+    cli: steward
+adoption:
+  status: adopting
+  owner: sample_repo
+  gate:
+    pillar: quality
+
+stewardship:
+  governance:
+    charter: AGENTS.md
+  knowledge:
+    docs_map: AGENTS.md
+  repo_quality:
+    contract_spec: steward.yaml
+    maturity_model: general_stewardship
+  skill_lifecycle:
+    installable_skills: true
+  quality:
+    validate: steward validate
+  harness:
+    enabled: false
+  release:
+    changelog: CHANGELOG.md
+  review_handoff:
+    moe_required_for_architecture: true
+  strategic_alignment:
+    vision_source: AGENTS.md
+  security:
+    action_effects: required
+  org:
+    owners: AGENTS.md
+actions: {}
+probes: {}
 diagnostics:
   cases: {}
 unknown_cases:

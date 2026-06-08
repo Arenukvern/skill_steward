@@ -110,7 +110,7 @@ String validStewardV1() => '''
 schema: steward/v1
 repo:
   id: sample_repo
-  archetype: cli_harness
+  archetype: cli_tool
 harness:
   name: steward
   mode: cli
@@ -127,6 +127,9 @@ stewardship:
     charter: AGENTS.md
   knowledge:
     docs_map: AGENTS.md
+  repo_quality:
+    contract_spec: steward.yaml
+    maturity_model: general_stewardship
   skill_lifecycle:
     installable_skills: true
   quality:

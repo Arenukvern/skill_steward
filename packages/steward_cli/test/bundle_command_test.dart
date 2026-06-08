@@ -18,7 +18,7 @@ void main() {
 schema: steward/v1
 repo:
   id: sample_repo
-  archetype: meta_steward
+  archetype: meta_governance
 harness:
   name: steward
   mode: cli

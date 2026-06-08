@@ -8,6 +8,8 @@ import '../eval/eval.dart';
 import '../repo_root.dart';
 import '../validation/steward_config.dart';
 
+void _write([final Object? object = '']) => stdout.writeln(object);
+
 class EvalCommand extends Command<void> {
   EvalCommand() {
     argParser
@@ -61,19 +63,19 @@ class EvalCommand extends Command<void> {
     );
 
     if (useJson) {
-      print(jsonEncode(report.toJson()));
+      _write(jsonEncode(report.toJson()));
     } else {
-      print('Tier-1 skill evals');
+      _write('Tier-1 skill evals');
       for (final result in report.results) {
         final status = result.isOk ? 'ok' : 'error';
-        print(
+        _write(
           '$status ${result.skillName}: ${result.passed}/${result.total} cases passed',
         );
         for (final warning in result.warnings) {
-          print('  warn: $warning');
+          _write('  warn: $warning');
         }
         for (final error in result.errors) {
-          print('  error: $error');
+          _write('  error: $error');
         }
       }
     }
@@ -88,14 +90,14 @@ class EvalCommand extends Command<void> {
     final config = await StewardConfig.load(root);
 
     if (config.isV1) {
-      print(
+      _write(
         'Error: registered runtime evals are disabled for schema: steward/v1. Use steward benchmark or steward dogfood for runtime scenarios.',
       );
       exit(1);
     }
 
     if (!config.evals.containsKey(evalName)) {
-      print('Error: Eval "$evalName" not found in steward.yaml');
+      _write('Error: Eval "$evalName" not found in steward.yaml');
       exit(1);
     }
 
@@ -111,7 +113,7 @@ class EvalCommand extends Command<void> {
       final file = File(p.join(root, traceFile));
 
       if (!file.existsSync()) {
-        print('\n[EVAL FAILED] Telemetry trace file $traceFile not found.');
+        _write('\n[EVAL FAILED] Telemetry trace file $traceFile not found.');
         exit(1);
       }
 
@@ -124,17 +126,17 @@ class EvalCommand extends Command<void> {
         callCount++;
         try {
           parsedLines.add(jsonDecode(line) as Map<String, dynamic>);
-        } catch (_) {}
+        } on Object catch (_) {}
       }
 
       if (maxToolCalls != null) {
         if (callCount > maxToolCalls) {
-          print(
+          _write(
             '\n[EVAL FAILED] Agent exceeded max_tool_calls. Expected <= $maxToolCalls, but made $callCount calls.',
           );
           exit(1);
         } else {
-          print(
+          _write(
             '[TELEMETRY] Agent completed in $callCount tool calls (Allowed: $maxToolCalls).',
           );
         }
@@ -161,12 +163,12 @@ class EvalCommand extends Command<void> {
           }
 
           if (!found) {
-            print(
+            _write(
               '\n[EVAL FAILED] Telemetry assertion failed. Agent never executed action: $requiredAction, tool: $requiredTool, target: $targetName',
             );
             exit(1);
           } else {
-            print(
+            _write(
               '[TELEMETRY] Assertion passed: Agent executed tool $requiredTool on target $targetName.',
             );
           }
@@ -176,8 +178,8 @@ class EvalCommand extends Command<void> {
 
     final String? cmd = evalData['verification_cmd'] as String?;
     if (cmd != null) {
-      print('Running eval verification cmd...');
-      print('\$ $cmd');
+      _write('Running eval verification cmd...');
+      _write('\$ $cmd');
 
       final result = await Process.run('bash', [
         '-c',
@@ -185,21 +187,21 @@ class EvalCommand extends Command<void> {
       ], workingDirectory: root);
 
       if (result.stdout.toString().isNotEmpty) {
-        print(result.stdout);
+        _write(result.stdout);
       }
       if (result.stderr.toString().isNotEmpty) {
-        print(result.stderr);
+        _write(result.stderr);
       }
 
       if (result.exitCode != 0) {
-        print(
+        _write(
           '\n[EVAL FAILED] The verification command returned exit code ${result.exitCode}.',
         );
         exit(result.exitCode);
       }
     }
 
-    print('\n[EVAL PASSED] Evaluation "$evalName" succeeded.');
+    _write('\n[EVAL PASSED] Evaluation "$evalName" succeeded.');
     exit(0);
   }
 }

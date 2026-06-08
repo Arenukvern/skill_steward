@@ -40,7 +40,7 @@ Chosen: **cold-start contract proof before diagnostics.** The first proof may be
 ## Consequences
 
 * Good, because fresh agents get a deterministic first path through a repo.
-* Good, because `durability_blocked` becomes a truthful proof state instead of a failure to hide.
+* Good, because `durability_blocked` becomes a truthful blocked state instead of a failure to hide.
 * Good, because diagnostics can be promoted from repeated evidence rather than guessed symptoms.
 * Bad, because first adoption may feel slower: maintainers must declare actions, scenario manifests, ownership, limits, and durability before claiming proof.
 * Mitigation: `mcp-harness-repo-maintainer` owns the local adoption loop; `harness-engineering-lifecycle` starts after local contracts exist and cross-repo generalization is needed.

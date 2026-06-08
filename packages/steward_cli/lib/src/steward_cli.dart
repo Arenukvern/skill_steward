@@ -72,7 +72,7 @@ class StewardCli {
           ..writeln(_runner.usage);
       }
       exit(64);
-    } catch (e, st) {
+    } on Object catch (e, st) {
       if (useJson) {
         stdout.writeln(
           jsonEncode({'error': e.toString(), 'type': 'Exception'}),

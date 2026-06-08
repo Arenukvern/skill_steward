@@ -8,6 +8,8 @@ Full index for the Skill Steward documentation site and repo. Use this as the ca
 |--------------|-----------------|-------|
 | Understand charter and scope | Charter | [North Star](../NORTH_STAR) |
 | Adopt stewardship in any repo | Repo quality spec | [Repo quality contracts](../repo-quality-contracts) |
+| Run the first adopter proof | Evidence fixture | [First adopter golden path](../evidence/first-adopter-golden-path) |
+| Check current H4 evidence | Evidence fixture | [H4 fresh-agent workflow check](../evidence/h4-fresh-agent-workflow-check-2026-06-08) |
 | Install or update skills | Operational how-to | [DX_FAQ](../DX_FAQ) |
 | Add or review Agent Skills | Skill package spec | [STANDARDS](../STANDARDS) |
 | Understand why the repo is shaped this way | Rationale | [DESIGN_FAQ](../DESIGN_FAQ) · [Decisions](../decisions/README) |
@@ -30,11 +32,13 @@ Docs should point here instead of paraphrasing behavior.
 |----------|------------------|-------|
 | Maintainer commands | [`package.json`](https://github.com/arenukvern/skill_steward/blob/main/package.json) | Script names are the command SSOT; DX_FAQ explains usage. |
 | Steward CLI behavior | [`packages/steward_cli/`](https://github.com/arenukvern/skill_steward/tree/main/packages/steward_cli) | Dart code is the runtime truth for validate/eval/list/contract commands. |
-| Repo-local contract | [`steward.yaml`](https://github.com/arenukvern/skill_steward/blob/main/steward.yaml) | Declares local actions, probes, evidence policy, and descriptive suites. |
+| Repo-local contract | [`steward.yaml`](https://github.com/arenukvern/skill_steward/blob/main/steward.yaml) | Declares repo archetype, stewardship pillars, evidence policy, and, when harness-enabled, local actions/probes. |
 | Portable data shapes | [`docs/schemas/*.json`](../schemas/README) | JSON Schema covers shape; Dart validators enforce cross-field and repo-state rules. |
 | Tier-1 skill routing | [`packages/steward_cli/lib/src/eval/eval_tiers.dart`](https://github.com/arenukvern/skill_steward/blob/main/packages/steward_cli/lib/src/eval/eval_tiers.dart) + `skills/*/evals/cases/*.yaml` | Eval tier list and case files are the CI gate. |
 | Skill/package validation | [`packages/steward_cli/lib/src/validation/`](https://github.com/arenukvern/skill_steward/tree/main/packages/steward_cli/lib/src/validation) | `docs/STANDARDS.mdx` explains the contract; validators enforce it. |
 | Benchmark scenarios | [`steward/scenarios/`](https://github.com/arenukvern/skill_steward/tree/main/steward/scenarios) | Durable execution proof is blocked unless contract inputs are clean and tracked. |
+| First adopter proof | [`docs/evidence/first-adopter-golden-path.mdx`](../evidence/first-adopter-golden-path) | Sanitized baseline and harness smoke path; not H4 proof. |
+| H4 workflow check | [`docs/evidence/h4-fresh-agent-workflow-check-2026-06-08.mdx`](../evidence/h4-fresh-agent-workflow-check-2026-06-08) | Current blocked H4/H2 evidence and product lesson. |
 | CI/release gates | [`.github/workflows/`](https://github.com/arenukvern/skill_steward/tree/main/.github/workflows) | Workflow files define what remote automation actually runs. |
 
 ## Published site (`docs/`)
@@ -43,6 +47,8 @@ Docs should point here instead of paraphrasing behavior.
 - [North Star](../NORTH_STAR)
 - [Repo quality contracts](../repo-quality-contracts)
 - [Skills Catalog](../skills-catalog)
+- [First adopter golden path](../evidence/first-adopter-golden-path)
+- [H4 fresh-agent workflow check](../evidence/h4-fresh-agent-workflow-check-2026-06-08)
 - [Plan hygiene (extract & remove)](executable-plans)
 - [Schemas](../schemas/README)
 - [Brand identity](../brand)
@@ -68,6 +74,7 @@ Docs should point here instead of paraphrasing behavior.
 | `docs/DX_FAQ.mdx` | How (commands and contributor workflow) |
 | `docs/STANDARDS.mdx` | Agent Skills package spec |
 | `docs/repo-quality-contracts.mdx` | General repo quality contract spec |
+| `docs/evidence/` | Sanitized proof fixtures and case-study evidence |
 | `AGENTS.md` | Agent map (~100 lines) |
 | `docs/brand.mdx` | Visual identity reference |
 | `skills/` | Installable packages |

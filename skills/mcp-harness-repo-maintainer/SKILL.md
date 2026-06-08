@@ -29,9 +29,9 @@ paths:
   - "scripts/**"
 ---
 
-# Action Contract & Harness Repo Maintainer (Architecture & Culture)
+# Action Contract & Harness Repo Maintainer
 
-Build and maintain repo-local action contracts and harnesses where agents execute and humans steer. For general app, library, tool, plugin, or meta-repo stewardship baselines, use `repo-quality-system-lifecycle` first; use this skill when typed actions, probes, benchmarks, or CLI/MCP parity are in scope.
+Build and maintain repo-local action contracts and harnesses where agents execute and humans steer. The historical `mcp-` name remains because many adopters arrive through MCP work, but this skill is not MCP-only. For general app, library, tool, plugin, or meta-repo stewardship baselines, use `repo-quality-system-lifecycle` first; use this skill only when typed actions, probes, benchmarks, or CLI/MCP parity are in scope.
 
 ## Core principle (action-contract and harness repos)
 
@@ -83,11 +83,11 @@ Route by **primary artifact** when the repo is harness or action-contract shaped
 
 | Expert lens | Repo examples | Owns | Does not own |
 |-------------|---------------|------|----------------|
-| **A — Product MCP** | `<custom_mcp>` | `plugin/mcp.json`, tool prefixing, init utility | Harness scripts, visual comparisons |
-| **B — Platform libs** | `<platform_libs>` | Platform packages/modules, adapters | Shippable plugin tree, dogfood apps |
-| **C — CLI harness** | `<cli_harness>` | Harness engine, app registry, fixture lint | MCP server binary, marketplace manifests |
+| **Plugin/MCP** | `<plugin_repo>` | `plugin/mcp.json`, tool prefixing, init utility | Harness scripts, visual comparisons |
+| **Library** | `<library_repo>` | Platform packages/modules, adapters | Shippable plugin tree, dogfood apps |
+| **Harness/CLI** | `<harness_repo>` | Harness engine, app registry, fixture lint | MCP server binary, marketplace manifests |
 | **D — Visual sidecar** | `<visual_sidecar>` | Profile configs, compare/deconstruct CLI | VM/MCP, dynamic registry |
-| **E — Meta steward** | `skill_steward` | `skills/`, `plugins/`, validator CLI, docs | Product MCP, domain tools |
+| **Meta/governance** | `skill_steward` | `skills/`, `plugins/`, validator CLI, docs | Product MCP, domain tools |
 | **F — Security/Ops** | all remotes | OAuth gateway, token brokering | Feature code |
 
 ## Universal maintainer spine (every archetype)
@@ -131,7 +131,7 @@ Use this loop before claiming a repo is harness-ready or diagnosing repo-specifi
    steward benchmark --scenario <scenario-id> --output .steward/benchmark-summaries/<scenario-id>.json --json
    ```
 
-5. **Interpret honestly** — `doctor`/`actions list` prove discovery, `action inspect` proves the executable boundary, `probe` proves the safe first observation, and `benchmark` proves or blocks durable execution. `durability_blocked` is a truthful result when `steward.yaml` or `steward/scenarios/*.yaml` is modified or untracked.
+5. **Interpret honestly** — `doctor`/`actions list` prove discovery, `action inspect` proves the executable boundary, `probe` proves the safe first observation, and `benchmark` proves durable execution only when it returns `result: "pass"`. `durability_blocked` is truthful blocked evidence when `steward.yaml` or `steward/scenarios/*.yaml` is modified or untracked; it is not H2 proof.
 6. **Protect local state** — If the repo has temporary dirty files that must remain in place, write a do-not-touch exception and keep those files out of action inputs. Protected local state is not a benchmark blocker unless it is declared as a contract or scenario input.
 7. **Grow from evidence** — If the probe exposes an unknown failure, capture an unknown case first. Promote a typed action candidate only after owner, effects, limits, redaction, validation command, and benchmark evidence exist. Do not promote diagnostics from the same run that discovered them.
 
@@ -143,7 +143,7 @@ Do not call a repository harness-ready until the proof stage matches the claim.
 |-------|------|-------|
 | **H0** | Skills installed | Agent can discover the relevant Skill Steward skills. |
 | **H1** | Local contract declared | `steward.yaml` exists with one quick-safe action and docs point to it. |
-| **H2** | Smoke benchmark proven | Cold-start proof loop runs or truthfully reports `durability_blocked`. |
+| **H2** | Smoke loop proven | Cold-start proof loop produces a durable benchmark summary with `result: "pass"`; `durability_blocked` keeps the repo below H2 until rerun cleanly. |
 | **H3** | Repo feedback loop | Benchmark summaries, unknown cases, and action candidates accumulate from real work. |
 | **H4** | Full agent workflow | A fresh agent completes one repo workflow without raw shell spelunking. |
 | **H5** | Promoted harness capability | Repeated evidence promotes a diagnostic, action, eval, or local harness feature. |
@@ -161,11 +161,11 @@ Do not call a repository harness-ready until the proof stage matches the claim.
 
 ```text
 <workspace>/
-  <product_mcp>/               # A — toolkit + MCP + init
-  <platform_libs>/             # B — SDK platform
-  <cli_harness>/               # C — CLI/Harness runner
+  <plugin_repo>/               # toolkit + MCP/plugin init
+  <library_repo>/              # SDK platform/library packages
+  <harness_repo>/              # CLI/harness runner
   <visual_sidecar>/            # D — comparison sidecar
-  <meta_steward>/              # E — meta skills & validation
+  <meta_governance_repo>/      # meta skills & validation
 ```
 
 ## Checklist before claiming “harness ready”

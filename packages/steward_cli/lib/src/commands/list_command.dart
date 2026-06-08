@@ -86,8 +86,9 @@ class ListCommand extends Command<void> {
         return;
       }
 
-      stdout.writeln('Local skills installed in this project:');
-      stdout.writeln();
+      stdout
+        ..writeln('Local skills installed in this project:')
+        ..writeln();
 
       for (final dir in entries) {
         final skillName = p.basename(dir.path);

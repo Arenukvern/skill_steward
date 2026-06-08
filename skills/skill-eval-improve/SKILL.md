@@ -148,7 +148,7 @@ At 10,000x scale, NLP prompt evaluation fails because LLMs suffer **Cognitive Ov
 2. **Define assertions:** Expected action trajectory, maximum tool calls, required artifacts, and negative checks for unrelated actions.
 3. **Run dogfood benchmarks:** Use `steward benchmark --scenario <id> --json` for runtime dogfood scenarios. Do not put product runtime scenarios under Tier-1 skill evals.
 
-The current `steward eval --name` registered-eval path is legacy/experimental. Skill quality remains `pnpm run eval`; runtime dogfood belongs to `steward benchmark`, where `durability_blocked` is a valid result when contract inputs are modified or untracked.
+The current `steward eval --name` registered-eval path is legacy/experimental. Skill quality remains `pnpm run eval`; runtime dogfood belongs to `steward benchmark`, where `durability_blocked` is valid blocked evidence when contract inputs are modified or untracked, not proof of runtime behavior.
 
 ## Improve workflow (checklist)
 

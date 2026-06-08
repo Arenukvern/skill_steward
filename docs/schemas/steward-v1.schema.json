@@ -15,6 +15,32 @@
     "unknown_cases",
     "provenance"
   ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "stewardship": {
+            "properties": {
+              "harness": {
+                "properties": {
+                  "enabled": { "const": true }
+                },
+                "required": ["enabled"]
+              }
+            },
+            "required": ["harness"]
+          }
+        },
+        "required": ["stewardship"]
+      },
+      "then": {
+        "properties": {
+          "actions": { "minProperties": 1 },
+          "probes": { "minProperties": 1 }
+        }
+      }
+    }
+  ],
   "properties": {
     "schema": { "const": "steward/v1" },
     "repo": {
@@ -22,7 +48,17 @@
       "required": ["id", "archetype"],
       "properties": {
         "id": { "type": "string", "minLength": 1 },
-        "archetype": { "type": "string", "minLength": 1 }
+        "archetype": {
+          "type": "string",
+          "enum": [
+            "app",
+            "library",
+            "cli_tool",
+            "plugin",
+            "harness",
+            "meta_governance"
+          ]
+        }
       },
       "additionalProperties": true
     },
@@ -55,6 +91,7 @@
       "required": [
         "governance",
         "knowledge",
+        "repo_quality",
         "skill_lifecycle",
         "quality",
         "harness",
@@ -67,6 +104,7 @@
       "properties": {
         "governance": { "type": "object", "minProperties": 1 },
         "knowledge": { "type": "object", "minProperties": 1 },
+        "repo_quality": { "type": "object", "minProperties": 1 },
         "skill_lifecycle": { "type": "object", "minProperties": 1 },
         "quality": { "type": "object", "minProperties": 1 },
         "harness": { "type": "object", "minProperties": 1 },
@@ -80,12 +118,10 @@
     },
     "actions": {
       "type": "object",
-      "minProperties": 1,
       "additionalProperties": { "$ref": "#/$defs/action" }
     },
     "probes": {
       "type": "object",
-      "minProperties": 1,
       "additionalProperties": { "$ref": "#/$defs/probe" }
     },
     "diagnostics": { "type": "object" },

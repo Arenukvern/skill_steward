@@ -67,7 +67,7 @@ ParsedFrontmatter parseFrontmatter(final String content) {
         }
       });
     }
-  } catch (_) {}
+  } on Object catch (_) {}
 
   return ParsedFrontmatter(
     fields: fields,

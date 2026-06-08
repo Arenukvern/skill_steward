@@ -11,7 +11,7 @@ A repo quality contract answers five questions:
 1. **What is this repo for?** Charter, archetype, boundaries, non-goals.
 2. **Where is truth?** Behavior SSOT, docs lattice, decisions, schemas, source provenance.
 3. **How is quality proven?** Type-native validation commands, tests, evals, probes, or truthful blocked evidence.
-4. **How can agents act safely?** Actions, effects, limits, redaction, permissions, rollback, and owner review.
+4. **How can agents act safely when actions exist?** Effects, limits, redaction, permissions, rollback, and owner review for executable actions.
 5. **How does learning persist?** Failures become ADRs, FAQs, tests, eval cases, action candidates, or harness improvements.
 
 ## Required baseline
@@ -43,6 +43,8 @@ A repo quality contract answers five questions:
 
 Use `steward.yaml` when a repo needs machine-readable contract discovery. Keep it small and honest.
 
+This is a minimal valid baseline shape. It is not harness-ready; `actions` and `probes` are deliberately empty while `stewardship.harness.enabled` is `false`.
+
 ```yaml
 schema: steward/v1
 
@@ -50,27 +52,69 @@ repo:
   id: example_repo
   archetype: app
 
-stewardship:
-  governance:
-    north_star: docs/NORTH_STAR.mdx
-    adr_dir: docs/decisions
-  knowledge:
-    docs_map: AGENTS.md
-  quality:
-    validate: pnpm run validate
-    evidence: .steward/evidence
-  release:
-    changelog: CHANGELOG.md
-  security:
-    action_effects: required
+harness:
+  name: steward
+  mode: cli
+  entrypoints:
+    cli: steward
 
 adoption:
   status: adopting
+  owner: example_repo
   gate:
     pillar: quality
+
+stewardship:
+  governance:
+    charter: docs/NORTH_STAR.mdx
+    adr_dir: docs/decisions
+  knowledge:
+    docs_map: AGENTS.md
+    source_policy: required_for_external_claims
+  repo_quality:
+    contract_spec: steward.yaml
+    maturity_model: general_stewardship
+  skill_lifecycle:
+    installable_skills: false
+    registry: skills.json
+  quality:
+    validate: pnpm run validate
+    evidence: .steward/evidence
+  harness:
+    enabled: false
+    action_contract: deferred
+  release:
+    changelog: CHANGELOG.md
+    artifact_provenance: required
+  review_handoff:
+    moe_required_for_architecture: true
+  strategic_alignment:
+    vision_source: docs/NORTH_STAR.mdx
+    success_evidence: required
+  security:
+    action_effects: required
+    redaction: steward/redaction/v1
+  org:
+    owners: AGENTS.md
+
+actions: {}
+
+probes: {}
+
+diagnostics:
+  cases: {}
+
+unknown_cases:
+  path: .steward/unknown-cases/
+  retention: local
+
+provenance:
+  dependencies: []
+  artifacts: []
+  benchmarks: []
 ```
 
-For harness/action-contract repos, add typed `actions`, `probes`, and `benchmarks` only after the repo has a safe first observation path. Do not store raw shell improvisation as permanent automation.
+For harness/action-contract repos, set `stewardship.harness.enabled: true` and add typed `actions`, `probes`, and `benchmarks` only after the repo has a safe first observation path. Do not store raw shell improvisation as permanent automation.
 
 ## Sequenced integration claims
 
@@ -88,20 +132,18 @@ Example: a library repo can pass tests while its consumer still must wait for a 
 
 ## Maturity levels
 
-| Stage | Name | Proof |
-|-------|------|-------|
-| **S0** | Baseline mapped | Charter, agent map, and validation command are discoverable. |
-| **S1** | Knowledge lattice declared | Why/how/spec/docs/behavior ownership is clear. |
-| **S2** | Quality contract proven | Type-native checks run or truthfully report why blocked. |
-| **S3** | Feedback loop active | Repeated failures create durable artifacts. |
-| **S4** | Fresh-agent workflow | A fresh agent completes one workflow without hidden local context. |
-| **S5** | Promoted capability | Repeated evidence becomes a reusable skill, action, eval, diagnostic, or harness feature. |
+The canonical `S0`-`S5` ladder lives in [North Star](NORTH_STAR#general-stewardship-maturity-ladder). This contract uses that ladder without redefining it:
+
+- `S0`/`S1` prove the baseline map and knowledge lattice.
+- `S2` proves or truthfully blocks the repo quality contract.
+- `S3`-`S5` prove feedback, fresh-agent workflow, and promoted reusable capability.
 
 ## Claims to avoid
 
 - Do not call a repo harness-ready just because docs exist.
 - Do not call a repo stewarded if no validation command or blocked evidence is recorded.
 - Do not claim `pnpm run eval` proves real agent behavior; it proves rule-based routing cases.
+- Do not call `durability_blocked` H2 proof. It is honest blocked evidence that must be rerun cleanly before claiming smoke proof.
 - Do not promote diagnostics from a single observed failure; capture unknown cases first.
 - Do not put domain tutorials in Skill Steward when the domain belongs to the governed repo.
 

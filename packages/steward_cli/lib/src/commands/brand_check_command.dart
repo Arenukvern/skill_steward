@@ -4,18 +4,18 @@ import '../repo_root.dart';
 import '../validation/steward_config.dart';
 
 class BrandCheckCommand extends Command {
-
   BrandCheckCommand() {
-    argParser.addOption(
-      'file',
-      abbr: 'f',
-      help: 'The file to check against brand guidelines.',
-    );
-    argParser.addOption(
-      'text',
-      abbr: 't',
-      help: 'Inline text to check against brand guidelines.',
-    );
+    argParser
+      ..addOption(
+        'file',
+        abbr: 'f',
+        help: 'The file to check against brand guidelines.',
+      )
+      ..addOption(
+        'text',
+        abbr: 't',
+        help: 'Inline text to check against brand guidelines.',
+      );
   }
   @override
   final name = 'brand-check';
@@ -40,7 +40,9 @@ class BrandCheckCommand extends Command {
 
     final bannedWordsDynamic =
         config.branding['banned_words'] as List<dynamic>? ?? [];
-    final bannedWords = bannedWordsDynamic.map((final e) => e.toString()).toList();
+    final bannedWords = bannedWordsDynamic
+        .map((final e) => e.toString())
+        .toList();
 
     if (bannedWords.isEmpty) {
       stdout.writeln(
@@ -60,7 +62,9 @@ class BrandCheckCommand extends Command {
 
       final ignoredPaths =
           config.branding['ignored_paths'] as List<dynamic>? ?? [];
-      final isIgnored = ignoredPaths.any((final p) => fileArg.contains(p.toString()));
+      final isIgnored = ignoredPaths.any(
+        (final p) => fileArg.contains(p.toString()),
+      );
       if (isIgnored) {
         stdout.writeln('✓ Brand identity check passed (ignored path).');
         return;
@@ -79,10 +83,11 @@ class BrandCheckCommand extends Command {
     }
 
     if (violations.isNotEmpty) {
-      stdout.writeln('Validation failed: Brand identity banned words used.');
-      stdout.writeln(
-        r'Please remove the following jargon: ${violations.join(", ")}',
-      );
+      stdout
+        ..writeln('Validation failed: Brand identity banned words used.')
+        ..writeln(
+          r'Please remove the following jargon: ${violations.join(", ")}',
+        );
       exitCode = 1;
       return;
     }

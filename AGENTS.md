@@ -9,7 +9,7 @@ You are in **Skill Steward**: an Engineering Stewardship layer for agent-operate
 | I need… | Read |
 |---------|------|
 | **Charter, scope, boundaries** | [docs/NORTH_STAR.mdx](docs/NORTH_STAR.mdx) |
-| **Repo quality contract** | [docs/repo-quality-contracts.mdx](docs/repo-quality-contracts.mdx) |
+| **Repo quality + evidence claims** | [docs/repo-quality-contracts.mdx](docs/repo-quality-contracts.mdx) · [docs/core/evidence-ladder.mdx](docs/core/evidence-ladder.mdx) |
 | **Why** (standing decisions) | [docs/DESIGN_FAQ.mdx](docs/DESIGN_FAQ.mdx) · [docs/decisions/](docs/decisions/) |
 | **How** (install, validate, contribute, release) | [docs/DX_FAQ.mdx](docs/DX_FAQ.mdx) |
 | **Concepts** (stewardship loop, evidence, docs lattice) | [docs/core/](docs/core/) |
@@ -30,7 +30,7 @@ npx skills add arenukvern/skill_steward --skill repository-governance-lifecycle
 
 1. **Structural stewardship only** — no domain framework tutorial packs (React, Flutter, …); see North Star.
 2. **`pnpm run validate`** before merging skill changes.
-3. **Repo quality claims need evidence** — use [docs/repo-quality-contracts.mdx](docs/repo-quality-contracts.mdx); do not claim harness readiness without contract proof.
+3. **Claims need matching evidence** — H2 smoke proof is not H4 fresh-agent proof; static evals are not runtime behavior. Use [docs/core/evidence-ladder.mdx](docs/core/evidence-ladder.mdx) before claiming readiness.
 4. **Plan hygiene** — any planning tool is fine; when done, extract into ADR / FAQ / code / harness, then delete stale plan files ([doctrine](docs/start_here/executable-plans.mdx)).
 5. **AGENTS.md stays a map** — skill authoring: [docs/STANDARDS.mdx](docs/STANDARDS.mdx); do not bloat this file.
 6. **Docs ≠ code** — link to behavior SSOT; do not paraphrase implementations in prose.
@@ -82,7 +82,7 @@ Plugins (hooks) are **not** installed by `npx skills` on Cursor — [plugins/REA
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
 
-This project is indexed by GitNexus as **skill_steward** (1800 symbols, 3286 relationships, 148 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+This project is indexed by GitNexus as **skill_steward** (1891 symbols, 3383 relationships, 154 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
 
 > If any GitNexus tool warns the index is stale, run `npx gitnexus analyze` in terminal first.
 

@@ -14,6 +14,19 @@ See [DX_FAQ](DX_FAQ) for full install, update, and listing commands.
 
 ---
 
+## Which skill should I use first?
+
+| Situation | Start with | Then add |
+|-----------|------------|----------|
+| Any app, library, CLI/tool, plugin, harness, or meta repo needs stewardship | `repo-quality-system-lifecycle` | `repository-governance-lifecycle` for structural decisions |
+| A standing decision, ADR, FAQ, or stale plan needs cleanup | `repository-governance-lifecycle` | `vision-alignment-foresight` when the direction itself is uncertain |
+| A repo is ready for typed actions, probes, and benchmarks | `mcp-harness-repo-maintainer` | `harness-engineering-lifecycle` after H2 proof exists |
+| A reusable Agent Skill is being authored or reviewed | `skill-authoring-lifecycle` | `skill-source-citations`, then `skill-eval-improve` |
+| Release notes, versioning, or binary provenance is unclear | `release-changelog-harness` | `repo-quality-system-lifecycle` for the broader release contract |
+| A complex decision needs multiple critical lenses | `mixture-of-experts` | `multi-agent-handoff` only when work moves between agents |
+
+---
+
 ## Repository stewardship
 
 *Structural governance and quality for apps, libraries, tools, plugins, harnesses, and meta repos.*

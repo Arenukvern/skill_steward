@@ -79,7 +79,7 @@ class UninstallCommand extends Command<void> {
             deletedAny = true;
           }
         }
-      } catch (e) {
+      } on Object catch (e) {
         stderr.writeln('Warning: Failed to update skills.json: $e');
       }
     }

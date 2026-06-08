@@ -60,7 +60,6 @@ Before picking a tool, agree the repo obeys:
 | Dart monorepo (`melos.yaml`) | [Melos](https://melos.invertase.dev/) `version` + changelog | Align with pub publish order in DX_FAQ. |
 | Single Dart package | `CHANGELOG.md` + git tag + `dart pub publish` | Keep entries agent-editable markdown. |
 | Rust workspace | [release-plz](https://github.com/MarcoIeni/release-plz) or cargo-release + git-cliff | Prefer automation that opens version PRs. |
-| Meta / skills-only (Skill Steward) | [Changesets](https://github.com/changesets/changesets) + `CHANGELOG.md` + git tag ([ADR 0009](../../docs/decisions/0009-adopt-changesets-for-repo-releases.mdx)) | Repo semver only; skills unversioned; document consumer impact in `.changeset/*.md`. |
 | Product harness w/ binaries | release-please + tag CI + `install.sh` | **Do not** add a second version source; follow [binary-release-contract.md](references/binary-release-contract.md) |
 | Meta / skills-only (Skill Steward) | Changesets + tag CI + `install.sh` | Version synchronized with CLI binary releases via [binary-release-contract.md](references/binary-release-contract.md) per [ADR 0014](../../docs/decisions/0014-distribute-steward-cli-as-binary.mdx) |
 

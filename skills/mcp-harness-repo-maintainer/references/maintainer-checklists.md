@@ -38,7 +38,7 @@ Copy the section for your archetype before a release or large PR.
 - [ ] Run export/registry scripts if profiles are added
 - [ ] Document consumers (harness comparison steps, dogfood golden path)
 
-## Archetype E — Meta Steward (e.g., skill_steward)
+## Meta/governance repo (e.g., skill_steward)
 
 - [ ] Run static analysis and lints on linter/validator CLI
 - [ ] Run validator CLI against meta-skills
