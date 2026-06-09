@@ -4,7 +4,7 @@ scenario: skill_steward.contract-status-smoke
 status: runnable
 source:
   git: https://github.com/Arenukvern/skill_steward.git
-  commit: b893d7b3f9006e77c70c82efc3a5f466686af7c2
+  commit: 325d73d3a9d505e9523cc37c830fc30e4e6e4444
   steward_contract: steward.yaml
 safe_first_probe: steward.contract.status.quick
 required_actions:
