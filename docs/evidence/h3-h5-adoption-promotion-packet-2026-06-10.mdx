@@ -45,7 +45,7 @@ Measure only dimensions that educate future agents:
 |-----------|---------------|
 | Legibility | Could the agent find the right entrypoint and proof path? |
 | Safety | Were effects, limits, redaction, and protected state visible before execution? |
-| Executability | Did declared commands run without hidden local context? |
+| Executability | Did declared commands run without hidden local context, absolute maintainer paths, or sibling checkout assumptions? |
 | Product usefulness | Did the workflow help maintain or improve the repo's real tool/harness surface? |
 | Generativity | Did the result create a lesson, unknown case, action candidate, eval, diagnostic, or harness improvement? |
 
@@ -58,16 +58,18 @@ The `mcp_flutter` H4 transcript found that global `steward doctor --json` was st
 Correct handling:
 
 1. Record the transcript as an `adoption_run`.
-2. If the friction repeats, capture a local observation.
-3. Create an unknown case from the observation.
-4. Only after repeated evidence, propose an action candidate or docs/installer fix.
-5. Promote only after review, native validation, and a strict benchmark.
+2. Replace reusable command blocks with the portable invocation hierarchy: released `install.sh`, Dart source `dart run :steward`, or `dart pub global activate --source path`.
+3. If the friction repeats, capture a local observation.
+4. Create an unknown case from the observation.
+5. Only after repeated evidence, propose an action candidate or docs/installer fix.
+6. Promote only after review, native validation, and a strict benchmark.
 
 Incorrect handling:
 
 - Do not promote a diagnostic from one transcript.
 - Do not add permanent automation because a single local global binary was stale.
 - Do not call this H5 until the fix is reusable and validated.
+- Do not teach raw `dart --packages=...` or `/Users/...` paths as adoption guidance; keep them as local provenance only.
 
 ## Command sequence
 

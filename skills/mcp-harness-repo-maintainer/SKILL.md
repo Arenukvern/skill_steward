@@ -118,6 +118,18 @@ Route by **primary artifact** when the repo is harness or action-contract shaped
 
 Use this loop before claiming a repo is harness-ready or diagnosing repo-specific symptoms. A fresh repo has no meaningful symptom catalog yet; first prove that agents can discover and safely execute declared contracts.
 
+### Portable Steward invocation
+
+Use `steward <command>` only after installing the released CLI or activating a local clone as a global command. Do not teach absolute local paths, private SDK paths, or sibling checkout paths as adoption instructions.
+
+Preferred order:
+
+1. Released adopter or CI path: `curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash`, then `steward <command>`.
+2. Dart maintainer path from the Skill Steward clone: `cd packages/steward_cli && dart run :steward <command>`.
+3. Local clone global activation: `dart pub global activate --source path packages/steward_cli`, then `steward <command>`.
+
+Raw `dart --packages=... bin/steward.dart` commands are local provenance only. If evidence needs them, pair them with a portable command block and label the machine-specific path as non-copyable.
+
 1. **Declare a small contract** — Add or update `steward.yaml` with one quick-safe action. The first action should inspect state, not mutate it.
 2. **Expose the action** — Put the action under `probes.quick.actions` only when it passes quick policy: `default_policy: auto`, no confirmation, no shell, no network/secrets/destructive effects, no repo mutation, no `fs_write`.
 3. **Add a scenario manifest** — Put committed scenarios under `steward/scenarios/*.yaml`; use a precise name such as `contract-status-smoke` until the scenario proves navigation or diagnosis.

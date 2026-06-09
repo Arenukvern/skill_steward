@@ -1,0 +1,60 @@
+# Concept: portable Steward invocation
+
+Steward commands must be copyable by a fresh agent on another machine. Evidence may record local provenance, but reusable guidance must put the portable command first.
+
+## Portable invocation hierarchy
+
+Use the first option that matches the actor.
+
+| Actor | Preferred command surface | Use when |
+|-------|---------------------------|----------|
+| Skill consumer | `npx skills add arenukvern/skill_steward` | Installing portable skills for an agent. |
+| Repo adopter or CI runner | `curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh \| bash`, then `steward <command>` | Running Steward without cloning Skill Steward or requiring Dart. Pin with `--version vX.Y.Z` when reproducibility matters. |
+| Dart maintainer from a Skill Steward clone | `cd packages/steward_cli && dart run :steward <command>` | Developing the CLI from source. |
+| Maintainer who wants a global command from a local clone | `dart pub global activate --source path packages/steward_cli`, then `steward <command>` | Testing a checkout as a global binary while keeping the command portable to other local clone paths. |
+| Historical provenance only | raw `dart --packages=... bin/steward.dart <command>` | Recording what happened on one machine. Do not teach this as the adoption path. |
+
+## Copyable command blocks
+
+Consumer binary install:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash
+steward doctor --json
+```
+
+Pinned consumer binary install:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash -s -- --version v0.3.4
+steward doctor --json
+```
+
+Dart maintainer source run:
+
+```bash
+cd packages/steward_cli
+dart pub get
+dart run :steward doctor --json
+```
+
+Local clone global activation:
+
+```bash
+dart pub global activate --source path packages/steward_cli
+steward doctor --json
+```
+
+## Evidence rule
+
+Evidence docs that include local-only invocation must split the record:
+
+1. **Portable command:** the command a reviewer or future agent should copy.
+2. **Local provenance:** what the original maintainer actually ran, with machine-specific paths summarized or redacted.
+3. **Non-claim:** whether the result depends on a local checkout, stale global binary, dirty state, unpublished release, or sibling repo layout.
+
+Do not teach absolute local paths such as `/Users/...`, private SDK locations, or sibling checkout assumptions as reusable commands. If a sibling checkout is unavoidable during development, write it as a placeholder such as `<skill-steward-checkout>/packages/steward_cli` and explain that released adopters should use `install.sh` or a published/global activation path.
+
+## Adoption check
+
+Use this concept before publishing adopter proof, H2/H4 evidence, or harness skill instructions. Minimum artifact: a command block that works from a released install or from a relative checkout owned by the current repository.

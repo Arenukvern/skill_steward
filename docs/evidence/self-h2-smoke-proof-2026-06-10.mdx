@@ -13,17 +13,32 @@ Skill Steward is self-stewarded as a `meta_governance` repository with a narrow 
 - Runner commit: `74c6f2af137ff7b791a24ed27a20ee25a35efb97`
 - Worktree note: unrelated local changes were present in `README.md`, `docs/DX_FAQ.mdx`, and `scratch/`; contract inputs were clean.
 
-## Commands
+## Portable commands
 
-Run from `/Users/anton/mcp/agent_guild` with the repo-local CLI:
+For a released or activated `steward` command, run from the Skill Steward repository root:
 
 ```bash
-/Users/anton/flutter/bin/cache/dart-sdk/bin/dart --packages=packages/steward_cli/.dart_tool/package_config.json packages/steward_cli/bin/steward.dart doctor --json
-/Users/anton/flutter/bin/cache/dart-sdk/bin/dart --packages=packages/steward_cli/.dart_tool/package_config.json packages/steward_cli/bin/steward.dart actions list --json
-/Users/anton/flutter/bin/cache/dart-sdk/bin/dart --packages=packages/steward_cli/.dart_tool/package_config.json packages/steward_cli/bin/steward.dart action inspect steward.contract.status.quick --json
-/Users/anton/flutter/bin/cache/dart-sdk/bin/dart --packages=packages/steward_cli/.dart_tool/package_config.json packages/steward_cli/bin/steward.dart probe --profile quick --json
-/Users/anton/flutter/bin/cache/dart-sdk/bin/dart --packages=packages/steward_cli/.dart_tool/package_config.json packages/steward_cli/bin/steward.dart benchmark --scenario skill_steward.contract-status-smoke --strict --output .steward/benchmark-summaries/skill-steward-contract-status-smoke.json --json
+steward doctor --json
+steward actions list --json
+steward action inspect steward.contract.status.quick --json
+steward probe --profile quick --json
+steward benchmark --scenario skill_steward.contract-status-smoke --strict --output .steward/benchmark-summaries/skill-steward-contract-status-smoke.json --json
 ```
+
+Maintainer source fallback:
+
+```bash
+cd packages/steward_cli
+dart run :steward doctor --json
+dart run :steward actions list --json
+dart run :steward action inspect steward.contract.status.quick --json
+dart run :steward probe --profile quick --json
+dart run :steward benchmark --scenario skill_steward.contract-status-smoke --strict --output ../../.steward/benchmark-summaries/skill-steward-contract-status-smoke.json --json
+```
+
+## Local provenance
+
+The original run used the maintainer's local Dart SDK binary and package config directly. That raw `dart --packages=... packages/steward_cli/bin/steward.dart` form is non-copyable provenance only; do not use absolute machine paths as adoption instructions. See [portable Steward invocation](../core/portable-steward-invocation).
 
 ## Results
 

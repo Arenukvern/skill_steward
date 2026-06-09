@@ -24,14 +24,14 @@ Meta stewardship CLI for [Skill Steward](https://github.com/arenukvern/skill_ste
 | `steward install` | Apply repo-local `skills.json` registrations into agent-readable folders |
 | `steward update` | Refresh pinned repo-local skill registrations and update `skills.json` commits |
 
-Cold-start proof loop:
+Cold-start proof loop assumes the `steward` command is installed or activated; see [Portable invocation hierarchy](#portable-invocation-hierarchy) for the supported paths.
 
 ```bash
-dart run :steward doctor --json
-dart run :steward actions list --json
-dart run :steward action inspect steward.contract.status.quick --json
-dart run :steward probe --profile quick --json
-dart run :steward benchmark \
+steward doctor --json
+steward actions list --json
+steward action inspect steward.contract.status.quick --json
+steward probe --profile quick --json
+steward benchmark \
   --scenario skill_steward.contract-status-smoke \
   --output .steward/benchmark-summaries/skill-steward-contract-status-smoke.json \
   --strict \
@@ -43,9 +43,9 @@ Benchmark execution is durability-gated. If `source.steward_contract` or a file-
 Evidence growth loop:
 
 ```bash
-dart run :steward observe --profile quick --json
-dart run :steward unknown-case create --from .steward/observations/<observation>.json --json
-dart run :steward action-candidate create \
+steward observe --profile quick --json
+steward unknown-case create --from .steward/observations/<observation>.json --json
+steward action-candidate create \
   --from .steward/unknown-cases/<case>.json \
   --id example.safe.check \
   --desc "Run the reviewed bounded check" \
@@ -54,8 +54,8 @@ dart run :steward action-candidate create \
   --git false \
   --benchmark example.safe-check-smoke \
   --json
-dart run :steward action-candidate inspect .steward/action-candidates/<candidate>.json --json
-dart run :steward action-candidate review --from .steward/action-candidates/<candidate>.json --json
+steward action-candidate inspect .steward/action-candidates/<candidate>.json --json
+steward action-candidate review --from .steward/action-candidates/<candidate>.json --json
 ```
 
 An action-candidate review is evidence, not a contract rewrite. Generated candidates include `can_promote_in_this_run: false`; promote only after repeated evidence, owner review, narrow effects, native validation, and a strict benchmark.
@@ -73,7 +73,34 @@ dart run :steward list
 
 From repo root: `pnpm run steward:analyze`
 
-Global install (optional):
+## Portable invocation hierarchy
+
+Use the first option that matches the job:
+
+1. **Released adopter / CI:** install the released binary, then run `steward <command>`.
+
+   ```bash
+   curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash
+   steward doctor --json
+   ```
+
+2. **Dart maintainer from this checkout:** run from source without hard-coded SDK or package-config paths.
+
+   ```bash
+   cd packages/steward_cli
+   dart run :steward doctor --json
+   ```
+
+3. **Local clone global activation:** activate the checkout package, then use the normal `steward` command.
+
+   ```bash
+   dart pub global activate --source path packages/steward_cli
+   steward doctor --json
+   ```
+
+Raw `dart --packages=... bin/steward.dart` commands are local provenance only. Do not publish them as adopter instructions; they encode one machine's SDK and package-config layout.
+
+Global install from a source checkout (optional):
 
 ```bash
 dart pub global activate --source path packages/steward_cli
