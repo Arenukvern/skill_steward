@@ -10,6 +10,11 @@ Meta stewardship CLI for [Skill Steward](https://github.com/arenukvern/skill_ste
 | `steward actions list --json` | List typed repo-local actions and their safety/effect summaries |
 | `steward action inspect <id> --json` | Inspect one exact action contract before execution |
 | `steward probe --profile quick --json` | Run quick-eligible bounded local observations |
+| `steward observe --profile quick --json` | Persist a compact local observation from a bounded probe |
+| `steward unknown-case create --from <observation> --json` | Turn an observation into an append-only unknown-case record |
+| `steward action-candidate create --from <case> ... --json` | Propose a reviewed action contract from repeated unknown-case evidence |
+| `steward action-candidate inspect <path> --json` | Inspect a proposed action candidate before review |
+| `steward action-candidate review --from <candidate> --json` | Validate an action candidate without promoting it |
 | `steward benchmark --scenario <id> --json --output <path>` | Run or block a durability-gated dogfood scenario and persist a compact summary |
 | `steward validate` | Validate installable skills and generated registry/index consistency |
 | `steward eval --json` | Run Tier-1 rule-based skill routing evals; runtime dogfood belongs to `benchmark` |
@@ -34,6 +39,26 @@ dart run :steward benchmark \
 ```
 
 Benchmark execution is durability-gated. If `source.steward_contract` or a file-backed scenario manifest is modified or untracked, the summary must return `result: blocked` with `blocked_by: durability_blocked`; track or commit those contract inputs, then rerun the same benchmark for executable proof. The built-in `contract-status-smoke` scenario proves contract discovery and durability gating only when it returns `result: "pass"`; it does not prove full agent navigation or diagnosis.
+
+Evidence growth loop:
+
+```bash
+dart run :steward observe --profile quick --json
+dart run :steward unknown-case create --from .steward/observations/<observation>.json --json
+dart run :steward action-candidate create \
+  --from .steward/unknown-cases/<case>.json \
+  --id example.safe.check \
+  --desc "Run the reviewed bounded check" \
+  --argv-json '["bash","tool/contracts/example_check.sh"]' \
+  --fs-read tool/contracts/example_check.sh \
+  --git false \
+  --benchmark example.safe-check-smoke \
+  --json
+dart run :steward action-candidate inspect .steward/action-candidates/<candidate>.json --json
+dart run :steward action-candidate review --from .steward/action-candidates/<candidate>.json --json
+```
+
+An action-candidate review is evidence, not a contract rewrite. Generated candidates include `can_promote_in_this_run: false`; promote only after repeated evidence, owner review, narrow effects, native validation, and a strict benchmark.
 
 ## Development
 

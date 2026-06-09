@@ -13,7 +13,7 @@ This ledger intentionally stops before S5/H5. A single adoption pass cannot hone
 | Repo | Role | Evidence | Current claim | Non-claims |
 |------|------|----------|---------------|------------|
 | `agent_guild` / Skill Steward | Measuring instrument | [Self H2 smoke proof](self-h2-smoke-proof-2026-06-10) | Self-stewarded `meta_governance` repo with internal H2 smoke proof | External adoption, H4 workflow, H5 maturity |
-| `mcp_flutter` | First external measurement | Branch `codex/steward-adoption-h2`; `docs/evidence/steward-h2-proof-2026-06-10.mdx`; `docs/evidence/h4-fresh-agent-workflow-2026-06-10.mdx` | External H2 smoke proof plus one bounded H4 fresh-agent workflow | Product runtime correctness, all workflows H4, H5 maturity |
+| `mcp_flutter` | First external measurement | Branch `codex/steward-adoption-h2`; `docs/evidence/steward-h2-proof-2026-06-10.mdx`; `docs/evidence/h4-fresh-agent-workflow-2026-06-10.mdx`; `docs/evidence/intentcall-hosted-cutover-steward-action-2026-06-10.mdx` | External H2 smoke proof, one bounded H4 fresh-agent workflow, and one useful hosted-dependency Steward action | Product runtime correctness, all workflows H4, broad H5 maturity |
 
 ## Sequence completed
 
@@ -23,10 +23,12 @@ This ledger intentionally stops before S5/H5. A single adoption pass cannot hone
 4. `mcp_flutter` native gate `make check-contracts` passed.
 5. `mcp_flutter` H2 loop passed: `doctor`, `actions list`, `action inspect`, `probe`, and strict `benchmark`.
 6. A fresh agent completed the bounded H4 workflow for `mcp_flutter`: prove the first dogfood scenario status using declared surfaces first.
+7. Skill Steward added the [H3 to H5 adoption promotion packet](h3-h5-adoption-promotion-packet-2026-06-10) to teach agents to move from observations to unknown cases, action candidates, reviewed benchmarks, and promoted capabilities.
+8. `mcp_flutter` promoted one deterministic product gate into Steward: `fmt.check.intentcall-hosted-deps` plus scenario `mcp_flutter.intentcall-hosted-cutover`.
 
 ## Known limits
 
 - Ignored machine summaries under `.steward/benchmark-summaries/` are local evidence, not the public ledger.
 - Scenario `source.commit` is a subject commit. Because updating a scenario creates a later commit, local HEAD can differ from `source.commit`; this is not remote-equivalence proof.
 - `mcp_flutter` still reports existing skill metadata/source warnings during `make check-contracts`; they are warnings, not gate failures.
-- H5 remains unclaimed until repeated evidence promotes a reusable capability with owner, risk, redaction, and validation.
+- Broad H5 remains unclaimed until repeated evidence promotes reusable capabilities across producer and consumer contexts with owner, risk, redaction, and validation.

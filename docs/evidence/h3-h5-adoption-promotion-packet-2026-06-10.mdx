@@ -1,0 +1,120 @@
+# H3 to H5 adoption promotion packet — 2026-06-10
+
+**Status:** promotion guidance · **Audience:** maintainers and agents
+
+## Purpose
+
+This packet turns adoption evidence into useful software-ecology improvement without turning measurement into a scoreboard. A fresh-agent transcript or benchmark is not the finish line. It is an input to a learning loop that can educate later agents, improve repo tools, and promote reviewed harness capability only after repeated evidence.
+
+## State machine
+
+```text
+adoption_run
+  -> observation
+  -> unknown case
+  -> action candidate
+  -> reviewed benchmark or eval
+  -> promoted capability
+```
+
+| State | Use when | Artifact | Promotion rule |
+|-------|----------|----------|----------------|
+| `adoption_run` | A fresh agent attempts a bounded repo task using declared surfaces first. | Evidence note or transcript with claim, repo state, commands, verdict, blockers, and lesson. | Never promote directly from this state. |
+| `observation` | A quick probe or saved probe output captures local behavior. | `.steward/observations/*.json` from `steward observe`. | One observation can create an unknown case. |
+| `unknown case` | The behavior is confusing, failing, stale, or not yet diagnosable. | `.steward/unknown-cases/*.json` from `steward unknown-case create`. | One unknown case is a queue item, not H5. |
+| `action candidate` | Repeated evidence suggests a bounded command should become inspectable. | `.steward/action-candidates/*.json` from `steward action-candidate create`. | Candidate must declare effects, limits, owner, redaction, validation, and benchmark. |
+| `reviewed benchmark or eval` | Candidate is checked without mutating `steward.yaml`. | `steward action-candidate review` plus native validation and strict benchmark result. | Same-run promotion is blocked: `can_promote_in_this_run: false`. |
+| `promoted capability` | Repeated evidence has proven the capability in review. | Reviewed `steward.yaml`, scenario, eval, diagnostic, skill, or harness feature. | H5 only after owner/risk/redaction/validation are explicit and current gates pass. |
+
+## Adoption run record
+
+Use one `adoption_run` record per useful task. It should answer:
+
+- Exact claim.
+- Repo state and subject commit.
+- Declared surfaces used before raw shell exploration.
+- Commands/actions run.
+- Artifacts created or inspected.
+- Verdict and blockers.
+- What this teaches the next agent.
+- Whether the result is observation-only, unknown-case-worthy, candidate-worthy, or promotable.
+
+Measure only dimensions that educate future agents:
+
+| Dimension | Useful signal |
+|-----------|---------------|
+| Legibility | Could the agent find the right entrypoint and proof path? |
+| Safety | Were effects, limits, redaction, and protected state visible before execution? |
+| Executability | Did declared commands run without hidden local context? |
+| Product usefulness | Did the workflow help maintain or improve the repo's real tool/harness surface? |
+| Generativity | Did the result create a lesson, unknown case, action candidate, eval, diagnostic, or harness improvement? |
+
+Anti-metrics: repo count, benchmark count, eval count, average score, raw log volume, and green matrix aesthetics.
+
+## Worked seed: mcp_flutter stale global steward
+
+The `mcp_flutter` H4 transcript found that global `steward doctor --json` was stale or mismatched, while the checkout-local Skill Steward CLI worked. That is useful adoption friction. It is **not H5** by itself.
+
+Correct handling:
+
+1. Record the transcript as an `adoption_run`.
+2. If the friction repeats, capture a local observation.
+3. Create an unknown case from the observation.
+4. Only after repeated evidence, propose an action candidate or docs/installer fix.
+5. Promote only after review, native validation, and a strict benchmark.
+
+Incorrect handling:
+
+- Do not promote a diagnostic from one transcript.
+- Do not add permanent automation because a single local global binary was stale.
+- Do not call this H5 until the fix is reusable and validated.
+
+## Command sequence
+
+Capture an observation:
+
+```bash
+steward observe --profile quick --json
+steward observe --from .steward/probes/<probe>.json --json
+```
+
+Create an unknown case:
+
+```bash
+steward unknown-case create --from .steward/observations/<observation>.json --json
+```
+
+Create and review an action candidate:
+
+```bash
+steward action-candidate create \
+  --from .steward/unknown-cases/<case>.json \
+  --id example.safe.check \
+  --desc "Run the reviewed bounded check" \
+  --argv-json '["bash","tool/contracts/example_check.sh"]' \
+  --fs-read tool/contracts/example_check.sh \
+  --git false \
+  --benchmark example.safe-check-smoke \
+  --json
+
+steward action-candidate inspect .steward/action-candidates/<candidate>.json --json
+steward action-candidate review --from .steward/action-candidates/<candidate>.json --json
+```
+
+The generated candidate includes `can_promote_in_this_run: false`. That is deliberate: review records teach agents what to promote later; they do not silently rewrite the repo contract.
+
+## Promotion checklist
+
+Before changing `steward.yaml`, require:
+
+- Two or more independent observations, or one observation plus an existing native gate that already owns the behavior.
+- Proposed action has narrow `fs_read`, declared `fs_write`, explicit `git`, `network`, `secrets`, and `destructive` effects.
+- Safety class and confirmation policy are appropriate.
+- Owner and risk are named in review.
+- Native validation passes.
+- Strict benchmark passes with `result: "pass"`, `blocked_by: null`, and `durability.status: "ready"`.
+- Evidence note states non-claims.
+
+## mcp_flutter next candidate
+
+The next useful adoption step is a product-gate action in `mcp_flutter`, not another contract-status benchmark. Good candidates are hosted dependency/no-path-dependency checks or static dogfood verification. They are useful because they teach future agents to maintain the real Flutter MCP toolkit ecology while keeping runtime/Chrome-heavy dogfood separate.
