@@ -2,6 +2,20 @@
 
 Steward commands must be copyable by a fresh agent on another machine. Evidence may record local provenance, but reusable guidance must put the portable command first.
 
+## 2026 rule
+
+Do not ask every adopter repo to vendor a `tool/steward/run.sh` shim. That is a proof bridge, not a product surface.
+
+Reusable adoption should converge on a normal `steward` executable plus one of these setup channels:
+
+1. **Released binary install** — `install.sh` downloads the GitHub Release artifact, verifies checksums, and puts `steward` on `PATH`.
+2. **CI setup action** — GitHub Actions use `Arenukvern/skill_steward/.github/actions/setup-steward@vX.Y.Z`, then run `steward <command>`.
+3. **Declarative tool manager** — teams that standardize on aqua or mise pin `steward` in their project tool manifest instead of committing shell glue.
+4. **Package-manager channel** — Homebrew tap / pub activation can be added when that audience is real.
+5. **Maintainer source path** — `dart run :steward` or `dart pub global activate --source path` is local development only.
+
+Repo-local wrappers are allowed only as temporary compatibility adapters during prerelease proof. They must be labeled as local provenance, must call the central CLI unchanged, and must not appear in "first adoption" instructions for the next repo.
+
 ## Portable invocation hierarchy
 
 Use the first option that matches the actor.
@@ -10,6 +24,7 @@ Use the first option that matches the actor.
 |-------|---------------------------|----------|
 | Skill consumer | `npx skills add arenukvern/skill_steward` | Installing portable skills for an agent. |
 | Repo adopter or CI runner | `curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh \| bash`, then `steward <command>` | Running Steward without cloning Skill Steward or requiring Dart. Pin with `--version vX.Y.Z` when reproducibility matters. |
+| GitHub Actions runner | `Arenukvern/skill_steward/.github/actions/setup-steward@vX.Y.Z`, then `steward <command>` | Avoiding repeated curl/setup snippets across CI workflows. |
 | Dart maintainer from a Skill Steward clone | `cd packages/steward_cli && dart run :steward <command>` | Developing the CLI from source. |
 | Maintainer who wants a global command from a local clone | `dart pub global activate --source path packages/steward_cli`, then `steward <command>` | Testing a checkout as a global binary while keeping the command portable to other local clone paths. |
 | Historical provenance only | raw `dart --packages=... bin/steward.dart <command>` | Recording what happened on one machine. Do not teach this as the adoption path. |
@@ -28,6 +43,15 @@ Pinned consumer binary install:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash -s -- --version v0.3.4
 steward doctor --json
+```
+
+GitHub Actions:
+
+```yaml
+steps:
+  - uses: actions/checkout@v4
+  - uses: Arenukvern/skill_steward/.github/actions/setup-steward@v0.3.4
+  - run: steward doctor --json
 ```
 
 Dart maintainer source run:
@@ -53,8 +77,17 @@ Evidence docs that include local-only invocation must split the record:
 2. **Local provenance:** what the original maintainer actually ran, with machine-specific paths summarized or redacted.
 3. **Non-claim:** whether the result depends on a local checkout, stale global binary, dirty state, unpublished release, or sibling repo layout.
 
-Do not teach absolute local paths such as `/Users/...`, private SDK locations, or sibling checkout assumptions as reusable commands. If a sibling checkout is unavoidable during development, write it as a placeholder such as `<skill-steward-checkout>/packages/steward_cli` and explain that released adopters should use `install.sh` or a published/global activation path.
+Do not teach absolute local paths such as `/Users/...`, private SDK locations, per-repo wrapper scripts, or sibling checkout assumptions as reusable commands. If a sibling checkout is unavoidable during development, write it as a placeholder such as `<skill-steward-checkout>/packages/steward_cli` and explain that released adopters should use `install.sh`, the setup action, a declarative tool manager, or a published/global activation path.
 
 ## Adoption check
 
-Use this concept before publishing adopter proof, H2/H4 evidence, or harness skill instructions. Minimum artifact: a command block that works from a released install or from a relative checkout owned by the current repository.
+Use this concept before publishing adopter proof, H2/H4 evidence, or harness skill instructions. Minimum artifact: a command block that runs `steward <command>` from a released install or explicit maintainer source checkout, without requiring each adopter repo to carry a custom runner.
+
+## External practice anchors
+
+- [aqua](https://aquaproj.github.io/) for declarative, per-project CLI version management.
+- [mise](https://mise.jdx.dev/configuration.html) for project tool config and task environments.
+- [Dart pub global](https://dart.dev/tools/pub/cmd/pub-global) for Dart-native global activation when a Dart SDK is intentionally present.
+- [GitHub composite actions](https://docs.github.com/en/actions/tutorials/create-actions/create-a-composite-action) for reusable CI setup.
+- [GitHub Release asset digests](https://github.blog/changelog/2025-06-03-releases-now-expose-digests-for-release-assets/) and [SLSA provenance](https://github.com/slsa-framework/slsa-github-generator) for release integrity.
+- [Homebrew taps](https://docs.brew.sh/How-to-Create-and-Maintain-a-Tap) when a first-class macOS/Linux package-manager channel is worth maintaining.

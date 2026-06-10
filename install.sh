@@ -29,6 +29,7 @@ Installs steward CLI. Falls back to compiling from source if run from a git clon
 When run from a git clone, version defaults to the packages/steward_cli pubspec.yaml.
 When piped from curl without --version, the latest GitHub release is used if available.
 Override with STEWARD_VERSION or --version.
+Set STEWARD_NO_PATH_UPDATE=1 for CI/action installs that manage PATH themselves.
 USAGE
 }
 
@@ -271,7 +272,7 @@ fi
 
 "$INSTALL_DIR/steward" --help >/dev/null
 
-if [[ ":$PATH:" != *":$INSTALL_DIR:"* ]]; then
+if [[ "${STEWARD_NO_PATH_UPDATE:-0}" != "1" && ":$PATH:" != *":$INSTALL_DIR:"* ]]; then
   shell_name="$(basename "${SHELL:-sh}")"
   rc_file="$HOME/.profile"
   case "$shell_name" in

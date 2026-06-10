@@ -19,7 +19,7 @@ This ledger intentionally stops before S5/H5. A single adoption pass cannot hone
 
 1. Skill Steward scenario subject refreshed and self-H2 rerun with the repo-local CLI.
 2. `mcp_flutter` contract aligned to current `steward/v1` vocabulary by replacing private `product_mcp` with public `harness` and adding `stewardship.repo_quality`.
-3. `mcp_flutter` `AGENTS.md` records the portable `tool/steward/run.sh` wrapper and explicit `SKILL_STEWARD_ROOT=<skill-steward-checkout>` local override for stale global `steward` binaries.
+3. `mcp_flutter` initially used a temporary `tool/steward/run.sh` compatibility bridge for stale global `steward` binaries. The reusable adoption guidance is now the released `steward` executable plus `install.sh` or setup action.
 4. `mcp_flutter` native gate `make check-contracts` passed.
 5. `mcp_flutter` H2 loop passed: `doctor`, `actions list`, `action inspect`, `probe`, and strict `benchmark`.
 6. A fresh agent completed the bounded H4 workflow for `mcp_flutter`: prove the first dogfood scenario status using declared surfaces first.
