@@ -147,6 +147,18 @@ Raw `dart --packages=... bin/steward.dart` commands are local provenance only. I
 6. **Protect local state** — If the repo has temporary dirty files that must remain in place, write a do-not-touch exception and keep those files out of action inputs. Protected local state is not a benchmark blocker unless it is declared as a contract or scenario input.
 7. **Grow from evidence** — If the probe exposes an unknown failure, capture an unknown case first. Promote a typed action candidate only after owner, effects, limits, redaction, validation command, and benchmark evidence exist. Do not promote diagnostics from the same run that discovered them.
 
+### Native deterministic gate promotion
+
+Prefer useful native gates over Steward-only scorekeeping. A repo may promote an existing deterministic script, test, or validation command into a Steward action when it has:
+
+- positive proof on the current state
+- a falsifier test or fixture that catches the regression class
+- owner, risk class, effects, limits, and redaction policy
+- a strict benchmark or eval that makes the capability discoverable
+- explicit non-claims for product runtime correctness and broad H5 maturity
+
+This is the path for turning evidence into a tool improvement packet. If the result cannot teach a later agent how to maintain or improve the repo's real tool surface, keep it as an observation or unknown case instead of promoting it.
+
 ## Adoption maturity ladder
 
 Do not call a repository harness-ready until the proof stage matches the claim.

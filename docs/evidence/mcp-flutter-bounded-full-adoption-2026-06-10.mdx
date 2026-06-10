@@ -1,0 +1,70 @@
+# mcp_flutter bounded full adoption — 2026-06-10
+
+**Status:** bounded S5/H5 adoption proof path · **Audience:** maintainers and agents
+
+## Claim
+
+`mcp_flutter` is the first bounded full Skill Steward adoption target for one useful capability: hosted IntentCall dependency cutover. The full claim is deliberately narrow:
+
+> A fresh agent can discover the repo contract, inspect and run the hosted-dependency gate, understand its safety and falsifier evidence, and use the result to improve one real tool surface without hidden local paths.
+
+This is not a claim that every `mcp_flutter` workflow is H5, that WebMCP runtime dogfood is proven, or that Skill Steward has broad ecosystem maturity.
+
+## Bounded adoption checklist
+
+| Ladder | Status | Evidence | Non-claim |
+|--------|--------|----------|-----------|
+| S0 Baseline mapped | Proven | `mcp_flutter` has `AGENTS.md`, `steward.yaml`, native gate `make check-contracts`, and docs map. | Does not prove runtime correctness. |
+| S1 Knowledge lattice declared | Proven | `docs/start_here/docs_map.mdx`, IntentCall hosted cutover docs, and evidence notes route why/how/proof. | Does not prove all docs are complete. |
+| S2 Quality contract proven | Proven | `make check-contracts` and strict Steward benchmark summaries pass with existing warnings separated from failures. | Warnings remain backlog. |
+| S3 Feedback loop active | Proven for bounded surface | Hosted cutover friction became a native gate, Steward action, strict scenario, redacted summary, and eval guidance. | Does not prove every failure class has a loop. |
+| S4 Fresh-agent workflow | Proven for bounded surface | `docs/evidence/h4-fresh-agent-workflow-2026-06-10.mdx` records a bounded fresh-agent workflow using declared surfaces first. | Does not prove all agent workflows. |
+| S5 Promoted stewardship capability | Proven for one capability | `mcp_flutter/docs/evidence/steward-h5-hosted-cutover-promotion-2026-06-10.mdx`, `fmt.check.intentcall-hosted-deps`, scenario `mcp_flutter.intentcall-hosted-cutover`, falsifier test, owner, redaction, and validation evidence. | Broad repo S5 remains unclaimed. |
+| H0 Relevant skills discoverable | Proven | `AGENTS.md` points agents to Skill Steward and portable `steward` invocation. | Does not require every skill installed globally. |
+| H1 Local contract declared | Proven | `steward.yaml` declares repo, owner, actions, probes, and benchmarks. | None. |
+| H2 Smoke loop proven | Proven | `steward doctor`, `actions list`, `action inspect`, `probe`, and strict benchmark evidence are recorded. | Does not prove H4. |
+| H3 Repo feedback loop | Proven for bounded surface | Evidence moved from adoption run to product gate, scenario, redacted summary, and promotion packet. | Does not prove all feedback is captured. |
+| H4 Fresh-agent workflow proven | Proven for bounded surface | Fresh-agent proof targets declared surfaces and avoids machine-local commands. | Does not prove product-wide correctness. |
+| H5 Promoted harness capability | Proven for one capability | Hosted-dependency check is a reviewed, bounded, auto/quick-eligible action with native falsifier, strict benchmark, and fresh-agent surface check. | Broad harness H5 remains unclaimed. |
+
+## Tool improvement packet
+
+| Field | Hosted cutover answer |
+|-------|-----------------------|
+| Observation | Hosted IntentCall cutover can regress if consumer pubspecs regain local `agentkit`/`intentcall` path dependencies. |
+| User value | Future agents can prevent local-only success from hiding publish/consumer breakage. |
+| Native owner | `mcp_flutter/tool/intentcall/check_no_path_deps.sh` and `check_no_path_deps_test.sh`. |
+| Steward surface | `fmt.check.intentcall-hosted-deps` action plus `mcp_flutter.intentcall-hosted-cutover` benchmark scenario. |
+| Safety and effects | `bounded_local`, auto policy, explicit `fs_read`, `fs_write: []`, `git: false`, `network: false`, `secrets: false`, `destructive: false`. |
+| Redaction | Benchmark summary records result, digests, owner, durability, proof status, warnings, and subject commit without raw paths or logs. |
+| Falsifier | `bash tool/intentcall/check_no_path_deps_test.sh` rejects synthetic stale path dependencies. |
+| Positive proof | `steward action inspect fmt.check.intentcall-hosted-deps --json`, quick probe, and strict benchmark pass on current dependency state. |
+| Promotion criteria | Native gate exists, falsifier exists, action is inspectable, quick probe includes it, strict benchmark passes, evidence note states non-claims. |
+| Educational note | Prefer promoting deterministic native gates that prevent real repo maintenance failures; keep runtime-heavy dogfood as a separate proof path. |
+
+## Required verification commands
+
+Run in `/Users/anton/mcp/mcp_flutter` or the target checkout root:
+
+```bash
+steward doctor --json
+steward actions list --json
+steward action inspect fmt.check.intentcall-hosted-deps --json
+steward probe --profile quick --json
+bash tool/intentcall/check_no_path_deps_test.sh
+make check-contracts
+steward benchmark --scenario mcp_flutter.intentcall-hosted-cutover --strict --output .steward/benchmark-summaries/mcp_flutter.intentcall-hosted-cutover.strict.json --json
+```
+
+Reusable docs must use the released `steward` executable, Skill Steward setup action, `cd packages/steward_cli && dart run :steward`, or `dart pub global activate --source path packages/steward_cli`. Raw `dart --packages=...` and machine-specific `/Users/...` command paths are provenance only.
+
+## Fresh-agent exercise
+
+A separate fresh-agent exercise in `mcp_flutter` used declared surfaces first and ran `steward doctor`, `actions list`, `action inspect`, `probe`, the hosted-cutover falsifier test, and `git status --short`. It reported the action discoverable, bounded, quick-probe eligible, and live-passing. The exercise also found that owner/risk/validation metadata should be visible from the inspected action surface; `mcp_flutter/steward.yaml` now records those fields under the action evidence.
+
+## What remains open
+
+- WebMCP runtime dogfood is separate from this hosted-dependency gate.
+- Skill metadata/source warnings in `mcp_flutter make check-contracts` are backlog unless they become gate failures.
+- `source.commit` remains the subject commit in benchmark summaries; it is not remote-equivalence proof.
+- The next adoption should reuse this packet template and prove a different useful capability before claiming broader ecosystem maturity.

@@ -51,6 +51,25 @@ Measure only dimensions that educate future agents:
 
 Anti-metrics: repo count, benchmark count, eval count, average score, raw log volume, and green matrix aesthetics.
 
+## Tool improvement packet template
+
+Use this packet when evidence should educate the next agent how to improve the repo's tools. Keep it small enough to review in one screen.
+
+| Field | Required answer |
+|-------|-----------------|
+| Observation | What real repo behavior, failure, friction, or maintenance smell was seen? |
+| User value | What future work becomes safer, faster, or less confusing if this is fixed? |
+| Native owner | Which existing script, test, CLI command, schema, or docs path owns the behavior? |
+| Steward surface | Should this stay a native gate, become a Steward action, become an eval, or become skill guidance? |
+| Safety and effects | What `fs_read`, `fs_write`, `git`, `network`, `secrets`, and destructive limits apply? |
+| Redaction | What compact summary can be shared without raw logs, local paths, or secrets? |
+| Falsifier | What negative test proves the gate catches the failure class? |
+| Positive proof | What command or benchmark proves the clean state still passes? |
+| Promotion criteria | What repeated evidence, owner, risk class, validation, and review make this H5? |
+| Educational note | What should a fresh agent learn before proposing the next improvement? |
+
+Generative usefulness is present only when the packet can guide a later agent to build or improve a real tool surface. If the packet merely counts runs, records green status, or cannot name a falsifier, keep it below H5.
+
 ## Worked seed: mcp_flutter stale global steward
 
 The `mcp_flutter` H4 transcript found that global `steward doctor --json` was stale or mismatched, while the checkout-local Skill Steward CLI worked. That is useful adoption friction. It is **not H5** by itself.
@@ -117,6 +136,17 @@ Before changing `steward.yaml`, require:
 - Strict benchmark passes with `result: "pass"`, `blocked_by: null`, and `durability.status: "ready"`.
 - Evidence note states non-claims.
 
+## Native gate promotion shortcut
+
+A deterministic native gate may skip the "two unknown cases" wait only when the native repo already owns both sides of the behavior:
+
+- a positive command that passes on the current clean state
+- a falsifier test or fixture that fails when the target regression is reintroduced
+- an owner, risk class, redaction policy, and validation command
+- a strict benchmark or eval that makes the Steward surface discoverable
+
+This is still not same-run diagnosis promotion. The promoted capability is the reviewed gate, not the first observation that inspired it.
+
 ## mcp_flutter next candidate
 
-The next useful adoption step is a product-gate action in `mcp_flutter`, not another contract-status benchmark. Good candidates are hosted dependency/no-path-dependency checks or static dogfood verification. They are useful because they teach future agents to maintain the real Flutter MCP toolkit ecology while keeping runtime/Chrome-heavy dogfood separate.
+The first useful bounded H5 candidate is the hosted dependency/no-path-dependency gate in `mcp_flutter`. It is useful because it teaches future agents to maintain the real Flutter MCP toolkit ecology while keeping runtime/Chrome-heavy dogfood separate.

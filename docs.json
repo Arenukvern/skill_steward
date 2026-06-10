@@ -64,6 +64,8 @@
         { "title": "DESIGN_FAQ", "href": "/DESIGN_FAQ" },
         { "title": "DX_FAQ", "href": "/DX_FAQ" },
         { "title": "First adopter proof", "href": "/evidence/first-adopter-golden-path" },
+        { "title": "Bounded full adoption", "href": "/evidence/mcp-flutter-bounded-full-adoption-2026-06-10" },
+        { "title": "Paired adoption ledger", "href": "/evidence/paired-adoption-ledger-2026-06-10" },
         { "title": "H4 workflow check", "href": "/evidence/h4-fresh-agent-workflow-check-2026-06-08" },
         { "title": "Skills Catalog", "href": "/skills-catalog" },
         { "title": "Docs Map", "href": "/start_here/docs_map" },
