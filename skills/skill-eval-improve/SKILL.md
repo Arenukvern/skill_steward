@@ -145,7 +145,7 @@ Related: [SkillLens](https://microsoft.github.io/SkillOpt/) (model-generated ski
 At 10,000x scale, NLP prompt evaluation fails because LLMs suffer **Cognitive Overload** navigating massive toolsets. Runtime dogfood should objectively assert their logical trajectory using deterministic traces.
 
 1. **Capture compact traces:** Store action IDs, tool counts, artifact digests, and redacted excerpts, not raw product traces.
-2. **Define assertions:** Expected action trajectory, maximum tool calls, required artifacts, and negative checks for unrelated actions.
+2. **Define assertions:** Expected action trajectory, declared surfaces used first, maximum tool calls, maximum repair/setup attempts, maximum unrelated tool calls, required `return_to_goal_step`, required artifacts, and negative checks for unrelated actions.
 3. **Run dogfood benchmarks:** Use `steward benchmark --scenario <id> --json` for runtime dogfood scenarios. Do not put product runtime scenarios under Tier-1 skill evals.
 
 The current `steward eval --name` registered-eval path is legacy/experimental. Skill quality remains `pnpm run eval`; runtime dogfood belongs to `steward benchmark`, where `durability_blocked` is valid blocked evidence when contract inputs are modified or untracked, not proof of runtime behavior.
@@ -175,6 +175,7 @@ The current `steward eval --name` registered-eval path is legacy/experimental. S
 
 - Rewriting entire SKILL.md from one failure (destroy working rules)
 - Self-editing without held-out prompts (overfit)
+- Adding skill rules, evals, or tools from one observed run when a smaller FAQ, error message, native command, observed-effect check, or deletion would solve the problem
 - Claims without `references/sources.md` rows
 - Evaluating only with static analyze—never running real prompts
 - LLM judge in CI (flake, cost) — offline only per [ADR 0011](../../docs/decisions/0011-tiered-skill-evals-and-rule-based-ci.mdx)

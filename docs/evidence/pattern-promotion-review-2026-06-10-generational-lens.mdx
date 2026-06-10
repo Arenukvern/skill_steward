@@ -1,0 +1,61 @@
+# Pattern Promotion Review: Generational Lens
+
+**Date:** 2026-06-10
+**Repo:** `skill_steward`
+**Status:** review artifact
+**Context:** maintainer-local discussion and implementation pass
+
+## Original Goal
+
+Apply the generational architecture recommendation without creating doctrine:
+
+> Skill Steward helps you notice when a repo has outgrown its current shape, choose the smallest next layer, and prove the change reduces future work.
+
+The requested outcome was small edits to existing skills, a tangible Pattern Promotion Review artifact, and an ADR that preserves the decision and source trail.
+
+## Observed Pattern
+
+Skill Steward already had the start of a generational architecture lens: repo quality contracts ask what layer should change, adoption evidence records `pattern_layer`, and the generational architecture ladder warns that higher layers are not automatically better.
+
+The new pressure was whether this knowledge should become a new skill, merge existing skills, or stay as a lens across existing stewardship workflows.
+
+## Review
+
+| Field | Decision |
+|-------|----------|
+| Current layer | `ecology`: existing skills and docs are the right surface. |
+| Proposed next layer | A new standalone skill such as `pattern-promotion-lifecycle`. |
+| Smallest useful move | Improve existing skills, add a compact FAQ entry, add this review artifact, and record ADR 0019. |
+| Deletion/collapse option | Do not create a new skill yet; keep "factory inside factory" as an optional metaphor, not public doctrine. |
+| Maintenance delta | `neutral` for now: this adds small durable docs, but avoids a new package surface. |
+| Observed effect | Existing stewardship skills and adoption-run evidence now route agents through the generational check without creating a new skill. |
+| Evidence needed | At least two future real repo runs where this review shape changes the decision or prevents/promotes a layer with proof. |
+| Promotion guard | Create a standalone skill only if existing skills repeatedly fail to route the workflow without it. |
+| Falsifier | If reviews mostly produce prose, add ceremony, or distract from the original user goal, collapse the guidance back into the ladder. |
+
+## How To Run This Review
+
+1. Start from a real repo task, not an abstract architecture preference.
+2. Name the repeated friction or growth pressure.
+3. Classify the current layer: native, repo grammar, public surface, schema/codegen, harness, ecology, or none.
+4. Compare the smallest useful move against a deletion or collapse option.
+5. Name the observed effect, not only a command that returned success.
+6. State the evidence needed before promotion.
+7. Save the review only when it changes durable docs, skills, contracts, tooling, or a promotion decision.
+
+## Outcome
+
+Decision: **continue** with the lens inside existing stewardship surfaces.
+
+Created surface:
+
+- [Generational architecture ladder](../core/generational-architecture-ladder)
+- [ADR 0019](../decisions/0019-pattern-promotion-review-as-lens-and-proof-loop)
+- Existing skills: `mixture-of-experts` and `repo-quality-system-lifecycle`
+
+## Non-Claims
+
+- This is not H2/H4/H5 or S5 proof.
+- This does not create a new Skill Steward product category.
+- This does not prove a standalone pattern-promotion skill is needed.
+- This does not prescribe ECS, code generation, harness actions, or package extraction as universal next steps.

@@ -26,7 +26,7 @@ adoption_run
 | `unknown case` | The behavior is confusing, failing, stale, or not yet diagnosable. | `.steward/unknown-cases/*.json` from `steward unknown-case create`. | One unknown case is a queue item, not H5. |
 | `action candidate` | Repeated evidence suggests a bounded command should become inspectable. | `.steward/action-candidates/*.json` from `steward action-candidate create`. | Candidate must declare effects, limits, owner, redaction, validation, and benchmark. |
 | `reviewed benchmark or eval` | Candidate is checked without mutating `steward.yaml`. | `steward action-candidate review` plus native validation and strict benchmark result. | Same-run promotion is blocked: `can_promote_in_this_run: false`. |
-| `promoted capability` | Repeated evidence has proven the capability in review. | Reviewed `steward.yaml`, scenario, eval, diagnostic, skill, or harness feature. | H5 only after owner/risk/redaction/validation are explicit and current gates pass. |
+| `promoted capability` | Repeated evidence has proven the capability in review, including at least one held-out benchmark or future-agent repeat. | Reviewed `steward.yaml`, scenario, eval, diagnostic, skill, or harness feature. | H5 only after owner/risk/redaction/validation are explicit, current gates pass, and `held_out_benchmarks` or repeat evidence exists. |
 
 ## Adoption run record
 
@@ -38,6 +38,7 @@ Use one `adoption_run` record per useful task. It should answer:
 - Repo state and subject commit.
 - Declared surfaces used before raw shell exploration.
 - Commands/actions run.
+- Observed effect, not only the command return code.
 - Artifacts created or inspected.
 - Tool detours taken, attempt count, stop rule, and return-to-goal step.
 - Verdict and blockers.
@@ -67,6 +68,8 @@ If a needed tool, install path, MCP server, wrapper, or local harness is broken,
 
 It is valid to refactor, stop, or abandon a proposed capability. That is not failure when the run preserves a clear reason, points to the right ADR/FAQ/evidence destination, and avoids building a tool that no longer serves the task.
 
+Do not promote from the same run that triggered the two-attempt stop rule. Set `can_promote_in_this_run: false` and keep the claim below S5/H5 until a later reviewed repeat proves usefulness.
+
 ## Tool improvement packet template
 
 Use this packet when evidence should educate the next agent how to improve the repo's tools. Keep it small enough to review in one screen.
@@ -81,6 +84,7 @@ Use this packet when evidence should educate the next agent how to improve the r
 | Redaction | What compact summary can be shared without raw logs, local paths, or secrets? |
 | Falsifier | What negative test proves the gate catches the failure class? |
 | Positive proof | What command or benchmark proves the clean state still passes? |
+| Observed effect | What user-visible or repo-visible state changed as intended? |
 | Promotion criteria | What repeated evidence, owner, risk class, validation, and review make this H5? |
 | Educational note | What should a fresh agent learn before proposing the next improvement? |
 
@@ -150,6 +154,7 @@ Before changing `steward.yaml`, require:
 - Owner and risk are named in review.
 - Native validation passes.
 - Strict benchmark passes with `result: "pass"`, `blocked_by: null`, and `durability.status: "ready"`.
+- `held_out_benchmarks` or an equivalent future-agent repeat artifact proves the path transfers.
 - Evidence note states non-claims.
 
 ## Native gate promotion shortcut

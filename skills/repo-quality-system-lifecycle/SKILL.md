@@ -20,6 +20,7 @@ Use this skill to make a repository legible, safe, and improvable for humans and
 - Designing a repo quality contract before adding harness actions, diagnostics, or automation.
 - Separating repo stewardship proof from product runtime correctness.
 - Auditing a multi-repo integration chain where one repo must publish, tag, or stabilize before a consumer repo can truthfully cut over.
+- Deciding whether repeated repo friction should stay native, become docs/FAQ, become an API/schema/generator, become harness proof, or be deleted/collapsed.
 
 ## When not to use
 
@@ -66,12 +67,28 @@ Write the smallest contract that can be checked.
 | Safety | What actions read, write, touch network/secrets, or need confirmation? |
 | Handoff | What context lets another agent resume without re-spelunking? |
 | Feedback | How do repeated failures become durable tests, docs, evals, or actions? |
+| Pattern layer | Should this change live in native code, repo grammar, public API, schema/codegen, harness, ecology-level skill/tooling, or deletion? |
 
 For multi-repo roadmaps, also record dependency order, source-of-truth repo, consumer gate, dirty-state policy, and do-not-touch exceptions. Do not claim a downstream consumer is ready from local path dependency success when the upstream package or binary still lacks publish evidence.
 
 Use [docs/repo-quality-contracts.mdx](../../docs/repo-quality-contracts.mdx) as the normative spec.
 
-### 4. Prove the claim honestly
+### 4. Run the generational architecture check
+
+Before adding automation or a new abstraction, ask the Skeptic questions:
+
+- Is the friction repeated across agents or workflows, or only from this run?
+- Can a language/framework feature, native command, FAQ, validation message, or docs-map row solve it?
+- Would deleting, merging, or demoting a layer reduce maintenance without losing proof?
+- If codegen is proposed, is the schema smaller and more stable than the generated code?
+- If a harness action is proposed, does it help the original task or a named future problem class?
+- What falsifier or held-out task will show the promoted layer is stale, wrong, or not useful?
+
+Use [docs/core/generational-architecture-ladder.mdx](../../docs/core/generational-architecture-ladder.mdx) for the stage model. Higher layers are not automatically better; mature stewardship can move down the ladder.
+
+If the check rejects a proposed abstraction, promotes a new layer, updates an existing skill/tool, or changes durable repo policy, record a Pattern Promotion Review under `docs/evidence/pattern-promotion-review-YYYY-MM-DD-topic.mdx`. Keep it as evidence for a real run, not as a new skill or scorecard.
+
+### 5. Prove the claim honestly
 
 Use the weakest true claim, not the strongest desired one.
 
@@ -83,7 +100,7 @@ Use the weakest true claim, not the strongest desired one.
 | Harness readiness is proven | `doctor`, `actions list`, `action inspect`, `probe`, benchmark scenario |
 | Fresh-agent workflow is proven | Fresh agent completes one workflow without hidden context |
 
-### 5. Promote repeated learning
+### 6. Promote repeated learning
 
 If an agent discovers friction, do not immediately create permanent automation. First decide the durable artifact.
 
@@ -92,9 +109,12 @@ If an agent discovers friction, do not immediately create permanent automation. 
 | Ambiguous direction | ADR, DESIGN FAQ, North Star clarification |
 | Repeated command confusion | DX FAQ, script, validation error message |
 | Hidden local context | AGENTS map, docs map, concept doc |
+| Repeated structural duplication | Pattern review, public API boundary, package/module split, or deletion |
+| Repeated boilerplate | Template, schema, generator, lint rule, or test fixture |
 | Risky manual action | Typed action candidate with effects, limits, redaction, owner |
 | Unclear skill activation | Eval case and skill description change |
 | Runtime blind spot | Harness probe, benchmark scenario, unknown case |
+| Stale or overgrown layer | Collapse, demote, or delete after the native gate still passes |
 
 ## Output contract
 
@@ -103,6 +123,7 @@ When reporting an audit or adoption pass, include:
 - Repo archetype and primary artifact.
 - Current maturity stage (`S0`-`S5`) and evidence.
 - Missing contract areas.
+- Pattern layer chosen, smaller layer considered, and expected maintenance delta.
 - Smallest next improvement.
 - What was not validated.
 

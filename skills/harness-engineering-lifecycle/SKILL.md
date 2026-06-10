@@ -57,6 +57,8 @@ When you make changes to the harness (Producer), you must validate it against de
 6. **Dual Verification:** Verify that the consumer suite passes, and the producer suite passes.
 7. **Durable Knowledge:** Extract any learnings to ADRs or FAQs using the `repository-governance-lifecycle` skill.
 
+**Detour stop rule:** If installing, activating, or wiring the local producer build fails twice, stop restoration, record the friction, use the consumer's native gate or portable fallback when possible, and return to the original acceptance check. Do not promote a generalized harness capability from that same detour; capture an observation or unknown case first.
+
 ## Producer/consumer proof artifacts
 
 Before promoting a generalized harness change, capture the proof from both sides.
@@ -69,7 +71,7 @@ Before promoting a generalized harness change, capture the proof from both sides
 | Both | Validation commands and versions | Makes failures reproducible across repos. |
 | Docs | ADR/FAQ update when the boundary changed | Keeps future agents from rediscovering the same split. |
 
-Do not promote a local fix into the generalized harness when only one consumer has a private path workaround. Keep it local until the contract, schema, or rule has a reusable shape.
+Do not promote a local fix into the generalized harness when only one consumer has a private path workaround. Keep it local until the contract, schema, or rule has a reusable shape and at least one held-out or future-agent repeat proves it transfers.
 
 ## Install
 

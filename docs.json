@@ -65,6 +65,7 @@
         { "title": "DX_FAQ", "href": "/DX_FAQ" },
         { "title": "First adopter proof", "href": "/evidence/first-adopter-golden-path" },
         { "title": "Adoption run v2", "href": "/evidence/adoption-run-v2-template" },
+        { "title": "Pattern promotion review", "href": "/evidence/pattern-promotion-review-2026-06-10-generational-lens" },
         { "title": "Capability-level proof", "href": "/evidence/mcp-flutter-capability-level-proof-2026-06-10" },
         { "title": "Runtime text-input packet", "href": "/evidence/mcp-flutter-runtime-text-input-capability-proof-2026-06-10" },
         { "title": "Paired adoption ledger", "href": "/evidence/paired-adoption-ledger-2026-06-10" },
@@ -81,6 +82,7 @@
       "pages": [
         { "title": "Stewardship loop", "href": "/core/stewardship-loop" },
         { "title": "Distribution boundaries", "href": "/core/distribution-boundaries" },
+        { "title": "Generational architecture ladder", "href": "/core/generational-architecture-ladder" },
         { "title": "Evidence ladder", "href": "/core/evidence-ladder" },
         { "title": "Doc lattice", "href": "/core/doc-lattice" }
       ]
@@ -115,7 +117,8 @@
         { "title": "0015 — Agent CLI entrypoints", "href": "/decisions/0015-agent-cli-entrypoints-and-local-validation" },
         { "title": "0016 — Skill cohesion", "href": "/decisions/0016-skill-cohesion-and-lifecycle-boundaries" },
         { "title": "0017 — Cold-start contracts", "href": "/decisions/0017-cold-start-contracts-before-diagnostics" },
-        { "title": "0018 — Cold-to-hot usefulness", "href": "/decisions/0018-cold-to-hot-path-usefulness" }
+        { "title": "0018 — Cold-to-hot usefulness", "href": "/decisions/0018-cold-to-hot-path-usefulness" },
+        { "title": "0019 — Pattern promotion review", "href": "/decisions/0019-pattern-promotion-review-as-lens-and-proof-loop" }
       ]
     },
     {

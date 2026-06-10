@@ -1,0 +1,107 @@
+# 0019. Pattern Promotion Review as lens and proof loop
+
+Date: 2026-06-10
+
+## Status
+
+Accepted
+
+## Context
+
+Skill Steward already owns adoption evidence and generational architecture guidance: agents should preserve the original user goal, use declared surfaces first, decide whether repeated friction belongs in native code, repo grammar, public APIs, schema/codegen, harness proof, ecology-level skill/tooling, or deletion/collapse, and make only the weakest true evidence claim.
+
+A recent adoption sequence exposed three concrete failure modes:
+
+1. a tool returned success even though the user-visible effect had not happened,
+2. a useful repair risked being overclaimed as H5/S5 from one run,
+3. tool restoration almost became the work instead of serving the original task.
+
+The maintainer's architecture drafts add a useful deeper pattern: growing products reveal meta-patterns over time, and good tooling should improve the tools used to produce the product without replacing the product goal. The related risk is recursive tool-building: creating skills, generators, schemas, harnesses, and governance layers that feel architectural but do not reduce future work.
+
+The clean promise is:
+
+> Skill Steward helps you notice when a repo has outgrown its current shape, choose the smallest next layer, and prove the change reduces future work.
+
+The open decision is whether this should become a new skill, merge existing skills, or stay as a lens and evidence loop inside existing stewardship workflows. The decision must also make adoption-run evidence strict enough to reject false-green proof.
+
+## Decision
+
+Treat Pattern Promotion Review as a **lens and proof loop**, not a new doctrine.
+
+Agents should use the review when a real repo run exposes repeated friction or proposes a new abstraction, generator, harness action, skill, package boundary, or deletion/collapse.
+
+Adoption runs use `steward/adoption-run/v2` as the evidence envelope. Records must name the original goal, declared surfaces used first, detours, outcome, hot-path claim, observed effect, falsifier, non-claims, and promotion evidence. A command or tool returning success is not promotion evidence unless the record names the observed behavior or repo state that changed.
+
+The Pattern Promotion Review records:
+
+1. the original user or maintainer goal,
+2. the repeated pattern or growth pressure,
+3. the current layer and proposed next layer,
+4. the smallest useful move,
+5. the deletion or collapse option,
+6. the maintenance delta,
+7. the evidence needed before promotion,
+8. observed effect and proof requirement,
+9. the promotion guard or falsifier,
+10. explicit non-claims.
+
+The review is saved under `docs/evidence/pattern-promotion-review-YYYY-MM-DD-topic.mdx` only when it changes durable docs, skills, contracts, or tooling. It may be linked from an adoption run, ADR, FAQ, or PR summary.
+
+Do not create a standalone `pattern-promotion-lifecycle` skill yet. Improve existing skills instead:
+
+- `mixture-of-experts` supplies the Generational Architecture Skeptic lens.
+- `repo-quality-system-lifecycle` routes repo-quality decisions through the layer check.
+- `repository-governance-lifecycle` records durable decisions when policy changes.
+- `vision-alignment-foresight` keeps intent, evidence, falsifiers, and future fit honest.
+
+Promotion stays strict:
+
+- after two failed repair/setup attempts, stop tool restoration, record the friction, return to the user goal, and do not promote from that same detour;
+- H5/S5 requires repeated evidence plus at least one held-out benchmark, repeat run, or future-agent artifact;
+- repo-maturity claims require broad evidence, not a polished capability proof;
+- smaller layers and deletion/collapse must be considered before adding tools, generators, actions, or skills.
+
+## Considered Options
+
+* **Create a new skill now.** Rejected because one discussion and one review do not prove that a separate lifecycle is needed. A new skill would add activation and maintenance surface before the behavior is proven.
+* **Merge the knowledge into one broad governance skill.** Rejected because existing skill boundaries are useful: MoE critique, repo quality, governance records, and strategic alignment serve different moments.
+* **Keep only the concept doc.** Rejected because concept docs alone do not create a runnable evidence loop or reject false-green adoption records.
+* **Add Pattern Promotion Review as a lens and evidence artifact.** Accepted because it makes the decision tangible while preserving restraint.
+
+## Decision Outcome
+
+Chosen: **Pattern Promotion Review as a lens and proof loop**.
+
+The first review artifact is [Pattern Promotion Review: Generational Lens](../evidence/pattern-promotion-review-2026-06-10-generational-lens).
+
+Promotion rule: create a standalone skill only after repeated real repo runs show that existing stewardship skills cannot reliably route the workflow.
+
+Adoption rule: keep the `adoption-run/v2` validator in the `steward validate` path so evidence claims fail fast when they omit declared surfaces, observed effect, detour stop semantics, held-out proof, or broad evidence for repo-maturity claims.
+
+## Consequences
+
+* Good, because the pattern becomes runnable without creating a doctrine.
+* Good, because every promotion must name the deletion/collapse option and proof requirement.
+* Good, because adoption proof now distinguishes command success from observed effect.
+* Good, because the workflow can prevent unnecessary generators, skills, actions, or package splits.
+* Good, because it keeps product goals ahead of tool-building.
+* Bad, because agents may skip the review unless skills and docs route to it clearly.
+* Bad, because evidence notes can still become paperwork if they do not change decisions.
+* Mitigation: save a Pattern Promotion Review only when it changes durable docs, skills, contracts, tooling, or a promotion decision.
+
+## Confirmation
+
+* [Generational architecture ladder](../core/generational-architecture-ladder) defines the layer model and review shape.
+* [Repo quality contracts](../repo-quality-contracts) asks which layer should change.
+* [Adoption run v2 template](../evidence/adoption-run-v2-template) links durable generational decisions to Pattern Promotion Reviews.
+* The adoption-run validator enforces detour stop semantics, observed effect, held-out proof, and repo-maturity broad evidence.
+* `mixture-of-experts` and `repo-quality-system-lifecycle` route agents through the lens without adding a new skill.
+
+## More Information
+
+* [Pattern Promotion Review: Generational Lens](../evidence/pattern-promotion-review-2026-06-10-generational-lens)
+* [Generational architecture ladder](../core/generational-architecture-ladder)
+* [Cold-to-hot path usefulness](0018-cold-to-hot-path-usefulness)
+* [Repo quality contracts](../repo-quality-contracts)
+* [Evidence ladder](../core/evidence-ladder)
+* Maintainer architecture drafts reviewed during the decision: staged Flutter app architecture, two-tier data model architecture, code as translation, and libraries as agentic executables. Public citation should be added when canonical URLs exist.

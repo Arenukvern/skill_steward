@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:path/path.dart' as p;
 
 import '../repo_root.dart';
+import 'adoption_run_validator.dart';
 import 'plugin_manifest_validator.dart';
 import 'skill_frontmatter.dart';
 import 'skill_rules.dart';
@@ -234,7 +235,9 @@ Future<ValidationReport> validateAllSkills(final String skillsDir) async {
       warnings.addAll(customErrors);
     }
 
-    warnings.addAll(await validatePluginManifests(root));
+    warnings
+      ..addAll(await validatePluginManifests(root))
+      ..addAll(await validateAdoptionRunEvidence(root));
 
     registryWarnings = warnings;
   } on Object catch (_) {

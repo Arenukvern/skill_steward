@@ -11,6 +11,7 @@
 /// Node original and to evals/fixtures/validate/ cases.
 library;
 
+export 'adoption_run_validator.dart' show validateAdoptionRunEvidence;
 export 'local_validator.dart' show validateLocalSkills;
 export 'plugin_manifest_validator.dart' show validatePluginManifests;
 export 'skill_frontmatter.dart';

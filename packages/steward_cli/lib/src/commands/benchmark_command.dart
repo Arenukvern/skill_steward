@@ -9,6 +9,7 @@ import '../path_safety.dart';
 import '../repo_root.dart';
 import '../validation/steward_config.dart';
 
+// ignore: do_not_use_environment
 const _compiledStewardVersion = String.fromEnvironment('STEWARD_VERSION');
 
 /// Runs compact runtime dogfood benchmark scenarios.

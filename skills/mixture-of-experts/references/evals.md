@@ -4,7 +4,7 @@
 
 | ID | User prompt | Pass criteria |
 |----|-------------|---------------|
-| T1 | Run a MoE audit with specialized subagents to criticize this architecture plan | Spawns or simulates orthogonal expert lenses and synthesizes findings. |
+| T1 | Run a MoE audit with specialized subagents to criticize this architecture plan | Spawns or simulates orthogonal expert lenses, includes the Generational Architecture Skeptic for stewardship/tooling/growing-product work, and synthesizes findings. |
 
 ## Should not trigger
 
@@ -23,3 +23,4 @@
 | Date | Change | Kept? |
 |------|--------|-------|
 | 2026-06-05 | Added Tier-1 routing cases and read-only critique coverage | Yes |
+| 2026-06-10 | Added Generational Architecture Skeptic coverage to prevent tool-loop and adoption-drift overclaims | Yes |

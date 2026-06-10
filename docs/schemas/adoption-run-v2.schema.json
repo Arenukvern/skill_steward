@@ -11,6 +11,7 @@
     "capability",
     "direct_problem_path",
     "tool_detour",
+    "generational_architecture_check",
     "outcome",
     "hot_path_claim",
     "promotion"
@@ -51,7 +52,7 @@
     "capability": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "class", "scope", "user_value", "native_owner"],
+      "required": ["id", "class", "scope", "user_value", "native_owner", "pattern_layer", "maintenance_delta"],
       "properties": {
         "id": { "type": "string", "minLength": 1 },
         "class": {
@@ -72,7 +73,15 @@
           "enum": ["adoption_run", "capability_level", "repo_maturity"]
         },
         "user_value": { "type": "string", "minLength": 1 },
-        "native_owner": { "type": "string", "minLength": 1 }
+        "native_owner": { "type": "string", "minLength": 1 },
+        "pattern_layer": {
+          "type": "string",
+          "enum": ["native", "repo_grammar", "public_surface", "schema_codegen", "harness", "ecology", "none"]
+        },
+        "maintenance_delta": {
+          "type": "string",
+          "enum": ["reduced", "neutral", "increased", "unknown"]
+        }
       }
     },
     "direct_problem_path": {
@@ -82,7 +91,8 @@
       "properties": {
         "declared_surfaces_used_first": {
           "type": "array",
-          "items": { "type": "string", "minLength": 1 }
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
         },
         "native_gates_run": {
           "type": "array",
@@ -107,6 +117,18 @@
         "return_to_goal_step": { "type": "string", "minLength": 1 }
       }
     },
+    "generational_architecture_check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repeated_pattern", "smaller_layer_considered", "deletion_or_collapse_option", "promotion_guard", "why_this_layer"],
+      "properties": {
+        "repeated_pattern": { "type": "boolean" },
+        "smaller_layer_considered": { "type": "boolean" },
+        "deletion_or_collapse_option": { "type": "string", "minLength": 1 },
+        "promotion_guard": { "type": "string", "minLength": 1 },
+        "why_this_layer": { "type": "string", "minLength": 1 }
+      }
+    },
     "outcome": {
       "type": "object",
       "additionalProperties": false,
@@ -123,12 +145,13 @@
     "hot_path_claim": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["problem_class", "created_surface", "falsifier", "positive_proof", "held_out_or_future_task", "non_claims"],
+      "required": ["problem_class", "created_surface", "falsifier", "positive_proof", "observed_effect", "held_out_or_future_task", "non_claims"],
       "properties": {
         "problem_class": { "type": "string", "minLength": 1 },
         "created_surface": { "type": "string", "minLength": 1 },
         "falsifier": { "type": "string", "minLength": 1 },
         "positive_proof": { "type": "string", "minLength": 1 },
+        "observed_effect": { "type": "string", "minLength": 1 },
         "held_out_or_future_task": { "type": "string", "minLength": 1 },
         "non_claims": {
           "type": "array",
@@ -140,14 +163,26 @@
     "promotion": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["claimed_level", "can_promote_in_this_run", "review_required"],
+      "required": ["claimed_level", "can_promote_in_this_run", "review_required", "repeated_evidence", "held_out_benchmarks", "broad_evidence"],
       "properties": {
         "claimed_level": {
           "type": "string",
           "enum": ["none", "H2", "H3", "H4", "H5", "S2", "S3", "S4", "S5"]
         },
         "can_promote_in_this_run": { "type": "boolean" },
-        "review_required": { "type": "boolean" }
+        "review_required": { "type": "boolean" },
+        "repeated_evidence": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "held_out_benchmarks": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "broad_evidence": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
       }
     }
   }

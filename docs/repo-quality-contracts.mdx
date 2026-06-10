@@ -6,13 +6,14 @@ This is the sibling spec to [STANDARDS](STANDARDS). `STANDARDS` defines the Agen
 
 ## Contract goal
 
-A repo quality contract answers five questions:
+A repo quality contract answers six questions:
 
 1. **What is this repo for?** Charter, archetype, boundaries, non-goals.
 2. **Where is truth?** Behavior SSOT, docs lattice, decisions, schemas, source provenance.
 3. **How is quality proven?** Type-native validation commands, tests, evals, probes, or truthful blocked evidence.
 4. **How can agents act safely when actions exist?** Effects, limits, redaction, permissions, rollback, and owner review for executable actions.
 5. **How does learning persist?** Failures become ADRs, FAQs, tests, eval cases, action candidates, or harness improvements.
+6. **What layer should change?** Native code, repo grammar, public API, schema/codegen, harness, skill, or deletion/collapse. See [Generational architecture ladder](core/generational-architecture-ladder).
 
 ## Required baseline
 
@@ -27,6 +28,7 @@ A repo quality contract answers five questions:
 | Release | Versioning/changelog/artifact provenance path, even if unreleased |
 | Safety | For agent-executable actions: effects, limits, redaction, network/secrets/destructive policy |
 | Evidence | Place where validation output, benchmark summaries, unknown cases, or eval outcomes are persisted |
+| Pattern layer | A lightweight rule for when repeated friction promotes to docs, APIs, generated artifacts, harness actions, skills, or deletion |
 
 ## Repo archetypes
 
@@ -127,6 +129,7 @@ For multi-repo work, a per-repo green check is not enough. Before saying an inte
 | Consumer gate | The downstream command that proves the published or tagged artifact works for its consumer. |
 | Dirty-state policy | Which local changes block durable proof and which files are protected temporary state. |
 | Do-not-touch exceptions | Files or resources agents must not read, clean, delete, or add to action inputs. |
+| Generational layer | Whether the change belongs in native code, repo grammar, public API, schema/codegen, harness, or ecology-level skill/tooling. |
 
 Example: a library repo can pass tests while its consumer still must wait for a package publish. Publish evidence belongs to the library repo; cutover evidence belongs to the consumer. Do not replace this with local path dependency success.
 
@@ -145,6 +148,9 @@ The canonical `S0`-`S5` ladder lives in [North Star](NORTH_STAR#general-stewards
 - Do not claim `pnpm run eval` proves real agent behavior; it proves rule-based routing cases.
 - Do not call `durability_blocked` H2 proof. It is honest blocked evidence that must be rerun cleanly before claiming smoke proof.
 - Do not promote diagnostics from a single observed failure; capture unknown cases first.
+- Do not claim H5/S5 from one proof. Promoted capability claims need repeated evidence plus at least one held-out benchmark, repeat run, or future-agent artifact.
+- Do not add a harness action, generator, or skill rule when a smaller native command, FAQ, validation message, or deletion would solve the problem.
+- Do not treat higher abstraction as maturity. Mature stewardship can mean collapsing or deleting a layer.
 - Do not put domain tutorials in Skill Steward when the domain belongs to the governed repo.
 
 ## Related skills

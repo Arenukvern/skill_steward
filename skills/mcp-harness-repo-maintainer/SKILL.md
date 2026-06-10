@@ -47,11 +47,13 @@ Full layering: [core-and-interfaces.md](references/core-and-interfaces.md). **Pa
 
 **Progressive Automation (Agent-Driven Workflows):** Harnesses should let agents turn repeated friction into reviewed, durable capability. If an agent discovers a complex fix or command sequence, it should capture an unknown case or typed action candidate with owner, risk class, inputs, outputs, effects, provenance, and verification. Permanent `steward.yaml` changes must go through reviewable diffs and validation; do not teach agents to save raw bash permanently from MCP.
 
-**Goal-first adoption:** The original user goal remains the acceptance check. Tool repair, install work, wrappers, action candidates, evals, and refactors are detours unless they directly solve that goal or preserve a reusable lesson. After two failed repair/setup attempts, stop tool restoration, use a type-native command or portable fallback when possible, record the friction, and return to the task.
+**Goal-first adoption:** The original user goal remains the acceptance check. Tool repair, install work, wrappers, action candidates, evals, and refactors are detours unless they directly solve that goal or preserve a reusable lesson. After two failed repair/setup attempts, stop tool restoration, use a type-native command or portable fallback when possible, record the friction, return to the task, and do not promote from that same detour.
+
+**Skeptic before promotion:** A missing capability is a harness gap only after smaller layers fail. First ask whether the fix belongs in a native command, error message, FAQ, docs map, public API, schema/codegen, or deletion/collapse. Promote a Steward action, MCP tool, or benchmark only when it improves a real proof path and carries a falsifier.
 
 ## Core Beliefs & Culture
 
-1. **Missing capability → harness gap** — When an agent fails, ask what is not *legible* or *enforceable*, then add CLI command, MCP tool, linter, or skill.
+1. **Missing capability → possible harness gap** — When an agent fails, ask what is not *legible* or *enforceable*, then choose the smallest useful layer: native command, error message, docs/FAQ, schema, linter, skill, action, or deletion.
 2. **Ambiguous design → decision checkpoint** — Before coding a fork, use `repository-governance-lifecycle`; record an accepted ADR after agreement.
 3. **Mechanical enforcement** — Linters, validate commands, schema validation at boundaries—error messages teach the agent how to fix. Use structured parsing (YAML, JSON, or AST).
 4. **Progressive disclosure** — Router → ADR / DESIGN_FAQ (why) → DX_FAQ (how) → skills (procedures) → code (behavior SSOT).
@@ -105,16 +107,17 @@ Route by **primary artifact** when the repo is harness or action-contract shaped
 ## Workflow: Add Agent-First Capability
 
 1. **Specify intent** — One sentence outcome + acceptance check.
-2. **Choose surface**
+2. **Run the Skeptic/generational check** — Is this repeated? Can a lower layer solve it? Would deleting or collapsing code reduce maintenance? What falsifier prevents tool-loop drift?
+3. **Choose surface**
    - CI / script / gate → **CLI** first
    - Conversational debug loop → **MCP tool** (reuse CLI core)
    - One-off guidance → **skill** in `skills/`
    - Event enforcement → **plugin** hook
-3. **Make legible** — JSON schema, `--json` output, stable error codes, action effects, limits, and redaction policy; document in DX_FAQ.
-4. **Document why** — ADR or DESIGN_FAQ Q&A.
-5. **Wire map** — `AGENTS.md` / `docs_map` row.
-6. **Validate** — `pnpm run validate` or project contract tests.
-7. **Human collab** — PR describes harness change.
+4. **Make legible** — JSON schema, `--json` output, stable error codes, action effects, limits, and redaction policy; document in DX_FAQ.
+5. **Document why** — ADR or DESIGN_FAQ Q&A.
+6. **Wire map** — `AGENTS.md` / `docs_map` row.
+7. **Validate** — `pnpm run validate` or project contract tests.
+8. **Human collab** — PR describes harness change.
 
 ## Cold-start local harness proof loop
 
@@ -157,6 +160,7 @@ Prefer useful native gates over Steward-only scorekeeping. A repo may promote an
 - a falsifier test or fixture that catches the regression class
 - owner, risk class, effects, limits, and redaction policy
 - a strict benchmark or eval that makes the capability discoverable
+- a held-out benchmark or future-agent repeat that proves transfer
 - explicit non-claims for product runtime correctness and broad H5 maturity
 
 This is the path for turning evidence into a tool improvement packet. If the result cannot teach a later agent how to maintain or improve the repo's real tool surface, keep it as an observation or unknown case instead of promoting it.
@@ -169,8 +173,9 @@ Use the adoption-run/v2 evidence shape before making S/H claims. Record:
 - `capability`: id, class, scope, user value, and native owner.
 - `direct_problem_path`: declared surfaces and native gates used before raw shell exploration.
 - `tool_detour`: reason, attempts, artifacts, stop rule, and return-to-goal step.
+- `generational_architecture_check`: repeated pattern, smaller layer considered, deletion/collapse option, selected pattern layer, maintenance delta, and promotion guard.
 - `outcome`: continue, refactor, stop, abandon, or promote.
-- `hot_path_claim`: problem class, created surface, falsifier, positive proof, held-out or future task, and non-claims.
+- `hot_path_claim`: problem class, created surface, falsifier, positive proof, observed effect, held-out or future task, and non-claims.
 
 Do not use "fully adopted repo" language for one polished proof. Say "capability-level H5" or "capability-level S5/H5" and name the capability. Repo maturity remains a separate, broader claim.
 
@@ -185,7 +190,7 @@ Do not call a repository harness-ready until the proof stage matches the claim.
 | **H2** | Smoke loop proven | Cold-start proof loop produces a durable benchmark summary with `result: "pass"`; `durability_blocked` keeps the repo below H2 until rerun cleanly. |
 | **H3** | Repo feedback loop | Benchmark summaries, unknown cases, and action candidates accumulate from real work. |
 | **H4** | Fresh-agent workflow | A fresh agent completes one repo workflow without raw shell spelunking. |
-| **H5** | Promoted harness capability | Repeated evidence promotes a diagnostic, action, eval, or local harness feature. |
+| **H5** | Promoted harness capability | Repeated evidence, including at least one held-out benchmark or future-agent repeat, promotes a diagnostic, action, eval, or local harness feature. |
 
 ## Archetypes Details
 

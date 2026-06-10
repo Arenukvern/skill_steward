@@ -10,7 +10,7 @@ Engineering Stewardship is an old-new idea: step back from only managing an AI a
 
 Skill Steward gives teams a shared structure for understanding, developing, and improving that ecology. It ships through portable Agent Skills plus a narrow `steward` CLI for repo-local registration, validation, and contract proof. The object of stewardship is the **repository as a whole**.
 
-Usefulness is measured by how well cold exploration becomes durable hot paths for future agents: smaller, safer, inspectable routes through real repo work. A useful adoption reduces future time, uncertainty, and risk without lowering the correctness or evidence bar. See [ADR 0018](decisions/0018-cold-to-hot-path-usefulness).
+Usefulness is measured by how well cold exploration becomes durable hot paths for future agents: smaller, safer, inspectable routes through real repo work. A useful adoption reduces future time, uncertainty, and risk without lowering the correctness or evidence bar. It may add a tool, but it may also delete code, collapse a layer, improve an error message, or return to a native command when that better serves the product. See [ADR 0018](decisions/0018-cold-to-hot-path-usefulness) and [Generational architecture ladder](core/generational-architecture-ladder).
 
 We are **not** a domain tutorial catalog (React, Flutter, cloud recipes live in their own product/domain repos). We are **not** a public skill package manager ([Skillkit](https://github.com/rohitg00/skillkit), `npx skills`, and [skills.sh](https://skills.sh) cover public discovery and install/update distribution). We are **not** the product runtime for apps, libraries, or tools.
 
@@ -36,6 +36,7 @@ Tier-1 evals are static routing checks. They catch skill drift; they do not prov
 | Decision and knowledge systems: ADRs, FAQs, concept docs, source provenance | Domain/framework tutorial packs in this repo |
 | Repo quality contracts: validation commands, evidence, safe action metadata, maturity proof | Replacing product test suites or language-native tooling |
 | Usefulness measurement: cold-to-hot path acceleration, transferability, falsifiers, non-claims | Raw speed, artifact volume, or green dashboards as standalone proof |
+| Generational architecture guidance: deciding whether to keep native code, document, extract, generate, add harness proof, or delete | Prescribing a universal architecture pattern before product evidence exists |
 | Skill lifecycle: authoring, packaging, installability, registry hygiene | Becoming a general-purpose skills marketplace |
 | Plugin and rule wiring descriptors when explicitly installed | Mutating host tools without explicit install steps |
 | Harness culture: CLI/MCP/core parity, cold-start proof, benchmark evidence | Product-specific MCP servers and framework wrappers |
@@ -58,6 +59,7 @@ Harness engineering is one pillar, not the umbrella. The umbrella is structural 
 | Review and handoff | MoE critique, multi-agent handoff, PR review patterns | Active: `mixture-of-experts`, `multi-agent-handoff` |
 | Strategic alignment | Vision vs implementation fit, usage evidence, future-fit analysis, falsifiers | Active: `vision-alignment-foresight` |
 | Usefulness learning | Cold exploration records, future-agent hot paths, transfer evidence, anti-metrics | Active: ADR 0018 + H3/H5 adoption evidence |
+| Pattern stewardship | Stage-aware pattern discovery, deletion/collapse checks, codegen/harness promotion guards | Active: [Generational architecture ladder](core/generational-architecture-ladder) |
 | Security posture | Secret hygiene, action risk classes, provenance, supply-chain review | Developing: encoded in repo-quality contracts; standalone skill deferred |
 | Org patterns | Repo archetypes, ownership, operating model, agent routing | Developing: encoded in repo taxonomy; standalone skill deferred |
 
@@ -70,6 +72,7 @@ Harness engineering is one pillar, not the umbrella. The umbrella is structural 
 5. **Mechanical gates** — CI validates skills; contributors run `pnpm run validate`; repo contracts define type-native gates for non-skill repos.
 6. **Plan hygiene** — use any planning tool; when work is done, [extract into ADR/FAQ/code/harness](start_here/executable-plans), then remove stale plan files.
 7. **Cold-to-hot usefulness** — meaningful cold exploration should leave a shorter, safer future path: docs, tests, evals, probes, actions, diagnostics, or tools that help the next fresh agent solve a related problem with less uncertainty.
+8. **Generational architecture checks** — before promoting a tool or abstraction, ask what product stage and pattern layer the problem belongs to, whether a lower layer already solves it, and what code or process can be removed.
 
 ## Delivery surfaces
 
@@ -107,7 +110,7 @@ Use these stages before claiming a repository is stewarded or agent-operable.
 | **S2** | Quality contract proven | Type-native checks run or truthfully report why they are blocked; evidence path is documented. |
 | **S3** | Feedback loop active | Repeated failures become ADRs, FAQ updates, tests, eval cases, or action candidates. |
 | **S4** | Fresh-agent workflow | A fresh agent can complete one repo-specific workflow without hidden local context or raw shell spelunking. |
-| **S5** | Promoted stewardship capability | Repeated evidence promotes a reusable skill, action, eval, diagnostic, or harness feature with owner, risk class, and a proven cold-to-hot usefulness claim. |
+| **S5** | Promoted stewardship capability | Repeated evidence, including at least one held-out or future-agent repeat, promotes a reusable skill, action, eval, diagnostic, or harness feature with owner, risk class, and a proven cold-to-hot usefulness claim. |
 
 ## Harness/action-contract maturity ladder
 
@@ -120,7 +123,7 @@ Use these stages before claiming a repo is harness-ready. They are stricter than
 | **H2** | Smoke loop proven | `doctor`, `actions list`, `action inspect`, `probe`, and one `benchmark` scenario produce a durable `result: "pass"` summary. `durability_blocked` is honest non-proof and keeps the repo below H2 until rerun cleanly. |
 | **H3** | Repo feedback loop | Target repo persists benchmark summaries, unknown cases, and action candidates from real work. |
 | **H4** | Fresh-agent workflow proven | A fresh agent completes one repo-specific workflow without raw shell spelunking or hidden local context, with a review artifact or transcript naming task, repo state, commands/actions, outcome, and remaining gaps. |
-| **H5** | Promoted harness capability | Repeated evidence promotes a diagnostic, action, eval, or local harness feature with owner, risk, redaction, validation, falsifier, and future-agent usefulness evidence. |
+| **H5** | Promoted harness capability | Repeated evidence, including at least one held-out benchmark or future-agent repeat, promotes a diagnostic, action, eval, or local harness feature with owner, risk, redaction, validation, falsifier, and future-agent usefulness evidence. |
 
 ## Adoption claim vocabulary
 
@@ -131,10 +134,12 @@ Use these terms:
 | Term | Means | Does not mean |
 |------|-------|---------------|
 | Adoption run | One agent attempts one useful repo task and records the original goal, acceptance check, surfaces used, outcome, blockers, and lesson. | A maturity claim. |
-| Capability-level S5/H5 proof | One named capability climbed the relevant ladder with owner, risk, redaction, validation, falsifier, non-claims, and future-agent usefulness evidence. | The whole repo is S5/H5. |
+| Capability-level S5/H5 proof | One named capability climbed the relevant ladder with owner, risk, redaction, validation, falsifier, non-claims, repeated evidence, and held-out or future-agent usefulness evidence. | The whole repo is S5/H5. |
 | Repo maturity | The current broad S/H stage of the repo, based on matching evidence across its real work. | A sum of small polished proofs. |
 
 Every adoption run must preserve the original user goal. Tool repair, refactors, new actions, evals, or docs are useful only when they help solve that goal or a named future problem class with the same or stronger evidence bar. It is acceptable to stop, refactor, abandon a proposed tool path, or return to native commands when tool restoration would become the work.
+
+Adoption evidence should also record the pattern layer being changed and the maintenance delta expected. A promoted tool is not useful just because it exists; it must reduce future uncertainty, time, or risk enough to justify the maintenance it adds.
 
 ## Boundaries (non-negotiable)
 
@@ -152,6 +157,7 @@ Every adoption run must preserve the original user goal. Tool repair, refactors,
 - Adopted repos provide cold-start legibility evidence so fresh agents can begin without hidden local context.
 - Cold exploration compounds into hot paths: future fresh agents solve related problems faster, with the same or stronger proof and safety bar.
 - Quality claims are backed by type-native gates, eval cases, benchmark summaries, or explicit blocked evidence.
+- Growth decisions are reversible: repeated patterns can promote to docs, APIs, schemas, generated code, actions, or skills, and stale layers can be collapsed or deleted.
 - The repo stays small enough to maintain; stale plans do not accumulate; domain tutorials live elsewhere.
 
 ## References
@@ -165,6 +171,7 @@ Every adoption run must preserve the original user goal. Tool repair, refactors,
 - [Concept: distribution boundaries](core/distribution-boundaries)
 - [Concept: evidence ladder](core/evidence-ladder)
 - [Concept: docs lattice](core/doc-lattice)
+- [Concept: generational architecture ladder](core/generational-architecture-ladder)
 - [Skill: repository-governance-lifecycle](https://github.com/arenukvern/skill_steward/blob/main/skills/repository-governance-lifecycle/SKILL.md)
 - [Skill: repo-quality-system-lifecycle](https://github.com/arenukvern/skill_steward/blob/main/skills/repo-quality-system-lifecycle/SKILL.md)
 - [Harness engineering (OpenAI)](https://openai.com/index/harness-engineering/)

@@ -18,7 +18,7 @@ For the broader Engineering Stewardship baseline that applies before a repo need
 | Unknown case record | [unknown-case-v1.schema.json](unknown-case-v1.schema.json) | unknown-case promotion validators |
 | Action candidate record | [action-candidate-v1.schema.json](action-candidate-v1.schema.json) | action-candidate promotion validators |
 | Benchmark summary | [benchmark-summary-v1.schema.json](benchmark-summary-v1.schema.json) | `steward benchmark --json` |
-| Adoption run | [adoption-run-v2.schema.json](adoption-run-v2.schema.json) | evidence template and review checklist |
+| Adoption run | [adoption-run-v2.schema.json](adoption-run-v2.schema.json) | `steward validate` adoption-run evidence scan |
 
 Schema policy:
 
@@ -67,3 +67,7 @@ JSON Schema covers portable shape checks. Executable validators remain responsib
 - plugin artifacts use managed blocks and uninstall metadata
 - diagnostics and action candidates follow the promotion state machine
 - benchmark runs do not promote diagnostics or actions created in the same run
+- adoption-run detours enforce stop semantics after two repair/setup attempts
+- H5/S5 adoption-run claims require repeated evidence plus `held_out_benchmarks`
+- repo-maturity adoption-run claims require explicit broad evidence
+- adoption-run proof needs `hot_path_claim.observed_effect`; a success return code alone is not promotion evidence

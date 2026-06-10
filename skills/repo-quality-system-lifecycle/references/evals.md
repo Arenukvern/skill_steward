@@ -10,6 +10,7 @@ Use these prompts during manual or plugin-eval runs:
 2. "Audit this library repo for agent-operable quality. Separate API contract proof from release provenance and docs gaps."
 3. "This repo has a `steward.yaml` but no benchmark evidence. Decide whether it is stewardship-ready, harness-ready, or blocked."
 4. "Implement a product feature in React." Expected: this skill should stay dormant unless the user asks for repo stewardship or quality-contract work.
+5. "A growing app has repeated boilerplate and confusing repo boundaries. Decide whether to keep it native, extract a public surface, generate, add harness proof, or delete layers."
 
 ## Rubric
 
@@ -17,4 +18,5 @@ Use these prompts during manual or plugin-eval runs:
 - Separates general stewardship maturity from harness/action-contract maturity.
 - Uses type-native validation instead of forcing every repo into `steward benchmark`.
 - Labels missing validation and blocked evidence honestly.
+- Runs the generational architecture check before adding new abstractions or tools.
 - Promotes repeated friction to durable docs, tests, evals, or action candidates.

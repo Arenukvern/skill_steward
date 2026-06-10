@@ -9,4 +9,4 @@ rules:
     terms: ["Mixture of Experts", "MoE", "subagents", "architecture"]
   - kind: body_includes_any
     path: SKILL.md
-    terms: ["Define Expert Personas", "Cross-reference Findings"]
+    terms: ["Define Expert Personas", "Generational Architecture Skeptic", "Cross-reference Findings"]
