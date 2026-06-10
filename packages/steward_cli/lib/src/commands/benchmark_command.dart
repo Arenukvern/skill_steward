@@ -9,6 +9,8 @@ import '../path_safety.dart';
 import '../repo_root.dart';
 import '../validation/steward_config.dart';
 
+const _compiledStewardVersion = String.fromEnvironment('STEWARD_VERSION');
+
 /// Runs compact runtime dogfood benchmark scenarios.
 class BenchmarkCommand extends Command<void> {
   BenchmarkCommand([this.outputSink, this.startDirectory]) {
@@ -885,6 +887,10 @@ List<String> _dirtyPaths(final String porcelain) {
 }
 
 Future<String> _runnerVersion(final String root) async {
+  if (_compiledStewardVersion.trim().isNotEmpty) {
+    return 'steward@${_compiledStewardVersion.trim()}';
+  }
+
   final scriptPath = Platform.script.isScheme('file')
       ? Platform.script.toFilePath()
       : '';

@@ -161,7 +161,7 @@ if [[ -n "$ROOT_DIR" ]] && [[ -f "$ROOT_DIR/packages/steward_cli/pubspec.yaml" ]
       echo "Running 'dart pub get'..."
       dart pub get >/dev/null
       echo "Compiling 'bin/steward.dart' to native executable..."
-      dart compile exe bin/steward.dart -o "$INSTALL_DIR/steward" >/dev/null
+      dart compile exe -DSTEWARD_VERSION="$version_no_prefix" bin/steward.dart -o "$INSTALL_DIR/steward" >/dev/null
     )
     BUILT_FROM_SOURCE=1
     echo "Successfully compiled and installed binary to $INSTALL_DIR/steward"
