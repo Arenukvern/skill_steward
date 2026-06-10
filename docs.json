@@ -112,7 +112,8 @@
         { "title": "0014 — Native binary distribution", "href": "/decisions/0014-distribute-steward-cli-as-binary" },
         { "title": "0015 — Agent CLI entrypoints", "href": "/decisions/0015-agent-cli-entrypoints-and-local-validation" },
         { "title": "0016 — Skill cohesion", "href": "/decisions/0016-skill-cohesion-and-lifecycle-boundaries" },
-        { "title": "0017 — Cold-start contracts", "href": "/decisions/0017-cold-start-contracts-before-diagnostics" }
+        { "title": "0017 — Cold-start contracts", "href": "/decisions/0017-cold-start-contracts-before-diagnostics" },
+        { "title": "0018 — Cold-to-hot usefulness", "href": "/decisions/0018-cold-to-hot-path-usefulness" }
       ]
     },
     {
