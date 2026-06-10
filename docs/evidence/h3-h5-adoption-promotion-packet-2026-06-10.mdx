@@ -6,6 +6,8 @@
 
 This packet turns adoption evidence into useful software-ecology improvement without turning measurement into a scoreboard. A fresh-agent transcript or benchmark is not the finish line. It is an input to a learning loop that can educate later agents, improve repo tools, and promote reviewed harness capability only after repeated evidence.
 
+The user goal is the anchor. Tool repair, action creation, eval creation, refactors, and docs updates are useful only when they help solve that goal or preserve a reusable lesson for a named future problem class.
+
 ## State machine
 
 ```text
@@ -19,7 +21,7 @@ adoption_run
 
 | State | Use when | Artifact | Promotion rule |
 |-------|----------|----------|----------------|
-| `adoption_run` | A fresh agent attempts a bounded repo task using declared surfaces first. | Evidence note or transcript with claim, repo state, commands, verdict, blockers, and lesson. | Never promote directly from this state. |
+| `adoption_run` | A fresh agent attempts a bounded repo task using declared surfaces first. | Evidence note or transcript following [adoption-run/v2](adoption-run-v2-template): original goal, acceptance check, capability classification, detours, outcome, non-claims, and lesson. | Never promote directly from this state. |
 | `observation` | A quick probe or saved probe output captures local behavior. | `.steward/observations/*.json` from `steward observe`. | One observation can create an unknown case. |
 | `unknown case` | The behavior is confusing, failing, stale, or not yet diagnosable. | `.steward/unknown-cases/*.json` from `steward unknown-case create`. | One unknown case is a queue item, not H5. |
 | `action candidate` | Repeated evidence suggests a bounded command should become inspectable. | `.steward/action-candidates/*.json` from `steward action-candidate create`. | Candidate must declare effects, limits, owner, redaction, validation, and benchmark. |
@@ -30,14 +32,17 @@ adoption_run
 
 Use one `adoption_run` record per useful task. It should answer:
 
-- Exact claim.
+- Original user goal and acceptance check.
+- Whether the user goal was solved, partially solved, blocked, or abandoned.
+- Exact capability claim and classification.
 - Repo state and subject commit.
 - Declared surfaces used before raw shell exploration.
 - Commands/actions run.
 - Artifacts created or inspected.
+- Tool detours taken, attempt count, stop rule, and return-to-goal step.
 - Verdict and blockers.
 - What this teaches the next agent.
-- Whether the result is observation-only, unknown-case-worthy, candidate-worthy, or promotable.
+- Whether the result should continue, refactor, stop, abandon, or move toward promotion.
 
 Measure only dimensions that educate future agents:
 
@@ -48,8 +53,19 @@ Measure only dimensions that educate future agents:
 | Executability | Did declared commands run without hidden local context, absolute maintainer paths, or sibling checkout assumptions? |
 | Product usefulness | Did the workflow help maintain or improve the repo's real tool/harness surface? |
 | Generativity | Did the result create a lesson, unknown case, action candidate, eval, diagnostic, or harness improvement? |
+| Goal fidelity | Did the agent solve or preserve the original user goal instead of drifting into tool restoration? |
 
 Anti-metrics: repo count, benchmark count, eval count, average score, raw log volume, and green matrix aesthetics.
+
+## Goal-first detour budget
+
+If a needed tool, install path, MCP server, wrapper, or local harness is broken, use this stop rule:
+
+1. Attempt the smallest repair or portable setup path.
+2. If it fails, attempt one fallback.
+3. After two failed attempts, stop tool restoration, use the type-native command or documented fallback if possible, record the friction, and return to the original acceptance check.
+
+It is valid to refactor, stop, or abandon a proposed capability. That is not failure when the run preserves a clear reason, points to the right ADR/FAQ/evidence destination, and avoids building a tool that no longer serves the task.
 
 ## Tool improvement packet template
 
@@ -147,6 +163,12 @@ A deterministic native gate may skip the "two unknown cases" wait only when the 
 
 This is still not same-run diagnosis promotion. The promoted capability is the reviewed gate, not the first observation that inspired it.
 
-## mcp_flutter next candidate
+## mcp_flutter promoted seed
 
-The first useful bounded H5 candidate is the hosted dependency/no-path-dependency gate in `mcp_flutter`. It is useful because it teaches future agents to maintain the real Flutter MCP toolkit ecology while keeping runtime/Chrome-heavy dogfood separate.
+The first useful capability-level H5 proof is the hosted dependency/no-path-dependency gate in `mcp_flutter`. It is useful because it teaches future agents to maintain the real Flutter MCP toolkit ecology while keeping runtime/Chrome-heavy dogfood separate.
+
+## mcp_flutter next runtime candidate
+
+The next harder candidate should be a runtime MCP tool proof: use `semantic_snapshot` to discover the `greeting_input_field` in the Flutter test app, call `enter_text`, and assert `AgentState.instance.greeting` changed through `evaluate_dart_expression`.
+
+This should start as `scope: adoption_run` or `scope: capability_level` evidence, not repo maturity. If launching the app or connecting to VM service blocks twice, stop tool restoration, record an unknown case, and do not rebuild the runtime harness inside the adoption run.

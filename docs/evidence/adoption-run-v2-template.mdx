@@ -1,0 +1,81 @@
+# Adoption run v2 template
+
+**Status:** template · **Audience:** maintainers and agents
+
+Use this template when a fresh agent attempts one useful repo task and the result might teach future agents. The template keeps the user goal ahead of tool-building, classifies the capability being measured, and makes `continue`, `refactor`, `stop`, `abandon`, and `promote` all valid review outcomes.
+
+Portable shape: [adoption-run-v2.schema.json](../schemas/adoption-run-v2.schema.json).
+
+```yaml
+schema: steward/adoption-run/v2
+
+run:
+  repo: "<repo id>"
+  subject_commit: "<commit or explicit dirty-state note>"
+  date: "YYYY-MM-DD"
+  agent_context: "fresh-agent | maintainer-local | CI | other"
+
+user_goal:
+  prompt: "<original request, quoted or summarized>"
+  requested_outcome: "<what the user needed solved>"
+  acceptance_check: "<what would prove the user's goal is solved>"
+  status: solved # solved | partially_solved | blocked | abandoned
+  evidence:
+    - "<command, artifact, review note, or runtime proof>"
+
+capability:
+  id: "<stable capability id>"
+  class: native_gate # doc_path | native_gate | steward_action | eval_case | diagnostic | mcp_tool_runtime | harness_feature | skill_guidance
+  scope: capability_level # adoption_run | capability_level | repo_maturity
+  user_value: "<future work made safer, faster, or less confusing>"
+  native_owner: "<script, test, docs page, CLI command, MCP tool, or code owner>"
+
+direct_problem_path:
+  declared_surfaces_used_first:
+    - "<AGENTS.md, docs map, native command, steward action, MCP tool, etc.>"
+  native_gates_run:
+    - "<type-native command or test>"
+  raw_shell_reason: "<why shell exploration was needed, or empty>"
+
+tool_detour:
+  needed: false
+  reason: "<why tool repair/build/refactor was necessary, or empty>"
+  attempts: 0
+  artifacts_created: []
+  stop_rule_triggered: false
+  return_to_goal_step: "<how the agent returned to the original task>"
+
+outcome:
+  decision: continue # continue | refactor | stop | abandon | promote
+  reason: "<why this outcome serves the user goal and repo ecology>"
+  docs_or_adr_destination: "<ADR, DESIGN_FAQ, DX_FAQ, evidence note, eval, steward.yaml, or none>"
+
+hot_path_claim:
+  problem_class: "<class of future work this helps>"
+  created_surface: "<doc, command, eval, action, diagnostic, tool, or none>"
+  falsifier: "<negative test, failure mode, or drift check>"
+  positive_proof: "<passing command, runtime assertion, or review evidence>"
+  held_out_or_future_task: "<how a future agent can verify transfer>"
+  non_claims:
+    - "<what this does not prove>"
+
+promotion:
+  claimed_level: none # none | H2 | H3 | H4 | H5 | S2 | S3 | S4 | S5
+  can_promote_in_this_run: false
+  review_required: true
+```
+
+## Detour budget
+
+Tool-building is allowed only while it serves the user goal.
+
+- Try to repair, install, or adapt a missing tool at most twice before switching to a portable fallback or type-native command.
+- Record the friction as an observation or unknown case instead of continuing restoration.
+- Return to the original acceptance check.
+- Promote only after review evidence proves the resulting surface helps a future task.
+
+## Classification rules
+
+Use `scope: adoption_run` for a single attempt, `scope: capability_level` for one named capability with full matching proof, and `scope: repo_maturity` only when the repo's broad S/H claim is actually proven.
+
+Use `decision: stop` when the proposed tool path is not worth more time in the current run. Use `decision: abandon` when the capability idea is wrong for the repo or would distract from the original problem. Both are successful stewardship outcomes when they preserve evidence and prevent false work.

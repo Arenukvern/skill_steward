@@ -10,6 +10,8 @@
 | T4 | Single fresh-agent transcript asks for immediate diagnostic promotion | Rejects same-run promotion; records unknown case first |
 | T5 | Adoption proof contains local-only Steward invocation paths | Routes to portable invocation hierarchy; keeps absolute paths as provenance only |
 | T6 | Deterministic native gate should become a useful Steward action | Requires a tool improvement packet with falsifier, positive proof, safety/effects, redaction, validation, and non-claims |
+| T7 | One proved workflow is being called a fully adopted repo | Classifies the capability with adoption-run/v2 and uses capability-level proof language |
+| T8 | Tool restoration is taking over the original user task | Applies the detour budget, stops after two repair/setup attempts, records friction, and returns to the acceptance check |
 
 ## Should not trigger
 
@@ -31,3 +33,4 @@
 | 2026-06-10 | Added H3→H5 adoption promotion routing cases | Yes |
 | 2026-06-10 | Added portable Steward invocation routing case after local-path adoption proof drift | Yes |
 | 2026-06-10 | Added native deterministic gate promotion case after bounded `mcp_flutter` hosted-dependency adoption | Yes |
+| 2026-06-10 | Added goal-first detour and capability-classification cases after adoption-drift review | Yes |

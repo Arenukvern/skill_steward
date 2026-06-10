@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.page/arenukvern/skill_steward/schemas/adoption-run-v2.schema.json",
+  "title": "Adoption run v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "run",
+    "user_goal",
+    "capability",
+    "direct_problem_path",
+    "tool_detour",
+    "outcome",
+    "hot_path_claim",
+    "promotion"
+  ],
+  "properties": {
+    "schema": {
+      "const": "steward/adoption-run/v2"
+    },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repo", "subject_commit", "date", "agent_context"],
+      "properties": {
+        "repo": { "type": "string", "minLength": 1 },
+        "subject_commit": { "type": "string", "minLength": 1 },
+        "date": { "type": "string", "minLength": 1 },
+        "agent_context": { "type": "string", "minLength": 1 }
+      }
+    },
+    "user_goal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["prompt", "requested_outcome", "acceptance_check", "status", "evidence"],
+      "properties": {
+        "prompt": { "type": "string", "minLength": 1 },
+        "requested_outcome": { "type": "string", "minLength": 1 },
+        "acceptance_check": { "type": "string", "minLength": 1 },
+        "status": {
+          "type": "string",
+          "enum": ["solved", "partially_solved", "blocked", "abandoned"]
+        },
+        "evidence": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "class", "scope", "user_value", "native_owner"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "class": {
+          "type": "string",
+          "enum": [
+            "doc_path",
+            "native_gate",
+            "steward_action",
+            "eval_case",
+            "diagnostic",
+            "mcp_tool_runtime",
+            "harness_feature",
+            "skill_guidance"
+          ]
+        },
+        "scope": {
+          "type": "string",
+          "enum": ["adoption_run", "capability_level", "repo_maturity"]
+        },
+        "user_value": { "type": "string", "minLength": 1 },
+        "native_owner": { "type": "string", "minLength": 1 }
+      }
+    },
+    "direct_problem_path": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["declared_surfaces_used_first", "native_gates_run", "raw_shell_reason"],
+      "properties": {
+        "declared_surfaces_used_first": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "native_gates_run": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "raw_shell_reason": { "type": "string" }
+      }
+    },
+    "tool_detour": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["needed", "reason", "attempts", "artifacts_created", "stop_rule_triggered", "return_to_goal_step"],
+      "properties": {
+        "needed": { "type": "boolean" },
+        "reason": { "type": "string" },
+        "attempts": { "type": "integer", "minimum": 0 },
+        "artifacts_created": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "stop_rule_triggered": { "type": "boolean" },
+        "return_to_goal_step": { "type": "string", "minLength": 1 }
+      }
+    },
+    "outcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decision", "reason", "docs_or_adr_destination"],
+      "properties": {
+        "decision": {
+          "type": "string",
+          "enum": ["continue", "refactor", "stop", "abandon", "promote"]
+        },
+        "reason": { "type": "string", "minLength": 1 },
+        "docs_or_adr_destination": { "type": "string", "minLength": 1 }
+      }
+    },
+    "hot_path_claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["problem_class", "created_surface", "falsifier", "positive_proof", "held_out_or_future_task", "non_claims"],
+      "properties": {
+        "problem_class": { "type": "string", "minLength": 1 },
+        "created_surface": { "type": "string", "minLength": 1 },
+        "falsifier": { "type": "string", "minLength": 1 },
+        "positive_proof": { "type": "string", "minLength": 1 },
+        "held_out_or_future_task": { "type": "string", "minLength": 1 },
+        "non_claims": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        }
+      }
+    },
+    "promotion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claimed_level", "can_promote_in_this_run", "review_required"],
+      "properties": {
+        "claimed_level": {
+          "type": "string",
+          "enum": ["none", "H2", "H3", "H4", "H5", "S2", "S3", "S4", "S5"]
+        },
+        "can_promote_in_this_run": { "type": "boolean" },
+        "review_required": { "type": "boolean" }
+      }
+    }
+  }
+}

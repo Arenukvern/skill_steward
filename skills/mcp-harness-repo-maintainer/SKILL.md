@@ -1,6 +1,6 @@
 ---
 name: mcp-harness-repo-maintainer
-description: Maintains repo-local action contracts and harness repositories where product CLI and MCP adapters stay thin over core libraries. Use when adopting or improving steward.yaml actions, cold-start proof loops, probes, benchmarks, CLI/MCP/core parity, adapter refactors, packages/core boundaries, or sibling harness layout; use repo-quality-system-lifecycle first for general app/library/tool stewardship baselines.
+description: Maintains repo-local action contracts and harness repositories where product CLI and MCP adapters stay thin over core libraries. Use when adopting or improving steward.yaml actions, capability-level adoption evidence, cold-start proof loops, probes, benchmarks, CLI/MCP/core parity, adapter refactors, packages/core boundaries, or sibling harness layout; use repo-quality-system-lifecycle first for general app/library/tool stewardship baselines.
 license: MIT
 type: governance
 metadata:
@@ -46,6 +46,8 @@ Agents / chat →  MCP ──┘
 Full layering: [core-and-interfaces.md](references/core-and-interfaces.md). **Parity:** every MCP tool must call the same core entrypoint as its CLI twin.
 
 **Progressive Automation (Agent-Driven Workflows):** Harnesses should let agents turn repeated friction into reviewed, durable capability. If an agent discovers a complex fix or command sequence, it should capture an unknown case or typed action candidate with owner, risk class, inputs, outputs, effects, provenance, and verification. Permanent `steward.yaml` changes must go through reviewable diffs and validation; do not teach agents to save raw bash permanently from MCP.
+
+**Goal-first adoption:** The original user goal remains the acceptance check. Tool repair, install work, wrappers, action candidates, evals, and refactors are detours unless they directly solve that goal or preserve a reusable lesson. After two failed repair/setup attempts, stop tool restoration, use a type-native command or portable fallback when possible, record the friction, and return to the task.
 
 ## Core Beliefs & Culture
 
@@ -159,6 +161,19 @@ Prefer useful native gates over Steward-only scorekeeping. A repo may promote an
 
 This is the path for turning evidence into a tool improvement packet. If the result cannot teach a later agent how to maintain or improve the repo's real tool surface, keep it as an observation or unknown case instead of promoting it.
 
+### Adoption run classification
+
+Use the adoption-run/v2 evidence shape before making S/H claims. Record:
+
+- `user_goal`: original prompt, requested outcome, acceptance check, status, and evidence.
+- `capability`: id, class, scope, user value, and native owner.
+- `direct_problem_path`: declared surfaces and native gates used before raw shell exploration.
+- `tool_detour`: reason, attempts, artifacts, stop rule, and return-to-goal step.
+- `outcome`: continue, refactor, stop, abandon, or promote.
+- `hot_path_claim`: problem class, created surface, falsifier, positive proof, held-out or future task, and non-claims.
+
+Do not use "fully adopted repo" language for one polished proof. Say "capability-level H5" or "capability-level S5/H5" and name the capability. Repo maturity remains a separate, broader claim.
+
 ## Adoption maturity ladder
 
 Do not call a repository harness-ready until the proof stage matches the claim.
@@ -169,7 +184,7 @@ Do not call a repository harness-ready until the proof stage matches the claim.
 | **H1** | Local contract declared | `steward.yaml` exists with one quick-safe action and docs point to it. |
 | **H2** | Smoke loop proven | Cold-start proof loop produces a durable benchmark summary with `result: "pass"`; `durability_blocked` keeps the repo below H2 until rerun cleanly. |
 | **H3** | Repo feedback loop | Benchmark summaries, unknown cases, and action candidates accumulate from real work. |
-| **H4** | Full agent workflow | A fresh agent completes one repo workflow without raw shell spelunking. |
+| **H4** | Fresh-agent workflow | A fresh agent completes one repo workflow without raw shell spelunking. |
 | **H5** | Promoted harness capability | Repeated evidence promotes a diagnostic, action, eval, or local harness feature. |
 
 ## Archetypes Details

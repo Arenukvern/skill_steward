@@ -8,7 +8,7 @@ rules:
   - kind: file_exists
     path: ../../docs/evidence/h3-h5-adoption-promotion-packet-2026-06-10.mdx
   - kind: file_exists
-    path: ../../docs/evidence/mcp-flutter-bounded-full-adoption-2026-06-10.mdx
+    path: ../../docs/evidence/mcp-flutter-capability-level-proof-2026-06-10.mdx
   - kind: description_includes_any
     terms: ["actions", "benchmarks", "harness"]
   - kind: body_includes_any
@@ -18,5 +18,5 @@ rules:
     path: ../../docs/evidence/h3-h5-adoption-promotion-packet-2026-06-10.mdx
     terms: ["Tool improvement packet template", "Falsifier", "Generative usefulness"]
   - kind: body_includes_any
-    path: ../../docs/evidence/mcp-flutter-bounded-full-adoption-2026-06-10.mdx
-    terms: ["fmt.check.intentcall-hosted-deps", "check_no_path_deps_test.sh", "bounded H5"]
+    path: ../../docs/evidence/mcp-flutter-capability-level-proof-2026-06-10.mdx
+    terms: ["fmt.check.intentcall-hosted-deps", "check_no_path_deps_test.sh", "capability-level H5"]
