@@ -19,7 +19,7 @@
     "changeset": "changeset",
     "changeset:version": "changeset version && dart run packages/steward_cli/tool/sync_versions.dart",
     "changeset:status": "changeset status",
-    "release:tag": "changeset tag && git push --tags"
+    "release:tag": "bash scripts/tag_release.sh"
   },
   "engines": {
     "node": ">=18",

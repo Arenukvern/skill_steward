@@ -53,7 +53,6 @@ npx skills add arenukvern/skill_steward -g
 
 # Target specific agents while iterating
 npx skills add arenukvern/skill_steward -a cursor -a claude-code -a codex -a zed -y
-npx skills add <workspace>/agent_guild -a cursor -a claude-code -a codex -a zed -y
 ```
 
 Discover available skills on [skills.sh](https://skills.sh/arenukvern/skill_steward) or search them in the terminal:
@@ -66,41 +65,28 @@ npx skills find steward
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash
+# Pinned:
+curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash -s -- --version v0.3.4
 ```
 
-The CLI validates Skill Steward skills and can apply repo-local `skills.json` installs/updates with pinned refs. Use `npx skills` for normal public skill installation and updates.
+The CLI validates Skill Steward skills and can apply repo-local `skills.json` installs/updates with pinned refs. Use `npx skills` for normal public skill installation and updates. See [portable Steward invocation](docs/core/portable-steward-invocation.mdx) before copying command blocks into adoption evidence.
+
+### Maintainer local override
+
+Use local paths only while developing Skill Steward itself, and keep them out of public adopter instructions:
+
+```bash
+npx skills add <skill-steward-checkout> -a cursor -a claude-code -a codex -a zed -y
+cd <skill-steward-checkout>/packages/steward_cli && dart run :steward validate
+```
 
 ## First repo proof
 
 Start with the broad repo-quality baseline; add harness proof only when the repo needs typed actions, probes, or benchmark evidence.
 
-```bash
-# In the repo you want to steward
-steward adopt
-steward map
-
-# Install the flagship baseline skill for agents
-npx skills add arenukvern/skill_steward --skill repo-quality-system-lifecycle
-```
-
-When a fresh repo is already ready for an action contract, start with the harness scaffold instead:
-
-```bash
-steward adopt --with-harness
-steward doctor --json
-steward actions list --json
-steward action inspect doctor.local --json
-steward probe --profile quick --json
-steward benchmark \
-  --scenario <repo-id>.contract-status-smoke \
-  --strict \
-  --json \
-  --output .steward/benchmark-summaries/contract-status-smoke.json
-```
-
 `adopt` creates the S0/S1 stewardship baseline with `stewardship.harness.enabled: false`, `actions: {}`, and `probes: {}`. Those empty maps are valid baseline state, not missing harness proof. `adopt --with-harness` adds the first quick-safe action and probe; it also adds a smoke scenario when a durable git remote and HEAD commit are available. A `durability_blocked` benchmark is useful blocked evidence when contract inputs are dirty or untracked; it is not H2 proof until rerun cleanly.
 
-Canonical reference: [First adopter golden path](docs/evidence/first-adopter-golden-path.mdx).
+Canonical commands and expected proof: [First adopter golden path](docs/evidence/first-adopter-golden-path.mdx).
 
 ## Updating installed skills
 

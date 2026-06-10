@@ -58,36 +58,28 @@ Harness work is one part of engineering stewardship. Use the narrowest pillar th
 
 ## 📦 Repo setup (maintainers)
 
-GitHub product name: **Skill Steward** (`Arenukvern/skill_steward`). Many workspaces clone it as **`agent_guild/`** beside harness repos (e.g. in `~/mcp/` or any sibling directory).
+GitHub product name: **Skill Steward** (`Arenukvern/skill_steward`). Clone it anywhere. Docs use `<skill-steward-checkout>` for a maintainer-local clone; public consumer commands should use `arenukvern/skill_steward`, not a private workspace path.
 
 ```bash
-# Clone wherever you keep your workspace (e.g. ~/mcp/, ~/dev/, etc.)
-cd <workspace>/agent_guild
+cd <skill-steward-checkout>
 pnpm install          # packageManager: pnpm@9 (see package.json)
 pnpm run steward:analyze
 pnpm run validate
 ```
 
-### Consumer install from a local clone (sibling repo)
+### Maintainer local override from a clone
 
 ```bash
 # Project scope (example: <cli_tool_repo>)
 cd <workspace>/<cli_tool_repo>
 make agent-skills
-# or install from the cloned local copy:
-npx skills add <workspace>/agent_guild --skill mcp-harness-repo-maintainer -a cursor -y
+# or install from the cloned local copy while iterating before release:
+npx skills add <skill-steward-checkout> --skill mcp-harness-repo-maintainer -a cursor -y
 ```
 
 ### First adopter golden path
 
 Use this path for a repo that does not yet know whether it needs a harness. It proves the stewardship baseline first and reserves typed actions for a separate decision.
-
-```bash
-# In the target repo
-steward adopt
-steward map
-npx skills add arenukvern/skill_steward --skill repo-quality-system-lifecycle
-```
 
 Expected first result:
 
@@ -99,20 +91,7 @@ Expected first result:
 
 Use the harness flag only when the repo is ready to declare typed actions, probes, and benchmark evidence from the start. The smoke scenario is generated only when the repo has a durable git remote and resolved HEAD commit; otherwise add the scenario after those facts exist.
 
-```bash
-steward adopt --with-harness
-steward doctor --json
-steward actions list --json
-steward action inspect doctor.local --json
-steward probe --profile quick --json
-steward benchmark \
-  --scenario <repo-id>.contract-status-smoke \
-  --strict \
-  --output .steward/benchmark-summaries/contract-status-smoke.json \
-  --json
-```
-
-Interpretation: a passing smoke benchmark proves only H2 contract discovery and safe first observation. A `durability_blocked` result is useful blocked evidence when it points to dirty or untracked contract inputs, but it is not H2 proof and not H4 fresh-agent workflow proof. Sanitized reference: [First adopter golden path](evidence/first-adopter-golden-path).
+Canonical commands and interpretation: [First adopter golden path](evidence/first-adopter-golden-path). A passing smoke benchmark proves only H2 contract discovery and safe first observation. A `durability_blocked` result is useful blocked evidence when it points to dirty or untracked contract inputs, but it is not H2 proof and not H4 fresh-agent workflow proof.
 
 ### Harness bundle (recommended for product repos)
 
@@ -155,15 +134,18 @@ npx skills add arenukvern/skill_steward --skill repository-governance-lifecycle
 # Cursor + Claude + Codex + Zed, project scope, non-interactive
 npx skills add arenukvern/skill_steward -a cursor -a claude-code -a codex -a zed -y
 
-# Local clone while iterating on Skill Steward before publishing
-npx skills add <workspace>/agent_guild -a cursor -a claude-code -a codex -a zed -y
-npx skills add <workspace>/agent_guild -g -y
-
 # Global (every project)
 npx skills add arenukvern/skill_steward -g
 
 # List without installing (from repo path)
 npx skills add . --list
+```
+
+Maintainer local override while iterating before publishing:
+
+```bash
+npx skills add <skill-steward-checkout> -a cursor -a claude-code -a codex -a zed -y
+npx skills add <skill-steward-checkout> -g -y
 ```
 
 ### Install steward CLI (Global Binary)
@@ -182,7 +164,7 @@ curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/insta
 
 ## 🔄 Updating installed skills
 
-After Skill Steward merges to `main`, consumers refresh installed `SKILL.md` files with [vercel-labs/skills](https://github.com/vercel-labs/skills) (`npx skills`). While iterating locally, reinstall from `<workspace>/agent_guild` so project/global skills reflect the local checkout. Installed paths depend on agent (e.g. `.agents/skills/`, `.cursor/skills/`, `~/.codex/skills/`); see [AGENTS.md](https://github.com/arenukvern/skill_steward/blob/main/AGENTS.md).
+After Skill Steward merges to `main`, consumers refresh installed `SKILL.md` files with [vercel-labs/skills](https://github.com/vercel-labs/skills) (`npx skills`). While iterating locally, reinstall from `<skill-steward-checkout>` so project/global skills reflect the local checkout. Installed paths depend on agent (e.g. `.agents/skills/`, `.cursor/skills/`, `~/.codex/skills/`); see [AGENTS.md](https://github.com/arenukvern/skill_steward/blob/main/AGENTS.md).
 
 ```bash
 # List what is installed (project)
@@ -217,14 +199,14 @@ npx skills add arenukvern/skill_steward --skill repository-governance-lifecycle 
 # Target agents, project scope
 npx skills add arenukvern/skill_steward -a cursor -a claude-code -a codex -a zed -y
 
-# Same from a local clone
-npx skills add <workspace>/agent_guild -a cursor -a claude-code -a codex -a zed -y
+# Same from a maintainer local clone
+npx skills add <skill-steward-checkout> -a cursor -a claude-code -a codex -a zed -y
 
 # Global reinstall
 npx skills add arenukvern/skill_steward -g -y
 
-# Global reinstall from local clone
-npx skills add <workspace>/agent_guild -g -y
+# Global reinstall from maintainer local clone
+npx skills add <skill-steward-checkout> -g -y
 ```
 
 **When to use which**
@@ -236,7 +218,7 @@ npx skills add <workspace>/agent_guild -g -y
 | One skill you use heavily | `npx skills update <skill-name> -y` |
 | Force full marketplace refresh | `npx skills add arenukvern/skill_steward -y` |
 | Pin to a branch or local clone | `npx skills add <path-or-url> --skill <name> -y` |
-| Refresh global skills from local clone | `npx skills add <workspace>/agent_guild -g -y` |
+| Refresh global skills from local clone | `npx skills add <skill-steward-checkout> -g -y` |
 
 **Not covered by `npx skills`:** Cursor hook plugins — `../plugins/README.md`.
 
@@ -248,8 +230,8 @@ cp -r templates/skill skills/my-skill-name
 
 # 2. Edit skills/my-skill-name/SKILL.md (name == directory name)
 
-# 3. Validate
-dart run :steward validate   # or pnpm run validate (now delegates to Dart)
+# 3. Validate from the repo root
+pnpm run validate
 
 # 4. Register
 #    - skills.sh.json (current repo schema)
@@ -262,8 +244,8 @@ dart run :steward validate   # or pnpm run validate (now delegates to Dart)
 ## ✅ Validate desk
 
 ```bash
-dart run :steward validate          # canonical (pure Dart implementation)
-dart run :steward validate --json   # machine-readable report
+pnpm run validate                   # canonical repo-root validation
+pnpm run validate:json              # machine-readable report
 pnpm run eval                       # Tier 1 rule-based skill cases (ADR 0011)
 pnpm run list                       # skill names + descriptions
 
@@ -349,9 +331,11 @@ pnpm changeset:status
 pnpm changeset:version    # updates CHANGELOG.md + package.json
 git add -A && git commit -m "chore: version packages"
 
-# Tag release (example)
-git tag "v$(node -p "require('./package.json').version")"
-git push origin main --tags
+# Tag release from package.json as vX.Y.Z
+pnpm run release:tag
+
+# Check the tag without mutating git
+bash scripts/tag_release.sh --dry-run
 
 # Compile and package binaries locally:
 ./scripts/build_release_artifacts.sh
@@ -360,6 +344,7 @@ git push origin main --tags
 ```text
 CI on PR               → .github/workflows/changesets.yml
 Local gate             → bash scripts/changeset-check.sh origin/main
+Release tag contract   → scripts/tag_release.sh creates/pushes vX.Y.Z only
 Skip (maintainer only) → PR title contains [skip changeset]
 ```
 
@@ -412,7 +397,7 @@ template                   → ../templates/plugin/
 ```text
 Read first:  AGENTS.md, DESIGN_FAQ.mdx (why), DX_FAQ.mdx (how)
 Rules:       ../.cursor/rules/faq_usage.mdc
-After edit:  dart run :steward validate + update correct FAQ layer
+After edit:  pnpm run validate + update correct FAQ layer
 Schemas:     schemas/README.mdx
 ```
 

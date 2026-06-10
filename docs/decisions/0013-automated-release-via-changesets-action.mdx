@@ -30,7 +30,7 @@ MODE A — changesets present on main after a PR merges
 
 MODE B — Version PR merged (no pending changesets remain)
   → action runs: pnpm run release:tag
-      (changeset tag && git push --tags)
+      (scripts/tag_release.sh creates and pushes v<version>)
   → action creates a GitHub Release with the CHANGELOG content
 ```
 
@@ -44,7 +44,7 @@ Version PR commits are pushed via the GitHub Commits API instead of the git CLI:
 
 ### No npm publish
 
-`release:tag` script only creates and pushes git tags. `package.json` remains `"private": true`. Skills are distributed via `npx skills add arenukvern/skill_steward` (ADR 0010) — git tags are the release unit, not npm packages.
+`release:tag` script only creates and pushes the public `vX.Y.Z` git tag. `package.json` remains `"private": true`. Skills are distributed via `npx skills add arenukvern/skill_steward` (ADR 0010) — git tags are the release unit, not npm packages. Binary release assets and `install.sh` use the same `vX.Y.Z` tag contract.
 
 ---
 
@@ -61,7 +61,7 @@ Version PR commits are pushed via the GitHub Commits API instead of the git CLI:
 ### Neutral
 
 - The Version PR commit is made by `github-actions[bot]`, so it does **not** re-trigger `validate` CI automatically (GitHub security restriction). The Version PR is low-risk (only version + CHANGELOG edits) and can be merged after a quick review. A PAT stored as `secrets.RELEASE_TOKEN` could enable CI re-triggering if needed later.
-- `changeset tag` produces tags in the form `skill-steward@<version>` (Changesets default). Rename to `v<version>` style via a custom `release:tag` script if preferred — not done now to keep it simple.
+- Public binary releases use `vX.Y.Z` tags. Changesets still owns the Version PR and changelog update, but `scripts/tag_release.sh` owns tag creation so `install.sh`, GitHub Releases, and binary asset publishing agree on one tag shape.
 
 ### References
 

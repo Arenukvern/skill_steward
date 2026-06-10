@@ -159,18 +159,20 @@ To manage and lock skills, place a `skills.json` file in the root of your projec
 
 ### Installation & Update Commands
 
+After installing the CLI with `install.sh` or running from a maintainer checkout:
+
 ```bash
 # Install all skills listed in project skills.json
-dart run steward install
+steward install
 
 # Install a specific skill from a repository
-dart run steward install Arenukvern/skill_steward/repository-governance-lifecycle --target cursor
+steward install Arenukvern/skill_steward/repository-governance-lifecycle --target cursor
 
 # Update installed skills to their latest upstream branch refs, pinning commits in skills.json
-dart run steward update
+steward update
 
 # Validate that the local skills are present and valid
-dart run steward validate --local
+steward validate --local
 ```
 
 These commands keep a project’s agent skill layer reproducible. They do not replace skills.sh discovery or `npx skills add/update` for ordinary public installs.
