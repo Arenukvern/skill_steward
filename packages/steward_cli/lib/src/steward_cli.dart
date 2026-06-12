@@ -8,8 +8,10 @@ import 'commands/action_command.dart';
 import 'commands/actions_command.dart';
 import 'commands/adopt_command.dart';
 import 'commands/benchmark_command.dart';
+import 'commands/blocked_command.dart';
 import 'commands/brand_check_command.dart';
 import 'commands/bundle_command.dart';
+import 'commands/claim_command.dart';
 import 'commands/diagnose_command.dart';
 import 'commands/doctor_command.dart';
 import 'commands/eval_command.dart';
@@ -19,6 +21,8 @@ import 'commands/map_command.dart';
 import 'commands/mcp_command.dart';
 import 'commands/observe_command.dart';
 import 'commands/probe_command.dart';
+import 'commands/protocol_command.dart';
+import 'commands/schema_command.dart';
 import 'commands/uninstall_command.dart';
 import 'commands/unknown_case_command.dart';
 import 'commands/update_command.dart';
@@ -40,6 +44,10 @@ class StewardCli {
           ..addCommand(ActionCommand())
           ..addCommand(ActionCandidateCommand())
           ..addCommand(ProbeCommand())
+          ..addCommand(SchemaCommand())
+          ..addCommand(ProtocolCommand())
+          ..addCommand(ClaimCommand())
+          ..addCommand(BlockedCommand())
           ..addCommand(ObserveCommand())
           ..addCommand(UnknownCaseCommand())
           ..addCommand(DiagnoseCommand())

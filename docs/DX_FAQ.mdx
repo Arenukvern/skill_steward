@@ -33,6 +33,11 @@ Use the smallest distribution surface that matches the job.
 | Install/update portable skills for a human or agent | `npx skills add/update` | Public skill distribution and local/global agent paths |
 | Discover public skills | skills.sh | Catalog only; not a repo harness contract |
 | Give a repo deterministic agent structure | `steward install/update` with `skills.json` | Repo-local registration, copy/symlink layout, commit pinning; not a public package manager |
+| Validate stewardship protocol artifacts | `steward protocol validate` | Mode-event and self-model shape only; not repo steward status |
+| Reject over-strong stewardship or adoption claims | `steward claim check` | Negative gate against overclaims; not acceptance proof or a maturity score |
+| Validate a JSON artifact against a Steward schema | `steward schema validate` | Portable shape check; not semantic proof beyond the schema |
+| Catch machine-readable CLI drift | `steward schema check-outputs` | Core read-only output shape check, currently `doctor --json` |
+| Turn blocked JSON into next actions | `steward blocked explain` | Artifact routing for blocked evidence; does not repair or prove |
 | Validate Skill Steward skills | `pnpm run validate`, `pnpm run eval` | Skill structure and Tier-1 routing cases |
 | Adopt general repo stewardship | `repo-quality-system-lifecycle` + repo-quality-contracts.mdx | Charter, docs lattice, type-native gates, evidence, safety, maturity proof |
 | Prove a repo-local harness contract | `steward doctor/actions/probe/benchmark` | Runtime dogfood evidence; separate from skill evals |
@@ -92,6 +97,53 @@ Expected first result:
 Use the harness flag only when the repo is ready to declare typed actions, probes, and benchmark evidence from the start. The smoke scenario is generated only when the repo has a durable git remote and resolved HEAD commit; otherwise add the scenario after those facts exist.
 
 Canonical commands and interpretation: [First adopter golden path](evidence/first-adopter-golden-path). A passing smoke benchmark proves only H2 contract discovery and safe first observation. A `durability_blocked` result is useful blocked evidence when it points to dirty or untracked contract inputs, but it is not H2 proof and not H4 fresh-agent workflow proof.
+
+### Adopter state routing
+
+When working inside an adopter repo, classify the current state before adding new doctrine:
+
+| State | Signal | Next artifact |
+|-------|--------|---------------|
+| `fresh_baseline` | `steward doctor --json` shows valid config with no typed action proof yet | Run `steward actions list --json`; add harness only if typed actions are needed. |
+| `harness_proof` | `doctor`, `actions list`, `action inspect`, `probe`, and strict `benchmark` return `result: "pass"` | Record compact evidence and avoid broader maturity claims. |
+| `protocol_artifact_only` | `steward protocol validate` returns `valid: true` | Keep status at `stewardship_protocol`; do not claim repo steward proof. |
+| `blocked_invalid_config` | `doctor` or `probe` reports invalid config | Repair `steward.yaml` schema/archetype or create an unknown-case artifact if the schema is missing a real repo shape. |
+| `durability_blocked` | Strict benchmark blocks on dirty or untracked contract inputs | Run `steward blocked explain --input <summary.json> --json`, track or commit the contract inputs, then rerun the same benchmark before claiming proof. |
+| `runtime_proof_blocked` | CLI/runtime setup cannot produce the target app, VM URI, semantic node, or redacted assertion | Run `steward blocked explain --input <runtime-block.json> --json`, then capture an unknown-case artifact with commands, logs excerpt, redaction policy, and the exact rerun target. |
+
+### Schema and output drift checks
+
+Use schema checks when a JSON artifact or CLI payload becomes part of an agent contract:
+
+```bash
+steward schema validate --schema self-model --file .steward/self-model.json --json
+steward schema validate --schema mode-event --file .steward/events.jsonl --json
+steward schema check-outputs --json
+steward schema emit --schema self-model --source checked-in --json
+steward schema drift --json
+```
+
+`schema validate` is a portable shape check for repo artifacts. `schema check-outputs` runs core read-only payload builders and validates their JSON against repo schemas. `schema emit` exposes checked-in or generated typed-model schemas for inspection. `schema drift` fails when generated contract model fields, required fields, or mutually declared enums drift from checked-in schemas. Use these before changing schemas, CLI JSON, MCP wrappers, or docs that describe machine-readable fields.
+
+### Stewardship protocol validation
+
+Use the protocol validator when a repo records steward mode events or self-model artifacts:
+
+```bash
+steward protocol validate --mode-events .steward/events.jsonl --self-model .steward/self-model.json --json
+```
+
+This proves protocol artifact shape only. It rejects unknown schema fields, invalid mode/status combinations, and forbidden private-material markers. It does not prove repo steward status, H4/H5 behavior, consciousness, final authority, or production agent behavior.
+
+### Stewardship claim negative gates
+
+Use the claim gate before writing a status claim stronger than the available evidence:
+
+```bash
+steward claim check --claim proven_repo_steward --evidence docs/evidence/<file>.mdx --json
+```
+
+Claim checks are negative gates. They do not award a score, accept a claim, or prove steward status; they prevent claims that are obviously stronger than the evidence. Machine-readable output uses `result: "rejected"` or `result: "not_rejected"` and keeps `accepted: false`.
 
 ### Harness bundle (recommended for product repos)
 

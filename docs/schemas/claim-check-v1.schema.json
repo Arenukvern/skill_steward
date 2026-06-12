@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/arenukvern/skill_steward/schemas/claim-check-v1.schema.json",
+  "title": "Steward claim check output v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "claim",
+    "valid",
+    "diagnostics",
+    "non_claims"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "default": "steward.claim.check.v1"
+    },
+    "claim": {
+      "type": "string"
+    },
+    "valid": {
+      "type": "boolean"
+    },
+    "result": {
+      "type": "string"
+    },
+    "accepted": {
+      "type": "boolean"
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "non_claims": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

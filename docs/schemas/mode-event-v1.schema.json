@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/arenukvern/skill_steward/schemas/mode-event-v1.schema.json",
+  "title": "Steward mode event v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "id",
+    "created_at",
+    "repo",
+    "mode",
+    "status",
+    "intent",
+    "evidence_bar",
+    "non_claims"
+  ],
+  "properties": {
+    "schema": {
+      "const": "steward/mode-event/v1"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repo": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "tool-execution",
+        "steward-presence",
+        "delegation",
+        "sub-steward-lens"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "stewardship_protocol",
+        "steward_presence",
+        "proven_repo_steward",
+        "sub_steward"
+      ]
+    },
+    "intent": {
+      "type": "string",
+      "minLength": 1
+    },
+    "delegated_surface": {
+      "type": "string"
+    },
+    "evidence_bar": {
+      "type": "string",
+      "minLength": 1
+    },
+    "boundary_signals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "self_model_pointer": {
+      "type": "string"
+    },
+    "non_claims": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "tool-execution"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "stewardship_protocol"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "delegation"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "delegated_surface"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "mode": {
+            "const": "sub-steward-lens"
+          }
+        }
+      },
+      "then": {
+        "not": {
+          "properties": {
+            "status": {
+              "const": "sub_steward"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

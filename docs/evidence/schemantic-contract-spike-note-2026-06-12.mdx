@@ -1,0 +1,30 @@
+# Schemantic Contract Spike Note — 2026-06-12
+
+## Status
+
+Deferred from production adoption.
+
+## Context
+
+The typed Steward JSON contract slice adopted `json_serializable` for generated serializers and schema metadata, plus `freezed` for small immutable route state. The evaluated `schemantic` package is promising for typed data classes with runtime JSON Schema, but adopting it directly would add a larger runtime graph and a second schema interpretation layer before Steward has evidence that it improves contract drift detection.
+
+## Comparison Bar
+
+Before replacing or supplementing the current checked-in schema plus generated-model drift loop, a future `schemantic` spike must show:
+
+- local `$ref` behavior compatible with Steward schemas
+- `additionalProperties: false` enforcement without weaker diagnostics
+- support for `if` / `then` or an explicit decision to keep those checks in semantic validators
+- JSONL validation with line labels for mode events
+- diagnostics at least as clear as `steward schema validate`
+- no weakening of checked-in schema legibility for non-Dart consumers
+
+## Decision
+
+Do not add `schemantic` as a production dependency in this slice. Keep the hand-written JSON Schema subset as the runtime portable validator, keep checked-in schemas as the reviewable source for non-Dart consumers, and use generated typed-model schemas only as a drift signal.
+
+## Non-Claims
+
+- This note does not reject `schemantic` permanently.
+- This note does not claim the current JSON Schema subset is complete.
+- This note does not make generated schemas the sole source of truth.

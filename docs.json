@@ -69,6 +69,10 @@
         { "title": "Capability-level proof", "href": "/evidence/mcp-flutter-capability-level-proof-2026-06-10" },
         { "title": "Runtime text-input packet", "href": "/evidence/mcp-flutter-runtime-text-input-capability-proof-2026-06-10" },
         { "title": "Paired adoption ledger", "href": "/evidence/paired-adoption-ledger-2026-06-10" },
+        { "title": "Stewardship protocol falsifier", "href": "/evidence/stewardship-protocol-falsifier-template" },
+        { "title": "Stewardship protocol smoke packet", "href": "/evidence/stewardship-protocol-smoke-packet-2026-06-12" },
+        { "title": "Stewardship adopter plan", "href": "/evidence/stewardship-protocol-adopter-plan-2026-06-12" },
+        { "title": "Stewardship adopter run", "href": "/evidence/stewardship-protocol-adopter-run-2026-06-12" },
         { "title": "H4 workflow check", "href": "/evidence/h4-fresh-agent-workflow-check-2026-06-08" },
         { "title": "Skills Catalog", "href": "/skills-catalog" },
         { "title": "Docs Map", "href": "/start_here/docs_map" },
@@ -118,7 +122,9 @@
         { "title": "0016 — Skill cohesion", "href": "/decisions/0016-skill-cohesion-and-lifecycle-boundaries" },
         { "title": "0017 — Cold-start contracts", "href": "/decisions/0017-cold-start-contracts-before-diagnostics" },
         { "title": "0018 — Cold-to-hot usefulness", "href": "/decisions/0018-cold-to-hot-path-usefulness" },
-        { "title": "0019 — Pattern promotion review", "href": "/decisions/0019-pattern-promotion-review-as-lens-and-proof-loop" }
+        { "title": "0019 — Pattern promotion review", "href": "/decisions/0019-pattern-promotion-review-as-lens-and-proof-loop" },
+        { "title": "0020 — Ethical steward boundaries", "href": "/decisions/0020-ethical-boundaries-steward-personalities-and-tool-delegation" },
+        { "title": "0021 — Protocol-first steward gates", "href": "/decisions/0021-protocol-first-steward-status-gates" }
       ]
     },
     {

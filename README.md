@@ -86,7 +86,7 @@ Start with the broad repo-quality baseline; add harness proof only when the repo
 
 `adopt` creates the S0/S1 stewardship baseline with `stewardship.harness.enabled: false`, `actions: {}`, and `probes: {}`. Those empty maps are valid baseline state, not missing harness proof. `adopt --with-harness` adds the first quick-safe action and probe; it also adds a smoke scenario when a durable git remote and HEAD commit are available. A `durability_blocked` benchmark is useful blocked evidence when contract inputs are dirty or untracked; it is not H2 proof until rerun cleanly.
 
-Canonical commands and expected proof: [First adopter golden path](docs/evidence/first-adopter-golden-path.mdx).
+Canonical commands and expected proof: [First adopter golden path](docs/evidence/first-adopter-golden-path.mdx). Blocked-state routing lives in [DX FAQ: adopter state routing](docs/DX_FAQ.mdx#adopter-state-routing).
 
 ## Updating installed skills
 
@@ -108,6 +108,7 @@ Meta, governance, and process capabilities only. Domain content belongs in the g
 | Pillar | Current surface |
 |--------|-----------------|
 | Governance | [repository-governance-lifecycle](skills/repository-governance-lifecycle/) |
+| Steward continuity | [steward-continuity-boundary-lifecycle](skills/steward-continuity-boundary-lifecycle/) |
 | Knowledge | [skill-source-citations](skills/skill-source-citations/), ADR/FAQ/docs lattice |
 | Repo quality contracts | [repo-quality-system-lifecycle](skills/repo-quality-system-lifecycle/), [docs/repo-quality-contracts.mdx](docs/repo-quality-contracts.mdx) |
 | Skill lifecycle | [skill-authoring-lifecycle](skills/skill-authoring-lifecycle/), [plugin-marketplace-setup](skills/plugin-marketplace-setup/) |
@@ -127,6 +128,7 @@ Start with [`repo-quality-system-lifecycle`](skills/repo-quality-system-lifecycl
 |-------|----------|
 | [repo-quality-system-lifecycle](skills/repo-quality-system-lifecycle/) | Establish or audit a structural quality contract for any agent-operated app, library, tool, plugin, harness, or meta repo. |
 | [repository-governance-lifecycle](skills/repository-governance-lifecycle/) | Govern architectural decisions, ADRs, FAQs, ethics, brand tone, and plan hygiene. |
+| [steward-continuity-boundary-lifecycle](skills/steward-continuity-boundary-lifecycle/) | Maintain stewardship protocol mode boundaries, self-model update decisions, delegation hygiene, and handoff-safe continuity without overclaiming steward personality. |
 | [vision-alignment-foresight](skills/vision-alignment-foresight/) | Test repo/product/skill vision against implementation reality, user intent, evidence, and future direction. |
 | [mcp-harness-repo-maintainer](skills/mcp-harness-repo-maintainer/) | Adopt or maintain repo-local action contracts, `steward.yaml`, probes, benchmarks, and CLI/MCP/core parity. |
 | [harness-engineering-lifecycle](skills/harness-engineering-lifecycle/) | Generalize a proven local harness across producer/consumer repos and dogfood it safely. |

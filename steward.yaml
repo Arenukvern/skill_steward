@@ -88,6 +88,8 @@ provenance:
   benchmarks:
     - id: skill_steward.contract-status-smoke
       manifest: steward/scenarios/skill-steward-contract-status-smoke.yaml
+    - id: skill_steward.protocol-smoke
+      manifest: steward/scenarios/skill_steward.protocol-smoke.yaml
 
 actions:
   steward.contract.status.quick:
@@ -137,6 +139,53 @@ actions:
         required: true
         retention: summary
         format: text
+    evidence:
+      redaction: steward/redaction/v1
+      summary_fields: [exit_code, duration_ms, output_digest]
+
+  steward.protocol.validate-example:
+    kind: command
+    desc: Validate example stewardship protocol artifacts without claiming steward status.
+    command:
+      argv:
+        - dart
+        - --packages=packages/steward_cli/.dart_tool/package_config.json
+        - packages/steward_cli/bin/steward.dart
+        - protocol
+        - validate
+        - --mode-events
+        - .steward/events.example.jsonl
+        - --self-model
+        - .steward/self-model.example.json
+        - --json
+      shell: false
+    cwd: "."
+    effects:
+      fs_read:
+        - ".steward/events.example.jsonl"
+        - ".steward/self-model.example.json"
+        - "packages/steward_cli/.dart_tool/package_config.json"
+        - "packages/steward_cli/**"
+      fs_write: []
+      git: read
+      network: false
+      secrets: false
+      destructive: false
+    safety:
+      class: bounded_local
+      default_policy: auto
+      requires_confirmation: false
+    limits:
+      timeout_ms: 10000
+      max_output_bytes: 200000
+      max_files: 20000
+      max_parallelism: 1
+    outputs:
+      - id: stdout
+        kind: stream
+        required: true
+        retention: summary
+        format: json
     evidence:
       redaction: steward/redaction/v1
       summary_fields: [exit_code, duration_ms, output_digest]
@@ -214,7 +263,9 @@ actions:
 probes:
   quick:
     profile: quick
-    actions: [steward.contract.status.quick]
+    actions:
+      - steward.contract.status.quick
+      - steward.protocol.validate-example
 
 diagnostics:
   cases: {}

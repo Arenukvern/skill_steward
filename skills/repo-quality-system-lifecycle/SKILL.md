@@ -21,6 +21,7 @@ Use this skill to make a repository legible, safe, and improvable for humans and
 - Separating repo stewardship proof from product runtime correctness.
 - Auditing a multi-repo integration chain where one repo must publish, tag, or stabilize before a consumer repo can truthfully cut over.
 - Deciding whether repeated repo friction should stay native, become docs/FAQ, become an API/schema/generator, become harness proof, or be deleted/collapsed.
+- Auditing broad product claims such as platform support, compatibility, maturity, or "works everywhere" language against live evidence and owner boundaries.
 
 ## When not to use
 
@@ -68,8 +69,9 @@ Write the smallest contract that can be checked.
 | Handoff | What context lets another agent resume without re-spelunking? |
 | Feedback | How do repeated failures become durable tests, docs, evals, or actions? |
 | Pattern layer | Should this change live in native code, repo grammar, public API, schema/codegen, harness, ecology-level skill/tooling, or deletion? |
+| Product claims | Which claims are implemented, generated, fallback, planned, or speculative, and who owns the proof? |
 
-For multi-repo roadmaps, also record dependency order, source-of-truth repo, consumer gate, dirty-state policy, and do-not-touch exceptions. Do not claim a downstream consumer is ready from local path dependency success when the upstream package or binary still lacks publish evidence.
+For multi-repo roadmaps, also record dependency order, source-of-truth repo, consumer gate, dirty-state policy, and do-not-touch exceptions. Do not claim a downstream consumer is ready from local path dependency success when the upstream package or binary still lacks publish evidence. The producer repo owns architecture, public contract, release provenance, and compatibility claims; consumer repos own adoption proof, local deltas, blocked state, and cutover commands.
 
 Use [docs/repo-quality-contracts.mdx](../../docs/repo-quality-contracts.mdx) as the normative spec.
 
@@ -100,6 +102,22 @@ Use the weakest true claim, not the strongest desired one.
 | Harness readiness is proven | `doctor`, `actions list`, `action inspect`, `probe`, benchmark scenario |
 | Fresh-agent workflow is proven | Fresh agent completes one workflow without hidden context |
 
+Before using machine-readable CLI output as evidence, run `steward schema check-outputs --json` in the owning repo when available. This catches schema/JSON drift; it does not prove runtime behavior or maturity by itself.
+
+For broad compatibility or maturity claims, record a compact claim audit:
+
+| Field | Question |
+|-------|----------|
+| `claim` | What exact sentence is being claimed? |
+| `tier` | Is it `implemented`, `generated`, `fallback`, `planned`, or `speculative`? |
+| `owner` | Which repo/package owns the canonical truth? |
+| `evidence` | What code, schema, test, source, or benchmark proves only that tier? |
+| `validation` | What command, generator, freshness check, source date, or blocked state supports it? |
+| `falsifier` | What would prove the claim stale or too broad? |
+| `non_claims` | What stronger adjacent claim is not proven? |
+
+Skipped validation, blocked generators, blocked benchmarks, and manually synced generated files are useful notes, not readiness proof.
+
 ### 6. Promote repeated learning
 
 If an agent discovers friction, do not immediately create permanent automation. First decide the durable artifact.
@@ -126,6 +144,7 @@ When reporting an audit or adoption pass, include:
 - Pattern layer chosen, smaller layer considered, and expected maintenance delta.
 - Smallest next improvement.
 - What was not validated.
+- Any skipped generators, blocked checks, or non-claims behind broad product language.
 
 ## Install
 

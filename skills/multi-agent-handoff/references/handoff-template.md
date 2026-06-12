@@ -31,6 +31,20 @@ Copy into `HANDOFF.md` at the project root or task folder.
 pnpm run validate
 ```
 
+## Validation status
+
+<!-- Commands run, commands skipped or blocked, and claims not proven because of that -->
+
+- Run:
+- Skipped / blocked:
+- Non-claims:
+
+## Partial results
+
+<!-- Missing, partial, superseded, or timed-out agents/lenses -->
+
+- None
+
 ## Context links
 
 <!-- Files, PRs, decisions -->
@@ -38,3 +52,9 @@ pnpm run validate
 ## Risks / open questions
 
 <!-- Blockers the next agent should resolve or escalate -->
+
+## Artifact capture
+
+<!-- Durable homes for learning that should survive this handoff -->
+
+- ADR / FAQ / skill / evidence note / test / validator / generator / check:

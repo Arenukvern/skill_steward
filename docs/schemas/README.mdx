@@ -19,12 +19,35 @@ For the broader Engineering Stewardship baseline that applies before a repo need
 | Action candidate record | [action-candidate-v1.schema.json](action-candidate-v1.schema.json) | action-candidate promotion validators |
 | Benchmark summary | [benchmark-summary-v1.schema.json](benchmark-summary-v1.schema.json) | `steward benchmark --json` |
 | Adoption run | [adoption-run-v2.schema.json](adoption-run-v2.schema.json) | `steward validate` adoption-run evidence scan |
+| Mode event | [mode-event-v1.schema.json](mode-event-v1.schema.json) | `steward protocol validate` |
+| Self-model artifact | [self-model-v1.schema.json](self-model-v1.schema.json) | `steward protocol validate` |
+| Claim check output | [claim-check-v1.schema.json](claim-check-v1.schema.json) | `steward claim check --json` |
+| Blocked explanation output | [blocked-explain-v1.schema.json](blocked-explain-v1.schema.json) | `steward blocked explain --json` |
+| Schema validate output | [schema-validate-v1.schema.json](schema-validate-v1.schema.json) | `steward schema validate --json` |
+| Schema check outputs | [schema-check-outputs-v1.schema.json](schema-check-outputs-v1.schema.json) | `steward schema check-outputs --json` |
+| Schema emit output | [schema-emit-v1.schema.json](schema-emit-v1.schema.json) | `steward schema emit --json` |
+| Schema drift output | [schema-drift-v1.schema.json](schema-drift-v1.schema.json) | `steward schema drift --json` |
+| Protocol validate output | [protocol-validate-v1.schema.json](protocol-validate-v1.schema.json) | `steward protocol validate --json` |
+
+Portable schema commands:
+
+```bash
+steward schema validate --schema doctor --file .steward/doctor.json --json
+steward schema validate --schema mode-event --file .steward/events.jsonl --json
+steward schema check-outputs --json
+steward schema emit --schema schema-validate --source generated --json
+steward schema drift --json
+```
+
+`schema validate` checks an artifact against the repo schema subset used here. `schema check-outputs` validates core read-only CLI payload builders against their schemas so schema/CLI drift is caught before an agent depends on a stale field shape. `schema emit` exposes either checked-in schemas or generated typed-model schemas. `schema drift` compares generated contract model schemas with checked-in schemas for public field, required-field, and mutually declared enum drift. These commands are deterministic tools; skills decide when their output is relevant and what claim level it supports.
 
 Schema policy:
 
 - Required fields match the current v1 hard-cut validator.
-- Product-specific extension fields are allowed unless they would hide unsafe execution or provenance.
+- Typed Dart contract models may generate schema metadata for CLI JSON payloads, but checked-in schemas remain the portable review surface for non-Dart consumers.
+- Product-specific extension fields are allowed only where the specific schema permits them. Protocol artifacts reject unknown fields by default so private memory or proof claims cannot hide in extension slots.
 - Runtime payload schemas describe compact summaries, not raw logs, screenshots, or product artifacts.
+- Protocol schemas prove artifact shape only. They do not prove steward status, H4/H5 behavior, consciousness, or final authority.
 
 ## Steward vs local harness ownership
 
@@ -71,3 +94,6 @@ JSON Schema covers portable shape checks. Executable validators remain responsib
 - H5/S5 adoption-run claims require repeated evidence plus `held_out_benchmarks`
 - repo-maturity adoption-run claims require explicit broad evidence
 - adoption-run proof needs `hot_path_claim.observed_effect`; a success return code alone is not promotion evidence
+- stewardship protocol validation checks mode-event and self-model artifact shape plus raw private-material tripwires; it does not promote `proven_repo_steward`
+- stewardship claim checks are negative gates against obvious overclaims; they do not accept claims or reason over evidence quality
+- blocked-state explanations route `durability_blocked`, `blocked_invalid_config`, and runtime proof blocks into next actions; they do not repair the repo or turn blocked evidence into proof

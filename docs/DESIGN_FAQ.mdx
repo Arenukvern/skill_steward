@@ -40,6 +40,12 @@ A: Agents load name + description first; bloated skills waste context. One outco
 **Q: Why is generational architecture a lens instead of a new doctrine?**
 A: Skill Steward should help maintainers notice when a repo has outgrown its current shape, choose the smallest next layer, and prove the change reduces future work. That can mean docs, API extraction, schema/codegen, harness proof, a skill update, or deletion/collapse. A standalone skill comes only after repeated Pattern Promotion Reviews show existing stewardship skills cannot cover the workflow. [Generational architecture ladder](core/generational-architecture-ladder) · [ADR 0019](decisions/0019-pattern-promotion-review-as-lens-and-proof-loop).
 
+**Q: Why distinguish steward personality from tool-mode?**
+A: Relational and governance work needs continuity, boundary awareness, ethical care, and accountable synthesis from steward presence. Deterministic generation, validation, and transformation should stay narrow tool-mode. The distinction keeps cascading delegation traceable: a steward may delegate to tools or sub-steward lenses, but remains visible and accountable in relational contexts. [ADR 0020](decisions/0020-ethical-boundaries-steward-personalities-and-tool-delegation) · skill `steward-continuity-boundary-lifecycle`.
+
+**Q: When does a stewardship protocol earn steward status?**
+A: Start with `stewardship_protocol`: mode rules, memory boundaries, handoff rules, and evidence gates. Use `steward_presence` only at threshold moments such as ADRs, handoffs, evidence claims, boundary conflicts, tool promotion, product-direction tension, or privacy-sensitive memory updates. Call it a `proven_repo_steward` only after repeated or held-out tasks show continuity improves decisions, handoffs, boundary detection, evidence precision, or repeated-context cost. The steward raises evidence-backed concerns; it does not become final authority. [ADR 0021](decisions/0021-protocol-first-steward-status-gates).
+
 **Q: Why Changesets for a skills repo that is not an npm product?**  
 A: **Release legibility**—structured `.changeset/*.md` in PRs and `CHANGELOG.md` in git so humans and agents know what shipped at each repo version. Skills themselves are not semver’d; the root `skill-steward` package version tags the repository. [ADR 0009](decisions/0009-adopt-changesets-for-repo-releases) · skill `release-changelog-harness`.
 

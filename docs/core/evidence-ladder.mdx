@@ -8,11 +8,29 @@ A stewardship claim needs evidence appropriate to the claim.
 | Tier-1 skill routing is covered | `pnpm run eval` plus `evals/cases/*.yaml` | Production agent behavior |
 | Docs site is wired | `pnpm run docs:check` or documented blocked state | Repo correctness |
 | Repo quality contract is proven | Type-native validation command passes, or blocked evidence explains why it cannot | Harness readiness |
+| Cleanup turn is useful evidence | Scope, commands run, commands skipped, skip reason, and non-claims are stated | Merge readiness or maturity proof |
+| Generated or registry-like surface is fresh | Owning generator/check runs cleanly, or freshness is otherwise reproducible | Runtime correctness |
+| Stewardship protocol is declared | Protocol artifacts, mode rules, memory boundaries, and validation path exist | Proven repo steward or production agent behavior |
+| Steward presence was used in one task | Handoff or mode event records threshold, intent, evidence bar, delegated surface, and non-claims | Durable repo steward status |
+| Proven repo steward improves work | Repeated or held-out tasks compare with/without continuity and show improved decisions, handoffs, boundary detection, or evidence precision | Consciousness, final authority, or product-wide maturity |
+| Steward claim is rejected or not rejected by a negative gate | `steward claim check` runs against the evidence artifact | Acceptance proof, evidence reasoning, a maturity score, final authority, H4/H5 proof, or consciousness |
 | H2 smoke loop is proven | `doctor`, `actions list`, `action inspect`, `probe`, and benchmark summary with `result: "pass"` | H4 fresh-agent workflow |
 | H2 smoke loop is blocked | Benchmark summary with `result: "blocked"` and `blocked_by: "durability_blocked"` | H2 proof |
 | H4 agent workflow is proven | Fresh-agent run artifact or transcript completes one repo-specific workflow without hidden local context | Product-wide correctness |
 
 Rule-based evals are useful but narrow. They prevent obvious drift; they do not prove production agent behavior. Harness benchmarks are stronger, but only for repos with declared action contracts.
+
+Skipped validation, manually synced generated files, blocked generators, and blocked benchmarks are useful work notes only when disclosed. They cannot upgrade a readiness claim. If generated assets, registry tables, docs indexes, manifests, or skill bundles change, run the owning generator/freshness check or label the result as unvalidated cleanup evidence.
+
+For cleanup or cross-repo alignment turns, record at least:
+
+- `claim`: exact claim being made.
+- `scope`: files, repos, or surfaces touched.
+- `commands_run`: validation, generator, link, or freshness checks executed.
+- `commands_skipped`: relevant checks not run.
+- `skip_reason`: why a check was not run.
+- `proof_level`: weakest true evidence level reached.
+- `non_claims`: claims explicitly not proven.
 
 ## Adoption check
 

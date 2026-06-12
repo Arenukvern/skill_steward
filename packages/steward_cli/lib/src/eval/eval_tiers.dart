@@ -13,6 +13,7 @@ const List<String> tier1Skills = [
   'repository-governance-lifecycle',
   'skill-authoring-lifecycle',
   'skill-eval-improve',
+  'steward-continuity-boundary-lifecycle',
   'vision-alignment-foresight',
 ];
 

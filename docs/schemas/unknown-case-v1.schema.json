@@ -3,14 +3,29 @@
   "$id": "https://github.com/arenukvern/skill_steward/schemas/unknown-case-v1.schema.json",
   "title": "Steward unknown case v1",
   "type": "object",
-  "required": ["schema", "case_id", "status", "source_observation", "created_at", "evidence"],
+  "required": [
+    "schema",
+    "id",
+    "status",
+    "repo",
+    "created_at",
+    "source_observation",
+    "summary",
+    "evidence",
+    "review",
+    "retention"
+  ],
   "properties": {
     "schema": { "const": "steward/unknown-case/v1" },
-    "case_id": { "type": "string", "minLength": 1 },
+    "id": { "type": "string", "minLength": 1 },
     "status": { "const": "unknown_case" },
-    "source_observation": { "type": "object" },
+    "repo": { "type": "string", "minLength": 1 },
     "created_at": { "type": "string", "minLength": 1 },
-    "evidence": { "type": "object" }
+    "source_observation": { "type": "object" },
+    "summary": { "type": "object" },
+    "evidence": { "type": "object" },
+    "review": { "type": "object" },
+    "retention": { "type": "string", "minLength": 1 }
   },
   "additionalProperties": true
 }

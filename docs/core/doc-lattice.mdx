@@ -14,8 +14,12 @@ The docs lattice keeps different kinds of truth from collapsing into one giant R
 
 When a topic appears in multiple places, one page must be the canonical owner and the others should link to it.
 
+For producer/consumer repo chains, the producer owns architecture, public contracts, release provenance, and compatibility claims. Consumer repos own adoption proof, local integration deltas, blocked state, and cutover commands. A consumer guide should link to the producer's canonical truth instead of copying it.
+
 ## Adoption check
 
 Use this concept when a reader or agent could update the wrong document. Minimum artifact: one canonical owner plus links from every secondary mention.
 
 Do not duplicate implementation behavior in prose when code, schemas, tests, or generated artifacts already own the truth.
+
+When a document is no longer the canonical owner, choose a disposition: keep, merge, move to ADR, move to FAQ, move to skill, move to check, move to consumer proof, or delete.

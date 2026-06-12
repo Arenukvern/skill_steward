@@ -1,0 +1,205 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:args/command_runner.dart';
+import 'package:path/path.dart' as p;
+import 'package:steward_cli/src/commands/schema_command.dart';
+import 'package:test/test.dart';
+
+void main() {
+  late Directory tempDir;
+
+  setUp(() {
+    exitCode = 0;
+    tempDir = Directory.systemTemp.createTempSync('steward_schema_test_');
+    File(
+      p.join(tempDir.path, 'skills.json'),
+    ).writeAsStringSync(jsonEncode({'skills': []}));
+    File(
+      p.join(tempDir.path, 'steward.yaml'),
+    ).writeAsStringSync(validStewardV1());
+  });
+
+  tearDown(() {
+    exitCode = 0;
+    if (tempDir.existsSync()) {
+      tempDir.deleteSync(recursive: true);
+    }
+  });
+
+  test('schema validate accepts a self-model artifact', () async {
+    final file = File(p.join(tempDir.path, 'self-model.json'))
+      ..writeAsStringSync(jsonEncode(validSelfModel()));
+    final buffer = StringBuffer();
+    final runner = CommandRunner<void>('steward', 'test')
+      ..addCommand(SchemaCommand(buffer, tempDir));
+
+    await runner.run([
+      'schema',
+      'validate',
+      '--schema',
+      'self-model',
+      '--file',
+      p.relative(file.path, from: tempDir.path),
+      '--json',
+    ]);
+
+    final payload = jsonDecode(buffer.toString()) as Map<String, dynamic>;
+    expect(payload['schema_version'], 'steward.schema.validate.v1');
+    expect(payload['schema'], 'self-model');
+    expect(payload['valid'], isTrue);
+    expect(payload['diagnostics'], isEmpty);
+    expect(exitCode, 0);
+  });
+
+  test('schema validate rejects unknown self-model fields', () async {
+    final invalid = validSelfModel()..['raw_memory'] = 'private chat excerpt';
+    final file = File(p.join(tempDir.path, 'self-model.json'))
+      ..writeAsStringSync(jsonEncode(invalid));
+    final buffer = StringBuffer();
+    final runner = CommandRunner<void>('steward', 'test')
+      ..addCommand(SchemaCommand(buffer, tempDir));
+
+    await runner.run([
+      'schema',
+      'validate',
+      '--schema',
+      'self-model',
+      '--file',
+      p.relative(file.path, from: tempDir.path),
+      '--json',
+    ]);
+
+    final payload = jsonDecode(buffer.toString()) as Map<String, dynamic>;
+    expect(payload['valid'], isFalse);
+    expect(
+      payload['diagnostics'],
+      contains(
+        'self-model.json: ${r'$.raw_memory'} is not declared by schema.',
+      ),
+    );
+    expect(exitCode, 1);
+  });
+
+  test('schema check-outputs validates current doctor output shape', () async {
+    final buffer = StringBuffer();
+    final runner = CommandRunner<void>('steward', 'test')
+      ..addCommand(SchemaCommand(buffer, tempDir));
+
+    await runner.run(['schema', 'check-outputs', '--json']);
+
+    final payload = jsonDecode(buffer.toString()) as Map<String, dynamic>;
+    expect(payload['schema_version'], 'steward.schema.check_outputs.v1');
+    expect(payload['valid'], isTrue);
+    expect(payload['checks'], isNotEmpty);
+    expect(
+      (payload['checks'] as List).single,
+      containsPair('schema', 'doctor'),
+    );
+    expect(exitCode, 0);
+  });
+}
+
+Map<String, dynamic> validSelfModel() => {
+  'schema': 'steward/self-model/v1',
+  'steward_id': 'skill-steward-protocol',
+  'repo': 'skill_steward',
+  'status': 'stewardship_protocol',
+  'identity_role': 'Protocol continuity artifact, not final authority.',
+  'boundary_awareness': ['Tool output stays separate from steward synthesis.'],
+  'open_questions': ['What evidence would change this status?'],
+  'values_in_action': ['Evidence before status claims.'],
+  'reflective_state':
+      'Protocol shape is declared; steward status is not proven.',
+  'trigger_event_id': 'mode-2026-06-12-protocol-smoke',
+  'consent_basis': 'repo-governance-artifact',
+  'visibility': 'repo-reviewable',
+  'retention': 'until superseded by later governance artifact',
+  'redaction_policy': 'no raw chats, secrets, credentials, or private memory',
+  'non_claims': ['Does not prove consciousness or repo steward status.'],
+};
+
+String validStewardV1() => '''
+schema: steward/v1
+repo:
+  id: sample_repo
+  archetype: cli_tool
+harness:
+  name: steward
+  mode: cli
+  entrypoints:
+    cli: steward
+adoption:
+  status: adopting
+  owner: sample_repo
+  gate:
+    pillar: quality
+
+stewardship:
+  governance:
+    charter: AGENTS.md
+  knowledge:
+    docs_map: AGENTS.md
+  repo_quality:
+    contract_spec: steward.yaml
+    maturity_model: general_stewardship
+  skill_lifecycle:
+    installable_skills: true
+  quality:
+    validate: steward validate
+  harness:
+    enabled: true
+  release:
+    changelog: CHANGELOG.md
+  review_handoff:
+    moe_required_for_architecture: true
+  strategic_alignment:
+    vision_source: AGENTS.md
+  security:
+    action_effects: required
+  org:
+    owners: AGENTS.md
+actions:
+  doctor.local:
+    kind: command
+    desc: Inspect Steward adoption state.
+    command:
+      argv: [steward, doctor, --json]
+      shell: false
+    cwd: .
+    effects:
+      fs_read: ["."]
+      fs_write: []
+      git: false
+      network: false
+      secrets: false
+      destructive: false
+    safety:
+      class: observe
+      default_policy: auto
+      requires_confirmation: false
+    limits:
+      timeout_ms: 10000
+      max_output_bytes: 200000
+    outputs:
+      - id: stdout
+        kind: stream
+        required: true
+        retention: summary
+        format: json
+    evidence:
+      redact: []
+probes:
+  quick:
+    profile: quick
+    actions: [doctor.local]
+diagnostics:
+  cases: {}
+unknown_cases:
+  path: .steward/unknown-cases/
+  retention: local
+provenance:
+  dependencies: []
+  artifacts: []
+  benchmarks: []
+''';

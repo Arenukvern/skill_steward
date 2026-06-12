@@ -40,6 +40,10 @@ When writing ADRs, FAQs, or any user-facing documentation, you must adhere stric
 Never leave stale planning artifacts (`task.md`, `implementation_plan.md`) as permanent documentation.
 - Once the ADR and FAQs are updated, your knowledge is durable.
 - Extract any remaining useful context and delete or ignore the scratch files.
+- For stale or overlapping non-plan docs, choose one disposition before editing: keep, merge, move to ADR, move to FAQ, move to skill, move to check, move to consumer proof, or delete.
+- Ask what existing doc can shrink or disappear because of this change.
+- Keep canonical architecture in the owning repo; consumer repos should carry adoption proof, local deltas, blocked state, and links to the owner.
+- Before upgrading steward, adoption, harness-ready, or maturity language in an ADR/evidence note, run `steward claim check --claim <claim> --evidence <path> --json`. Treat `not_rejected` as a negative-gate result, not acceptance.
 
 ## Install
 

@@ -41,6 +41,7 @@ npx skills add arenukvern/skill_steward --skill repository-governance-lifecycle
 | Skill | Use when |
 |-------|----------|
 | `repository-governance-lifecycle` | Architectural decisions (ADRs), FAQs, ethical auditing, charter, AGENTS map |
+| `steward-continuity-boundary-lifecycle` | Stewardship protocol mode boundaries, self-model decisions, delegation hygiene, and handoff-safe continuity |
 | `repo-quality-system-lifecycle` | General stewardship baseline for apps, libraries, tools, plugins, harnesses, and meta repos |
 | `mcp-harness-repo-maintainer` | Local action-contract/harness adoption: `steward.yaml`, typed actions, quick probes, benchmark smoke loops |
 | `harness-engineering-lifecycle` | Cross-repo harness generalization after a local contract exists |
@@ -82,7 +83,7 @@ Plugins (hooks) are **not** installed by `npx skills` on Cursor — [plugins/REA
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
 
-This project is indexed by GitNexus as **skill_steward** (2087 symbols, 3669 relationships, 169 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+This project is indexed by GitNexus as **skill_steward** (2164 symbols, 3775 relationships, 176 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
 
 > If any GitNexus tool warns the index is stale, run `npx gitnexus analyze` in terminal first.
 

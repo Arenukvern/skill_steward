@@ -142,13 +142,15 @@ Raw `dart --packages=... bin/steward.dart` commands are local provenance only. I
 
    ```bash
    steward doctor --json
+   steward schema check-outputs --json
    steward actions list --json
    steward action inspect <action-id> --json
    steward probe --profile quick --json
    steward benchmark --scenario <scenario-id> --output .steward/benchmark-summaries/<scenario-id>.json --json
    ```
 
-5. **Interpret honestly** — `doctor`/`actions list` prove discovery, `action inspect` proves the executable boundary, `probe` proves the safe first observation, and `benchmark` proves durable execution only when it returns `result: "pass"`. `durability_blocked` is truthful blocked evidence when `steward.yaml` or `steward/scenarios/*.yaml` is modified or untracked; it is not H2 proof.
+5. **Interpret honestly** — `doctor`/`actions list` prove discovery, `schema check-outputs` catches machine-readable drift, `action inspect` proves the executable boundary, `probe` proves the safe first observation, and `benchmark` proves durable execution only when it returns `result: "pass"`. `durability_blocked` is truthful blocked evidence when `steward.yaml` or `steward/scenarios/*.yaml` is modified or untracked; it is not H2 proof.
+   - If a JSON result is blocked, run `steward blocked explain --input <result.json> --json` to choose config repair, unknown-case capture, or same-benchmark rerun.
 6. **Protect local state** — If the repo has temporary dirty files that must remain in place, write a do-not-touch exception and keep those files out of action inputs. Protected local state is not a benchmark blocker unless it is declared as a contract or scenario input.
 7. **Grow from evidence** — If the probe exposes an unknown failure, capture an unknown case first. Promote a typed action candidate only after owner, effects, limits, redaction, validation command, and benchmark evidence exist. Do not promote diagnostics from the same run that discovered them.
 
