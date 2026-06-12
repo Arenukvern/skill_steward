@@ -12,7 +12,9 @@
 | Multi-agent handoff | `skills/multi-agent-handoff/SKILL.md` | Handoff context, validation status, and artifact capture. |
 | Mixture of Experts | `skills/mixture-of-experts/SKILL.md` | Structured multiplicity and contradiction review. |
 | Vision Alignment Foresight | `skills/vision-alignment-foresight/SKILL.md` | Vision, implementation, evidence, future-fit, and falsifier analysis. |
+| Falsifier template | `references/falsifier-template.md` | Compact falsifier shape for continuity, boundary, and steward-status claims. |
 
 ## Changelog
 
+- 2026-06-12: Added local falsifier template reference for continuity and boundary claims.
 - 2026-06-12: Merged steward self-model and boundary scaffolding sources into one continuity/boundary lifecycle.

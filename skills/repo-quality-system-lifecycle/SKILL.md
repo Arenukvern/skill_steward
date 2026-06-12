@@ -1,6 +1,6 @@
 ---
 name: repo-quality-system-lifecycle
-description: Establish or audit a structural quality contract for any agent-operated engineering repository: app, library, CLI/tool, plugin, harness, or meta repo. Use when a repo needs charter clarity, docs/decision ownership, type-native validation gates, evidence paths, safe action policy, cold-start legibility, or maturity proof before agents can work reliably.
+description: Establish or audit a structural quality contract for any agent-operated engineering repository: app, library, CLI/tool, plugin, harness, or meta repo. Use when a repo needs charter clarity, docs/decision ownership, type-native validation gates, evidence paths, safe action policy, cold-start legibility, maturity proof, or a repo ecology pass to decide what should be compressed, merged, removed, updated, created, retired, or moved to checks.
 license: MIT
 type: governance
 metadata:
@@ -22,6 +22,7 @@ Use this skill to make a repository legible, safe, and improvable for humans and
 - Auditing a multi-repo integration chain where one repo must publish, tag, or stabilize before a consumer repo can truthfully cut over.
 - Deciding whether repeated repo friction should stay native, become docs/FAQ, become an API/schema/generator, become harness proof, or be deleted/collapsed.
 - Auditing broad product claims such as platform support, compatibility, maturity, or "works everywhere" language against live evidence and owner boundaries.
+- Running a repository ecology review over plans, specs, docs, skills, schemas, tools, evidence, and validation surfaces to choose explicit dispositions.
 
 ## When not to use
 
@@ -134,6 +135,45 @@ If an agent discovers friction, do not immediately create permanent automation. 
 | Runtime blind spot | Harness probe, benchmark scenario, unknown case |
 | Stale or overgrown layer | Collapse, demote, or delete after the native gate still passes |
 
+### 7. Run a repository ecology review
+
+Use this when the user asks what should be compressed, changed, merged, removed, updated, created, retired, or moved into checks. Dogfood or benchmark evidence may be relevant, but it is not required for every ecology pass.
+
+Inspect the repo ecology surfaces that matter for the request:
+
+- Plans and specs: in-flight, implemented, stale, or extracted.
+- Docs and maps: canonical owner, duplicated truth, stale proof, or missing links.
+- ADRs and FAQs: durable decisions versus standing why/how.
+- Skills and evals: activation clarity, overlap, missing cases, or bloat.
+- Schemas and generated artifacts: machine-readable drift and behavior SSOT.
+- CLI/MCP/tools: deterministic checks, JSON shape, and bounded effects.
+- Evidence: current proof, historical proof, blocked evidence, and non-claims.
+
+Prefer a single disposition table over a new doctrine page:
+
+| Surface | Current owner | Signal | Disposition | Destination | Evidence/gate | Non-claim |
+|---------|---------------|--------|-------------|-------------|---------------|-----------|
+| `path/or/surface` | canonical owner or unknown | duplicated/stale/missing/repeated | keep/merge/update/remove/create/defer/move to check | ADR/FAQ/skill/check/evidence/native | command, eval, benchmark, blocked state, or none | stronger claim not proven |
+
+Use these disposition meanings:
+
+- `keep`: current canonical owner is still right.
+- `compress`: reduce duplicated prose while preserving the owner.
+- `merge`: move remaining truth into another live surface.
+- `update`: current owner is right but stale.
+- `remove`: content is implemented, stale, duplicated, or no longer useful after extraction.
+- `create`: a missing surface is justified by repeated friction or proof needs.
+- `defer`: the signal is real but not ready for a durable surface.
+- `move to ADR`: the durable value is a decision or trade-off.
+- `move to FAQ`: the durable value is standing why/how guidance.
+- `move to skill`: the durable value is repeatable agent procedure.
+- `move to check`: deterministic drift or freshness should fail mechanically.
+- `move to evidence`: a real run should be preserved with proof and non-claims.
+- `move to consumer proof`: this repo owns local adoption proof, not producer architecture.
+- `leave native`: the repo's language, framework, or product command is the right layer.
+
+When `steward ecology snapshot --json` is available, use it as inventory only. The snapshot can reduce tedious state gathering, but it does not award maturity, adoption, H2/H5, or steward status.
+
 ## Output contract
 
 When reporting an audit or adoption pass, include:
@@ -143,6 +183,7 @@ When reporting an audit or adoption pass, include:
 - Missing contract areas.
 - Pattern layer chosen, smaller layer considered, and expected maintenance delta.
 - Smallest next improvement.
+- Ecology dispositions when the request is about compression, cleanup, or surface changes.
 - What was not validated.
 - Any skipped generators, blocked checks, or non-claims behind broad product language.
 

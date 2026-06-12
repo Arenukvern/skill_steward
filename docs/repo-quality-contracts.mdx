@@ -14,6 +14,7 @@ A repo quality contract answers six questions:
 4. **How can agents act safely when actions exist?** Effects, limits, redaction, permissions, rollback, and owner review for executable actions.
 5. **How does learning persist?** Failures become ADRs, FAQs, tests, eval cases, action candidates, or harness improvements.
 6. **What layer should change?** Native code, repo grammar, public API, schema/codegen, harness, skill, or deletion/collapse. See [Generational architecture ladder](core/generational-architecture-ladder).
+7. **What should the repo ecology do next?** Keep, compress, merge, update, remove, create, defer, move to check, move to evidence, or leave native.
 
 ## Required baseline
 
@@ -29,6 +30,7 @@ A repo quality contract answers six questions:
 | Safety | For agent-executable actions: effects, limits, redaction, network/secrets/destructive policy |
 | Evidence | Place where validation output, benchmark summaries, unknown cases, or eval outcomes are persisted |
 | Pattern layer | A lightweight rule for when repeated friction promotes to docs, APIs, generated artifacts, harness actions, skills, or deletion |
+| Ecology review | A disposition pass for plans, specs, docs, skills, schemas, tools, evidence, and validation surfaces when the repo needs cleanup or compression |
 | Product claims | Broad compatibility, platform, maturity, or integration claims are tiered against owner, evidence, validation, falsifier, and non-claims |
 
 ## Repo archetypes
@@ -182,6 +184,7 @@ The canonical `S0`-`S5` ladder lives in [North Star](NORTH_STAR#general-stewards
 - Do not put domain tutorials in Skill Steward when the domain belongs to the governed repo.
 - Do not let skipped validation, blocked generators, or manually synced generated files support readiness claims.
 - Do not copy producer architecture truth into consumer docs; consumer docs should carry proof, local deltas, and links to the owner.
+- Do not treat `steward ecology snapshot` as a verdict. It is read-only inventory for a Repository Ecology Review, not proof of adoption or maturity.
 
 ## Related skills
 

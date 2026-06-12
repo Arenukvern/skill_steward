@@ -39,7 +39,7 @@ steward schema emit --schema schema-validate --source generated --json
 steward schema drift --json
 ```
 
-`schema validate` checks an artifact against the repo schema subset used here. `schema check-outputs` validates core read-only CLI payload builders against their schemas so schema/CLI drift is caught before an agent depends on a stale field shape. `schema emit` exposes either checked-in schemas or generated typed-model schemas. `schema drift` compares generated contract model schemas with checked-in schemas for public field, required-field, and mutually declared enum drift. These commands are deterministic tools; skills decide when their output is relevant and what claim level it supports.
+`schema validate` checks an artifact against the repo schema subset used here. `schema check-outputs` validates core read-only CLI payload builders against their schemas so schema/CLI drift is caught before an agent depends on a stale field shape. `schema emit` exposes either checked-in schemas or generated typed-model schemas. `schema drift` compares generated contract model schemas with checked-in schemas for public field, required-field, and mutually declared enum drift. Treat these commands as part of the dogfood path whenever `doctor`, protocol, claim, blocked-state, or benchmark JSON is the evidence route; passing them is not a maturity claim by itself.
 
 Schema policy:
 
@@ -97,3 +97,4 @@ JSON Schema covers portable shape checks. Executable validators remain responsib
 - stewardship protocol validation checks mode-event and self-model artifact shape plus raw private-material tripwires; it does not promote `proven_repo_steward`
 - stewardship claim checks are negative gates against obvious overclaims; they do not accept claims or reason over evidence quality
 - blocked-state explanations route `durability_blocked`, `blocked_invalid_config`, and runtime proof blocks into next actions; they do not repair the repo or turn blocked evidence into proof
+- schema drift and output checks keep the machine-readable dogfood path aligned; they do not accept adoption, steward-status, or repo-maturity claims

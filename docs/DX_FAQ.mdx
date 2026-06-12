@@ -19,7 +19,7 @@ VALIDATE before PR     → pnpm run validate  (skill structure; CI also runs ana
 CITE / EVAL SKILLS     → skill-source-citations, skill-eval-improve
 EVAL CI (Tier 1)       → pnpm run eval · evals/cases/*.yaml · ADR 0011
 STEWARD CLI              → ../packages/steward_cli/README.md  (ADR 0007)
-FIRST ADOPTER PROOF     → this file (First adopter golden path) · evidence/first-adopter-golden-path
+HONEST CLAIM ROUTING    → this file (Honest claim routing) · evidence/first-adopter-golden-path
 RELEASE / CHANGELOG    → this file (Release desk) · ADR 0009 · ADR 0010 · skill release-changelog-harness
 PLUGINS (hooks)        → ../plugins/README.md  (not via npx skills)
 ```
@@ -33,10 +33,11 @@ Use the smallest distribution surface that matches the job.
 | Install/update portable skills for a human or agent | `npx skills add/update` | Public skill distribution and local/global agent paths |
 | Discover public skills | skills.sh | Catalog only; not a repo harness contract |
 | Give a repo deterministic agent structure | `steward install/update` with `skills.json` | Repo-local registration, copy/symlink layout, commit pinning; not a public package manager |
-| Validate stewardship protocol artifacts | `steward protocol validate` | Mode-event and self-model shape only; not repo steward status |
-| Reject over-strong stewardship or adoption claims | `steward claim check` | Negative gate against overclaims; not acceptance proof or a maturity score |
+| Validate stewardship protocol artifacts | `steward protocol validate` | Shape check only; status vocabulary lives in ADR 0021 |
+| Check an over-strong stewardship or adoption claim | `steward claim check` | Negative gate only: `not_rejected` means not rejected by the gate, not accepted |
 | Validate a JSON artifact against a Steward schema | `steward schema validate` | Portable shape check; not semantic proof beyond the schema |
-| Catch machine-readable CLI drift | `steward schema check-outputs` | Core read-only output shape check, currently `doctor --json` |
+| Keep dogfood JSON routes aligned | `steward schema check-outputs`, `steward schema drift` | Part of the machine-readable contract path; not maturity proof by itself |
+| Gather repo ecology inventory | `steward ecology snapshot --json` | Read-only facts for a Repository Ecology Review; not an adoption or maturity verdict |
 | Turn blocked JSON into next actions | `steward blocked explain` | Artifact routing for blocked evidence; does not repair or prove |
 | Validate Skill Steward skills | `pnpm run validate`, `pnpm run eval` | Skill structure and Tier-1 routing cases |
 | Adopt general repo stewardship | `repo-quality-system-lifecycle` + repo-quality-contracts.mdx | Charter, docs lattice, type-native gates, evidence, safety, maturity proof |
@@ -82,9 +83,9 @@ make agent-skills
 npx skills add <skill-steward-checkout> --skill mcp-harness-repo-maintainer -a cursor -y
 ```
 
-### First adopter golden path
+### Honest claim routing
 
-Use this path for a repo that does not yet know whether it needs a harness. It proves the stewardship baseline first and reserves typed actions for a separate decision.
+Start with the reader question: what can I honestly claim right now? Use this route for a repo that does not yet know whether it needs a harness. It proves the stewardship baseline first and reserves typed actions for a separate decision.
 
 Expected first result:
 
@@ -96,11 +97,11 @@ Expected first result:
 
 Use the harness flag only when the repo is ready to declare typed actions, probes, and benchmark evidence from the start. The smoke scenario is generated only when the repo has a durable git remote and resolved HEAD commit; otherwise add the scenario after those facts exist.
 
-Canonical commands and interpretation: [First adopter golden path](evidence/first-adopter-golden-path). A passing smoke benchmark proves only H2 contract discovery and safe first observation. A `durability_blocked` result is useful blocked evidence when it points to dirty or untracked contract inputs, but it is not H2 proof and not H4 fresh-agent workflow proof.
+Canonical commands and interpretation: [First adopter golden path](evidence/first-adopter-golden-path). A passing smoke benchmark proves only H2 contract discovery and safe first observation. A `durability_blocked` result is useful blocked evidence when it points to dirty or untracked contract inputs, but it is not H2 proof and not H4 fresh-agent workflow proof. Steward status vocabulary is intentionally centralized in [ADR 0021](decisions/0021-protocol-first-steward-status-gates); adoption and maturity vocabulary lives in [NORTH_STAR](NORTH_STAR#adoption-claim-vocabulary).
 
-### Adopter state routing
+### Dogfood state routing
 
-When working inside an adopter repo, classify the current state before adding new doctrine:
+When working inside an adopter repo, classify the current claim before adding new doctrine:
 
 | State | Signal | Next artifact |
 |-------|--------|---------------|
@@ -110,10 +111,23 @@ When working inside an adopter repo, classify the current state before adding ne
 | `blocked_invalid_config` | `doctor` or `probe` reports invalid config | Repair `steward.yaml` schema/archetype or create an unknown-case artifact if the schema is missing a real repo shape. |
 | `durability_blocked` | Strict benchmark blocks on dirty or untracked contract inputs | Run `steward blocked explain --input <summary.json> --json`, track or commit the contract inputs, then rerun the same benchmark before claiming proof. |
 | `runtime_proof_blocked` | CLI/runtime setup cannot produce the target app, VM URI, semantic node, or redacted assertion | Run `steward blocked explain --input <runtime-block.json> --json`, then capture an unknown-case artifact with commands, logs excerpt, redaction policy, and the exact rerun target. |
+| `machine_contract_drift` | `schema check-outputs` or `schema drift` fails on a JSON route used by the dogfood path | Fix the schema/model/output mismatch before relying on that JSON for benchmark or claim evidence. |
+
+### Repository ecology review
+
+Use a Repository Ecology Review when the question is what should be compressed, changed, merged, removed, updated, created, retired, or moved into checks. This is broader than dogfood: it may inspect plans, specs, docs, skills, schemas, tools, evidence, and validation surfaces without running a benchmark.
+
+Use `repo-quality-system-lifecycle` for judgment and disposition. Use `steward ecology snapshot --json` only to reduce tedious inventory gathering:
+
+```bash
+steward ecology snapshot --json
+```
+
+The snapshot is read-only. It can report observed config, action/probe declarations, benchmark summaries, git dirty state, active plan candidates, and evidence pointers, but it does not execute actions, repair drift, or award maturity.
 
 ### Schema and output drift checks
 
-Use schema checks when a JSON artifact or CLI payload becomes part of an agent contract:
+Use schema checks when a JSON artifact or CLI payload becomes part of the dogfood path:
 
 ```bash
 steward schema validate --schema self-model --file .steward/self-model.json --json
@@ -123,7 +137,7 @@ steward schema emit --schema self-model --source checked-in --json
 steward schema drift --json
 ```
 
-`schema validate` is a portable shape check for repo artifacts. `schema check-outputs` runs core read-only payload builders and validates their JSON against repo schemas. `schema emit` exposes checked-in or generated typed-model schemas for inspection. `schema drift` fails when generated contract model fields, required fields, or mutually declared enums drift from checked-in schemas. Use these before changing schemas, CLI JSON, MCP wrappers, or docs that describe machine-readable fields.
+`schema validate` is a portable shape check for repo artifacts. `schema check-outputs` runs core read-only payload builders and validates their JSON against repo schemas. `schema emit` exposes checked-in or generated typed-model schemas for inspection. `schema drift` fails when generated contract model fields, required fields, or mutually declared enums drift from checked-in schemas. These checks keep the cold-start/dogfood route honest when it depends on machine-readable fields; passing them is not proof of maturity by itself.
 
 ### Stewardship protocol validation
 
@@ -143,7 +157,7 @@ Use the claim gate before writing a status claim stronger than the available evi
 steward claim check --claim proven_repo_steward --evidence docs/evidence/<file>.mdx --json
 ```
 
-Claim checks are negative gates. They do not award a score, accept a claim, or prove steward status; they prevent claims that are obviously stronger than the evidence. Machine-readable output uses `result: "rejected"` or `result: "not_rejected"` and keeps `accepted: false`.
+Claim checks are negative gates. They do not award a score, accept a claim, or prove steward status; they only report whether the claim was rejected by the gate. Machine-readable output uses `result: "rejected"` or `result: "not_rejected"`; `not_rejected` means not rejected by the negative gate, and `accepted` remains `false`.
 
 ### Harness bundle (recommended for product repos)
 
@@ -329,6 +343,8 @@ Cold-start proof loop for a local Steward contract:
 ```bash
 cd packages/steward_cli
 dart run :steward doctor --json
+dart run :steward schema check-outputs --json
+dart run :steward schema drift --json
 dart run :steward actions list --json
 dart run :steward action inspect steward.contract.status.quick --json
 dart run :steward probe --profile quick --json
@@ -339,7 +355,7 @@ dart run :steward benchmark \
   --json
 ```
 
-Interpretation: `doctor` and `actions list` prove contract discovery, `action inspect` proves the exact executable boundary, `probe` proves the safe first observation, and `benchmark` proves durable execution only when it returns `result: "pass"`. A `durability_blocked` benchmark is truthful blocked evidence when `steward.yaml` or the scenario manifest is modified/untracked; track or commit those inputs, then rerun the same command. The built-in `contract-status-smoke` scenario is first contract evidence, not a claim that full agent navigation, diagnosis, or repair is proven.
+Interpretation: `schema check-outputs` / `schema drift` keep the machine-readable route aligned when the dogfood path depends on JSON, `doctor` and `actions list` prove contract discovery, `action inspect` proves the exact executable boundary, `probe` proves the safe first observation, and `benchmark` proves durable execution only when it returns `result: "pass"`. A `durability_blocked` benchmark is truthful blocked evidence when `steward.yaml` or the scenario manifest is modified/untracked; track or commit those inputs, then rerun the same command. The built-in `contract-status-smoke` scenario is first contract evidence, not a claim that full agent navigation, diagnosis, or repair is proven.
 
 Harness/action-contract maturity is staged in [North Star](NORTH_STAR#harnessaction-contract-maturity-ladder). Operational shorthand: H0/H1 means installed and declared, H2 means the cold-start loop above runs or truthfully blocks, H3-H5 require real feedback, fresh-agent workflow proof, and promoted reusable capability.
 

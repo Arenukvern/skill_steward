@@ -7,6 +7,7 @@ Meta stewardship CLI for [Skill Steward](https://github.com/arenukvern/skill_ste
 | Command | Purpose |
 |---------|---------|
 | `steward doctor --json` | Inspect the local Steward contract without running actions |
+| `steward ecology snapshot --json` | Gather read-only repo ecology inventory for disposition review; not a maturity verdict |
 | `steward actions list --json` | List typed repo-local actions and their safety/effect summaries |
 | `steward action inspect <id> --json` | Inspect one exact action contract before execution |
 | `steward schema validate --schema <id> --file <path> --json` | Validate one JSON/JSONL artifact against a Steward schema |
@@ -29,7 +30,7 @@ Meta stewardship CLI for [Skill Steward](https://github.com/arenukvern/skill_ste
 | `steward install` | Apply repo-local `skills.json` registrations into agent-readable folders |
 | `steward update` | Refresh pinned repo-local skill registrations and update `skills.json` commits |
 
-Cold-start proof loop assumes the `steward` command is installed or activated; see [Portable invocation hierarchy](#portable-invocation-hierarchy) for the supported paths.
+Cold-start proof starts with the claim question: what can this repo honestly claim right now? The loop assumes the `steward` command is installed or activated; see [Portable invocation hierarchy](#portable-invocation-hierarchy) for the supported paths.
 
 ```bash
 steward doctor --json
@@ -45,6 +46,8 @@ steward benchmark \
   --json
 ```
 
+The schema commands sit in the loop because this dogfood route depends on machine-readable payloads. They catch route drift; they do not prove repo maturity.
+
 Benchmark execution is durability-gated. If `source.steward_contract` or a file-backed scenario manifest is modified or untracked, the summary must return `result: blocked` with `blocked_by: durability_blocked`; track or commit those contract inputs, then rerun the same benchmark for executable proof. The built-in `contract-status-smoke` scenario proves contract discovery and durability gating only when it returns `result: "pass"`; it does not prove full agent navigation or diagnosis.
 
 When a command writes a blocked JSON result, use:
@@ -54,6 +57,14 @@ steward blocked explain --input .steward/benchmark-summaries/<scenario>.json --j
 ```
 
 The explanation chooses the next artifact route; it does not repair the repo or turn blocked evidence into proof.
+
+Repository ecology review inventory:
+
+```bash
+steward ecology snapshot --json
+```
+
+The snapshot gathers Steward config status, declared action/probe inventory, benchmark declarations and summaries, schema output status, git state, active plan candidates, and evidence pointers. It is read-only inventory for `repo-quality-system-lifecycle`; it does not execute actions, repair drift, award maturity, or prove adoption.
 
 Evidence growth loop:
 

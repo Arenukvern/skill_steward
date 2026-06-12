@@ -71,6 +71,8 @@ curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/insta
 
 The CLI validates Skill Steward skills and can apply repo-local `skills.json` installs/updates with pinned refs. Use `npx skills` for normal public skill installation and updates. See [portable Steward invocation](docs/core/portable-steward-invocation.mdx) before copying command blocks into adoption evidence.
 
+For repo ecology passes, `steward ecology snapshot --json` gathers read-only inventory for decisions about what to compress, merge, update, remove, create, or move into checks. It is not a maturity verdict and does not run repo actions.
+
 ### Maintainer local override
 
 Use local paths only while developing Skill Steward itself, and keep them out of public adopter instructions:
@@ -80,13 +82,13 @@ npx skills add <skill-steward-checkout> -a cursor -a claude-code -a codex -a zed
 cd <skill-steward-checkout>/packages/steward_cli && dart run :steward validate
 ```
 
-## First repo proof
+## First honest claim
 
-Start with the broad repo-quality baseline; add harness proof only when the repo needs typed actions, probes, or benchmark evidence.
+Start by asking what you can honestly claim right now. Use the broad repo-quality baseline for S0/S1 claims; add harness proof only when the repo needs typed actions, probes, or benchmark evidence.
 
 `adopt` creates the S0/S1 stewardship baseline with `stewardship.harness.enabled: false`, `actions: {}`, and `probes: {}`. Those empty maps are valid baseline state, not missing harness proof. `adopt --with-harness` adds the first quick-safe action and probe; it also adds a smoke scenario when a durable git remote and HEAD commit are available. A `durability_blocked` benchmark is useful blocked evidence when contract inputs are dirty or untracked; it is not H2 proof until rerun cleanly.
 
-Canonical commands and expected proof: [First adopter golden path](docs/evidence/first-adopter-golden-path.mdx). Blocked-state routing lives in [DX FAQ: adopter state routing](docs/DX_FAQ.mdx#adopter-state-routing).
+Canonical commands and expected proof: [First adopter golden path](docs/evidence/first-adopter-golden-path.mdx). Claim routing lives in [DX FAQ: honest claim routing](docs/DX_FAQ.mdx#honest-claim-routing); steward status vocabulary is centralized in [ADR 0021](docs/decisions/0021-protocol-first-steward-status-gates.mdx) and [NORTH_STAR](docs/NORTH_STAR.mdx#adoption-claim-vocabulary).
 
 ## Updating installed skills
 

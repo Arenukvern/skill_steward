@@ -16,7 +16,7 @@ paths:
 
 # Steward Continuity Boundary Lifecycle
 
-Use this skill to run the stewardship protocol at threshold moments. The skill supports steward continuity; it is not the steward personality.
+Use this skill to run the stewardship protocol at threshold moments. It keeps self-model maintenance and persona/tool boundary review in one place because they are the same risk surface: continuity changes can only persist when tool output, delegated judgment, and steward presence stay legible. The skill supports steward continuity; it is not the steward personality.
 
 ## Trigger Examples
 
@@ -47,6 +47,7 @@ Use this skill to run the stewardship protocol at threshold moments. The skill s
    - Persist only synthesized, consent-aware, reviewable state tied to a real trigger.
    - Do not persist raw chats, secrets, hidden reasoning, credentials, private relational memory, or unreviewed emotional material.
    - Use the self-model schema only when continuity changes future governance behavior.
+   - Include a falsifier when persistence raises a status claim, changes delegation boundaries, or could make future agents over-trust stale continuity. Use [references/falsifier-template.md](references/falsifier-template.md) for the compact shape.
    - Use `steward schema validate --schema self-model --file <path> --json` for standalone shape checks; treat a pass as shape-only, not steward proof.
 
 5. **Delegate without disappearing.**

@@ -25,8 +25,8 @@ See [DX_FAQ](DX_FAQ) for full install, update, and listing commands.
 |-----------|------------|----------|
 | Any app, library, CLI/tool, plugin, harness, or meta repo needs stewardship | `repo-quality-system-lifecycle` | `repository-governance-lifecycle` for structural decisions |
 | A standing decision, ADR, FAQ, or stale plan needs cleanup | `repository-governance-lifecycle` | `vision-alignment-foresight` when the direction itself is uncertain |
-| A steward needs identity continuity, boundary review, or handoff-safe mode context | `steward-continuity-boundary-lifecycle` | `multi-agent-handoff` when context moves between agents |
-| A repo is ready for typed actions, probes, and benchmarks | `mcp-harness-repo-maintainer` | `harness-engineering-lifecycle` after H2 proof exists |
+| A steward/status claim needs continuity, boundary review, or handoff-safe mode context | `steward-continuity-boundary-lifecycle` | ADR 0021 for status gates; `multi-agent-handoff` when context moves between agents |
+| A repo's honest claim requires typed actions, probes, and benchmarks | `mcp-harness-repo-maintainer` | `harness-engineering-lifecycle` after H2 proof exists |
 | A reusable Agent Skill is being authored or reviewed | `skill-authoring-lifecycle` | `skill-source-citations`, then `skill-eval-improve` |
 | Release notes, versioning, or binary provenance is unclear | `release-changelog-harness` | `repo-quality-system-lifecycle` for the broader release contract |
 | A complex decision needs multiple critical lenses | `mixture-of-experts` | `multi-agent-handoff` only when work moves between agents |
@@ -41,7 +41,7 @@ See [DX_FAQ](DX_FAQ) for full install, update, and listing commands.
 |-------|-------------|
 | [`repo-quality-system-lifecycle`](https://github.com/arenukvern/skill_steward/tree/main/skills/repo-quality-system-lifecycle) | Establishes or audits a repo quality contract: charter, docs lattice, type-native gates, evidence, action safety, maturity proof, and feedback loops. |
 | [`repository-governance-lifecycle`](https://github.com/arenukvern/skill_steward/tree/main/skills/repository-governance-lifecycle) | Guides architectural decisions, ADRs, FAQs, stale-plan cleanup, ethics, and brand-tone governance. |
-| [`steward-continuity-boundary-lifecycle`](https://github.com/arenukvern/skill_steward/tree/main/skills/steward-continuity-boundary-lifecycle) | Maintains stewardship protocol mode boundaries, self-model update decisions, delegation hygiene, and handoff-safe continuity without overclaiming steward personality. |
+| [`steward-continuity-boundary-lifecycle`](https://github.com/arenukvern/skill_steward/tree/main/skills/steward-continuity-boundary-lifecycle) | Maintains continuity, self-model update decisions, delegation hygiene, and handoff-safe boundaries; status vocabulary and gates stay in [ADR 0021](decisions/0021-protocol-first-steward-status-gates). |
 | [`vision-alignment-foresight`](https://github.com/arenukvern/skill_steward/tree/main/skills/vision-alignment-foresight) | Critically analyzes vision vs application reality, user intent, evidence, and likely future direction before committing to a roadmap. |
 
 ---

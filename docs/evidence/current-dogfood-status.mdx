@@ -1,0 +1,106 @@
+# Current dogfood status
+
+**Last verified:** 2026-06-12  
+**Status owner:** evidence ledger only  
+**Current mode:** `stewardship_protocol`
+
+This is the single current ledger for Skill Steward dogfood/adopter status. It indexes historical evidence and records the weakest true current claim. Historical packets remain provenance; they are not automatically current proof.
+
+## Current ledger
+
+| Surface | Last verified | Current blocker | Next rerun | Weakest true claim |
+|---------|---------------|-----------------|------------|--------------------|
+| Skill Steward protocol smoke | 2026-06-12 | None for the local strict protocol smoke. Warnings remain: local HEAD differs from `scenario_source.commit`, and unrelated dirty files exist outside required protocol inputs. | Rerun the same strict benchmark after committing or otherwise changing `steward.yaml`, `steward/scenarios/skill_steward.protocol-smoke.yaml`, `.steward/events.example.jsonl`, or `.steward/self-model.example.json`. | Local strict protocol smoke returned `result: "pass"` with `durability.status: "ready"` for required protocol inputs. This proves only `stewardship_protocol` smoke for the local checkout, not remote reproducibility, `steward_presence`, `proven_repo_steward`, H4/H5, or product runtime behavior. |
+| `mcp_flutter` root steward loop | 2026-06-12 | Warm runtime `enter_text` proof blocked because the showcase launch did not produce a VM service URI. | Rerun the current non-interactive runtime launch, then run `tool/evals/run_runtime_enter_text_greeting.sh` only after a fresh `WS_URI` or `MACOS_WS_URI` exists. If no URI appears, capture a redacted unknown-case artifact. | Declared root contract passed through strict benchmark for `fmt.check.tool-prefix`; runtime UI interaction is not proven in this run. |
+| `ecsly` root steward loop | 2026-06-12 | `steward.yaml` is invalid for current schema: missing `stewardship.repo_quality`, and `repo.archetype: cli_harness` is outside the public enum. | Repair the root Steward config or record an unknown case if the schema cannot represent the repo without distortion; rerun `steward doctor`, `actions list`, `action inspect ecsly.observe`, and `probe --profile quick`. | Repo-owned CLI observe/doctor/dry-run verify produced useful routing evidence; Skill Steward probe remains blocked and harness-ready adoption is not proven. |
+
+## PDSA run — 2026-06-12
+
+### Plan
+
+Prove or precisely block one narrow claim: Skill Steward's protocol-smoke path can produce current durable protocol proof without overclaiming steward status.
+
+### Do
+
+Fresh commands run from the repo-local CLI:
+
+```bash
+cd packages/steward_cli
+dart run :steward doctor --json
+dart run :steward schema check-outputs --json
+dart run :steward schema drift --json
+dart run :steward actions list --json
+dart run :steward action inspect steward.protocol.validate-example --json
+dart run :steward probe --profile quick --json
+dart run :steward benchmark --scenario skill_steward.protocol-smoke --strict --json
+```
+
+### Study
+
+- `doctor`, `schema check-outputs`, `schema drift`, and `actions list` returned valid JSON with no diagnostics.
+- `action inspect steward.protocol.validate-example` showed a bounded local, read-only action with no network, secrets, destructive effects, or writes.
+- `probe --profile quick` passed for `steward.contract.status.quick` and `steward.protocol.validate-example`.
+- `benchmark --scenario skill_steward.protocol-smoke --strict --json` returned `result: "pass"`, `durability.status: "ready"`, and `proof.status: "ready"`.
+- Benchmark warnings remain: local HEAD does not match `scenario_source.commit`, and unrelated dirty files exist outside the required inputs.
+
+### Act
+
+- Keep this ledger as the current status pointer.
+- Treat the retired adopter plan and evidence-local falsifier template as extracted.
+- Keep historical benchmark summaries as provenance only; current status is this ledger plus the fresh command output above.
+- Do not add `steward dogfood status --json` yet. The next CLI surface should compose this route only after this ledger shape survives another run.
+
+## Mode, memory, and handoff boundaries
+
+- Current status remains `stewardship_protocol`.
+- Memory boundary: `.steward/self-model.example.json` is a tracked example input for protocol validation, not private relational memory and not proof of steward personality.
+- Handoff boundary: mode and self-model pointers may be carried through `steward-continuity-boundary-lifecycle` and `multi-agent-handoff`, but receiving agents do not become the same steward identity.
+- Tool boundary: `steward protocol validate`, `schema check-outputs`, `schema drift`, `probe`, and `benchmark` are deterministic tool-mode checks. They do not enter `steward_presence`.
+
+## Next falsifiers to preserve
+
+These are the useful checks extracted from the retired adopter plan. They are rerun guidance, not proof.
+
+### `mcp_flutter`
+
+- Keep root steward only.
+- Confirm the tool registry still matches the canonical `fmt_*` expected surface.
+- Check that package, plugin, runtime metadata, and generated assets stay on the same version train.
+- Check that `flutter-mcp-toolkit init` produces agent manifests without stale paths.
+- Check IntentCall cutover by rejecting local `intentcall_*` path dependencies and keeping consumer docs consumer-only.
+- Rerun the warm runtime path: discover app, capture UI, inspect widget, and enter text through shared CLI/MCP semantics.
+
+Do not persist canonical IntentCall architecture, implemented plans, raw runtime logs or screenshots, absolute local runner hacks, or dirty benchmark summaries as ready proof.
+
+### `ecsly`
+
+- Start from root steward. Use temporary lenses only after root observe proves insufficient.
+- Root observe should show toolchain, MCP binding, verify pipeline, and GitNexus/status hints.
+- Core ECS checks should cover stale entity IDs, deferred command flush, deterministic fixed-step loop, and hot-loop heap-object regression.
+- Plugin boundary checks should keep resources data-only and prevent non-Flutter plugins from leaking Flutter dependencies.
+- Prototype T1 should prove replay/snapshot fixture availability for `spark_physics_ecs`, first as dry-run expansion and later as real execution.
+- Graphics/native checks should capture hints, stale dylib detection, and one golden-frame or parity artifact for WGPU/platform-view paths.
+
+Do not persist every prototype experiment as root doctrine, build/generated artifacts as evidence, raw playtest media, broad `fs_read: ["."]` contracts, or one-off plans after extraction.
+
+## Historical evidence
+
+- [Stewardship protocol smoke packet — 2026-06-12](stewardship-protocol-smoke-packet-2026-06-12)
+- [Stewardship protocol adopter run — 2026-06-12](stewardship-protocol-adopter-run-2026-06-12)
+- [Paired adoption ledger — 2026-06-10](paired-adoption-ledger-2026-06-10)
+- [mcp_flutter capability-level proof — 2026-06-10](mcp-flutter-capability-level-proof-2026-06-10)
+- [mcp_flutter runtime text-input capability packet — 2026-06-10](mcp-flutter-runtime-text-input-capability-proof-2026-06-10)
+- [H3 to H5 adoption promotion packet — 2026-06-10](h3-h5-adoption-promotion-packet-2026-06-10)
+- [Adoption run v2 template](adoption-run-v2-template)
+
+## Moved out of evidence
+
+The stewardship protocol falsifier template is no longer owned by evidence. The durable reference home is [steward-continuity-boundary-lifecycle/references/falsifier-template.md](https://github.com/arenukvern/skill_steward/blob/main/skills/steward-continuity-boundary-lifecycle/references/falsifier-template.md).
+
+## Non-claims
+
+- This ledger does not prove `proven_repo_steward`.
+- This ledger does not prove `steward_presence` as a default mode.
+- This ledger does not prove clean-checkout adoption for the current adopter runs.
+- This ledger does not prove broad repo H5 or product runtime correctness.
+- Historical pass evidence is provenance unless the current ledger row says it was rerun and still holds.
