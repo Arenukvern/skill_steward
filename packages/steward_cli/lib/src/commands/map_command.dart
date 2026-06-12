@@ -427,6 +427,53 @@ class MapCommand extends Command<void> {
     }
     write();
 
+    // 3a. Evidence route
+    write('## 🧾 Evidence Route');
+    write();
+    final evidenceLedgers = <String>[];
+    for (final relPath in [
+      'docs/evidence/current-status.mdx',
+      'docs/evidence/current-dogfood-status.mdx',
+    ]) {
+      if (File(p.join(root, relPath)).existsSync()) {
+        evidenceLedgers.add(relPath);
+      }
+    }
+    final qualityEvidence = _configuredEvidencePath(config);
+    final docsEvidenceExists = Directory(
+      p.join(root, 'docs', 'evidence'),
+    ).existsSync();
+    final localEvidenceExists =
+        qualityEvidence != null &&
+        Directory(p.join(root, qualityEvidence)).existsSync();
+
+    if (evidenceLedgers.isNotEmpty) {
+      write('- **Current Ledger:** `${evidenceLedgers.first}`');
+      if (evidenceLedgers.length > 1) {
+        for (final extra in evidenceLedgers.skip(1)) {
+          write('- **Additional Ledger:** `$extra`');
+        }
+      }
+    } else if (docsEvidenceExists || localEvidenceExists) {
+      write(
+        '- **Current Ledger:** none detected; add one when a current readiness or maturity claim needs a status pointer.',
+      );
+    } else {
+      write(
+        '- **Current Ledger:** none detected; start with native validation and create evidence only when a claim or blocker needs durable proof.',
+      );
+    }
+    if (qualityEvidence != null && qualityEvidence.isNotEmpty) {
+      write('- **Configured Evidence Path:** `$qualityEvidence`');
+    }
+    write(
+      '- **Bootstrap:** `steward evidence init --minimal` creates only `docs/evidence/current-status.mdx`.',
+    );
+    write(
+      '- **Routing:** ADR for decisions; FAQ/docs for standing guidance; check/tool/test for deterministic drift; evidence for real proof or blocked proof.',
+    );
+    write();
+
     // 4. Plan Hygiene (unmerged plans warning)
     final activePlans = <String>[];
     final taskFile = File(p.join(root, 'task.md'));
@@ -471,4 +518,12 @@ class MapCommand extends Command<void> {
 
     (outputSink ?? stdout).write(buffer.toString());
   }
+}
+
+String? _configuredEvidencePath(final StewardConfig config) {
+  final quality = config.stewardship['quality'];
+  if (quality is Map && quality['evidence'] is String) {
+    return quality['evidence'] as String;
+  }
+  return null;
 }

@@ -8,6 +8,7 @@ Meta stewardship CLI for [Skill Steward](https://github.com/arenukvern/skill_ste
 |---------|---------|
 | `steward doctor --json` | Inspect the local Steward contract without running actions |
 | `steward ecology snapshot --json` | Gather read-only repo ecology inventory for disposition review; not a maturity verdict |
+| `steward evidence init --minimal` | Create only `docs/evidence/current-status.mdx` as a current claim ledger |
 | `steward actions list --json` | List typed repo-local actions and their safety/effect summaries |
 | `steward action inspect <id> --json` | Inspect one exact action contract before execution |
 | `steward schema validate --schema <id> --file <path> --json` | Validate one JSON/JSONL artifact against a Steward schema |
@@ -65,6 +66,16 @@ steward ecology snapshot --json
 ```
 
 The snapshot gathers Steward config status, declared action/probe inventory, benchmark declarations and summaries, schema output status, git state, active plan candidates, and evidence pointers. It is read-only inventory for `repo-quality-system-lifecycle`; it does not execute actions, repair drift, award maturity, or prove adoption.
+
+Snapshot benchmark summaries are persisted history from `.steward/benchmark-summaries/`. The JSON labels them as `persisted_history` and includes commit/freshness hints; treat `may_be_stale: true` as a routing signal, not proof failure. If a fresh benchmark result should become snapshot input or be inspected by `steward blocked explain`, run the benchmark with `--output`; console-only JSON is useful for the current session but does not replace the saved summary.
+
+Minimal evidence bootstrap:
+
+```bash
+steward evidence init --minimal
+```
+
+This creates one current ledger at `docs/evidence/current-status.mdx`. It does not create a proof archive, benchmark, or readiness claim. Use it when the repo needs a durable current-status pointer before it needs typed actions, probes, or benchmark machinery.
 
 Evidence growth loop:
 

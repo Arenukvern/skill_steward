@@ -52,10 +52,13 @@ A baseline is not a giant docs rewrite. It is the minimum map a fresh agent need
 
 - Charter or North Star: what the repo is, is not, and optimizes for.
 - Agent map: where an agent starts and what it must not bloat.
+- Claims and evidence router: ADR for decisions, FAQ/docs for standing guidance, checks/tools/tests for deterministic drift, current ledger for weakest true status, evidence for real proof or blocked proof, delete completed plans after extraction.
 - Docs map: canonical owner for why, how, specs, decisions, behavior, and procedures.
 - Behavior SSOT: code, schemas, tests, or generated artifacts that docs link to.
 - Validation command: one native command or truthful blocked state.
 - Release path: changelog/version/artifact provenance, even if immature.
+
+If the repo is not ready for Steward CLI, bootstrap manually: add the router to `AGENTS.md`, name the native validation command, and create `docs/evidence/current-status.mdx` only when a current claim or blocker needs a durable pointer. If the repo has Steward CLI, `steward evidence init --minimal` creates that ledger without adding harness machinery.
 
 ### 3. Define the quality contract
 
@@ -64,7 +67,7 @@ Write the smallest contract that can be checked.
 | Contract area | Required question |
 |---------------|-------------------|
 | Quality gate | What command proves the repo's native quality claim? |
-| Evidence | Where does output, summary, or blocked state persist? |
+| Evidence | Where does output, summary, or blocked state persist, and is it current, historical, superseded, template, or retired? |
 | Decisions | When does a change require an ADR or FAQ update? |
 | Safety | What actions read, write, touch network/secrets, or need confirmation? |
 | Handoff | What context lets another agent resume without re-spelunking? |
@@ -147,7 +150,7 @@ Inspect the repo ecology surfaces that matter for the request:
 - Skills and evals: activation clarity, overlap, missing cases, or bloat.
 - Schemas and generated artifacts: machine-readable drift and behavior SSOT.
 - CLI/MCP/tools: deterministic checks, JSON shape, and bounded effects.
-- Evidence: current proof, historical proof, blocked evidence, and non-claims.
+- Evidence: current proof, historical proof, superseded proof, templates, blocked evidence, current-status pointers, next disposition, and non-claims.
 
 Prefer a single disposition table over a new doctrine page:
 
@@ -173,6 +176,8 @@ Use these disposition meanings:
 - `leave native`: the repo's language, framework, or product command is the right layer.
 
 When `steward ecology snapshot --json` is available, use it as inventory only. The snapshot can reduce tedious state gathering, but it does not award maturity, adoption, H2/H5, or steward status.
+
+For evidence surfaces, apply the envelope in [docs/core/evidence-artifacts.mdx](../../docs/core/evidence-artifacts.mdx). Prefer `move to check` over `move to evidence` when the same deterministic drift will recur; prefer a current ledger over many historical notes when the reader only needs the present weakest true claim.
 
 ## Output contract
 

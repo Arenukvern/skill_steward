@@ -159,6 +159,24 @@ Run the following commands to interact with the project's agentic tools:
 - **Inspect Steward contract**: `steward doctor --json`
 - **Validate workspace**: use the native validation command recorded in `steward.yaml`
 
+## Claims and Evidence
+
+Before claiming readiness, maturity, harness support, steward status, or adoption:
+
+1. Name the exact claim.
+2. Check the weakest proof that supports only that claim.
+3. Route the durable artifact:
+   - ADR for durable decisions and trade-offs.
+   - FAQ/docs for standing why/how guidance.
+   - Check/tool/test for repeated deterministic drift.
+   - Current ledger for the weakest true current status.
+   - Evidence for real proof or blocked proof.
+   - Delete completed plans after extracting durable truth.
+4. Record non-claims.
+
+If this repo needs a current claim ledger, run `steward evidence init --minimal`.
+Use `steward.yaml` and harness proof only when typed actions, probes, or benchmarks help real repo work.
+
 ## Active Skills
 
 Skills are installed locally under `.agents/skills/`. You can view them using:

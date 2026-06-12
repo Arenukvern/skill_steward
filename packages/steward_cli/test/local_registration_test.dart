@@ -10,6 +10,7 @@ import 'package:steward_cli/src/commands/adopt_command.dart';
 import 'package:steward_cli/src/commands/benchmark_command.dart';
 import 'package:steward_cli/src/commands/diagnose_command.dart';
 import 'package:steward_cli/src/commands/doctor_command.dart';
+import 'package:steward_cli/src/commands/evidence_command.dart';
 import 'package:steward_cli/src/commands/install_command.dart';
 import 'package:steward_cli/src/commands/map_command.dart';
 import 'package:steward_cli/src/commands/observe_command.dart';
@@ -234,9 +235,19 @@ Body steps.
       final unknownCase = UnknownCaseCommand();
       final diagnose = DiagnoseCommand();
       final benchmark = BenchmarkCommand();
+      final evidence = EvidenceCommand();
 
       expect(adopt.argParser.options.containsKey('archetype'), isTrue);
       expect(adopt.argParser.options.containsKey('with-harness'), isTrue);
+      expect(evidence.subcommands.containsKey('init'), isTrue);
+      expect(
+        evidence.subcommands['init']!.argParser.options.containsKey('minimal'),
+        isTrue,
+      );
+      expect(
+        evidence.subcommands['init']!.argParser.options.containsKey('json'),
+        isTrue,
+      );
       expect(doctor.argParser.options.containsKey('json'), isTrue);
       expect(actions.subcommands.containsKey('list'), isTrue);
       expect(
@@ -446,7 +457,11 @@ Instruction body.
 
         final agentsMd = File(p.join(tempDir.path, 'AGENTS.md'));
         expect(agentsMd.existsSync(), isTrue);
-        expect(await agentsMd.readAsString(), contains('steward map'));
+        final agentsContent = await agentsMd.readAsString();
+        expect(agentsContent, contains('steward map'));
+        expect(agentsContent, contains('## Claims and Evidence'));
+        expect(agentsContent, contains('steward evidence init --minimal'));
+        expect(agentsContent, contains('Record non-claims.'));
       } finally {
         Directory.current = originalCwd;
       }
@@ -646,12 +661,53 @@ Body steps
         expect(output, contains('Archetype Source'));
         expect(output, contains('Confidence'));
         expect(output, contains('Native Quality Gate'));
+        expect(output, contains('Evidence Route'));
+        expect(output, contains('Configured Evidence Path'));
+        expect(output, contains('steward evidence init --minimal'));
         expect(output, contains('skill-a'));
         expect(output, contains('developer'));
         expect(output, contains('This is skill A.'));
         expect(output, isNot(contains('skill-authoring-lifecycle')));
         expect(output, isNot(contains('skill-eval-improve')));
         expect(output, contains('NORTH_STAR.mdx'));
+      } finally {
+        Directory.current = originalCwd;
+      }
+    });
+
+    test('steward evidence init creates minimal current ledger', () async {
+      final originalCwd = Directory.current;
+      try {
+        Directory.current = tempDir;
+        final runner = CommandRunner<void>('steward', 'test')
+          ..addCommand(AdoptCommand())
+          ..addCommand(EvidenceCommand());
+        await runner.run(['adopt']);
+
+        final output = StringBuffer();
+        final evidenceRunner = CommandRunner<void>('steward', 'test')
+          ..addCommand(EvidenceCommand(output, tempDir));
+        await evidenceRunner.run(['evidence', 'init', '--minimal', '--json']);
+
+        final result = jsonDecode(output.toString()) as Map<String, dynamic>;
+        expect(result['created'], isTrue);
+        expect(result['path'], 'docs/evidence/current-status.mdx');
+
+        final ledger = File(
+          p.join(tempDir.path, 'docs', 'evidence', 'current-status.mdx'),
+        );
+        expect(ledger.existsSync(), isTrue);
+        final ledgerContent = await ledger.readAsString();
+        expect(ledgerContent, contains('status: current'));
+        expect(ledgerContent, contains('evidence_type: ledger'));
+        expect(ledgerContent, contains('Does not prove readiness'));
+
+        final secondOutput = StringBuffer();
+        final secondRunner = CommandRunner<void>('steward', 'test')
+          ..addCommand(EvidenceCommand(secondOutput, tempDir));
+        await secondRunner.run(['evidence', 'init', '--minimal', '--json']);
+        final second = jsonDecode(secondOutput.toString()) as Map;
+        expect(second['created'], isFalse);
       } finally {
         Directory.current = originalCwd;
       }

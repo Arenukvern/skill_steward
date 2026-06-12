@@ -9,10 +9,13 @@ The docs lattice keeps different kinds of truth from collapsing into one giant R
 | How | Commands and contributor workflows | `docs/DX_FAQ.mdx`, `CONTRIBUTING.md` |
 | Spec | Normative rules | `docs/STANDARDS.mdx`, `docs/repo-quality-contracts.mdx` |
 | Map | Where to go first | `AGENTS.md`, `docs/start_here/docs_map.mdx` |
+| Evidence | Claim-proof records, current ledgers, blocked states, templates, and historical provenance | `docs/evidence/`, `docs/core/evidence-artifacts.mdx` |
 | Behavior | Runtime truth | Code, schemas, validators, tests |
 | Procedure | Agent workflow | `skills/*/SKILL.md` |
 
 When a topic appears in multiple places, one page must be the canonical owner and the others should link to it.
+
+Keep decisions, evidence, and current truth separate: ADRs own durable choices, evidence artifacts own real runs or blockers, and current ledgers own the weakest claim that is true now. Historical evidence is provenance unless a current ledger points to it.
 
 For producer/consumer repo chains, the producer owns architecture, public contracts, release provenance, and compatibility claims. Consumer repos own adoption proof, local integration deltas, blocked state, and cutover commands. A consumer guide should link to the producer's canonical truth instead of copying it.
 

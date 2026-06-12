@@ -72,10 +72,16 @@ void main() {
         isTrue,
       );
       expect(
-        (((payload['benchmarks'] as Map)['latest_summaries'] as List).single
-            as Map)['blocked_by'],
-        'durability_blocked',
+        payload['benchmarks'],
+        containsPair('summary_status', 'persisted_history'),
       );
+      final summary =
+          ((payload['benchmarks'] as Map)['persisted_summaries'] as List).single
+              as Map;
+      expect(summary['status'], 'persisted_history');
+      expect(summary['blocked_by'], 'durability_blocked');
+      expect(summary['may_be_stale'], isTrue);
+      expect(summary, containsPair('fresh_result_route', isA<String>()));
       expect(
         payload['non_claims'],
         contains('This snapshot is inventory, not a maturity verdict.'),

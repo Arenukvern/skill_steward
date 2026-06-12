@@ -1,3 +1,21 @@
+---
+status: current
+evidence_type: ledger
+date: 2026-06-12
+scope: Skill Steward dogfood and adopter status
+claim_tested: Current weakest true claims for Skill Steward, mcp_flutter, and ecsly dogfood loops.
+proof_level: current ledger with linked historical evidence and rerun routes
+commands_or_sources: repo-local steward proof loops, linked evidence packets, and current rerun routes
+result: stewardship_protocol status only; no repo steward or broad maturity claim
+limitations: Historical packets remain provenance unless this current ledger says they still hold.
+non_claims:
+  - proven_repo_steward
+  - steward_presence by default
+  - broad H5 or product runtime correctness
+next_disposition: keep as current status pointer until superseded
+current_status_pointer: docs/evidence/current-dogfood-status.mdx
+---
+
 # Current dogfood status
 
 **Last verified:** 2026-06-12  
@@ -48,7 +66,7 @@ dart run :steward benchmark --scenario skill_steward.protocol-smoke --strict --j
 - Keep this ledger as the current status pointer.
 - Treat the retired adopter plan and evidence-local falsifier template as extracted.
 - Keep historical benchmark summaries as provenance only; current status is this ledger plus the fresh command output above.
-- Do not add `steward dogfood status --json` yet. The next CLI surface should compose this route only after this ledger shape survives another run.
+- Do not add `steward dogfood status --json` yet. The next CLI surface should compose this route into narrow JSON without becoming a verdict or maturity command.
 
 ## Mode, memory, and handoff boundaries
 
@@ -85,6 +103,7 @@ Do not persist every prototype experiment as root doctrine, build/generated arti
 
 ## Historical evidence
 
+- [Repository ecology PDSA — 2026-06-12](repository-ecology-pdsa-2026-06-12)
 - [Stewardship protocol smoke packet — 2026-06-12](stewardship-protocol-smoke-packet-2026-06-12)
 - [Stewardship protocol adopter run — 2026-06-12](stewardship-protocol-adopter-run-2026-06-12)
 - [Paired adoption ledger — 2026-06-10](paired-adoption-ledger-2026-06-10)

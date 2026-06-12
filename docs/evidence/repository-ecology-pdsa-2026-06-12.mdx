@@ -1,0 +1,243 @@
+---
+status: historical
+evidence_type: pdsa
+date: 2026-06-12
+scope: repository ecology review and steward ecology snapshot dogfood loops
+claim_tested: Repository Ecology Review plus steward ecology snapshot can reduce review friction without overclaiming maturity.
+proof_level: PDSA dogfood evidence with inventory, blocked-state, and discoverability checks
+commands_or_sources: steward ecology snapshot, schema checks, evals, strict benchmark, claim gate, and adopter simulations
+result: useful pattern with CLI freshness semantics and remaining follow-ups
+limitations: Does not prove H2/H4/H5/S5, adoption, product runtime behavior, or steward status.
+non_claims:
+  - H2/H4/H5/S5
+  - adoption
+  - proven_repo_steward
+next_disposition: keep as historical PDSA evidence linked from the current dogfood ledger
+current_status_pointer: docs/evidence/current-dogfood-status.mdx
+---
+
+# Repository Ecology PDSA — 2026-06-12
+
+**Status:** dogfood evidence  
+**Audience:** maintainers and agents  
+**Mode:** `tool-execution` plus `repo-quality-system-lifecycle` judgment  
+
+## Claim Tested
+
+Repository Ecology Review plus `steward ecology snapshot --json` should help a future agent decide what to compress, merge, remove, update, create, defer, move to checks, or move to evidence without overclaiming maturity.
+
+## Loop 1 — Self Ecology Snapshot
+
+| PDSA | Result |
+|------|--------|
+| Plan | Use `steward ecology snapshot --json` as read-only inventory for this repo, then pair it with schema/output drift checks and Tier-1 evals. |
+| Do | Ran the repo-local snapshot, `schema check-outputs`, `schema drift`, and `pnpm run eval`. |
+| Study | Snapshot was enough to identify repo archetype, valid config, actions/probes, declared benchmarks, clean git state, evidence files, and non-claims. It was not enough to know current benchmark proof because persisted `.steward/benchmark-summaries/skill-steward-protocol-smoke.json` still showed an older `durability_blocked` result while `current-dogfood-status.mdx` records a later console-run pass. |
+| Act | Added a docs route and converted the repeated friction into CLI/test behavior: ecology snapshot benchmark summaries are labeled `persisted_history`, include commit/freshness hints, and point users to `--output` when fresh benchmark results should feed later snapshot or blocked-explain workflows. |
+
+Proof level reached: **inventory-only plus schema/eval gates**. This proves snapshot shape and routing usefulness, not H2/H4/H5/S5, adoption, or steward status.
+
+## Loop 2 — Plan/Spec Retirement
+
+| PDSA | Result |
+|------|--------|
+| Plan | Inspect plans, specs, evidence, templates, and current docs for implemented, duplicated, or misplaced material. |
+| Do | Used repo-quality disposition grammar, searched `docs/superpowers`, `docs/exec-plans`, `docs/evidence`, templates, and evidence status lines. |
+| Study | No active plan/spec files remain in this checkout. Previous adopter plan and evidence-local falsifier template are already retired. Evidence still contains templates/guidance and historical proof packets, but they are labeled and linked from the current dogfood ledger. |
+| Act | Kept existing surfaces. Recorded the disposition table below rather than deleting more; no deterministic repeated drift was found beyond the persisted-summary route handled in Loop 1. |
+
+Proof level reached: **disposition review only**. This proves current cleanup routing, not broad documentation freshness or repo maturity.
+
+## Loop 3 — External Adopter Simulation: `mcp_flutter`
+
+| PDSA | Result |
+|------|--------|
+| Plan | Use `mcp_flutter` because current Skill Steward evidence names it as the cleaner adopter path. Preserve dirty state and run only safe read-only Steward commands. |
+| Do | Ran `git status`, `ecology snapshot`, `doctor`, `actions list`, `action inspect fmt.check.intentcall-hosted-deps`, `probe --profile quick`, and strict benchmark for `mcp_flutter.intentcall-hosted-cutover`. |
+| Study | Snapshot quickly showed valid config, two quick actions, two declared benchmarks, dirty state, stale persisted pass summaries, and missing local `docs/schemas` for schema-output checks. Raw exploration was still needed only to run the current benchmark. The strict benchmark correctly returned `durability_blocked` because `steward/scenarios/mcp_flutter.intentcall-hosted-cutover.yaml` and `tool/intentcall/check_no_path_deps.sh` are modified. |
+| Act | Do not repair or clean the adopter repo from this loop. Recommended next adopter action is to either track/commit the changed scenario and gate script, then rerun the same strict benchmark with `--output`, or capture an unknown-case if the scenario/gate changes are not intended. |
+
+Proof level reached: **valid config, quick probe pass, strict benchmark blocked evidence**. This is not current H2 proof for the modified adopter state.
+
+## Loop 4 — Self Fresh-Proof Under Dirty Repo State
+
+| PDSA | Result |
+|------|--------|
+| Plan | Rerun Skill Steward's own ecology snapshot, schema/output checks, and strict protocol-smoke benchmark against the current dirty working tree. Treat unrelated dirt as signal, not as something to hide. |
+| Do | Ran `ecology snapshot`, `schema check-outputs`, `schema drift`, and `benchmark --scenario skill_steward.protocol-smoke --strict --json` from the repo-local CLI. |
+| Study | Snapshot reported dirty repo state and marked all persisted benchmark summaries as `persisted_history` with `may_be_stale: true`. Schema output conformance and schema drift remained valid. The strict protocol-smoke benchmark returned `result: "pass"`, `durability.status: "ready"`, and `proof.status: "ready"` because its required protocol inputs were clean; warnings correctly preserved the HEAD mismatch and unrelated dirty files. |
+| Act | Keep the current ledger claim narrow: local strict protocol smoke is current proof for required protocol inputs only. Do not write a fresh persisted benchmark summary from this loop; console JSON is enough evidence for the session, and the snapshot's stale-summary warning remains useful until maintainers intentionally refresh `.steward/benchmark-summaries/`. |
+
+Proof level reached: **current local strict protocol-smoke pass with dirty-state warnings**. This does not prove clean-checkout reproducibility, remote source commit proof, H4/H5, product runtime behavior, or steward personality.
+
+## Loop 5 — External Adopter Simulation: `ecsly`
+
+| PDSA | Result |
+|------|--------|
+| Plan | Run a second adopter ecology simulation on `ecsly`, which is larger, prototype-heavy, and currently dirty. Use only read-only Steward commands and do not normalize adopter state. |
+| Do | Ran `git status`, `ecology snapshot`, `doctor`, `actions list`, `probe --profile quick`, strict benchmark for `ecsly.spark-t1-dry-run`, and `blocked explain` against the existing persisted strict summary. |
+| Study | Snapshot found a present but invalid `steward.yaml`: missing `stewardship.repo_quality`, and `repo.archetype: cli_harness` is outside the current public enum. The quick action inventory existed, but `probe --profile quick` returned `blocked_invalid_config`; strict benchmark returned `result: "blocked"` with `blocked_by: "invalid_config"` even though durability/proof inputs were ready. Existing persisted summary history showed an older pass at the same HEAD, but the current invalid config blocks current proof. |
+| Act | Do not introduce persistent `ecsly` sub-stewards or product-layer claims yet. The next adopter action is config repair or an unknown-case if `cli_harness` is an intentional archetype gap; only after that should `ecsly.observe` and the Spark T1 benchmark be rerun. |
+
+Proof level reached: **adopter inventory plus invalid-config blocked evidence**. This is not harness-ready adoption proof for `ecsly`.
+
+## Loop 6 — Fresh-Agent Discoverability
+
+| PDSA | Result |
+|------|--------|
+| Plan | Check whether a future agent can answer "what can I honestly claim right now?" from the current ledger plus CLI inventory, without reading every historical evidence packet. |
+| Do | Read `current-dogfood-status.mdx`, ran `doctor`, `actions list`, `action inspect steward.protocol.validate-example`, `probe --profile quick`, and `claim check --claim stewardship_protocol` against the current ledger. |
+| Study | The ledger exposes the weakest true claim for Skill Steward, `mcp_flutter`, and `ecsly`. `doctor` and `probe` show the next runnable actions; `action inspect` shows the protocol action is bounded local and read-only; `claim check` returned `result: "not_rejected"` with `accepted: false`. The missing machine-readable piece is a compact composed status that joins ledger claim, ecology inventory, persisted-summary freshness, and blocked routes. |
+| Act | Keep the ledger as the human-readable current router. Do not add another broad evidence index. A future `steward dogfood status --json` or `steward ecology route --json` is now better justified, but it should compose existing facts rather than inventing a new proof packet. |
+
+Proof level reached: **discoverability review plus negative claim gate**. This proves the current route is usable, not that it is fully machine-composed.
+
+## Disposition Table
+
+| Surface | Current owner | Signal | Disposition | Destination | Evidence/gate | Non-claim |
+|---------|---------------|--------|-------------|-------------|---------------|-----------|
+| `docs/evidence/current-dogfood-status.mdx` | Evidence ledger | Current router for dogfood status | keep | Evidence | Snapshot reports `current_dogfood_status_present: true` | Does not prove maturity by itself |
+| `.steward/benchmark-summaries/*.json` | Local machine-readable evidence | Useful but can be stale relative to console-only benchmark runs | update docs route | DX FAQ + CLI README | Loop 1 and Loop 3 both found persisted summaries diverging from current console evidence | Snapshot latest summaries are not current proof unless refreshed |
+| `docs/evidence/stewardship-protocol-smoke-packet-2026-06-12.mdx` | Historical evidence | Older packet records a blocked benchmark | keep as historical | Evidence | Current dogfood ledger supersedes current status | Historical blocked evidence is not current pass proof |
+| `docs/evidence/adoption-run-v2-template.mdx` | Evidence/template | Template is intentionally routed from docs map | keep | Evidence until a better template home exists | Docs map links it as adoption-run template | Template is not evidence of a run |
+| `docs/evidence/h3-h5-adoption-promotion-packet-2026-06-10.mdx` | Evidence/guidance | Promotion guidance plus worked examples | keep | Evidence | It explains observation to promoted-capability state machine | Guidance is not proof of new capability |
+| `docs/evidence/mcp-flutter-runtime-text-input-capability-proof-2026-06-10.mdx` | Evidence candidate | Proposed runtime proof remains unproven | defer | Evidence | Current dogfood status marks runtime proof blocked | Does not prove runtime text entry |
+| `docs/evidence/schemantic-contract-spike-note-2026-06-12.mdx` | Evidence/decision note | Deferred dependency decision from typed contracts work | keep for now | Evidence, possible future ADR if repeated | No current production adoption of `schemantic` | Does not reject `schemantic` permanently |
+| `docs/superpowers` / `docs/exec-plans` | Plan hygiene surface | No active plan/spec files found in this checkout | keep empty/no action | Native tree state | `find docs/superpowers docs/exec-plans -type f` returned no files | Does not prove sibling repos are clean |
+| `mcp_flutter` dirty plan/spec cleanup | External adopter repo | Many deleted/modified plan/spec/doc files already present | defer / consumer proof | `mcp_flutter` branch, not Skill Steward | `git status` shows existing adopter cleanup work | Skill Steward should not normalize adopter dirty state |
+| `mcp_flutter` strict benchmark inputs | External adopter contract | Modified scenario and gate script block strict proof | move to evidence or rerun after tracking | Adopter benchmark summary / unknown-case | Strict benchmark returned `durability_blocked` | Quick probe pass is not H2 proof |
+| `ecsly` `steward.yaml` | External adopter contract | Present but invalid against current schema | repair or unknown-case | `ecsly` branch, not Skill Steward | `doctor`, `probe`, and strict benchmark all surfaced invalid config | Do not create persistent sub-stewards before root contract validity |
+| `steward dogfood status --json` idea | Future CLI composition | Repeated need to join ledger, snapshot, schema drift, and blocked routes | create later if shape stabilizes | Steward CLI | Loop 6 showed the human route works but is not machine-composed | Do not create a new proof packet or verdict command |
+
+## Commands Run
+
+### Skill Steward
+
+```bash
+cd /Users/anton/mcp/agent_guild/packages/steward_cli
+dart run :steward ecology snapshot --json
+dart run :steward schema check-outputs --json
+dart run :steward schema drift --json
+pnpm run eval
+```
+
+### Repository Surface Inspection
+
+```bash
+git status --short --branch
+find docs/superpowers docs/exec-plans -type f
+find docs -maxdepth 3 \( -iname '*plan*' -o -iname '*spec*' -o -iname '*template*' \) -type f
+rg -n "Status:|template|TODO|implemented plan|stale|Pending|Current Proof Status|Non-claims" docs/evidence docs/decisions docs/start_here templates skills/repo-quality-system-lifecycle
+```
+
+### `mcp_flutter`
+
+```bash
+git -C /Users/anton/mcp/mcp_flutter status --short --branch
+dart --packages=/Users/anton/mcp/agent_guild/packages/steward_cli/.dart_tool/package_config.json /Users/anton/mcp/agent_guild/packages/steward_cli/bin/steward.dart ecology snapshot --json
+dart --packages=/Users/anton/mcp/agent_guild/packages/steward_cli/.dart_tool/package_config.json /Users/anton/mcp/agent_guild/packages/steward_cli/bin/steward.dart doctor --json
+dart --packages=/Users/anton/mcp/agent_guild/packages/steward_cli/.dart_tool/package_config.json /Users/anton/mcp/agent_guild/packages/steward_cli/bin/steward.dart actions list --json
+dart --packages=/Users/anton/mcp/agent_guild/packages/steward_cli/.dart_tool/package_config.json /Users/anton/mcp/agent_guild/packages/steward_cli/bin/steward.dart action inspect fmt.check.intentcall-hosted-deps --json
+dart --packages=/Users/anton/mcp/agent_guild/packages/steward_cli/.dart_tool/package_config.json /Users/anton/mcp/agent_guild/packages/steward_cli/bin/steward.dart probe --profile quick --json
+dart --packages=/Users/anton/mcp/agent_guild/packages/steward_cli/.dart_tool/package_config.json /Users/anton/mcp/agent_guild/packages/steward_cli/bin/steward.dart benchmark --scenario mcp_flutter.intentcall-hosted-cutover --strict --json
+```
+
+### Skill Steward, Second Ecology Round
+
+```bash
+cd /Users/anton/mcp/agent_guild/packages/steward_cli
+dart run :steward ecology snapshot --json
+dart run :steward schema check-outputs --json
+dart run :steward schema drift --json
+dart run :steward benchmark --scenario skill_steward.protocol-smoke --strict --json
+dart run :steward doctor --json
+dart run :steward actions list --json
+dart run :steward action inspect steward.protocol.validate-example --json
+dart run :steward probe --profile quick --json
+```
+
+```bash
+cd /Users/anton/mcp/agent_guild
+dart --packages=packages/steward_cli/.dart_tool/package_config.json packages/steward_cli/bin/steward.dart claim check --claim stewardship_protocol --evidence docs/evidence/current-dogfood-status.mdx --json
+```
+
+### `ecsly`
+
+```bash
+git -C /Users/anton/xs/ecsly status --short --branch
+dart --packages=/Users/anton/mcp/agent_guild/packages/steward_cli/.dart_tool/package_config.json /Users/anton/mcp/agent_guild/packages/steward_cli/bin/steward.dart ecology snapshot --json
+dart --packages=/Users/anton/mcp/agent_guild/packages/steward_cli/.dart_tool/package_config.json /Users/anton/mcp/agent_guild/packages/steward_cli/bin/steward.dart doctor --json
+dart --packages=/Users/anton/mcp/agent_guild/packages/steward_cli/.dart_tool/package_config.json /Users/anton/mcp/agent_guild/packages/steward_cli/bin/steward.dart actions list --json
+dart --packages=/Users/anton/mcp/agent_guild/packages/steward_cli/.dart_tool/package_config.json /Users/anton/mcp/agent_guild/packages/steward_cli/bin/steward.dart probe --profile quick --json
+dart --packages=/Users/anton/mcp/agent_guild/packages/steward_cli/.dart_tool/package_config.json /Users/anton/mcp/agent_guild/packages/steward_cli/bin/steward.dart benchmark --scenario ecsly.spark-t1-dry-run --strict --json
+dart --packages=/Users/anton/mcp/agent_guild/packages/steward_cli/.dart_tool/package_config.json /Users/anton/mcp/agent_guild/packages/steward_cli/bin/steward.dart blocked explain --input .steward/benchmark-summaries/ecsly.spark-t1-dry-run.strict.json --json
+find docs/superpowers docs/exec-plans docs/exec_plans -type f
+```
+
+## Commands Skipped
+
+| Command | Reason |
+|---------|--------|
+| `steward benchmark --scenario ... --output ...` in `mcp_flutter` | Avoided mutating the external adopter checkout during simulation; console JSON was enough to study the blocked state. |
+| `steward benchmark --scenario skill_steward.protocol-smoke --strict --output ...` in Skill Steward | Avoided replacing historical persisted summary during the ecology loop; the stale-summary warning is the behavior being tested. |
+| `steward benchmark --scenario ecsly.spark-t1-dry-run --strict --output ...` in `ecsly` | Avoided mutating an external adopter checkout while its root config is invalid. |
+| `make showcase` / runtime text-entry proof in `mcp_flutter` | Out of scope for this ecology loop; current evidence already marks runtime proof blocked on VM/debug URI discovery. |
+| `steward schema check-outputs --json` as a separate adopter command | `ecology snapshot` attempted the schema-output path and reported `not_checked` because `mcp_flutter` has no `docs/schemas` directory. |
+
+## Lessons Learned
+
+1. **Snapshot usefulness depends on freshness semantics.** The first loops showed that persisted summaries can diverge from console-only benchmark runs. The tool must label saved summaries as persisted history instead of letting `latest` imply current proof.
+2. **Docs are not enough for deterministic drift.** The docs route was useful, but the repeated friction belongs in CLI output and tests so future agents see the warning at the moment they inspect the repo.
+3. **Readable evidence is not fully replayable evidence.** Future PDSA artifacts should include compact JSON excerpts, output paths, or digests for snapshot, schema, and benchmark payloads when those outputs support the conclusion.
+4. **Disposition review should avoid comfortable `keep`.** Templates and evidence/guidance hybrids may deserve `defer with owner` when they are intentionally tolerated but not yet in their ideal home.
+5. **Maintainer-local invocations must be labeled.** Raw `dart --packages=... bin/steward.dart` commands are acceptable for dogfood, but they are not adopter instructions.
+6. **Usefulness needs friction measures.** Future loops should count docs consulted, commands attempted, missing fields, and whether the next action was discoverable from snapshot alone.
+7. **Config validity comes before steward mythology.** `ecsly` is a good candidate for product/engine stewardship later, but current evidence says root Steward config repair or unknown-case capture comes first.
+8. **Blocked explanation needs current payloads.** `blocked explain` against an older persisted summary returned an unknown-block route, while the current console benchmark showed `invalid_config`; a future tool could accept stdin or point directly from benchmark output to the route.
+9. **The current ledger is useful, but not machine-composed.** A future status command should join ledger claim, snapshot inventory, schema drift, claim gate, and blocked routes without awarding maturity.
+
+## Recommended Next Patch Set
+
+### Compress
+
+- Keep `current-dogfood-status.mdx` as the current dogfood router; do not add another broad dogfood index.
+
+### Merge
+
+- No merge now. Existing ecology review lives correctly in `repo-quality-system-lifecycle`; do not create a new ecology skill.
+
+### Remove
+
+- No removal in Skill Steward from this run. Active plan/spec surfaces were already retired.
+
+### Update
+
+- Done: document that ecology snapshot benchmark summaries are persisted history and need `--output` to refresh.
+- Done: add CLI freshness semantics so persisted benchmark summaries are machine-labeled as historical and potentially stale.
+- In `mcp_flutter`, update or commit the modified scenario/gate script before treating the hosted-cutover benchmark as current proof.
+- In `ecsly`, repair `repo.archetype` and add the missing `stewardship.repo_quality` pillar, or record an unknown-case if `cli_harness` is a legitimate schema gap.
+
+### Create
+
+- This evidence note records the six PDSA loops.
+- Defer creating `steward ecology route` or `steward dogfood status` until it can compose existing facts into one narrow JSON route without becoming a verdict command.
+
+### Defer
+
+- Defer `schemantic` adoption, runtime text-entry proof promotion, and any persistent `ecsly` sub-steward decisions.
+
+### Convert To Check
+
+- Done: add `summary_status`, `persisted_summaries`, `head_matches_summary`, `may_be_stale`, and `fresh_result_route` to `steward ecology snapshot`.
+- Candidate: add an eval or docs test ensuring ecology docs do not imply snapshot verdicts or maturity claims.
+- Candidate: add a machine-readable invalid-config next-action route so `ecology snapshot`, `probe`, and `benchmark` converge on the same repair/unknown-case advice.
+- Candidate: support `blocked explain` from stdin or direct benchmark JSON so console-only blocked runs can be routed without writing adopter artifacts.
+
+## Non-claims
+
+- This run does not prove H2, H4, H5, S5, adoption, or `proven_repo_steward`.
+- This run does not prove `mcp_flutter` current harness readiness because the strict benchmark blocked on modified contract inputs.
+- This run does not prove `ecsly` current harness readiness because root config validation blocks probe and benchmark evidence.
+- This run does not prove runtime text entry or product runtime correctness.
+- This run does not prove that all evidence files are current; historical packets remain provenance unless a current ledger says otherwise.
+- This run does not authorize cleaning or reverting dirty adopter state.

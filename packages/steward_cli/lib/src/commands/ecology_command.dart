@@ -69,7 +69,7 @@ Future<Map<String, dynamic>> ecologySnapshotPayload(final String root) async {
   final git = await _gitSnapshot(root);
   final evidence = _evidenceSnapshot(root);
   final activePlans = _activePlanCandidates(root);
-  final benchmarks = _benchmarkSnapshot(root, config);
+  final benchmarks = _benchmarkSnapshot(root, config, git);
 
   return {
     'schema_version': 'steward.ecology.snapshot.v1',
@@ -163,6 +163,7 @@ Future<Map<String, dynamic>> _gitSnapshot(final String root) async {
 Map<String, dynamic> _benchmarkSnapshot(
   final String root,
   final StewardConfig config,
+  final Map<String, dynamic> git,
 ) {
   final declared = <Map<String, dynamic>>[];
   final rawBenchmarks = config.provenance['benchmarks'];
@@ -185,24 +186,49 @@ Map<String, dynamic> _benchmarkSnapshot(
             .toList()
           ..sort((final a, final b) => a.path.compareTo(b.path));
     for (final file in files) {
-      summaries.add(_benchmarkSummary(root, file));
+      summaries.add(_benchmarkSummary(root, file, git));
     }
   }
 
-  return {'declared': declared, 'latest_summaries': summaries};
+  return {
+    'declared': declared,
+    'summary_status': 'persisted_history',
+    'summaries_may_be_stale': true,
+    'fresh_result_route':
+        'Run benchmark with --output .steward/benchmark-summaries/<scenario>.json when a fresh result should feed future snapshots or blocked explain.',
+    'persisted_summaries': summaries,
+    // Compatibility alias. Prefer persisted_summaries for new consumers.
+    'latest_summaries': summaries,
+  };
 }
 
-Map<String, dynamic> _benchmarkSummary(final String root, final File file) {
+Map<String, dynamic> _benchmarkSummary(
+  final String root,
+  final File file,
+  final Map<String, dynamic> git,
+) {
   final relative = p.relative(file.path, from: root).replaceAll(r'\', '/');
   try {
     final decoded = jsonDecode(file.readAsStringSync());
     if (decoded is Map) {
+      final summaryCommit = decoded['repo_commit'];
+      final headCommit = git['commit'];
+      final headMatchesSummary = summaryCommit is String && headCommit is String
+          ? summaryCommit == headCommit
+          : null;
       return {
         'path': relative,
+        'status': 'persisted_history',
         'scenario': decoded['scenario'],
         'result': decoded['result'],
         'blocked_by': decoded['blocked_by'],
         'run_id': decoded['run_id'],
+        'repo_commit': summaryCommit,
+        'head_commit': headCommit,
+        'head_matches_summary': headMatchesSummary,
+        'may_be_stale': headMatchesSummary != true || git['dirty'] == true,
+        'fresh_result_route':
+            'Use steward benchmark --output to replace this persisted summary.',
       };
     }
   } on Object catch (error) {

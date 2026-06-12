@@ -40,10 +40,23 @@ When writing ADRs, FAQs, or any user-facing documentation, you must adhere stric
 Never leave stale planning artifacts (`task.md`, `implementation_plan.md`) as permanent documentation.
 - Once the ADR and FAQs are updated, your knowledge is durable.
 - Extract any remaining useful context and delete or ignore the scratch files.
-- For stale or overlapping non-plan docs, choose one disposition before editing: keep, merge, move to ADR, move to FAQ, move to skill, move to check, move to consumer proof, or delete.
+- For stale or overlapping non-plan docs, choose one disposition before editing: keep, merge, move to ADR, move to FAQ, move to skill, move to check, move to evidence, move to consumer proof, or delete.
 - Ask what existing doc can shrink or disappear because of this change.
 - Keep canonical architecture in the owning repo; consumer repos should carry adoption proof, local deltas, blocked state, and links to the owner.
 - Before upgrading steward, adoption, harness-ready, or maturity language in an ADR/evidence note, run `steward claim check --claim <claim> --evidence <path> --json`. Treat `not_rejected` as a negative-gate result, not acceptance.
+
+### 6. Route Evidence Deliberately
+Do not turn every run, plan, or discussion into evidence. Use [Evidence artifacts](../../docs/core/evidence-artifacts.mdx) as the routing rule:
+
+- ADR: durable decision, trade-off, status, or consequence.
+- FAQ: standing why/how that humans and agents will ask again.
+- Skill: repeatable agent procedure or interpretation loop.
+- Check/tool/schema/test: deterministic drift, freshness, shape, or blocked-state detection.
+- Current ledger: weakest true current status and rerun route.
+- Evidence artifact: real run proof, blocked state, pattern review, PDSA loop, postmortem, unknown case, or reference that protects a claim or changes future behavior.
+- Delete/remove: completed checklist, stale plan, or template once useful truth has been extracted.
+
+When you create or materially update an evidence artifact, add the lightweight envelope from [ADR 0023](../../docs/decisions/0023-evidence-artifacts-as-claim-proof-records.mdx): `status`, `evidence_type`, `scope`, `claim_tested`, `proof_level`, `result`, `limitations`, `non_claims`, `next_disposition`, and `current_status_pointer`.
 
 ## Install
 

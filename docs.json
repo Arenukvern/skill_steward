@@ -70,6 +70,7 @@
         { "title": "Runtime text-input packet", "href": "/evidence/mcp-flutter-runtime-text-input-capability-proof-2026-06-10" },
         { "title": "Paired adoption ledger", "href": "/evidence/paired-adoption-ledger-2026-06-10" },
         { "title": "Current dogfood status", "href": "/evidence/current-dogfood-status" },
+        { "title": "Repository ecology PDSA", "href": "/evidence/repository-ecology-pdsa-2026-06-12" },
         { "title": "Stewardship protocol smoke packet", "href": "/evidence/stewardship-protocol-smoke-packet-2026-06-12" },
         { "title": "Stewardship adopter run", "href": "/evidence/stewardship-protocol-adopter-run-2026-06-12" },
         { "title": "H4 workflow check", "href": "/evidence/h4-fresh-agent-workflow-check-2026-06-08" },
@@ -87,6 +88,7 @@
         { "title": "Distribution boundaries", "href": "/core/distribution-boundaries" },
         { "title": "Generational architecture ladder", "href": "/core/generational-architecture-ladder" },
         { "title": "Evidence ladder", "href": "/core/evidence-ladder" },
+        { "title": "Evidence artifacts", "href": "/core/evidence-artifacts" },
         { "title": "Doc lattice", "href": "/core/doc-lattice" }
       ]
     },
@@ -124,7 +126,8 @@
         { "title": "0019 — Pattern promotion review", "href": "/decisions/0019-pattern-promotion-review-as-lens-and-proof-loop" },
         { "title": "0020 — Ethical steward boundaries", "href": "/decisions/0020-ethical-boundaries-steward-personalities-and-tool-delegation" },
         { "title": "0021 — Protocol-first steward gates", "href": "/decisions/0021-protocol-first-steward-status-gates" },
-        { "title": "0022 — Repository ecology review", "href": "/decisions/0022-repository-ecology-review-and-snapshot" }
+        { "title": "0022 — Repository ecology review", "href": "/decisions/0022-repository-ecology-review-and-snapshot" },
+        { "title": "0023 — Evidence artifacts", "href": "/decisions/0023-evidence-artifacts-as-claim-proof-records" }
       ]
     },
     {

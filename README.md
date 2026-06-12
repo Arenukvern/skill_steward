@@ -88,6 +88,14 @@ Start by asking what you can honestly claim right now. Use the broad repo-qualit
 
 `adopt` creates the S0/S1 stewardship baseline with `stewardship.harness.enabled: false`, `actions: {}`, and `probes: {}`. Those empty maps are valid baseline state, not missing harness proof. `adopt --with-harness` adds the first quick-safe action and probe; it also adds a smoke scenario when a durable git remote and HEAD commit are available. A `durability_blocked` benchmark is useful blocked evidence when contract inputs are dirty or untracked; it is not H2 proof until rerun cleanly.
 
+For unique repos that only need a current claim/status pointer, start smaller than harness adoption:
+
+```bash
+steward evidence init --minimal
+```
+
+This creates only `docs/evidence/current-status.mdx`. Use it to record weakest true claims, blockers, rerun routes, and non-claims; move repeated deterministic drift into native checks, schemas, tests, CLI diagnostics, or probes.
+
 Canonical commands and expected proof: [First adopter golden path](docs/evidence/first-adopter-golden-path.mdx). Claim routing lives in [DX FAQ: honest claim routing](docs/DX_FAQ.mdx#honest-claim-routing); steward status vocabulary is centralized in [ADR 0021](docs/decisions/0021-protocol-first-steward-status-gates.mdx) and [NORTH_STAR](docs/NORTH_STAR.mdx#adoption-claim-vocabulary).
 
 ## Updating installed skills

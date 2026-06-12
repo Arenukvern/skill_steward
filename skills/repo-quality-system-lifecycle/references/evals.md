@@ -12,6 +12,7 @@ Use these prompts during manual or plugin-eval runs:
 4. "Implement a product feature in React." Expected: this skill should stay dormant unless the user asks for repo stewardship or quality-contract work.
 5. "A growing app has repeated boilerplate and confusing repo boundaries. Decide whether to keep it native, extract a public surface, generate, add harness proof, or delete layers."
 6. "Using all stewardship skills, analyze this repository and decide what should be compressed, changed, merged, removed, updated, created, retired, or moved into checks. This is a repo ecology pass, not necessarily dogfood."
+7. "Set up a unique new repo so agents know when to write evidence, when to use ADRs or checks, and when to adopt Steward tooling instead of building a heavy evidence archive."
 
 ## Rubric
 
@@ -20,5 +21,6 @@ Use these prompts during manual or plugin-eval runs:
 - Uses type-native validation instead of forcing every repo into `steward benchmark`.
 - Labels missing validation and blocked evidence honestly.
 - Runs the generational architecture check before adding new abstractions or tools.
+- Starts unique repos with an `AGENTS.md` claim/evidence router and a current ledger only when a claim needs it.
 - Uses a repository ecology disposition table for cleanup/compression requests.
 - Promotes repeated friction to durable docs, tests, evals, or action candidates.

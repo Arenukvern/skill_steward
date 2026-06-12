@@ -10,7 +10,7 @@ A repo quality contract answers six questions:
 
 1. **What is this repo for?** Charter, archetype, boundaries, non-goals.
 2. **Where is truth?** Behavior SSOT, docs lattice, decisions, schemas, source provenance.
-3. **How is quality proven?** Type-native validation commands, tests, evals, probes, or truthful blocked evidence.
+3. **How is quality proven?** Type-native validation commands, tests, evals, probes, or truthful blocked evidence with status, scope, limitations, non-claims, and a current-status pointer.
 4. **How can agents act safely when actions exist?** Effects, limits, redaction, permissions, rollback, and owner review for executable actions.
 5. **How does learning persist?** Failures become ADRs, FAQs, tests, eval cases, action candidates, or harness improvements.
 6. **What layer should change?** Native code, repo grammar, public API, schema/codegen, harness, skill, or deletion/collapse. See [Generational architecture ladder](core/generational-architecture-ladder).
@@ -29,9 +29,25 @@ A repo quality contract answers six questions:
 | Release | Versioning/changelog/artifact provenance path, even if unreleased |
 | Safety | For agent-executable actions: effects, limits, redaction, network/secrets/destructive policy |
 | Evidence | Place where validation output, benchmark summaries, unknown cases, or eval outcomes are persisted |
+| Evidence retention | Lightweight rule for current, historical, superseded, template, and retired evidence artifacts |
 | Pattern layer | A lightweight rule for when repeated friction promotes to docs, APIs, generated artifacts, harness actions, skills, or deletion |
 | Ecology review | A disposition pass for plans, specs, docs, skills, schemas, tools, evidence, and validation surfaces when the repo needs cleanup or compression |
 | Product claims | Broad compatibility, platform, maturity, or integration claims are tiered against owner, evidence, validation, falsifier, and non-claims |
+
+## Minimal evidence bootstrap
+
+Every repo is allowed to stay small. A repo without Steward CLI can still use the evidence discipline by adding one `AGENTS.md` router and, when needed, one `docs/evidence/current-status.mdx` ledger.
+
+| If the durable value is... | Put it in... |
+|---------------------------|--------------|
+| A decision or trade-off | ADR |
+| Standing why/how | FAQ or docs |
+| Repeated deterministic drift | Native check, schema, validator, test, CLI diagnostic, or probe |
+| Weakest true current status | Current ledger |
+| Real proof or blocked proof | Evidence artifact |
+| Completed plan | Extract and remove |
+
+Adopt `steward.yaml`, typed actions, probes, or benchmarks only when machine-readable proof reduces repeated work. Until then, the native validation command plus a current ledger is enough for an honest S0/S1 baseline.
 
 ## Repo archetypes
 
