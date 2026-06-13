@@ -1,8 +1,10 @@
 # Adoption run v2 template
 
-**Status:** template · **Audience:** maintainers and agents
+**Status:** template/reference, not proof · **Audience:** maintainers and agents
 
 Use this template when a fresh agent attempts one useful repo task and the result might teach future agents. The template keeps the user goal ahead of tool-building, classifies the capability being measured, and makes `continue`, `refactor`, `stop`, `abandon`, and `promote` all valid review outcomes.
+
+This file is a reusable shape only. It is not evidence that an adoption run happened, not current dogfood status, and not proof for any S/H maturity claim. Use [Current dogfood status](current-dogfood-status) for current adopter truth.
 
 Portable shape: [adoption-run-v2.schema.json](../schemas/adoption-run-v2.schema.json).
 
@@ -57,7 +59,7 @@ generational_architecture_check:
 outcome:
   decision: continue # continue | refactor | stop | abandon | promote
   reason: "<why this outcome serves the user goal and repo ecology>"
-  product_impact_line: "product_surface: <changed/proven product surface>; proof: <native gate/artifact>" # or support_only: <Steward scaffolding only; no product acceleration claim>
+  product_impact_line: "product_native_gate: <changed/proven product-native gate>; proof: <native gate/artifact>" # use an allowed prefix below
   docs_or_adr_destination: "<ADR, DESIGN_FAQ, DX_FAQ, evidence note, eval, steward.yaml, or none>"
 
 hot_path_claim:
@@ -93,9 +95,12 @@ Tool-building is allowed only while it serves the user goal.
 
 A command returning success is not enough. Record the observed effect that proves the user-visible or repo-visible state changed as intended. If the tool reports success without effect, keep the run below promotion, record the caveat or unknown case, and return to the original acceptance check through a native or portable fallback.
 
-Before claiming success, fill `outcome.product_impact_line` with one sentence:
-`product_surface: ...; proof: ...`. If only Steward artifacts changed, write
-`support_only: ...` and keep `decision` and `promotion` below promote.
+Before claiming success, fill `outcome.product_impact_line` with one sentence
+using one taxonomy prefix: `runtime_behavior:`, `public_api:`,
+`product_native_gate:`, `visual_capture:`, `performance_metric:`,
+`release_path:`, `developer_workflow:`, `command_output:`,
+`plugin_install:`, or `support_only:`. If only Steward artifacts changed,
+write `support_only: ...` and keep `decision` and `promotion` below promote.
 
 ## Generational architecture check
 

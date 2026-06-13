@@ -9,8 +9,8 @@ Full index for the Skill Steward documentation site and repo. Use this as the ca
 | Understand charter and scope | Charter | [North Star](../NORTH_STAR) |
 | Adopt stewardship in any repo | Repo quality spec | [Repo quality contracts](../repo-quality-contracts) |
 | Check current dogfood/adopter status | Current ledger | [Current dogfood status](../evidence/current-dogfood-status) |
-| Use the first adopter reference path | Reference fixture | [First adopter golden path](../evidence/first-adopter-golden-path) |
-| Record an adoption run | Template/reference | [Adoption run v2 template](../evidence/adoption-run-v2-template) |
+| Use the first adopter reference path | Reference fixture, not proof | [First adopter golden path](../evidence/first-adopter-golden-path) |
+| Record an adoption run | Template/reference, not proof | [Adoption run v2 template](../evidence/adoption-run-v2-template) |
 | Record a pattern promotion decision | Historical example | [Pattern promotion review: generational lens](../evidence/pattern-promotion-review-2026-06-10-generational-lens) |
 | Create or classify evidence | Concept layer | [Evidence artifacts](../core/evidence-artifacts) |
 | Inspect historical proof packets | Evidence archive | Use the docs sidebar archive; historical packets are provenance unless the current ledger says they still hold. |
@@ -43,8 +43,10 @@ Docs should point here instead of paraphrasing behavior.
 | T1 behavior-critical skill routing | [`packages/steward_cli/lib/src/eval/eval_tiers.dart`](https://github.com/arenukvern/skill_steward/blob/main/packages/steward_cli/lib/src/eval/eval_tiers.dart) + `skills/*/evals/cases/*.yaml` | T-named gate list and case files are the CI gate. |
 | Skill/package validation | [`packages/steward_cli/lib/src/validation/`](https://github.com/arenukvern/skill_steward/tree/main/packages/steward_cli/lib/src/validation) | `docs/STANDARDS.mdx` explains the contract; validators enforce it. |
 | Benchmark scenarios | [`steward/scenarios/`](https://github.com/arenukvern/skill_steward/tree/main/steward/scenarios) | Durable execution proof is blocked unless contract inputs are clean and tracked. |
+| Current evidence ledger | [`docs/evidence/current-dogfood-status.mdx`](../evidence/current-dogfood-status) | Current weakest true dogfood/adopter claims, blockers, and rerun routes. |
 | First adopter reference fixture | [`docs/evidence/first-adopter-golden-path.mdx`](../evidence/first-adopter-golden-path) | Sanitized baseline and harness smoke path; not proof from a live adopter run. |
-| H4 workflow check | [`docs/evidence/h4-fresh-agent-workflow-check-2026-06-08.mdx`](../evidence/h4-fresh-agent-workflow-check-2026-06-08) | Current blocked H4/H2 evidence and product lesson. |
+| Historical runtime text-input packet | [`docs/evidence/mcp-flutter-runtime-text-input-capability-proof-2026-06-10.mdx`](../evidence/mcp-flutter-runtime-text-input-capability-proof-2026-06-10) | Historical `mcp_flutter` recipe; current claim and source-checkout blocker live in the current ledger. |
+| H4 workflow check | [`docs/evidence/h4-fresh-agent-workflow-check-2026-06-08.mdx`](../evidence/h4-fresh-agent-workflow-check-2026-06-08) | Historical blocked H4/H2 evidence and product lesson. |
 | CI/release gates | [`.github/workflows/`](https://github.com/arenukvern/skill_steward/tree/main/.github/workflows) | Workflow files define what remote automation actually runs. |
 
 ## Published site (`docs/`)
@@ -53,8 +55,8 @@ Docs should point here instead of paraphrasing behavior.
 - [North Star](../NORTH_STAR)
 - [Repo quality contracts](../repo-quality-contracts)
 - [Skills Catalog](../skills-catalog)
-- [First adopter golden path](../evidence/first-adopter-golden-path)
 - [Current dogfood status](../evidence/current-dogfood-status)
+- [First adopter golden path](../evidence/first-adopter-golden-path)
 - [Plan hygiene (extract & remove)](executable-plans)
 - [Schemas](../schemas/README)
 - [Brand identity](../brand)
@@ -85,7 +87,7 @@ Docs should point here instead of paraphrasing behavior.
 | `docs/DX_FAQ.mdx` | How (commands and contributor workflow) |
 | `docs/STANDARDS.mdx` | Agent Skills package spec |
 | `docs/repo-quality-contracts.mdx` | General repo quality contract spec |
-| `docs/evidence/` | Claim-proof records, current ledgers, blocked-state evidence, and historical provenance; templates there are reference surfaces, not proof |
+| `docs/evidence/` | Claim-proof records, current ledgers, blocked-state evidence, and historical provenance; templates and reference fixtures there are not proof |
 | `AGENTS.md` | Agent map (~100 lines) |
 | `docs/brand.mdx` | Visual identity reference |
 | `skills/` | Installable packages |

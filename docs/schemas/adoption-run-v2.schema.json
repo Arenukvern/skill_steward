@@ -139,7 +139,11 @@
           "enum": ["continue", "refactor", "stop", "abandon", "promote"]
         },
         "reason": { "type": "string", "minLength": 1 },
-        "product_impact_line": { "type": "string", "minLength": 1 },
+        "product_impact_line": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(runtime_behavior|public_api|product_native_gate|visual_capture|performance_metric|release_path|developer_workflow|command_output|plugin_install|support_only):\\s*.+"
+        },
         "docs_or_adr_destination": { "type": "string", "minLength": 1 }
       }
     },

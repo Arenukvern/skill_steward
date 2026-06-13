@@ -1,8 +1,10 @@
 # mcp_flutter runtime text-input capability packet - 2026-06-10
 
-**Status:** proposed adoption-run/v2 proof · **Audience:** maintainers and agents
+**Status:** historical consumer-routed proof packet, not current proof · **Audience:** maintainers and agents
 
-## Claim to prove
+This page is preserved for link stability and for the historical runtime proof recipe. It is not the current `mcp_flutter` runtime text-input claim. Use [Current dogfood status](current-dogfood-status) for the current weakest true claim, source-checkout blocker, and rerun route. New consumer implementation or proof work belongs in the `mcp_flutter` checkout.
+
+## Historical claim this packet tried to prove
 
 A fresh agent can use the Flutter MCP toolkit against the running `flutter_test_app` to discover the greeting text field, enter text through the MCP interaction tool, and prove app state changed.
 
@@ -21,7 +23,7 @@ It is not a claim about all UI automation, all platforms, WebMCP runtime dogfood
 | Repo | `mcp_flutter` |
 | Capability id | `mcp_flutter.runtime.enter-text-greeting` |
 | Capability class | `mcp_tool_runtime` |
-| Scope | `adoption_run` until runtime evidence exists; `capability_level` only after reviewed proof passes |
+| Scope | Historical `adoption_run` recipe; the current ledger owns whether a candidate repeat or source-checkout rerun has passed |
 | User goal | Prove a real MCP toolkit interaction can fill a Flutter text input and verify state |
 | Acceptance check | `AgentState.instance.greeting` equals the submitted text after `enter_text` |
 | Native owner | `flutter_test_app`, `flutter-mcp-toolkit`, interaction command catalog, and MCP toolkit control skill |
@@ -74,7 +76,7 @@ The proof passes only when the final expression returns exactly `steward runtime
 - Do not add a new MCP tool during this adoption run unless the existing toolkit path is proven unable to satisfy the original acceptance check.
 - If `enter_text` fails but a direct Dart expression can set the state, record that as fallback evidence only; it does not prove text-input interaction.
 
-## Promotion requirements
+## Historical promotion requirements
 
 Promote to capability-level H5 only after:
 
@@ -86,6 +88,8 @@ Promote to capability-level H5 only after:
 
 ## Non-claims
 
+- Does not supersede [Current dogfood status](current-dogfood-status).
+- Does not prove the current `mcp_flutter` source checkout has landed or rerun this capability.
 - Does not prove every interaction tool.
 - Does not prove `fill_form`.
 - Does not prove web or mobile platform parity.

@@ -84,7 +84,7 @@ Detour budget: {when to stop repairing tools and return to the goal}
 Claim ceiling: {strongest claim allowed if all lanes pass}
 Non-claims: {adjacent claims this batch cannot prove}
 Acceleration note:
-- Product impact line: {product surface changed/proven, or support_only: Steward scaffolding only}
+- Product impact line: {recognized prefix plus proof; use support_only: Steward scaffolding only when no product surface moved}
 - Saved: {time, uncertainty, or risk reduced by running lanes in parallel}
 - Cost/duplication: {duplicated work, integration cost, or coordination drag caused or avoided}
 - Future hot path: {command, check, skill, script, deletion, or native route created for the next run}
@@ -150,6 +150,10 @@ than creating another proof packet for the same unlanded result.
    delta or product-native gate reached. If the batch only improved Steward
    scaffolding, proof artifacts, or tools-about-tools, claim orientation or
    harness maintenance only, not product acceleration.
+   Use one product impact prefix: `runtime_behavior:`, `public_api:`,
+   `product_native_gate:`, `visual_capture:`, `performance_metric:`,
+   `release_path:`, `developer_workflow:`, `command_output:`,
+   `plugin_install:`, or `support_only:`.
    If `Cost/duplication` is not lower than the saved uncertainty, risk, or
    repeat work, default to `leave_native`, `rejected`, or a low-confidence
    support claim.

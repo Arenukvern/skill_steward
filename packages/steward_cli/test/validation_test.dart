@@ -389,12 +389,72 @@ probes:
 
           expect(
             diagnostics,
+            contains(contains('outcome.product_impact_line is required')),
+          );
+        } finally {
+          tempDir.deleteSync(recursive: true);
+        }
+      });
+
+      test('requires recognized product impact prefix', () async {
+        final tempDir = Directory.systemTemp.createTempSync(
+          'steward_adoption_run_product_impact_prefix_',
+        );
+        try {
+          _writeAdoptionRunRecord(
+            tempDir.path,
+            productImpactLine:
+                'product_surface: old taxonomy line; proof: tool/check.sh passed',
+          );
+
+          final diagnostics = await validateAdoptionRunEvidence(tempDir.path);
+
+          expect(
+            diagnostics,
             contains(
-              contains('outcome.product_impact_line is required'),
+              contains(
+                'outcome.product_impact_line must start with one recognized prefix',
+              ),
             ),
           );
         } finally {
           tempDir.deleteSync(recursive: true);
+        }
+      });
+
+      test('accepts recognized product impact prefixes', () async {
+        const prefixes = [
+          'runtime_behavior:',
+          'public_api:',
+          'product_native_gate:',
+          'visual_capture:',
+          'performance_metric:',
+          'release_path:',
+          'developer_workflow:',
+          'command_output:',
+          'plugin_install:',
+          'support_only:',
+        ];
+
+        for (final prefix in prefixes) {
+          final tempDir = Directory.systemTemp.createTempSync(
+            'steward_adoption_run_product_impact_prefix_ok_',
+          );
+          try {
+            final impactLine = prefix == 'support_only:'
+                ? '$prefix Steward scaffolding only; proof: tool/check.sh passed'
+                : '$prefix observed product impact; proof: tool/check.sh passed';
+            _writeAdoptionRunRecord(
+              tempDir.path,
+              productImpactLine: impactLine,
+            );
+
+            final diagnostics = await validateAdoptionRunEvidence(tempDir.path);
+
+            expect(diagnostics, isEmpty, reason: prefix);
+          } finally {
+            tempDir.deleteSync(recursive: true);
+          }
         }
       });
 
@@ -541,7 +601,7 @@ void _writeAdoptionRunRecord(
   final String observedEffect =
       'Future agents can identify the native gate result.',
   final String productImpactLine =
-      'product_surface: native gate result; proof: tool/check.sh passed',
+      'product_native_gate: native gate result; proof: tool/check.sh passed',
 }) {
   final evidenceDir = Directory(p.join(rootPath, 'docs', 'evidence'))
     ..createSync(recursive: true);

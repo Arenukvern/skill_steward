@@ -173,6 +173,12 @@ non_claims:
         isNotEmpty,
         reason: 'candidate-bearing route output must be schema-covered',
       );
+      final candidate =
+          (route['dispatch_lane_candidates'] as List).first
+              as Map<String, dynamic>;
+      expect(candidate, containsPair('advisory_direct_fix_allowed', false));
+      expect(candidate, isNot(contains('direct_fix_eligible')));
+      expect(candidate, isNot(contains('direct_fix_allowed')));
 
       final embeddedChecks =
           ((snapshot['schema_outputs'] as Map)['checks'] as List)

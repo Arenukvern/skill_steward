@@ -28,7 +28,7 @@ Keep the responsibilities separate:
 - `mixture-of-experts` supplies lane discovery, contradiction detection, and evidence-boundary critique.
 - `steward-continuity-boundary-lifecycle` treats many-agent coordination as at most one readiness sign, not steward-presence or steward-status proof.
 
-Advisory lane candidates are not parent lane contracts, action candidates, project management artifacts, backlog items, or write authorization. CLI-emitted candidates must be marked `advisory`, `ephemeral`, `requires_parent_assignment`, `not_write_authorization`, `authorization_source: none`, and `retention: delete_after_integration`. They must not contain `direct_fix_allowed`.
+Advisory lane candidates are not parent lane contracts, action candidates, project management artifacts, backlog items, or write authorization. CLI-emitted candidates must be marked `advisory`, `ephemeral`, `requires_parent_assignment`, `not_write_authorization`, `authorization_source: none`, `advisory_direct_fix_allowed: false`, and `retention: delete_after_integration`. They must not contain `direct_fix_allowed`.
 
 Parent-assigned contracts are the only surface that may set `direct_fix_allowed: true`, and only for bounded low-risk work with exact write sets, forbidden paths, inherited repo safety rules, required impact/permission checks, and available validation.
 
@@ -65,7 +65,7 @@ Hot-path promotion needs repeated proof, observed effect, falsifier, maintenance
 * `mixture-of-experts` treats lane discovery as advisory critique input.
 * `steward-continuity-boundary-lifecycle` bounds many-agent coordination as one readiness sign.
 * `steward ecology route --json` emits optional advisory `dispatch_lane_candidates` without write authorization.
-* [Ecology route v1 schema](../schemas/ecology-route-v1.schema.json) closes the candidate shape and rejects `direct_fix_allowed`.
+* [Ecology route v1 schema](../schemas/ecology-route-v1.schema.json) closes the candidate shape, requires `advisory_direct_fix_allowed: false`, and rejects `direct_fix_allowed`.
 
 ## More Information
 

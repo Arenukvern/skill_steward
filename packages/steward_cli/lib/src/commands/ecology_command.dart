@@ -205,7 +205,7 @@ List<Map<String, dynamic>> _dispatchLaneCandidates(
       'forbidden_paths': const ['.steward/dispatch-lanes/**'],
       'owner_update_route': next,
       'dependencies': const [],
-      'direct_fix_eligible': false,
+      'advisory_direct_fix_allowed': false,
       'risk_class': _laneRiskClass(sourceDisposition),
       'acceptance_check':
           'Parent assigns an exact lane, reviews the result, and records a terminal state.',

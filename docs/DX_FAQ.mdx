@@ -49,7 +49,7 @@ VALIDATE before PR     → pnpm run validate  (skill structure; CI also runs ana
 CITE / EVAL SKILLS     → skill-source-citations, skill-eval-improve
 EVAL CI (T1 behavior-critical)       → pnpm run eval · evals/cases/*.yaml · ADR 0011
 STEWARD CLI              → ../packages/steward_cli/README.md  (ADR 0007)
-HONEST CLAIM ROUTING    → this file (Honest claim routing) · evidence/first-adopter-golden-path
+HONEST CLAIM ROUTING    → this file (Honest claim routing) · evidence/current-dogfood-status · evidence/first-adopter-golden-path (reference)
 EVIDENCE ROUTING       → core/evidence-artifacts.mdx · core/evidence-ladder.mdx · ADR 0023
 RELEASE / CHANGELOG    → this file (Release desk) · ADR 0009 · ADR 0010 · skill release-changelog-harness
 PLUGINS (hooks)        → ../plugins/README.md  (not via npx skills)
@@ -131,7 +131,7 @@ Expected first result:
 
 Use the harness flag only when the repo is ready to declare typed actions, probes, and benchmark evidence from the start. The smoke scenario is generated only when the repo has a durable git remote and resolved HEAD commit; otherwise add the scenario after those facts exist.
 
-Canonical commands and interpretation: [First adopter golden path](evidence/first-adopter-golden-path). A passing smoke benchmark proves only H2 contract discovery and safe first observation. A `durability_blocked` result is useful blocked evidence when it points to dirty or untracked contract inputs, but it is not H2 proof and not H4 fresh-agent workflow proof. Steward status vocabulary is intentionally centralized in [ADR 0021](decisions/0021-protocol-first-steward-status-gates); adoption and maturity vocabulary lives in [NORTH_STAR](NORTH_STAR#adoption-claim-vocabulary).
+Canonical commands and interpretation: [First adopter golden path](evidence/first-adopter-golden-path). It is a reference fixture, not current adopter proof; current dogfood/adopter truth lives in [Current dogfood status](evidence/current-dogfood-status). A passing smoke benchmark proves only H2 contract discovery and safe first observation. A `durability_blocked` result is useful blocked evidence when it points to dirty or untracked contract inputs, but it is not H2 proof and not H4 fresh-agent workflow proof. Steward status vocabulary is intentionally centralized in [ADR 0021](decisions/0021-protocol-first-steward-status-gates); adoption and maturity vocabulary lives in [NORTH_STAR](NORTH_STAR#adoption-claim-vocabulary).
 
 ### Dogfood state routing
 
@@ -255,7 +255,9 @@ Do not collapse repo folder, public product name, CLI command, MCP prefix, and p
 
 This is maintainer-local context, not general consumer adoption guidance. When a roadmap crosses sibling repositories, record dependency order before claiming a repo is green. A local contract can pass while a downstream consumer is still blocked by an unpublished package or stale override.
 
-Current dated note: [Maintainer-local integration roadmap — 2026-06-08](evidence/maintainer-local-integration-roadmap-2026-06-08).
+Current status: [Current dogfood status](evidence/current-dogfood-status).
+
+Historical dated note: [Maintainer-local integration roadmap — 2026-06-08](evidence/maintainer-local-integration-roadmap-2026-06-08). Keep it for provenance only; do not use it as an active current-note link.
 
 ## 📦 Install Skill Steward (consumers)
 

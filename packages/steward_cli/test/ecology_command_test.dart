@@ -189,7 +189,11 @@ void main() {
         compressCandidate,
         containsPair('retention', 'delete_after_integration'),
       );
-      expect(compressCandidate, containsPair('direct_fix_eligible', false));
+      expect(
+        compressCandidate,
+        containsPair('advisory_direct_fix_allowed', false),
+      );
+      expect(compressCandidate, isNot(contains('direct_fix_eligible')));
       expect(compressCandidate, isNot(contains('direct_fix_allowed')));
       expect(jsonEncode(payload), isNot(contains('repair apply')));
       expect(

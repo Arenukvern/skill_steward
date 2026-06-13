@@ -268,7 +268,7 @@ Map<String, dynamic> validDispatchLaneCandidate() => {
   'owner_update_route':
       'Extract durable truth into ADR, FAQ, code, skill, check, or current ledger.',
   'dependencies': const [],
-  'direct_fix_eligible': false,
+  'advisory_direct_fix_allowed': false,
   'risk_class': 'low',
   'acceptance_check':
       'Parent assigns an exact lane or extracts durable truth elsewhere.',

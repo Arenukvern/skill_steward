@@ -113,6 +113,19 @@ bool _containsAdoptionRunSchema(final String raw) => RegExp(
   r'(^|\n)\s*schema:\s*steward/adoption-run/v2\s*(\n|$)',
 ).hasMatch(raw);
 
+const _productImpactLinePrefixes = [
+  'runtime_behavior:',
+  'public_api:',
+  'product_native_gate:',
+  'visual_capture:',
+  'performance_metric:',
+  'release_path:',
+  'developer_workflow:',
+  'command_output:',
+  'plugin_install:',
+  'support_only:',
+];
+
 void _validateRecord(
   final Map<String, dynamic> record,
   final String label,
@@ -154,6 +167,10 @@ void _validateRecord(
   if (productImpactLine.isEmpty) {
     diagnostics.add(
       '$label: outcome.product_impact_line is required before claiming success.',
+    );
+  } else if (!_hasRecognizedProductImpactPrefix(productImpactLine)) {
+    diagnostics.add(
+      '$label: outcome.product_impact_line must start with one recognized prefix: ${_productImpactLinePrefixes.join(' ')}',
     );
   }
 
@@ -240,6 +257,11 @@ void _validateRecord(
       );
     }
   }
+}
+
+bool _hasRecognizedProductImpactPrefix(final String value) {
+  final normalized = value.trim().toLowerCase();
+  return _productImpactLinePrefixes.any(normalized.startsWith);
 }
 
 void _validateRequiredSections(

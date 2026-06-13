@@ -41,7 +41,7 @@ pnpm run validate
 
 ## Product impact line
 
-<!-- One sentence before any success claim: product_surface: <changed/proven surface>; proof: <native gate/artifact>. If only Steward artifacts changed, write support_only: <why>. -->
+<!-- One sentence before any success claim. Start with one prefix: runtime_behavior:, public_api:, product_native_gate:, visual_capture:, performance_metric:, release_path:, developer_workflow:, command_output:, plugin_install:, or support_only:. If only Steward artifacts changed, write support_only: <why>. -->
 
 Product impact:
 
