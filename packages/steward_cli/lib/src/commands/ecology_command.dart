@@ -152,6 +152,7 @@ Future<Map<String, dynamic>> ecologySnapshotPayload(final String root) async {
 Future<Map<String, dynamic>> ecologyRoutePayload(final String root) async {
   final snapshot = await ecologySnapshotPayload(root);
   final dispositions = _routeDispositions(snapshot);
+  final laneCandidates = _dispatchLaneCandidates(dispositions);
   return {
     'schema_version': 'steward.ecology.route.v1',
     'root': root,
@@ -167,6 +168,7 @@ Future<Map<String, dynamic>> ecologyRoutePayload(final String root) async {
       'stop',
     ],
     'dispositions': dispositions,
+    if (laneCandidates.isNotEmpty) 'dispatch_lane_candidates': laneCandidates,
     'non_claims': const [
       'This route is a stewardship disposition aid, not a maturity verdict.',
       'This route does not apply patches, execute repo actions, or repair drift.',
@@ -174,6 +176,110 @@ Future<Map<String, dynamic>> ecologyRoutePayload(final String root) async {
       'Use native repo gates for product behavior before promoting Steward tooling.',
     ],
   };
+}
+
+List<Map<String, dynamic>> _dispatchLaneCandidates(
+  final List<Map<String, dynamic>> dispositions,
+) {
+  final candidates = <Map<String, dynamic>>[];
+  for (final disposition in dispositions) {
+    final sourceDisposition = disposition['disposition'] as String? ?? '';
+    if (sourceDisposition == 'leave_native' || sourceDisposition == 'stop') {
+      continue;
+    }
+
+    final surface = disposition['surface'] as String? ?? 'repo ecology';
+    final signal =
+        disposition['signal'] as String? ?? 'Ecology signal observed.';
+    final next =
+        disposition['next'] as String? ?? 'Parent assigns the next step.';
+    candidates.add({
+      'lane_id':
+          'lane-${candidates.length + 1}-${_slug(sourceDisposition)}-${_slug(surface)}',
+      'source_disposition': sourceDisposition,
+      'pain_signal': signal,
+      'owner': surface,
+      'scope': surface,
+      'allowed_action': _allowedLaneAction(sourceDisposition),
+      'write_set': const [],
+      'forbidden_paths': const ['.steward/dispatch-lanes/**'],
+      'owner_update_route': next,
+      'dependencies': const [],
+      'direct_fix_eligible': false,
+      'risk_class': _laneRiskClass(sourceDisposition),
+      'acceptance_check':
+          'Parent assigns an exact lane, reviews the result, and records a terminal state.',
+      'native_gate': _nativeGateForLane(sourceDisposition, surface),
+      'suggested_claim_ceiling':
+          'Advisory lane candidate observed from ecology route facts.',
+      'non_claims': const [
+        'Not write authorization.',
+        'Not evidence that work was completed.',
+        'Not a maturity, adoption, H2, H4, H5, S5, or steward-status claim.',
+      ],
+      'integration_rule':
+          'Parent must assign, reject, or delete this candidate after synthesis.',
+      'advisory': true,
+      'ephemeral': true,
+      'requires_parent_assignment': true,
+      'not_write_authorization': true,
+      'authorization_source': 'none',
+      'retention': 'delete_after_integration',
+    });
+  }
+  return candidates;
+}
+
+String _allowedLaneAction(final String disposition) => switch (disposition) {
+  'compress' => 'compress',
+  'validate' => 'verify',
+  'tutor_pain' => 'explore',
+  'promote_tool' => 'promote',
+  _ => 'explore',
+};
+
+String _laneRiskClass(final String disposition) => switch (disposition) {
+  'validate' || 'tutor_pain' => 'medium',
+  _ => 'low',
+};
+
+String _nativeGateForLane(final String disposition, final String surface) {
+  if (surface == 'schema outputs') {
+    return 'steward schema check-outputs --json';
+  }
+  if (surface == 'steward.yaml') {
+    return 'steward doctor --json';
+  }
+  if (surface == 'working tree') {
+    return 'git status --short';
+  }
+  if (surface == '.steward/benchmark-summaries') {
+    return 'rerun the exact benchmark scenario needed for the claim';
+  }
+  return switch (disposition) {
+    'validate' => 'pnpm run validate',
+    'compress' => 'pnpm run validate',
+    _ => 'native repo gate or blocked state named by parent',
+  };
+}
+
+String _slug(final String value) {
+  final buffer = StringBuffer();
+  var lastWasDash = false;
+  for (final rune in value.toLowerCase().runes) {
+    final char = String.fromCharCode(rune);
+    final isAlphaNumeric =
+        (rune >= 97 && rune <= 122) || (rune >= 48 && rune <= 57);
+    if (isAlphaNumeric) {
+      buffer.write(char);
+      lastWasDash = false;
+    } else if (!lastWasDash && buffer.isNotEmpty) {
+      buffer.write('-');
+      lastWasDash = true;
+    }
+  }
+  final slug = buffer.toString();
+  return slug.endsWith('-') ? slug.substring(0, slug.length - 1) : slug;
 }
 
 List<Map<String, dynamic>> _routeDispositions(

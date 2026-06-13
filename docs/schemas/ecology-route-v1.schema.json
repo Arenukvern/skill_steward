@@ -37,10 +37,98 @@
       },
       "minItems": 1
     },
+    "dispatch_lane_candidates": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/dispatch_lane_candidate"
+      },
+      "minItems": 1
+    },
     "non_claims": {
       "type": "array",
       "items": { "type": "string" },
       "minItems": 1
+    }
+  },
+  "$defs": {
+    "string_list": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "dispatch_lane_candidate": {
+      "type": "object",
+      "required": [
+        "lane_id",
+        "source_disposition",
+        "pain_signal",
+        "owner",
+        "scope",
+        "allowed_action",
+        "write_set",
+        "forbidden_paths",
+        "owner_update_route",
+        "dependencies",
+        "direct_fix_eligible",
+        "risk_class",
+        "acceptance_check",
+        "native_gate",
+        "suggested_claim_ceiling",
+        "non_claims",
+        "integration_rule",
+        "advisory",
+        "ephemeral",
+        "requires_parent_assignment",
+        "not_write_authorization",
+        "authorization_source",
+        "retention"
+      ],
+      "properties": {
+        "lane_id": { "type": "string", "minLength": 1 },
+        "source_disposition": {
+          "enum": [
+            "orient",
+            "compress",
+            "validate",
+            "tutor_pain",
+            "promote_tool"
+          ]
+        },
+        "pain_signal": { "type": "string", "minLength": 1 },
+        "owner": { "type": "string", "minLength": 1 },
+        "scope": { "type": "string", "minLength": 1 },
+        "allowed_action": {
+          "enum": [
+            "explore",
+            "verify",
+            "compress",
+            "fix",
+            "implement",
+            "promote"
+          ]
+        },
+        "write_set": { "$ref": "#/$defs/string_list" },
+        "forbidden_paths": { "$ref": "#/$defs/string_list" },
+        "owner_update_route": { "type": "string", "minLength": 1 },
+        "dependencies": { "$ref": "#/$defs/string_list" },
+        "direct_fix_eligible": { "type": "boolean" },
+        "risk_class": { "enum": ["low", "medium", "high", "unknown"] },
+        "acceptance_check": { "type": "string", "minLength": 1 },
+        "native_gate": { "type": "string", "minLength": 1 },
+        "suggested_claim_ceiling": { "type": "string", "minLength": 1 },
+        "non_claims": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "integration_rule": { "type": "string", "minLength": 1 },
+        "advisory": { "const": true },
+        "ephemeral": { "const": true },
+        "requires_parent_assignment": { "const": true },
+        "not_write_authorization": { "const": true },
+        "authorization_source": { "const": "none" },
+        "retention": { "const": "delete_after_integration" }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false

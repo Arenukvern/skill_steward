@@ -150,6 +150,8 @@ non_claims:
   test(
     'dogfood and ecology route payloads conform to checked-in schemas',
     () async {
+      await File(p.join(tempDir.path, 'task.md')).writeAsString('- [ ] loop\n');
+
       final dogfood = await dogfoodStatusPayload(tempDir.path);
       final snapshot = await ecologySnapshotPayload(tempDir.path);
       final route = await ecologyRoutePayload(tempDir.path);
@@ -165,6 +167,11 @@ non_claims:
       expectSchemaConformance(
         route,
         loadSchema('ecology-route-v1.schema.json'),
+      );
+      expect(
+        route['dispatch_lane_candidates'] as List,
+        isNotEmpty,
+        reason: 'candidate-bearing route output must be schema-covered',
       );
 
       final embeddedChecks =

@@ -96,6 +96,8 @@ Readiness signs:
 
 Three signs across at least two repo surfaces are enough to try a bounded `steward-presence` run. They are not enough to claim `proven_repo_steward`.
 
+Many-agent coordination alone is not steward presence. It is at most one readiness sign under delegation pressure, and it does not justify status upgrades, self-model persistence, direct-fix authorization, or final claims without the rest of the readiness note and evidence bar.
+
 Readiness note shape:
 
 ```markdown

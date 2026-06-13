@@ -152,6 +152,8 @@ void main() {
 
       final dispositions = (payload['dispositions'] as List)
           .cast<Map<String, dynamic>>();
+      final laneCandidates = (payload['dispatch_lane_candidates'] as List)
+          .cast<Map<String, dynamic>>();
       expect(
         dispositions.map((final item) => item['disposition']),
         contains('compress'),
@@ -164,6 +166,31 @@ void main() {
         dispositions.map((final item) => item['disposition']),
         contains('leave_native'),
       );
+      expect(
+        laneCandidates.map((final item) => item['source_disposition']),
+        contains('compress'),
+      );
+      expect(
+        laneCandidates.map((final item) => item['source_disposition']),
+        isNot(contains('leave_native')),
+      );
+      final compressCandidate = laneCandidates.firstWhere(
+        (final item) => item['source_disposition'] == 'compress',
+      );
+      expect(compressCandidate, containsPair('advisory', true));
+      expect(compressCandidate, containsPair('ephemeral', true));
+      expect(
+        compressCandidate,
+        containsPair('requires_parent_assignment', true),
+      );
+      expect(compressCandidate, containsPair('not_write_authorization', true));
+      expect(compressCandidate, containsPair('authorization_source', 'none'));
+      expect(
+        compressCandidate,
+        containsPair('retention', 'delete_after_integration'),
+      );
+      expect(compressCandidate, containsPair('direct_fix_eligible', false));
+      expect(compressCandidate, isNot(contains('direct_fix_allowed')));
       expect(jsonEncode(payload), isNot(contains('repair apply')));
       expect(
         payload['non_claims'],

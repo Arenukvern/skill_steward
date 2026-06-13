@@ -142,6 +142,34 @@ void main() {
     }
   });
 
+  test(
+    'ecology route schema rejects advisory candidates with write authorization',
+    () async {
+      final route = await ecologyRoutePayload(tempDir.path);
+      route['dispatch_lane_candidates'] = [
+        validDispatchLaneCandidate()..['direct_fix_allowed'] = true,
+      ];
+      final file = File(p.join(tempDir.path, 'ecology-route.json'))
+        ..writeAsStringSync(jsonEncode(route));
+
+      final payload = await validateSchemaFilePayload(
+        tempDir.path,
+        schemaId: 'steward.ecology.route.v1',
+        filePath: p.relative(file.path, from: tempDir.path),
+      );
+
+      expect(payload['valid'], isFalse);
+      expect(
+        payload['diagnostics'],
+        contains(
+          'ecology-route.json: '
+          r'$.dispatch_lane_candidates[0].direct_fix_allowed'
+          ' is not declared by schema.',
+        ),
+      );
+    },
+  );
+
   test('schema emit accepts every public checked-in schema alias', () async {
     for (final alias in _publicCheckedInSchemaAliases) {
       final payload = await schemaEmitPayload(
@@ -226,6 +254,38 @@ Map<String, dynamic> validSelfModel() => {
   'retention': 'until superseded by later governance artifact',
   'redaction_policy': 'no raw chats, secrets, credentials, or private memory',
   'non_claims': ['Does not prove consciousness or repo steward status.'],
+};
+
+Map<String, dynamic> validDispatchLaneCandidate() => {
+  'lane_id': 'lane-001-compress-active-plan-candidates',
+  'source_disposition': 'compress',
+  'pain_signal': 'Plan-like files are present in the repo ecology.',
+  'owner': 'active plan candidates',
+  'scope': 'active plan candidates',
+  'allowed_action': 'compress',
+  'write_set': const [],
+  'forbidden_paths': const [],
+  'owner_update_route':
+      'Extract durable truth into ADR, FAQ, code, skill, check, or current ledger.',
+  'dependencies': const [],
+  'direct_fix_eligible': false,
+  'risk_class': 'low',
+  'acceptance_check':
+      'Parent assigns an exact lane or extracts durable truth elsewhere.',
+  'native_gate': 'pnpm run validate',
+  'suggested_claim_ceiling':
+      'Advisory lane candidate observed from ecology route facts.',
+  'non_claims': const [
+    'Not write authorization.',
+    'Not evidence that work was completed.',
+  ],
+  'integration_rule': 'Parent must assign, reject, or delete after synthesis.',
+  'advisory': true,
+  'ephemeral': true,
+  'requires_parent_assignment': true,
+  'not_write_authorization': true,
+  'authorization_source': 'none',
+  'retention': 'delete_after_integration',
 };
 
 Map<String, dynamic> validBenchmarkSummary() => {

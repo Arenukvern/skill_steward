@@ -56,6 +56,33 @@ Create or update `HANDOFF.md` (or a section in the task issue) with:
 - {ADR, FAQ, skill, evidence note, test, validator, generator, or check that should absorb durable learning}
 ```
 
+## Parallel batch contract
+
+For broad decomposable work, the parent may use a disposable batch section instead of a new plan format. Keep only enough contract to move safely:
+
+- original goal and user acceptance check;
+- default native gate and aggregate gates;
+- detour budget and stop condition;
+- integration capacity, merge order, and conflict policy;
+- comparison strategy for lane outputs;
+- final evidence boundary, claim ceiling, and non-claims;
+- hot-path promotion check for repeated verification or comparison work.
+
+## Parent lane contract
+
+Parent-assigned lane contracts are the only write-authority surface. Advisory ecology route `dispatch_lane_candidates`, MoE findings, A2A notes, and reviewer comments are inputs only.
+
+Each assigned lane should state:
+
+- `lane_id`, assigned agent/role, scope, exact `write_set`, and `forbidden_paths`;
+- inherited repo rules, required impact checks, permission checks, native gate, and aggregate gate responsibility;
+- `direct_fix_allowed: true|false`, claim ceiling, non-claims, and escalation triggers;
+- terminal state: `integrated_to_owner`, `rejected`, `blocked_to_current_ledger`, `promoted_to_durable_owner`, `deleted`, `reported_to_parent`, `accepted_as_input`, `partial`, `timed_out`, or `superseded`.
+
+Only a parent lane contract may set `direct_fix_allowed: true`. Direct fixes must be bounded low-risk work with exact write sets, declared forbidden paths, inherited safety rules, required impact/permission checks, and available validation. If validation is skipped or blocked, the result downgrades to `blocked` or `recommendation`; it is not `integrated_to_owner`.
+
+A2A artifacts never authorize writes, widen scope, accept/reject lanes, or launder steward judgment. The parent or explicit A2Human checkpoint owns authorization, synthesis, final claims, and scope changes.
+
 ## Workflow
 
 1. **Decompose** — break the goal into independent slices where possible.

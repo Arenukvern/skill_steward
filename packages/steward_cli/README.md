@@ -8,7 +8,7 @@ Meta stewardship CLI for [Skill Steward](https://github.com/arenukvern/skill_ste
 |---------|---------|
 | `steward doctor --json` | Inspect the local Steward contract without running actions |
 | `steward ecology snapshot --json` | Gather read-only repo ecology inventory for disposition review; not a maturity verdict |
-| `steward ecology route --json` | Compose ecology inventory into North Star dispositions; not repair automation |
+| `steward ecology route --json` | Compose ecology inventory into North Star dispositions and optional advisory lane candidates; not repair automation |
 | `steward dogfood status --json` | Compose current ledger and ecology routing facts; not a verdict |
 | `steward evidence init --minimal` | Create only `docs/evidence/current-status.mdx` as a current claim ledger |
 | `steward actions list --json` | List typed repo-local actions and their safety/effect summaries |
@@ -68,7 +68,7 @@ steward ecology snapshot --json
 steward ecology route --json
 ```
 
-The snapshot gathers Steward config status, declared action/probe inventory, benchmark declarations and summaries, schema output status, git state, active plan candidates, and evidence pointers. `ecology route` composes those facts into North Star dispositions: orient, compress, validate, tutor pain, promote tools, leave native, or stop. Both commands are read-only; neither executes actions, applies repairs, awards maturity, or proves adoption.
+The snapshot gathers Steward config status, declared action/probe inventory, benchmark declarations and summaries, schema output status, git state, active plan candidates, and evidence pointers. `ecology route` composes those facts into North Star dispositions: orient, compress, validate, tutor pain, promote tools, leave native, or stop. It may also emit advisory `dispatch_lane_candidates` for repo-wide pain, but those hints are not parent lane contracts and never authorize writes. Both commands are read-only; neither executes actions, applies repairs, awards maturity, or proves adoption.
 
 Snapshot benchmark summaries are persisted history from `.steward/benchmark-summaries/`. The JSON labels them as `persisted_history` and includes commit/freshness hints; treat `may_be_stale: true` as a routing signal, not proof failure. Pipe fresh blocked JSON to `steward blocked explain --stdin --json`; use `--output` only when a fresh benchmark result should replace persisted history or feed future snapshots.
 

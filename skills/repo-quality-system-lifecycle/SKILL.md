@@ -180,6 +180,8 @@ Use these disposition meanings:
 
 When `steward ecology snapshot --json` is available, use it as inventory only. The snapshot can reduce tedious state gathering, but it does not award maturity, adoption, H2/H5, or steward status.
 
+When `steward ecology route --json` emits `dispatch_lane_candidates`, treat them as disposable advisory hints derived from the same route facts. They are not write authorization, action candidates, backlog items, parent lane contracts, maturity evidence, or scheduler state. Use them only to make repo-wide pain legible for a parent agent, then assign real work through `multi-agent-handoff` or delete the scaffolding after synthesis. Do not generate or trust lane candidates from `leave_native`.
+
 For evidence surfaces, apply the envelope in [docs/core/evidence-artifacts.mdx](../../docs/core/evidence-artifacts.mdx). Prefer `move to check` over `move to evidence` when the same deterministic drift will recur; prefer a current ledger over many historical notes when the reader only needs the present weakest true claim.
 
 Run ecology as a disposition loop, not an evidence treadmill or a tool tunnel:

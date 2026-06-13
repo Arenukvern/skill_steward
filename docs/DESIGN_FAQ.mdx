@@ -16,6 +16,9 @@ A: Agent-operated engineering work depends on more than agent internals or produ
 **Q: How can the North Star change without silent drift?**
 A: Structural work gets a `north_star_impact` classification before it becomes durable. `none` and `applies` stay in the native workflow; `clarifies` can update FAQ, skill, map, or check text; `sub_star` must declare a parent/child boundary; `amends` or `conflicts` requires an explicit ADR and North Star diff before the product center moves. This keeps repair, evidence, harnesses, and dogfood JSON as mechanisms unless we deliberately decide otherwise.
 
+**Q: Why can stewardship use parallel lanes without becoming a scheduler?**
+A: The smallest useful disposition is the smallest truthful coordination unit, not always one serial action. When repo-wide pain is safely decomposable, a parent agent may use advisory lane hints, MoE critique, and handoff contracts to move several independent lanes while preserving owner boundaries, native gates, synthesis, and claim ceilings. Skill Steward does not schedule agents or authorize writes from ecology output; parent-assigned handoff contracts own any direct-fix authority. [ADR 0026](decisions/0026-parallel-acceleration-governance).
+
 **Q: Why does Skill Steward exist instead of another skills catalog?**  
 A: The open skills ecosystem has huge domain libraries; Skill Steward is an **Engineering Stewardship layer**—governing, validating, documenting, packaging, and improving repo systems and agent workflows—not competing on React/Flutter/cloud recipes. Domain skills stay in the governed product or domain repos.
 
