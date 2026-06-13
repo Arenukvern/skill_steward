@@ -63,7 +63,7 @@
         { "title": "Repo quality contracts", "href": "/repo-quality-contracts" },
         { "title": "DESIGN_FAQ", "href": "/DESIGN_FAQ" },
         { "title": "DX_FAQ", "href": "/DX_FAQ" },
-        { "title": "First adopter proof", "href": "/evidence/first-adopter-golden-path" },
+        { "title": "First adopter reference fixture", "href": "/evidence/first-adopter-golden-path" },
         { "title": "Current dogfood status", "href": "/evidence/current-dogfood-status" },
         { "title": "Skills Catalog", "href": "/skills-catalog" },
         { "title": "Docs Map", "href": "/start_here/docs_map" },
@@ -132,7 +132,8 @@
         { "title": "0020 — Ethical steward boundaries", "href": "/decisions/0020-ethical-boundaries-steward-personalities-and-tool-delegation" },
         { "title": "0021 — Protocol-first steward gates", "href": "/decisions/0021-protocol-first-steward-status-gates" },
         { "title": "0022 — Repository ecology review", "href": "/decisions/0022-repository-ecology-review-and-snapshot" },
-        { "title": "0023 — Evidence artifacts", "href": "/decisions/0023-evidence-artifacts-as-claim-proof-records" }
+        { "title": "0023 — Evidence artifacts", "href": "/decisions/0023-evidence-artifacts-as-claim-proof-records" },
+        { "title": "0024 — Loop pain extraction", "href": "/decisions/0024-loop-pain-extraction-into-stewardship-patterns" }
       ]
     },
     {

@@ -14,13 +14,13 @@ A: Explains **how** to contribute and install (npx skills, `pnpm run validate`, 
 A: ADRs are formal decision records for significant changes. DESIGN_FAQ is a compressed index of standing **why** answers; link to ADRs for full deliberation.
 
 **Q: What about package-level FAQs?**  
-A: This repo has root FAQs only. When adding sub-packages with their own boundaries, add `DESIGN_FAQ.mdx` + `DX_FAQ.mdx` there and router rows—see skill `faq-driven-docs`.
+A: This repo has root FAQs only. When adding sub-packages with their own boundaries, add `DESIGN_FAQ.mdx` + `DX_FAQ.mdx` there and router rows; use `repository-governance-lifecycle` for durable doc-lattice changes.
 
 **Q: What format should DX_FAQ.mdx use?**  
 A: **Memory Palace** — emoji locations with terse code blocks (install, validate, add skill). Optimized for agent recall.
 
 **Q: Where is the charter?**  
-A: `docs/NORTH_STAR.mdx` — not DESIGN_FAQ. Use skill `north-star-governance` when changing scope or AGENTS map.
+A: `docs/NORTH_STAR.mdx` — not DESIGN_FAQ. Use `repository-governance-lifecycle` when changing scope or the AGENTS map.
 
 **Q: When should I reference DESIGN_FAQ.mdx?**  
 A: Scope questions (“does this skill belong in Guild?”), plugins vs skills, documentation strategy, rejection of domain skills.

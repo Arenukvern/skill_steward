@@ -57,6 +57,53 @@ void main() {
     expect(execution['stdout'], contains(tempDir.path));
   });
 
+  test('quick probe kills timed out actions', () async {
+    final sentinel = File(p.join(tempDir.path, 'timed-out-child-lived'));
+    await File(p.join(tempDir.path, 'steward.yaml')).writeAsString(
+      validStewardV1(
+        commandArgv: '[/bin/sh, -c, \'sleep 1; touch "${sentinel.path}"\']',
+        timeoutMs: 100,
+      ),
+    );
+
+    final payload = await runProbe();
+    await Future<void>.delayed(const Duration(milliseconds: 1400));
+    final execution =
+        (payload['executions'] as List).single as Map<String, dynamic>;
+
+    expect(execution['status'], 'failed');
+    expect(execution['exit_code'], 124);
+    expect(execution['stderr'], contains('Timed out after 100ms.'));
+    expect(sentinel.existsSync(), isFalse);
+  });
+
+  test('quick probe rejects cwd symlinks that resolve outside root', () async {
+    final outside = Directory.systemTemp.createTempSync(
+      'steward_probe_outside_',
+    );
+    addTearDown(() {
+      if (outside.existsSync()) {
+        outside.deleteSync(recursive: true);
+      }
+    });
+    await Link(p.join(tempDir.path, 'linked-out')).create(outside.path);
+    await File(p.join(tempDir.path, 'steward.yaml')).writeAsString(
+      validStewardV1(commandArgv: '[/bin/sh, -c, "pwd -P"]', cwd: 'linked-out'),
+    );
+
+    final payload = await runProbe();
+    final execution =
+        (payload['executions'] as List).single as Map<String, dynamic>;
+
+    expect(payload['status'], 'failed');
+    expect(execution['status'], 'error');
+    expect(execution['exit_code'], isNull);
+    expect(
+      execution['stderr'],
+      contains('Action cwd resolves outside the repository root.'),
+    );
+  });
+
   test('quick probe rejects unsafe actions without executing them', () async {
     await File(
       p.join(tempDir.path, 'steward.yaml'),
@@ -78,7 +125,12 @@ void main() {
   });
 }
 
-String validStewardV1({final List<String> quickActions = const ['repo.pwd']}) {
+String validStewardV1({
+  final List<String> quickActions = const ['repo.pwd'],
+  final String commandArgv = '[/bin/pwd]',
+  final String cwd = '.',
+  final int timeoutMs = 10000,
+}) {
   final actionList = quickActions.join(', ');
   return '''
 schema: steward/v1
@@ -125,9 +177,9 @@ actions:
     kind: command
     desc: Print current working directory.
     command:
-      argv: [/bin/pwd]
+      argv: $commandArgv
       shell: false
-    cwd: .
+    cwd: $cwd
     effects:
       fs_read: ["."]
       fs_write: []
@@ -140,7 +192,7 @@ actions:
       default_policy: auto
       requires_confirmation: false
     limits:
-      timeout_ms: 10000
+      timeout_ms: $timeoutMs
       max_output_bytes: 200000
     outputs:
       - id: stdout

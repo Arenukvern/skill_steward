@@ -165,6 +165,9 @@ if [[ -n "$ROOT_DIR" ]] && [[ -f "$ROOT_DIR/packages/steward_cli/pubspec.yaml" ]
     )
     BUILT_FROM_SOURCE=1
     echo "Successfully compiled and installed binary to $INSTALL_DIR/steward"
+    rm -rf "$INSTALL_DIR/steward_schemas"
+    cp -R "$ROOT_DIR/docs/schemas" "$INSTALL_DIR/steward_schemas"
+    echo "Installed schemas to $INSTALL_DIR/steward_schemas"
   fi
 fi
 
@@ -266,8 +269,11 @@ EOF
 
   mkdir -p "$INSTALL_DIR"
   install -m 0755 "$package_dir/bin/steward" "$INSTALL_DIR/steward"
+  rm -rf "$INSTALL_DIR/steward_schemas"
+  cp -R "$package_dir/docs/schemas" "$INSTALL_DIR/steward_schemas"
 
   echo "Installed binary to $INSTALL_DIR"
+  echo "Installed schemas to $INSTALL_DIR/steward_schemas"
 fi
 
 "$INSTALL_DIR/steward" --help >/dev/null

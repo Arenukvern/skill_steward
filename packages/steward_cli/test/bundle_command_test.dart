@@ -219,6 +219,25 @@ uninstall:
 
     expect(() => runner.run(['bundle']), throwsA(isA<UsageException>()));
   });
+
+  test('v1 bundle rejects output directory symlink escapes', () async {
+    final outside = Directory.systemTemp.createTempSync(
+      'steward_bundle_outside_',
+    );
+    addTearDown(() {
+      if (outside.existsSync()) {
+        outside.deleteSync(recursive: true);
+      }
+    });
+    await Link(p.join(tempDir.path, 'linked-out')).create(outside.path);
+    final runner = CommandRunner<void>('steward', 'test')
+      ..addCommand(BundleCommand(StringBuffer(), tempDir));
+
+    expect(
+      () => runner.run(['bundle', '--output-dir', 'linked-out']),
+      throwsA(isA<UsageException>()),
+    );
+  });
 }
 
 Future<void> _writeSkill(final String root, final String id) async {

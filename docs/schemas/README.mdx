@@ -37,12 +37,13 @@ Portable schema commands:
 ```bash
 steward schema validate --schema doctor --file .steward/doctor.json --json
 steward schema validate --schema mode-event --file .steward/events.jsonl --json
+steward schema validate --schema steward/benchmark-summary/v1 --file .steward/benchmark-summaries/run.json --json
 steward schema check-outputs --json
 steward schema emit --schema schema-validate --source generated --json
 steward schema drift --json
 ```
 
-`schema validate` checks an artifact against the repo schema subset used here. `schema check-outputs` validates core read-only CLI payload builders against their schemas so schema/CLI drift is caught before an agent depends on a stale field shape. `schema emit` exposes either checked-in schemas or generated typed-model schemas. `schema drift` compares generated contract model schemas with checked-in schemas for public field, required-field, and mutually declared enum drift. Treat these commands as part of the dogfood path whenever `doctor`, protocol, claim, blocked-state, or benchmark JSON is the evidence route; passing them is not a maturity claim by itself.
+`schema validate` checks JSON and JSONL artifacts against the repo schema subset used here. Public schema ids and file aliases in the table above are accepted by `schema emit --source checked-in`; `schema validate` is appropriate when the artifact being checked is JSON or JSONL. YAML contracts such as `steward.yaml` and scenario manifests remain native validator targets (`steward doctor`, action/probe/benchmark validators) rather than generic JSON validation targets. `schema check-outputs` validates core read-only CLI payload builders against their schemas so schema/CLI drift is caught before an agent depends on a stale field shape. `schema emit` exposes either checked-in schemas or generated typed-model schemas. `schema drift` compares generated contract model schemas with checked-in schemas for public field, required-field, and mutually declared enum drift. Treat these commands as part of the dogfood path whenever `doctor`, protocol, claim, blocked-state, or benchmark JSON is the evidence route; passing them is not a maturity claim by itself.
 
 Schema policy:
 

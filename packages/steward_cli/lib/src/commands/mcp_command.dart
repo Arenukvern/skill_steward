@@ -4,9 +4,10 @@ import 'dart:io';
 
 import 'package:args/command_runner.dart';
 import 'package:json_rpc_2/json_rpc_2.dart' as json_rpc;
-import 'package:path/path.dart' as p;
 import 'package:stream_channel/stream_channel.dart';
 
+import '../bounded_process.dart';
+import '../path_safety.dart';
 import '../repo_root.dart';
 import '../validation/steward_config.dart';
 
@@ -133,7 +134,7 @@ class McpCommand extends Command<void> {
       }) {
         if (!telemetryEnabled) return;
         try {
-          final file = File(p.join(root, traceFile));
+          final file = File(resolveUnderRoot(root, traceFile));
           final rawArgs = params.value;
           final entry = {
             'timestamp': DateTime.now().toIso8601String(),
@@ -301,15 +302,13 @@ class McpCommand extends Command<void> {
           }
 
           try {
-            final result =
-                await Process.run('bash', [
-                  '-c',
-                  cmd,
-                ], workingDirectory: root).timeout(
-                  const Duration(seconds: 120),
-                  onTimeout: () =>
-                      ProcessResult(0, 124, '', 'Timed out after 120 seconds.'),
-                );
+            final result = await runBoundedProcess(
+              'bash',
+              ['-c', cmd],
+              workingDirectory: root,
+              timeout: const Duration(seconds: 120),
+              timeoutMessage: 'Timed out after 120 seconds.',
+            );
             final out = capOutput('${result.stdout}\n${result.stderr}'.trim());
             logTelemetry(isError: result.exitCode != 0, resultOrError: out);
             return {
@@ -377,9 +376,10 @@ class McpCommand extends Command<void> {
         final docName = uri.replaceFirst('steward://docs/', '');
         final docPath = config.docs[docName];
         if (docPath != null) {
-          final resolvedPath = p.normalize(p.join(root, docPath));
-          final rootPath = p.normalize(root);
-          if (resolvedPath != rootPath && !p.isWithin(rootPath, resolvedPath)) {
+          final String resolvedPath;
+          try {
+            resolvedPath = resolveUnderRoot(root, docPath);
+          } on Object {
             return {
               'contents': [
                 {

@@ -205,9 +205,7 @@ class InstallCommand extends Command<void> {
     final bool lock,
     final bool force,
   ) async {
-    final repoUrl = source.startsWith('http')
-        ? source
-        : 'https://github.com/$source.git';
+    final repoUrl = _repoUrlForSource(source, root);
     stdout.writeln('Cloning $repoUrl...');
 
     final tempDir = Directory(p.join(root, '.steward_temp'));
@@ -215,15 +213,36 @@ class InstallCommand extends Command<void> {
       await tempDir.delete(recursive: true);
     }
 
-    final cloneArgs = ['clone', '--depth', '1', repoUrl, tempDir.path];
-    if (pin != null) {
-      // Depth 1 clone of specific branch/ref
-      cloneArgs.addAll(['--branch', pin]);
+    final trimmedPin = pin?.trim();
+    final commitPin =
+        trimmedPin != null &&
+        RegExp(r'^[0-9a-fA-F]{7,40}$').hasMatch(trimmedPin);
+    final cloneArgs = ['clone'];
+    if (trimmedPin == null || trimmedPin.isEmpty) {
+      cloneArgs.addAll(['--depth', '1']);
+    } else if (!commitPin) {
+      cloneArgs.addAll(['--depth', '1', '--branch', trimmedPin]);
     }
+    cloneArgs.addAll([repoUrl, tempDir.path]);
 
     final cloneRes = await Process.run('git', cloneArgs);
     if (cloneRes.exitCode != 0) {
       throw Exception('Failed to clone repository: ${cloneRes.stderr}');
+    }
+
+    if (commitPin) {
+      final checkoutRes = await Process.run('git', [
+        '-C',
+        tempDir.path,
+        'checkout',
+        '--detach',
+        trimmedPin,
+      ]);
+      if (checkoutRes.exitCode != 0) {
+        throw Exception(
+          'Failed to checkout commit $trimmedPin: ${checkoutRes.stderr}',
+        );
+      }
     }
 
     // Get the actual commit SHA for lock pinning
@@ -321,6 +340,26 @@ class InstallCommand extends Command<void> {
       return Directory(p.join(root, '.agents', 'skills', skillName));
     }
     return Directory(p.join(root, 'skills', skillName));
+  }
+
+  String _repoUrlForSource(final String source, final String root) {
+    final trimmed = source.trim();
+    if (trimmed.startsWith('http://') ||
+        trimmed.startsWith('https://') ||
+        trimmed.startsWith('ssh://') ||
+        trimmed.startsWith('git@') ||
+        trimmed.startsWith('file://')) {
+      return trimmed;
+    }
+
+    final localPath = p.isAbsolute(trimmed)
+        ? trimmed
+        : p.normalize(p.join(root, trimmed));
+    if (Directory(localPath).existsSync()) {
+      return localPath;
+    }
+
+    return 'https://github.com/$trimmed.git';
   }
 
   Future<bool> _copySkillDirectory(

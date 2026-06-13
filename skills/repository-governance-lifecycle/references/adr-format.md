@@ -45,7 +45,7 @@ When triggers fire, **stop and ask**—do not implement the most convenient opti
 | **T7 Cost** | Expensive to revert after merge |
 | **T8 Uncertainty** | Would need unstated assumptions |
 
-**Output:** [decision brief](references/decision-checkpoints.md#decision-brief-template) in chat/PR, or ADR with `status: proposed`. Full matrix, severity, and exceptions: [references/decision-checkpoints.md](references/decision-checkpoints.md).
+**Output:** a short decision brief in chat/PR, or an ADR with `status: proposed`. A useful brief names the trigger, options, recommendation, known risk, validation route, and what would make the decision reversible.
 
 Combine the ADR checkpoint with this skill's North Star rules and `repo-quality-system-lifecycle` before large edits; add `mcp-harness-repo-maintainer` only for action-contract or harness changes.
 
@@ -76,15 +76,11 @@ Add a one-line pointer in the root `README.md` or `CONTRIBUTING.md` if the proje
 - **Title in file**: problem/solution style — e.g. `Use PostgreSQL for persistence` (MADR guidance)
 - **Next number**: highest existing `NNNN` + 1; never reuse numbers
 
-Run from repo root when helpful:
-
-```bash
-bash scripts/next-adr-number.sh docs/decisions
-```
+Inspect existing filenames under the decision log and choose the next highest unused number. Do not depend on helper scripts being present in consumer repositories.
 
 ## Default format: MADR (bare)
 
-Use [MADR bare template](references/madr-bare-template.md) unless the repo already uses Nygard or Y-Statements.
+Use the repo's existing ADR shape when present; otherwise use the minimal MADR-style sections below unless the repo already uses Nygard or Y-Statements.
 
 Required sections:
 
@@ -112,8 +108,8 @@ When superseding: set old ADR to `superseded` and reference the new number; new 
 
 | Format | When | Reference |
 |--------|------|-----------|
-| **Nygard** | Minimal log, small teams | [references/nygard-template.md](references/nygard-template.md) |
-| **Y-Statement** | One-line decision in an index or changelog | [references/y-statement.md](references/y-statement.md) |
+| **Nygard** | Minimal log, small teams | Context, Decision, Status, Consequences |
+| **Y-Statement** | One-line decision in an index or changelog | "In the context of..., facing..., we decided..., to achieve..., accepting..." |
 
 Match the format already used in the repo. Do not mix formats within one decision log without user approval.
 
@@ -123,7 +119,7 @@ Match the format already used in the repo. Do not mix formats within one decisio
 1. **Confirm scope** — one decision per ADR; split if multiple unrelated choices.
 2. **Gather** — context, drivers, options considered, who decided, date (ISO `YYYY-MM-DD`).
 3. **Draft** — fill template; write options you actually evaluated, not only the winner.
-4. **Index** — add row to `docs/decisions/README.mdx` (see [references/decision-log-index.md](references/decision-log-index.md)).
+4. **Index** — add a row to `docs/decisions/README.mdx` when the repo keeps a decision index.
 5. **Cross-link** — issues, PRs, diagrams, superseded ADRs.
 6. **Review** — consequences must include downsides (trade-offs, not marketing).
 
@@ -165,8 +161,8 @@ npx skills add arenukvern/skill_steward --skill repository-governance-lifecycle
 
 ## References
 
-- [decision-checkpoints.md](references/decision-checkpoints.md) — trigger matrix, brief template, severity
-- [madr-bare-template.md](references/madr-bare-template.md) — full ADR (layer 1)
+- [adr.github.io](https://adr.github.io/) — ADR format background
+- [MADR](https://adr.github.io/madr/) — MADR format background
 
 ## Sources
 

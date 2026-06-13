@@ -5,6 +5,7 @@ import 'package:args/command_runner.dart';
 import 'package:crypto/crypto.dart';
 import 'package:yaml/yaml.dart';
 
+import '../bounded_process.dart';
 import '../path_safety.dart';
 import '../repo_root.dart';
 import '../validation/steward_config.dart';
@@ -768,16 +769,12 @@ Future<Map<String, dynamic>> _runAction(
   final outputLimit = _outputLimit(action);
   final started = DateTime.now();
   try {
-    final process =
-        await Process.run(
-          args.first,
-          args.skip(1).toList(),
-          workingDirectory: workingDirectory,
-        ).timeout(
-          Duration(milliseconds: timeoutMs),
-          onTimeout: () =>
-              ProcessResult(0, 124, '', 'Timed out after ${timeoutMs}ms.'),
-        );
+    final process = await runBoundedProcess(
+      args.first,
+      args.skip(1).toList(),
+      workingDirectory: workingDirectory,
+      timeout: Duration(milliseconds: timeoutMs),
+    );
     final durationMs = DateTime.now().difference(started).inMilliseconds;
     final stdoutText = '${process.stdout}';
     final stderrText = '${process.stderr}';

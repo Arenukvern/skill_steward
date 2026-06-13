@@ -141,6 +141,38 @@ void main() {
       expect(payload['diagnostics'], isEmpty);
     }
   });
+
+  test('schema emit accepts every public checked-in schema alias', () async {
+    for (final alias in _publicCheckedInSchemaAliases) {
+      final payload = await schemaEmitPayload(
+        tempDir.path,
+        schemaId: alias,
+        source: 'checked-in',
+      );
+
+      expect(payload['valid'], isTrue, reason: '$alias diagnostics');
+      expect(payload['diagnostics'], isEmpty);
+      expect(
+        (payload['json_schema'] as Map<String, dynamic>)[r'$id'],
+        endsWith('/$alias.schema.json'),
+      );
+    }
+  });
+
+  test('schema validate accepts benchmark summary public schema id', () async {
+    final file = File(p.join(tempDir.path, 'benchmark-summary.json'))
+      ..writeAsStringSync(jsonEncode(validBenchmarkSummary()));
+
+    final payload = await validateSchemaFilePayload(
+      tempDir.path,
+      schemaId: 'steward/benchmark-summary/v1',
+      filePath: p.relative(file.path, from: tempDir.path),
+    );
+
+    expect(payload['schema'], 'benchmark-summary');
+    expect(payload['valid'], isTrue);
+    expect(payload['diagnostics'], isEmpty);
+  });
 }
 
 const _publicOutputCheckIds = [
@@ -149,6 +181,32 @@ const _publicOutputCheckIds = [
   'dogfood-status',
   'ecology-snapshot',
   'ecology-route',
+];
+
+const _publicCheckedInSchemaAliases = [
+  'action-candidate-v1',
+  'adoption-run-v2',
+  'benchmark-summary-v1',
+  'blocked-explain-v1',
+  'claim-check-v1',
+  'doctor-v1',
+  'dogfood-status-v1',
+  'ecology-route-v1',
+  'ecology-snapshot-v1',
+  'mode-event-v1',
+  'observation-v1',
+  'plugin-bundle-index-v1',
+  'plugin-bundle-v1',
+  'plugin-manifest-v1',
+  'protocol-validate-v1',
+  'scenario-manifest-v1',
+  'schema-check-outputs-v1',
+  'schema-drift-v1',
+  'schema-emit-v1',
+  'schema-validate-v1',
+  'self-model-v1',
+  'steward-v1',
+  'unknown-case-v1',
 ];
 
 Map<String, dynamic> validSelfModel() => {
@@ -168,6 +226,48 @@ Map<String, dynamic> validSelfModel() => {
   'retention': 'until superseded by later governance artifact',
   'redaction_policy': 'no raw chats, secrets, credentials, or private memory',
   'non_claims': ['Does not prove consciousness or repo steward status.'],
+};
+
+Map<String, dynamic> validBenchmarkSummary() => {
+  'schema': 'steward/benchmark-summary/v1',
+  'repo': 'sample_repo',
+  'repo_commit': '0123456789abcdef0123456789abcdef01234567',
+  'dirty': false,
+  'runner': 'steward',
+  'scenario': 'sample.protocol-smoke',
+  'scenario_source': {
+    'git': 'https://github.com/example/sample_repo.git',
+    'commit': '0123456789abcdef0123456789abcdef01234567',
+  },
+  'run_id': 'run-2026-06-13',
+  'mode': 'strict',
+  'result': 'pass',
+  'actions_run': ['doctor.local'],
+  'selection_trace': {'profile': 'quick'},
+  'artifacts': <Map<String, dynamic>>[],
+  'input_digests': <String, Map<String, dynamic>>{},
+  'durability': {
+    'status': 'ready',
+    'checked_paths': [
+      {
+        'kind': 'contract',
+        'path': 'steward.yaml',
+        'git_status': 'clean',
+        'clean': true,
+      },
+    ],
+    'blocking_paths': <String>[],
+    'warnings': <String>[],
+  },
+  'proof': {
+    'mode': 'strict',
+    'status': 'ready',
+    'broad_read_actions': <String>[],
+    'blocking_paths': <String>[],
+    'warnings': <String>[],
+  },
+  'owner': 'sample_repo',
+  'lesson_status': 'not_promoted',
 };
 
 String validStewardV1() => '''

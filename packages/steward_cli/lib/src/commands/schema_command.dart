@@ -507,8 +507,24 @@ Map<String, dynamic> _loadSchema(final String root, final String schemaName) {
 }
 
 String _findSchemaDirectory(final String root) {
+  final envSchemas = Platform.environment['STEWARD_SCHEMA_DIR'];
+  if (envSchemas != null && envSchemas.trim().isNotEmpty) {
+    final candidate = Directory(envSchemas);
+    if (candidate.existsSync()) return candidate.path;
+  }
+
   final rootSchemas = Directory(p.join(root, 'docs', 'schemas'));
   if (rootSchemas.existsSync()) return rootSchemas.path;
+
+  final executableDir = p.dirname(Platform.resolvedExecutable);
+  for (final path in [
+    p.join(executableDir, 'steward_schemas'),
+    p.join(executableDir, 'docs', 'schemas'),
+    p.join(p.dirname(executableDir), 'docs', 'schemas'),
+  ]) {
+    final candidate = Directory(path);
+    if (candidate.existsSync()) return candidate.path;
+  }
 
   var cursor = Directory.current;
   while (true) {
@@ -522,6 +538,10 @@ String _findSchemaDirectory(final String root) {
 }
 
 String _normalizeSchemaId(final String schemaId) => switch (schemaId.trim()) {
+  'steward/action-candidate/v1' || 'action-candidate-v1' => 'action-candidate',
+  'steward/adoption-run/v2' || 'adoption-run-v2' => 'adoption-run',
+  'steward/benchmark-summary/v1' ||
+  'benchmark-summary-v1' => 'benchmark-summary',
   'steward.dogfood.status.v1' || 'dogfood-status-v1' => 'dogfood-status',
   'steward.ecology.snapshot.v1' || 'ecology-snapshot-v1' => 'ecology-snapshot',
   'steward.ecology.route.v1' || 'ecology-route-v1' => 'ecology-route',
@@ -536,12 +556,23 @@ String _normalizeSchemaId(final String schemaId) => switch (schemaId.trim()) {
   'protocol-validate-v1' => 'protocol-validate',
   'doctor-v1' || 'steward.doctor.v1' => 'doctor',
   'mode-event-v1' || 'steward/mode-event/v1' => 'mode-event',
+  'steward/observation/v1' || 'observation-v1' => 'observation',
+  'steward/plugin-bundle-index/v1' ||
+  'plugin-bundle-index-v1' => 'plugin-bundle-index',
+  'steward/plugin-bundle/v1' || 'plugin-bundle-v1' => 'plugin-bundle',
+  'steward/plugin-manifest/v1' || 'plugin-manifest-v1' => 'plugin-manifest',
+  'steward/scenario-manifest/v1' ||
+  'scenario-manifest-v1' => 'scenario-manifest',
   'self-model-v1' || 'steward/self-model/v1' => 'self-model',
+  'steward/v1' || 'steward-v1' => 'steward',
   'unknown-case-v1' || 'steward/unknown-case/v1' => 'unknown-case',
   final value => value,
 };
 
 String _schemaFile(final String schemaName) => switch (schemaName) {
+  'action-candidate' => 'action-candidate-v1.schema.json',
+  'adoption-run' => 'adoption-run-v2.schema.json',
+  'benchmark-summary' => 'benchmark-summary-v1.schema.json',
   'dogfood-status' => 'dogfood-status-v1.schema.json',
   'ecology-snapshot' => 'ecology-snapshot-v1.schema.json',
   'ecology-route' => 'ecology-route-v1.schema.json',
@@ -554,7 +585,13 @@ String _schemaFile(final String schemaName) => switch (schemaName) {
   'protocol-validate' => 'protocol-validate-v1.schema.json',
   'doctor' => 'doctor-v1.schema.json',
   'mode-event' => 'mode-event-v1.schema.json',
+  'observation' => 'observation-v1.schema.json',
+  'plugin-bundle-index' => 'plugin-bundle-index-v1.schema.json',
+  'plugin-bundle' => 'plugin-bundle-v1.schema.json',
+  'plugin-manifest' => 'plugin-manifest-v1.schema.json',
+  'scenario-manifest' => 'scenario-manifest-v1.schema.json',
   'self-model' => 'self-model-v1.schema.json',
+  'steward' => 'steward-v1.schema.json',
   'unknown-case' => 'unknown-case-v1.schema.json',
   _ => throw UsageException('Unknown schema: $schemaName', ''),
 };

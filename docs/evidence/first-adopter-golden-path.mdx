@@ -2,13 +2,13 @@
 
 **Status:** reference fixture · **Audience:** maintainers and agents
 
-This fixture describes the smallest useful Skill Steward adoption path. It is sanitized: it uses placeholder repo ids and does not depend on a private sibling checkout.
+This fixture describes the smallest useful Skill Steward adoption path. It is sanitized: it uses placeholder repo ids and does not depend on a private sibling checkout. It is a reference path, not proof from a live adopter run.
 
 Command examples assume a portable `steward` command installed through the released binary, a Dart source run, or local clone activation. See [portable Steward invocation](../core/portable-steward-invocation) before copying commands into adopter evidence.
 
 ## Intent
 
-Prove that a fresh repository can get a stewardship baseline before it becomes a harness/action-contract repo.
+Show how a fresh repository can get a stewardship baseline before it becomes a harness/action-contract repo.
 
 ## Baseline path
 
@@ -18,8 +18,8 @@ steward map
 npx skills add arenukvern/skill_steward --skill repo-quality-system-lifecycle
 ```
 
-| Command | Expected artifact | Claim proven |
-|---------|-------------------|--------------|
+| Command | Expected artifact | Claim boundary |
+|---------|-------------------|----------------|
 | `steward adopt` | `skills.json`, `steward.yaml`, `AGENTS.md` | S0/S1 baseline can be created without typed actions. |
 | `steward map` | Markdown operational map | A fresh agent can see archetype, task runner, docs pointers, and recommended skills. |
 | `npx skills add ... repo-quality-system-lifecycle` | Installed skill under the target agent path | Agents get the broad repo-quality workflow before harness proof. |
@@ -43,8 +43,8 @@ steward benchmark \
   --json
 ```
 
-| Command | Claim proven |
-|---------|--------------|
+| Command | Claim boundary |
+|---------|----------------|
 | `doctor` | Contract discovery works without running repository actions. |
 | `actions list` | Declared actions are visible and machine-readable. |
 | `action inspect` | The executable boundary, effects, limits, and safety policy are inspectable. |

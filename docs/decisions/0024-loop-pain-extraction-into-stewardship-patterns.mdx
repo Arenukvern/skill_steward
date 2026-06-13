@@ -1,0 +1,95 @@
+# 0024. Loop Pain Extraction into Stewardship Patterns
+
+Date: 2026-06-13
+
+## Status
+
+Accepted
+
+## Context
+
+Recent dogfood work exposed a drift pattern: evidence, repair, harness work, dogfood JSON, and PDSA loops can each begin as useful mechanisms, then quietly become the center of the work. When that happens, agents keep proving the same blocker, repairing the same support surface, or creating better summaries of being stuck instead of returning to the original user goal and fixing the owner surface.
+
+The existing decisions already contain the main doctrine:
+
+- [ADR 0018](0018-cold-to-hot-path-usefulness) says usefulness is cold-to-hot acceleration with the same or stronger proof bar.
+- [ADR 0022](0022-repository-ecology-review-and-snapshot) says repeated repo ecology work should choose dispositions and keep CLI ecology output read-only.
+- [ADR 0023](0023-evidence-artifacts-as-claim-proof-records) says evidence protects claims and blockers; it is not a plan archive or scorecard.
+
+The missing piece is extraction: convert the painful experience into compact reusable practices without creating another doctrine layer, dashboard, or evidence archive.
+
+## Decision
+
+Adopt the recent loop-pain learnings as **stewardship operating patterns**. They must be encoded in existing skills, adopter bootstrap, eval cases, current ledgers, checks, or read-only CLI routes. Do not create standalone doctrine pages for each pattern.
+
+The patterns are:
+
+| Pattern | Meaning | Durable home |
+|---------|---------|--------------|
+| Loop smell catalog | Signs that work is looping: third evidence note, repeated blocker proof, tool tunnel, stale proof loop, repair replacing the goal, status artifacts multiplying faster than fixes. | `repo-quality-system-lifecycle` Repository Ecology Review, with MoE as a critique lens. |
+| Pain to disposition rules | Convert pain into owner, native gate, smallest disposition, and hot-path residue. | `repo-quality-system-lifecycle`; concise route in `DX_FAQ` only when needed. |
+| Two-loop stop rule | After two loops on the same friction, choose fix owner, move to check/tool/skill, delete/merge, name blocked owner with rerun gate, or stop. | ADR 0018, ADR 0022, and `repo-quality-system-lifecycle`; guarded by evals. |
+| Mechanism becoming mission detector | Ask whether evidence, repair, dogfood JSON, harnesses, or tools are helping the original goal or replacing it. | `repository-governance-lifecycle`, `north_star_impact`, and generated adopter `AGENTS.md`. |
+| Adopter transfer kit | New repos should receive the habit through executable bootstrap: agent map, native gate, claim/evidence router, North Star impact prompt, optional current ledger, no harness by default. | `steward adopt`, `repo-quality-system-lifecycle`, and CLI tests. |
+| Subagent contract pattern | MoE is useful only when each lens has role, scope, out-of-scope, expected output, fallback, and integration destination. | `mixture-of-experts` and `multi-agent-handoff`; no separate subagent doctrine. |
+| Evidence compression pattern | Current card, rerun route, weakest true claim, non-claims, stale/history pointer; repeated deterministic drift moves to checks. | ADR 0023, `repository-governance-lifecycle`, `repo-quality-system-lifecycle`, current ledgers. |
+| Owner boundary pattern | Producer repos own architecture, release, compatibility, and public contract; consumer repos own adoption proof, local deltas, blocked state, and cutover commands. | `repo-quality-system-lifecycle`, `repo-quality-contracts`, and harness generalization skills. |
+
+These patterns are not new maturity stages. They are routing instincts for shorter future-agent paths.
+
+## Considered Options
+
+* **Create one standalone document per pattern.** Rejected. Eight new pages would preserve the vocabulary but violate the compression lesson.
+* **Build a CLI diagnostic engine for loop smells now.** Rejected. It would be too close to scorekeeping and could turn the detector into the mission.
+* **Keep the learnings as chat memory only.** Rejected. The same drift can recur across adopter repos if it is not encoded in skills, bootstrap, and evals.
+* **Encode patterns inside existing skills and cheap guardrails.** Accepted. This keeps the practices close to agent behavior and lets deterministic drift become tests or checks only when repeated.
+
+## Decision Outcome
+
+Chosen: **extract loop pain into existing stewardship behavior**.
+
+`repo-quality-system-lifecycle` owns loop smells, pain-to-disposition routing, two-loop exits, and owner-boundary checks. `repository-governance-lifecycle` owns mission drift and `north_star_impact`. `mixture-of-experts` owns subagent contracts and missing/partial lens honesty. `steward adopt` owns the default adopter transfer habit. Evidence artifacts and current ledgers remain claim-proof records, not the product.
+
+New CLI work must be non-mutating and should compose existing facts into dispositions. It must not apply repairs, award maturity, or become a product diagnostic engine.
+
+## Integration Boundaries
+
+Implementation plans are not ADR content. This ADR records the decision, pattern homes, and boundaries; concrete rollout steps should live in a temporary plan, issue, or PR description, then be removed after durable truth lands in skills, evals, tests, docs, or CLI behavior.
+
+Agents usually act through installed skills, repo-local `AGENTS.md`, `steward.yaml`, and their own native validation gates. Therefore pattern transfer must prioritize those surfaces over central Skill Steward prose:
+
+- skills carry interpretation and judgment,
+- `steward adopt` carries the default local habit into adopter repos,
+- evals and tests guard routing drift,
+- current ledgers carry current proof,
+- read-only CLI routes compose observed facts only when they reduce repeated inventory work.
+
+Do not promote a pattern into a new standalone skill, ADR, CLI subcommand, or evidence artifact merely because it has a memorable name. Promote only when repeated use shows that an existing skill, adopter map, eval, or native gate cannot carry it.
+
+## Consequences
+
+* Good, because the painful experience becomes future behavior instead of another historical packet.
+* Good, because adopters inherit the practice through `steward adopt` and installed skills.
+* Good, because the repo avoids eight new docs while still preserving eight useful patterns.
+* Good, because the patterns keep repair and evidence as support mechanisms under the North Star.
+* Bad, because Tier-1 evals only prove routing and text shape, not real production behavior.
+* Bad, because compact patterns can become slogans if agents do not tie them to owner, gate, rerun route, and non-claims.
+* Mitigation: use evals only for routing regression, keep runtime proof separate, and require future CLI support to remain read-only and non-claiming.
+
+## Confirmation
+
+* `repository-governance-lifecycle` contains the `north_star_impact` gate.
+* `repo-quality-system-lifecycle` owns ecology dispositions, two-loop exits, and owner-boundary routing.
+* `steward adopt` seeds the North Star impact habit into adopter `AGENTS.md`.
+* `mixture-of-experts` requires lens ownership contracts and missing/partial lens honesty.
+* Current evidence compression remains governed by ADR 0023.
+* Future implementation should extract each slice into skills, evals, tests, adopter bootstrap, or read-only CLI behavior rather than expanding this ADR.
+
+## More Information
+
+* [ADR 0018 — Cold-to-hot path usefulness](0018-cold-to-hot-path-usefulness)
+* [ADR 0022 — Repository Ecology Review and Snapshot](0022-repository-ecology-review-and-snapshot)
+* [ADR 0023 — Evidence Artifacts as Claim-Proof Records](0023-evidence-artifacts-as-claim-proof-records)
+* [North Star](../NORTH_STAR)
+* [DX FAQ](../DX_FAQ)
+* [Repo quality contracts](../repo-quality-contracts)

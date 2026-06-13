@@ -87,20 +87,21 @@ void _validateValue(
     diagnostics.add('$path must be one of: ${enumValues.join(', ')}.');
   }
 
-  final type = schema['type'] as String?;
-  if (type != null && !_matchesSimpleType(value, type)) {
-    diagnostics.add('$path must be $type.');
+  final types = _schemaTypes(schema['type']);
+  if (types.isNotEmpty &&
+      !types.any((final type) => _matchesSimpleType(value, type))) {
+    diagnostics.add('$path must be ${types.join(' or ')}.');
     return;
   }
 
-  if (type == 'string' && value is String) {
+  if (types.contains('string') && value is String) {
     final minLength = schema['minLength'];
     if (minLength is int && value.length < minLength) {
       diagnostics.add('$path must have length at least $minLength.');
     }
   }
 
-  if (type == 'array' && value is List) {
+  if (types.contains('array') && value is List) {
     final minItems = schema['minItems'];
     if (minItems is int && value.length < minItems) {
       diagnostics.add('$path must contain at least $minItems item(s).');
@@ -119,7 +120,7 @@ void _validateValue(
     }
   }
 
-  if (type == 'object' && value is Map) {
+  if (types.contains('object') && value is Map) {
     _validateObject(
       Map<String, dynamic>.from(value),
       schema,
@@ -159,6 +160,14 @@ void _validateValue(
   }
 }
 
+List<String> _schemaTypes(final Object? rawType) {
+  if (rawType is String) return [rawType];
+  if (rawType is List) {
+    return rawType.whereType<String>().toList(growable: false);
+  }
+  return const [];
+}
+
 bool _matchesSimpleType(final Object? value, final String type) =>
     switch (type) {
       'array' => value is List,
@@ -167,6 +176,7 @@ bool _matchesSimpleType(final Object? value, final String type) =>
       'boolean' => value is bool,
       'number' => value is num,
       'integer' => value is int,
+      'null' => value == null,
       _ => true,
     };
 

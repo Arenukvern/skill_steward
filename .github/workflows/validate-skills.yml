@@ -12,6 +12,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Diff whitespace check
+        run: |
+          set -euo pipefail
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            git fetch --no-tags --depth=1 origin "$GITHUB_BASE_REF"
+            git diff --check "origin/$GITHUB_BASE_REF" HEAD
+          elif git rev-parse HEAD^ >/dev/null 2>&1; then
+            git diff --check HEAD^ HEAD
+          else
+            git diff --check
+          fi
+
       - uses: pnpm/action-setup@v4
 
       - uses: actions/setup-node@v4
@@ -41,6 +53,14 @@ jobs:
       - name: Validate skills
         working-directory: packages/steward_cli
         run: dart run :steward validate
+
+      - name: Check schema output contracts
+        working-directory: packages/steward_cli
+        run: dart run :steward schema check-outputs --json
+
+      - name: Check schema drift
+        working-directory: packages/steward_cli
+        run: dart run :steward schema drift --json
 
       - name: Eval skills (Tier-1 rule-based)
         working-directory: packages/steward_cli
@@ -94,6 +114,14 @@ jobs:
             --scenario skill_steward.contract-status-smoke \
             --strict \
             --output .steward/benchmark-summaries/skill-steward-contract-status-smoke.json \
+            --json
+
+      - name: Validate benchmark summary schema
+        working-directory: packages/steward_cli
+        run: |
+          dart run :steward schema validate \
+            --schema steward/benchmark-summary/v1 \
+            --file .steward/benchmark-summaries/skill-steward-contract-status-smoke.json \
             --json
 
       - name: Assert H2 smoke proof

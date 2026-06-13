@@ -40,16 +40,7 @@ void main() {
   });
 
   Future<void> runGit(final List<String> arguments) async {
-    final result = await Process.run(
-      'git',
-      arguments,
-      workingDirectory: tempDir.path,
-    );
-    expect(
-      result.exitCode,
-      0,
-      reason: 'git ${arguments.join(' ')} failed: ${result.stderr}',
-    );
+    await _runGitAt(tempDir, arguments);
   }
 
   group('Local Validation and Manifest Parsing', () {
@@ -372,6 +363,86 @@ Instruction body.
         final content = await skillMd.readAsString();
         expect(content, contains('paths:\n  - "docs/**"'));
         expect(content, contains('Instruction body.'));
+      } finally {
+        Directory.current = originalCwd;
+      }
+    });
+
+    test('installs config source pinned to a raw commit sha', () async {
+      final originalCwd = Directory.current;
+      try {
+        final workspaceDir = tempDir;
+        Directory.current = workspaceDir;
+        await File(
+          p.join(workspaceDir.path, 'skills.sh.json'),
+        ).writeAsString('{}');
+
+        final sourceRepo = Directory(p.join(workspaceDir.path, 'source-repo'))
+          ..createSync(recursive: true);
+        await _runGitAt(sourceRepo, ['init']);
+        await _runGitAt(sourceRepo, [
+          'config',
+          'user.email',
+          'test@example.invalid',
+        ]);
+        await _runGitAt(sourceRepo, ['config', 'user.name', 'Skill Test']);
+
+        final skillDir = Directory(
+          p.join(sourceRepo.path, 'skills', 'pinned-skill'),
+        )..createSync(recursive: true);
+        final skillFile = File(p.join(skillDir.path, 'SKILL.md'));
+        await skillFile.writeAsString('''
+---
+name: pinned-skill
+description: First committed version.
+license: MIT
+---
+First version.
+''');
+        await _runGitAt(sourceRepo, ['add', '.']);
+        await _runGitAt(sourceRepo, ['commit', '-m', 'first skill']);
+        final firstCommit = await _runGitAt(sourceRepo, ['rev-parse', 'HEAD']);
+
+        await skillFile.writeAsString('''
+---
+name: pinned-skill
+description: Second committed version.
+license: MIT
+---
+Second version.
+''');
+        await _runGitAt(sourceRepo, ['add', '.']);
+        await _runGitAt(sourceRepo, ['commit', '-m', 'second skill']);
+
+        await File(p.join(workspaceDir.path, 'skills.json')).writeAsString(
+          jsonEncode({
+            'skills': [
+              {
+                'source': sourceRepo.uri.toString(),
+                'commit': firstCommit,
+                'skills': ['pinned-skill'],
+              },
+            ],
+          }),
+        );
+
+        final runner = CommandRunner<void>('steward', 'test')
+          ..addCommand(InstallCommand());
+        await runner.run(['install', '--local', '--force']);
+
+        final installedSkill = File(
+          p.join(
+            workspaceDir.path,
+            '.agents',
+            'skills',
+            'pinned-skill',
+            'SKILL.md',
+          ),
+        );
+        expect(installedSkill.existsSync(), isTrue);
+        final installed = await installedSkill.readAsString();
+        expect(installed, contains('First version.'));
+        expect(installed, isNot(contains('Second version.')));
       } finally {
         Directory.current = originalCwd;
       }
@@ -888,4 +959,21 @@ validators:
       },
     );
   });
+}
+
+Future<String> _runGitAt(
+  final Directory directory,
+  final List<String> arguments,
+) async {
+  final result = await Process.run(
+    'git',
+    arguments,
+    workingDirectory: directory.path,
+  );
+  expect(
+    result.exitCode,
+    0,
+    reason: 'git ${arguments.join(' ')} failed: ${result.stderr}',
+  );
+  return '${result.stdout}'.trim();
 }

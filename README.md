@@ -98,7 +98,7 @@ steward evidence init --minimal
 
 This creates only `docs/evidence/current-status.mdx`. Use it to record weakest true claims, blockers, rerun routes, and non-claims; move repeated deterministic drift into native checks, schemas, tests, CLI diagnostics, or probes.
 
-Canonical commands and expected proof: [First adopter golden path](docs/evidence/first-adopter-golden-path.mdx). Claim routing lives in [DX FAQ: honest claim routing](docs/DX_FAQ.mdx#honest-claim-routing); steward status vocabulary is centralized in [ADR 0021](docs/decisions/0021-protocol-first-steward-status-gates.mdx) and [NORTH_STAR](docs/NORTH_STAR.mdx#adoption-claim-vocabulary).
+Canonical commands and expected interpretation: [First adopter golden path](docs/evidence/first-adopter-golden-path.mdx) is a reference fixture, not proof from a live adopter run. Claim routing lives in [DX FAQ: honest claim routing](docs/DX_FAQ.mdx#honest-claim-routing); steward status vocabulary is centralized in [ADR 0021](docs/decisions/0021-protocol-first-steward-status-gates.mdx) and [NORTH_STAR](docs/NORTH_STAR.mdx#adoption-claim-vocabulary).
 
 ## Updating installed skills
 

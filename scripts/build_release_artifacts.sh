@@ -127,12 +127,15 @@ for triple in "${TRIPLES[@]}"; do
   compile_binary "bin/steward.dart" "$stage_dir/bin/steward" "$target_os" "$target_arch" "$VERSION"
 
   cp "$ROOT_DIR/LICENSE" "$stage_dir/LICENSE"
+  mkdir -p "$stage_dir/docs"
+  cp -R "$ROOT_DIR/docs/schemas" "$stage_dir/docs/schemas"
 
   tar -C "$DIST_DIR" -czf "$archive_path" "$package_name"
 
   smoke_dir="$(mktemp -d)"
   tar -C "$smoke_dir" -xzf "$archive_path"
   "$smoke_dir/$package_name/bin/steward" --help >/dev/null
+  "$smoke_dir/$package_name/bin/steward" schema emit --schema doctor --source checked-in --json >/dev/null
   rm -rf "$smoke_dir"
 
   rm -rf "$stage_dir"

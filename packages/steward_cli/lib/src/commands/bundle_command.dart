@@ -6,6 +6,7 @@ import 'package:crypto/crypto.dart';
 import 'package:path/path.dart' as p;
 import 'package:yaml/yaml.dart';
 
+import '../path_safety.dart';
 import '../repo_root.dart';
 import '../validation/plugin_manifest_validator.dart';
 import '../validation/steward_config.dart';
@@ -71,14 +72,17 @@ class BundleCommand extends Command<void> {
     }
 
     final outputDirArg = argResults?['output-dir'] as String;
-    if (p.isAbsolute(outputDirArg) || outputDirArg.contains('..')) {
+    final String outputPath;
+    try {
+      outputPath = resolveUnderRoot(root, outputDirArg);
+    } on Object {
       throw UsageException(
         '--output-dir must be a repository-relative path.',
         usage,
       );
     }
 
-    final outputDir = Directory(p.join(root, outputDirArg));
+    final outputDir = Directory(outputPath);
     if (!outputDir.existsSync()) {
       await outputDir.create(recursive: true);
     }
@@ -122,7 +126,19 @@ class BundleCommand extends Command<void> {
     final outputName =
         config.skillsDistribution['output'] as String? ?? 'skills.sh.json';
 
-    final sourceDir = Directory(p.join(root, sourceDirName));
+    final String sourcePath;
+    final String outPath;
+    try {
+      sourcePath = resolveUnderRoot(root, sourceDirName);
+      outPath = resolveUnderRoot(root, outputName);
+    } on Object {
+      throw UsageException(
+        'skills_distribution paths must be repository-relative.',
+        usage,
+      );
+    }
+
+    final sourceDir = Directory(sourcePath);
     if (!sourceDir.existsSync()) {
       throw UsageException(
         'Source directory ${sourceDir.path} does not exist.',
@@ -144,7 +160,6 @@ class BundleCommand extends Command<void> {
 
     final outMap = {'skills': skills};
 
-    final outPath = p.join(root, outputName);
     final outFile = File(outPath);
     await outFile.writeAsString(
       '${const JsonEncoder.withIndent('  ').convert(outMap)}\n',

@@ -276,6 +276,37 @@ void main() {
     expect(sentinel.existsSync(), isFalse);
   });
 
+  test('benchmark kills timed out actions', () async {
+    final sentinel = File(p.join(tempDir.path, 'timed-out-child-lived'));
+    await File(p.join(tempDir.path, 'steward.yaml')).writeAsString(
+      validStewardV1(
+        commandArgv: '[/bin/sh, -c, \'sleep 1; touch "${sentinel.path}"\']',
+        timeoutMs: 100,
+      ),
+    );
+    await _initGitRepo(tempDir);
+    await _commitAll(tempDir, 'timeout benchmark inputs');
+    final buffer = StringBuffer();
+    final runner = CommandRunner<void>('steward', 'test')
+      ..addCommand(BenchmarkCommand(buffer, tempDir));
+
+    await runner.run([
+      'benchmark',
+      '--scenario',
+      'sample_repo.pwd-selection',
+      '--json',
+    ]);
+    await Future<void>.delayed(const Duration(milliseconds: 1400));
+
+    final payload = jsonDecode(buffer.toString()) as Map<String, dynamic>;
+    expect(payload['result'], 'fail');
+    expect(payload['actions_run'], ['repo.pwd']);
+    final summary = (payload['execution_summaries'] as List).single as Map;
+    expect(summary['status'], 'failed');
+    expect(summary['exit_code'], 124);
+    expect(sentinel.existsSync(), isFalse);
+  });
+
   test('benchmark blocks unknown safe_first_probe without execution', () async {
     await File(
       p.join(tempDir.path, 'steward.yaml'),
@@ -350,10 +381,12 @@ String validStewardV1({
   final String artifactPath = 'steward.yaml',
   final String? manifestPath,
   final String sourceCommit = '0123456789abcdef0123456789abcdef01234567',
+  final String? commandArgv,
+  final int timeoutMs = 10000,
 }) {
-  final commandArgv = unsafeAction
-      ? '[/usr/bin/touch, should-not-exist]'
-      : '[/bin/pwd]';
+  final actionArgv =
+      commandArgv ??
+      (unsafeAction ? '[/usr/bin/touch, should-not-exist]' : '[/bin/pwd]');
   final shell = unsafeAction ? 'true' : 'false';
   final benchmarks = manifestPath == null
       ? '''
@@ -408,7 +441,7 @@ actions:
     kind: command
     desc: Print current working directory.
     command:
-      argv: $commandArgv
+      argv: $actionArgv
       shell: $shell
     cwd: .
     effects:
@@ -423,7 +456,7 @@ actions:
       default_policy: auto
       requires_confirmation: false
     limits:
-      timeout_ms: 10000
+      timeout_ms: $timeoutMs
       max_output_bytes: 200000
     outputs:
       - id: stdout
