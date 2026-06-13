@@ -20,6 +20,21 @@ The real failure mode is not too many agents. The failure mode is unclear decomp
 
 The parent synthesis step is especially important. The parent must be able to compare lane results, reject out-of-scope edits, resolve conflicts, run aggregate gates, size the final claim, and promote repeated verification into a hot path when the same comparison or proof work will recur.
 
+## Existing Pattern Intersections
+
+Parallel acceleration should compose existing stewardship primitives. It should not create a second governance grammar.
+
+| Spec concern | Existing owner | Reuse rule |
+|--------------|----------------|------------|
+| Cold-to-hot acceleration | North Star and ADR 0018 | Keep the acceleration rule compact; do not create a parallel doctrine page after extraction. |
+| Repo-wide pain routing | `repo-quality-system-lifecycle` and ecology dispositions | Lane candidates are subordinate to `orient`, `compress`, `validate`, `tutor_pain`, `promote_tool`, `leave_native`, and `stop`. |
+| Parent assignment, write authority, synthesis, and closure | `multi-agent-handoff` | Parent batch contracts live in handoff/scratch context, not CLI route output. |
+| Independent critique and lane discovery | `mixture-of-experts` | MoE supplies lenses and contradiction checks; no new parallel-acceleration skill yet. |
+| Claim proof and retention | Evidence ladder, evidence artifacts, current ledgers, adoption-run v2 | Preserve evidence only when it protects a claim, blocker, real run, observed effect, or falsifier. |
+| Tool/action promotion | Unknown cases and action candidates | Dispatch lanes must not bypass the existing unknown-case to action-candidate review path. |
+| Steward mode and self-model | ADR 0025 and `steward-continuity-boundary-lifecycle` | Parallelism may be a steward-presence readiness sign; it is not steward-status proof. |
+| CLI inventory and routing | `steward ecology snapshot/route` | Derive advisory lane hints from existing snapshot facts; do not add a persisted scheduler. |
+
 ## Design Principle
 
 "Smallest useful disposition" should mean the smallest truthful coordination unit, not the smallest amount of work.
@@ -28,32 +43,47 @@ If the pain is local, the right coordination unit may be one fix, FAQ row, valid
 
 Raw agent count and raw lane count are never usefulness proof. Use as many independent lanes as can be assigned, reviewed, integrated, and validated without losing ownership or claim honesty.
 
+This design is meant to fix the bureaucracy failure mode, not make it prettier. The failure mode is governance that asks for smaller and smaller motions while repo-wide pain remains unsolved. The countermeasure is stewardship-first execution: name the owner, dispatch the truthful coordination unit, integrate real changes, run native gates, and keep only the evidence needed for a claim or blocker. Evidence is a support surface, not the direction of travel.
+
 ## Dispatch Lane Candidates
 
-A dispatch lane candidate is temporary execution scaffolding for possible parallel work. It is not a durable governance artifact, backlog, or write authorization. It should disappear after integration unless a specific lesson earns a durable owner.
+A dispatch lane candidate is temporary execution scaffolding for possible parallel work. It is not a durable governance artifact, backlog, action candidate, parent lane contract, or write authorization. It should disappear after integration unless a specific lesson earns a durable owner.
 
-Every lane candidate has a minimum shape:
+There are two related but separate shapes:
+
+- `dispatch_lane_candidate`: an advisory hint, usually emitted by ecology review or `steward ecology route --json`.
+- `parent_lane_contract`: a parent-assigned execution contract, usually carried in a handoff, issue, PR summary, or live parent synthesis.
+
+The CLI may emit only `dispatch_lane_candidate`. Parent-assigned execution contracts belong to `multi-agent-handoff`.
+
+Every advisory lane candidate has a minimum shape:
 
 - `lane_id`: stable identifier for this batch only.
+- `source_disposition`: the canonical ecology disposition that produced the hint.
+- `pain_signal`: observed repo fact that made the lane plausible.
 - `owner`: file, doc, package, command, skill, module, or surface that owns truth.
 - `scope`: where the agent may act.
-- `allowed_action`: `explore`, `fix`, `implement`, `verify`, `compress`, `promote`, or `stop`.
-- `write_set`: exact files or surfaces the worker may edit, or an empty list for read-only lanes.
+- `allowed_action`: subordinate execution mode such as `explore`, `verify`, `compress`, `fix`, `implement`, or `promote`.
+- `write_set`: exact files or surfaces that a parent may later consider assigning, or an empty list for read-only candidates.
 - `forbidden_paths`: files or surfaces the worker must not touch.
 - `acceptance_check`: what proves the lane is done.
 - `native_gate`: command, test, schema check, eval, benchmark, or blocked state.
-- `claim_ceiling`: strongest claim the lane result can support.
+- `suggested_claim_ceiling`: strongest possible claim if a parent assigns the lane and its gate passes.
 - `integration_rule`: how the parent agent accepts, merges, rejects, or escalates the result.
+- `advisory: true`
+- `ephemeral: true`
+- `requires_parent_assignment: true`
+- `not_write_authorization: true`
+- `authorization_source: none`
+- `retention: delete_after_integration`
 
-Expanded fields are required for write-capable, high/unknown-risk, CLI-emitted, or cross-lane-dependent candidates:
+Expanded fields are required for high/unknown-risk or cross-lane-dependent candidates:
 
 - `owner_update_route`: where durable changes should land if the lane succeeds.
 - `dependencies`: other lanes, commands, or external states that must happen first.
 - `direct_fix_eligible`: whether a parent may consider allowing direct fixes.
-- `authorization_source`: always `parent_batch_contract` for direct fixes.
 - `risk_class`: expected change risk, for example `low`, `medium`, `high`, or `unknown`.
 - `non_claims`: adjacent stronger claims not proven.
-- `retention`: lane map retention rule, normally `delete_after_integration`.
 
 Create only as many lane candidates as are needed to make parallel work legible. Do not create lanes to describe lanes.
 
@@ -62,6 +92,8 @@ Create only as many lane candidates as are needed to make parallel work legible.
 Worker lanes may fix, implement, or complete bounded low-impact work directly only when the parent-assigned lane contract sets `direct_fix_allowed: true`, the `write_set` is exact, forbidden paths are declared, repo safety rules are inherited, required impact checks are satisfied, user permissions are respected, and validation is available. A worker should not create a recommendation queue when direct completion is safer and faster inside that lane.
 
 `direct_fix_allowed` must never appear as authorization in advisory CLI or MCP output. Advisory surfaces may emit `direct_fix_eligible` or `parent_may_allow_direct_fix`; only a parent-assigned lane contract may authorize writes.
+
+Direct fixes are low-risk only unless a human explicitly approves the exception. A direct-fix lane must not change product intent, public schema/API, steward status, self-model status, security posture, release behavior, or overlapping write sets unless the parent contract says so. If required validation is skipped or blocked, the worker result downgrades to `blocked` or `recommendation`, not `integrated_to_owner`.
 
 The worker must still report:
 
@@ -80,7 +112,9 @@ The parent agent remains accountable for synthesis, conflicts, final validation,
 
 ## Parent Batch Contract
 
-Before dispatching a broad batch, the parent should declare:
+Before dispatching a broad batch, the parent should declare only enough contract to move safely. This is not a new plan format; it is disposable handoff or scratch context. After integration, durable truth moves to code, docs, ADR, skill, check, schema, current ledger, or evidence only when the routing rules already require it.
+
+The parent contract should declare:
 
 - original goal: the user or maintainer outcome the batch serves.
 - user acceptance check: what proves the original goal is solved or advanced.
@@ -123,6 +157,8 @@ The parent may dispatch agents to compare implementations, build small compariso
 
 Hot-path promotion requires more than a successful batch. Before C5, S5, H5, or promoted-capability language, record the named problem class, observed effect, future-agent rerun route, falsifier, maintenance delta, owner, risk/redaction boundary, and held-out or future repeat evidence.
 
+Parent synthesis is not evidence by default. It becomes an evidence artifact only when it protects a claim, preserves a blocker, records a real run, justifies durable behavior change, or teaches a shorter future path. Otherwise it is deleted after extraction.
+
 ## Agent Coordination Boundary
 
 Steward should stay agnostic about the coordination algorithm. It can support:
@@ -140,7 +176,7 @@ Skill Steward should provide the vocabulary, lane candidate contract, validation
 This should not become a new standalone skill yet. Existing surfaces should change behavior:
 
 - `docs/NORTH_STAR.mdx`: add the acceleration rule and clarify that governance enables parallel action with proof.
-- `docs/decisions/0025-parallel-acceleration-governance.mdx`: record the decision and the rejected serial-brake failure mode.
+- `docs/decisions/0026-parallel-acceleration-governance.mdx`: record the decision and the rejected serial-brake failure mode.
 - `skills/repo-quality-system-lifecycle/SKILL.md`: allow repository ecology review to emit disposable execution lane candidates when pain is repo-wide.
 - `skills/multi-agent-handoff/SKILL.md`: support parallel batch contracts and the senior-agent lane rule.
 - `skills/mixture-of-experts/SKILL.md`: use MoE for lane discovery, contradiction detection, and evidence-boundary critique before or during large batches.
@@ -152,7 +188,7 @@ This should not become a new standalone skill yet. Existing surfaces should chan
 
 `steward ecology route --json` should remain non-mutating and advisory. It may infer lane candidate hints from existing ecology route facts such as invalid config, schema drift, active plan candidates, stale evidence, dirty state, and missing actions.
 
-The output must not award maturity, adoption, or health. It should describe possible work lane candidates and their boundaries.
+The output must not award maturity, adoption, health, steward status, or write authority. It should describe possible work lane candidates and their boundaries.
 
 The field should be named `dispatch_lane_candidates`, not `dispatch_lanes`, and every CLI-emitted candidate should be marked:
 
@@ -160,11 +196,13 @@ The field should be named `dispatch_lane_candidates`, not `dispatch_lanes`, and 
 - `ephemeral: true`
 - `requires_parent_assignment: true`
 - `not_write_authorization: true`
+- `authorization_source: none`
 - `retention: delete_after_integration`
 
 CLI/schema candidate fields:
 
 - `lane_id`
+- `source_disposition`
 - `pain_signal`
 - `owner`
 - `scope`
@@ -187,9 +225,11 @@ Existing dispositions remain canonical: `orient`, `compress`, `validate`, `tutor
 
 Candidate generation must avoid fake precision. Emit write-capable or implementation-oriented candidates only when owner and exact path are deterministic. Otherwise emit a read-only `explore` candidate with an empty `write_set`, no write authorization, and an integration rule asking the parent to assign a real lane after inspection.
 
+Implementation should derive candidates from `ecologySnapshotPayload()` and the same facts used by `_routeDispositions()`. Do not add `.steward/dispatch-lanes/*`, do not feed lane candidates into `steward.yaml`, and do not turn lane candidates into action candidates unless repeated friction later enters the existing unknown-case to action-candidate review path.
+
 Implement this as a documented additive update to `ecology-route-v1.schema.json`; do not create an ecology route v2 for this change. Because route v1 is closed with `additionalProperties: false`, the schema, schema conformance tests, schema aliases, schema README, and `schema check-outputs` registration must be updated in the same change as the CLI payload.
 
-MCP parity is optional but should be designed from the beginning. If exposed, MCP must call the same core route payload used by the CLI and return the same advisory lane candidates. MCP must not infer separate candidates, authorize writes, mutate `steward.yaml`, or execute lane work. It remains experimental until production MCP transport, typed action policy, timeouts, output caps, redaction, and permission gates are proven.
+MCP parity is optional and should remain a non-claim in the first implementation. If exposed later, MCP must call the same core route payload used by the CLI and return the same advisory lane candidates. MCP must not infer separate candidates, authorize writes, mutate `steward.yaml`, or execute lane work. It remains experimental until production MCP transport, typed action policy, timeouts, output caps, redaction, and permission gates are proven.
 
 No CLI or MCP output may include `direct_fix_allowed: true`. Parent-assigned lane contracts are the only source of direct write authorization.
 
@@ -203,6 +243,8 @@ Lane maps are disposable. After a batch finishes:
 - stale lane maps disappear.
 
 Do not preserve lane maps as permanent project management artifacts. Do not create a new broad "parallel acceleration" skill until repeated real use proves existing skills cannot carry the behavior.
+
+Do not answer governance drag with more evidence about governance drag. If a parent can safely dispatch lanes and fix the owner surface now, the stewardship move is to do that work, run the native gate, and delete the scaffolding. Evidence is retained only when it changes future behavior or protects a live claim.
 
 This design spec is also disposable. After implementation, durable truth should live in the North Star, ADR, skills, CLI/schema/tests, and any necessary current ledger or evidence artifact. The spec should then be deleted or explicitly retired so it does not become permanent governance clutter.
 

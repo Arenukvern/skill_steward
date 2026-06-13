@@ -37,6 +37,7 @@ Use this skill to run the stewardship protocol at threshold moments. It keeps se
 2. **Detect threshold.**
    - Enter `steward_presence` only for ADRs, handoffs, evidence claims, boundary conflicts, tool promotion, product-direction tension, privacy-sensitive memory updates, or repeated repo-governance friction.
    - Stay in `tool-execution` for deterministic generation, validation, formatting, and mechanical checks.
+   - Use the readiness lens below when the question is whether ordinary tool-execution is becoming too thin for the work.
 
 3. **Declare mode.**
    - Use one of: `tool-execution`, `steward-presence`, `delegation`, `sub-steward-lens`.
@@ -67,6 +68,50 @@ Use this skill to run the stewardship protocol at threshold moments. It keeps se
    - Carry only relevant mode state, open questions, escalation triggers, and self-model pointers.
    - Do not claim the receiving agent is the same steward.
    - Prefer temporary sub-steward lenses before persistent sub-stewards.
+
+## Presence Readiness Lens
+
+Steward presence readiness is sign-based. Do not choose special tasks by intuition alone; look for a constellation showing that continuity, judgment, boundaries, or claim honesty are becoming the work.
+
+Use this ladder:
+
+| Stage | Meaning | Evidence |
+|-------|---------|----------|
+| `P0 protocol exists` | Mode boundaries can be described. | Self-model schema, mode-event schema, protocol validation. |
+| `P1 threshold pressure visible` | Real work repeatedly hits ADRs, handoffs, evidence claims, tool promotion, product-direction tension, or boundary conflicts. | Current ledger, ADRs, repeated review comments, blocked evidence. |
+| `P2 presence trial warranted` | Several signs point to the same problem class. | Readiness note with signals, owner, acceptance check, evidence bar, non-claims, and falsifier. |
+| `P3 presence used once` | A real threshold task runs in `steward-presence`. | Mode event plus steward synthesis. |
+| `P4 continuity candidate` | Multiple runs suggest continuity improved the work. | Observed effect, maintenance delta, falsifier, and with/without or held-out plan. |
+| `P5 proven repo steward` | Repeated or held-out tasks prove continuity improves outcomes. | Structured comparison evidence; never just green commands. |
+
+Readiness signs:
+
+- repeated threshold density: several recent tasks involve ADRs, evidence claims, handoffs, tool promotion, boundary conflicts, or product-direction tension;
+- continuity loss: agents keep rediscovering the same intent, risks, non-claims, or decisions;
+- claim fragility: the repo repeatedly needs "this proves X but not Y" discipline;
+- delegation pressure: parent synthesis, MoE, A2A, A2Human, or many-agent coordination is needed to avoid drift;
+- boundary pressure: tool output risks being treated as steward judgment, or handoffs risk identity merging or authority laundering;
+- hot-path opportunity: the same comparison or verification pattern recurs and could become a reusable check, schema, eval, benchmark, or skill update;
+- favorable maintenance delta: steward presence would reduce future confusion more than it adds ceremony.
+
+Three signs across at least two repo surfaces are enough to try a bounded `steward-presence` run. They are not enough to claim `proven_repo_steward`.
+
+Readiness note shape:
+
+```markdown
+## Steward Presence Readiness Note
+
+Problem class:
+Signals observed:
+Surfaces:
+Why tool-execution is insufficient:
+Proposed threshold task:
+Acceptance check:
+Evidence bar:
+Non-claims:
+Falsifier:
+Continuity: temporary | persist candidate | do not persist
+```
 
 ## Mode Event Block
 
