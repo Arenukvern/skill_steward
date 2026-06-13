@@ -9,4 +9,4 @@ rules:
     terms: ["evidence paths", "validation gates", "repo ecology"]
   - kind: body_includes_any
     path: SKILL.md
-    terms: ["Claims and evidence router", "steward evidence init --minimal", "without adding harness machinery"]
+    terms: ["Claims and evidence router", "north_star_impact", "steward adopt", "without adding harness machinery"]

@@ -88,6 +88,8 @@ Start by asking what you can honestly claim right now. Use the broad repo-qualit
 
 `adopt` creates the S0/S1 stewardship baseline with `stewardship.harness.enabled: false`, `actions: {}`, and `probes: {}`. Those empty maps are valid baseline state, not missing harness proof. `adopt --with-harness` adds the first quick-safe action and probe; it also adds a smoke scenario when a durable git remote and HEAD commit are available. A `durability_blocked` benchmark is useful blocked evidence when contract inputs are dirty or untracked; it is not H2 proof until rerun cleanly.
 
+The generated `AGENTS.md` also carries the small North Star impact habit for adopters: classify durable structural changes as `none`, `applies`, `clarifies`, `sub_star`, `amends`, or `conflicts` before a mechanism quietly becomes the mission. `amends` and `conflicts` require ADR work before the repo center moves.
+
 For unique repos that only need a current claim/status pointer, start smaller than harness adoption:
 
 ```bash

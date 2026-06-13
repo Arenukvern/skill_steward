@@ -16,6 +16,21 @@ For ordinary repo work, do not start with a maturity ladder or an evidence packe
 6. Leave the smallest hot path: better map, shorter doc, native check, schema, test, FAQ row, action candidate, or current-ledger update.
 7. Create evidence only for a claim, blocker, real run, or durable behavior change. Repeated deterministic drift should become a check/tool.
 
+### North Star impact check
+
+Use this when a durable change might move the repo's center, not for every patch. Mechanisms may evolve quickly; mission changes must leave an explicit trail.
+
+| `north_star_impact` | Meaning | Route |
+|---------------------|---------|-------|
+| `none` | Local change; no charter or stewardship meaning. | Use native gate. |
+| `applies` | Uses the current North Star value paths. | Proceed through the smallest disposition. |
+| `clarifies` | Explains an existing boundary without changing it. | Update FAQ, skill wording, docs map, or check. |
+| `sub_star` | Adds a local sub-North Star for a product, repo, or subdomain. | Declare parent/child boundary and what it cannot override. |
+| `amends` | Changes what Skill Steward owns, refuses, or optimizes for. | Stop and write an ADR plus a North Star diff. |
+| `conflicts` | Pulls work toward a different center, such as repair-first or evidence-first. | Stop, reject, or intentionally propose an ADR. |
+
+Before a structural update, answer: what user/product pain triggered this; which North Star value path it serves; whether it is a mechanism or a new center; whether it changes ownership or refusal boundaries; where the ADR is if it does; and what check prevents the mechanism becoming the mission if it does not.
+
 ```text
 CHARTER / scope        → NORTH_STAR.mdx
 REPO QUALITY CONTRACT → repo-quality-contracts.mdx
@@ -107,7 +122,7 @@ Expected first result:
 
 | Step | Proof |
 |------|-------|
-| `steward adopt` | `skills.json`, `steward.yaml`, and `AGENTS.md` exist. `stewardship.harness.enabled` is `false` by default, with valid empty `actions: {}` and `probes: {}`. |
+| `steward adopt` | `skills.json`, `steward.yaml`, and `AGENTS.md` exist. `stewardship.harness.enabled` is `false` by default, with valid empty `actions: {}` and `probes: {}`. The generated `AGENTS.md` includes the `north_star_impact` habit so structural drift is explicit in adopter repos too. |
 | `steward map` | The repo archetype, task runner, docs pointers, and recommended skills are visible. |
 | `repo-quality-system-lifecycle` | Agents get the broad S0/S1 baseline workflow before action-contract work. |
 

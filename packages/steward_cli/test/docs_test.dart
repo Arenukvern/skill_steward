@@ -105,6 +105,67 @@ void main() {
       }
     });
 
+    test('Start Here keeps North Star surfaces before evidence links', () {
+      final content = docsJsonFile.readAsStringSync();
+      final data = jsonDecode(content) as Map<String, dynamic>;
+      final sidebar = data['sidebar'] as List?;
+      expect(sidebar, isNotNull);
+
+      final startHere = sidebar!.whereType<Map<String, dynamic>>().firstWhere(
+        (final group) => group['group'] == 'Start Here',
+      );
+      final hrefs = (startHere['pages'] as List)
+          .whereType<Map>()
+          .map((final page) => page['href'])
+          .whereType<String>()
+          .toList();
+
+      for (final href in [
+        '/NORTH_STAR',
+        '/repo-quality-contracts',
+        '/DESIGN_FAQ',
+        '/DX_FAQ',
+      ]) {
+        expect(hrefs, contains(href));
+      }
+
+      final firstEvidence = hrefs.indexWhere(
+        (final href) => href.startsWith('/evidence/'),
+      );
+      expect(firstEvidence, greaterThanOrEqualTo(0));
+
+      for (final href in [
+        '/NORTH_STAR',
+        '/repo-quality-contracts',
+        '/DESIGN_FAQ',
+        '/DX_FAQ',
+      ]) {
+        expect(
+          hrefs.indexOf(href),
+          lessThan(firstEvidence),
+          reason:
+              '$href should stay before evidence links so agents see the governing frame first.',
+        );
+      }
+    });
+
+    test('North Star product model anchors stay aligned', () {
+      final northStar = File(p.join(docsDir, 'NORTH_STAR.mdx'));
+      expect(northStar.existsSync(), isTrue);
+
+      final content = northStar.readAsStringSync();
+      for (final anchor in [
+        'Default Steward work is ecology-first',
+        'preserve the original user goal',
+        'orient, compress, validate, tutor pain, promote a tool, leave work native, or stop',
+        'Tier-1 evals are static routing checks',
+        'do not prove product runtime correctness',
+        'We are **not** the product runtime',
+      ]) {
+        expect(content, contains(anchor));
+      }
+    });
+
     test('Start Here does not present historical evidence as current proof', () {
       final content = docsJsonFile.readAsStringSync();
       final data = jsonDecode(content) as Map<String, dynamic>;

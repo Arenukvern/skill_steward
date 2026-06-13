@@ -1,6 +1,6 @@
 ---
 name: repository-governance-lifecycle
-description: Master orchestration for repository governance. Guides an agent through the complete lifecycle of making architectural decisions, documenting them, writing FAQs, and cleaning up stale plans while adhering strictly to repo ethics and brand tone. Use whenever you need to make a structural change, write an ADR, update the doc lattice, or govern repository architecture.
+description: Master orchestration for repository governance, North Star impact, sub-Star boundaries, and repair-first or evidence-first drift checks. Guides an agent through the complete lifecycle of making architectural decisions, documenting them, writing FAQs, and cleaning up stale plans while adhering strictly to repo ethics and brand tone. Use whenever you need to make a structural change, write an ADR, update the doc lattice, or govern repository architecture.
 license: MIT
 type: governance
 metadata:
@@ -21,6 +21,9 @@ Whenever an agent proposes or executes a structural shift, claim change, durable
 Before making any decision, check the repository's foundational charter and ethical baseline.
 - Read [Charter and Ethics](references/charter-and-ethics.md) to ensure your proposed changes do not violate the repository's moral boundaries (e.g. no hype; no domain tutorials inside Skill Steward; domain docs belong in the governed product repo when they are that repo's product).
 - Read [North Star Rules](references/north-star-rules.md) to understand the extension model.
+- Classify `north_star_impact` for durable structural changes: `none`, `applies`, `clarifies`, `sub_star`, `amends`, or `conflicts`. Use the protocol only when ownership, policy, evidence truth, ADR/FAQ truth, or the repo's center may change.
+- Ask the gate questions before editing durable governance surfaces: what pain triggered this; which North Star value path it serves; whether it is a mechanism or a new center; whether it changes what the repo owns or refuses; where the ADR is if it does; and what check prevents the mechanism becoming the mission if it does not.
+- Route `none` and `applies` through the native workflow, `clarifies` through FAQ/skill/map/check updates, `sub_star` through an explicit parent/child boundary, and `amends` or `conflicts` through an ADR plus a North Star diff before implementation.
 
 ### 2. Log the Decision (ADRs)
 If you have made an architecturally significant decision (or triggered a T1-T8 threshold), you must write it down. Decisions are not valid if they only live in an agent's context window.

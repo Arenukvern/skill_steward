@@ -159,6 +159,17 @@ Run the following commands to interact with the project's agentic tools:
 - **Inspect Steward contract**: `steward doctor --json`
 - **Validate workspace**: use the native validation command recorded in `steward.yaml`
 
+## North Star Impact
+
+Before durable structural changes, classify `north_star_impact`: `none`, `applies`, `clarifies`, `sub_star`, `amends`, or `conflicts`.
+
+- `none` / `applies`: use the native workflow and validation gate.
+- `clarifies`: update the smallest FAQ, docs map, skill, check, or validation message.
+- `sub_star`: declare the local parent/child boundary and what the sub-North Star cannot override.
+- `amends` / `conflicts`: stop and write or update an ADR before changing the repo center.
+
+Ask whether the change serves real product pain, which North Star value path it serves, and whether a mechanism is becoming the mission.
+
 ## Claims and Evidence
 
 Before claiming readiness, maturity, harness support, steward status, or adoption:

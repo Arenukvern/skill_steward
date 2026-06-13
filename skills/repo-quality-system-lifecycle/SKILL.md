@@ -58,7 +58,7 @@ A baseline is not a giant docs rewrite. It is the minimum map a fresh agent need
 - Validation command: one native command or truthful blocked state.
 - Release path: changelog/version/artifact provenance, even if immature.
 
-If the repo is not ready for Steward CLI, bootstrap manually: add the router to `AGENTS.md`, name the native validation command, and create `docs/evidence/current-status.mdx` only when a current claim or blocker needs a durable pointer. If the repo has Steward CLI, `steward evidence init --minimal` creates that ledger without adding harness machinery.
+If the repo is not ready for Steward CLI, bootstrap manually: add the claim/evidence router and `north_star_impact` prompt to `AGENTS.md`, name the native validation command, and create `docs/evidence/current-status.mdx` only when a current claim or blocker needs a durable pointer. If the repo has Steward CLI, `steward adopt` creates the local agent map with that North Star impact habit, and `steward evidence init --minimal` creates that ledger without adding harness machinery.
 
 ### 3. Define the quality contract
 
@@ -74,6 +74,7 @@ Write the smallest contract that can be checked.
 | Feedback | How do repeated failures become durable tests, docs, evals, or actions? |
 | Pattern layer | Should this change live in native code, repo grammar, public API, schema/codegen, harness, ecology-level skill/tooling, or deletion? |
 | Product claims | Which claims are implemented, generated, fallback, planned, or speculative, and who owns the proof? |
+| North Star impact | Is the change `none`, `applies`, `clarifies`, `sub_star`, `amends`, or `conflicts`; and is it a mechanism or a new center? |
 
 For multi-repo roadmaps, also record dependency order, source-of-truth repo, consumer gate, dirty-state policy, and do-not-touch exceptions. Do not claim a downstream consumer is ready from local path dependency success when the upstream package or binary still lacks publish evidence. The producer repo owns architecture, public contract, release provenance, and compatibility claims; consumer repos own adoption proof, local deltas, blocked state, and cutover commands.
 
@@ -182,6 +183,7 @@ For evidence surfaces, apply the envelope in [docs/core/evidence-artifacts.mdx](
 Run ecology as a disposition loop, not an evidence treadmill or a tool tunnel:
 
 - Prefer `orient`, `compress`, `validate`, `tutor_pain`, `promote_tool`, `leave_native`, or `stop` before creating any new artifact.
+- When a proposed mechanism starts acting like the umbrella, classify `north_star_impact`. `sub_star` needs a parent/child boundary; `amends` or `conflicts` needs governance and an ADR before product direction changes.
 - When the review finds invalid config, dirty declared inputs, schema/output drift, blocked payload routing, stale navigation, or a broken native gate, update the owning surface and rerun the same gate when that is the smallest safe disposition.
 - After two learning loops on the same friction, stop PDSA and produce a disposition table. Extract the durable lesson into ADR, FAQ, skill, check, CLI diagnostic, or current ledger, then delete/retire duplicate plans or historical packets from active navigation.
 - Do not add sub-stewards, new broad skills, new benchmark scenarios, or new evidence indices from the same blocked detour unless the repaired owner still cannot represent the repo honestly.
@@ -194,6 +196,7 @@ When reporting an audit or adoption pass, include:
 - Current maturity stage (`S0`-`S5`) and evidence for audits, adoption claims, or readiness claims.
 - Missing contract areas when they block the requested work or a claim.
 - Pattern layer chosen, smaller layer considered, and expected maintenance delta.
+- `north_star_impact` when the work could alter the repo center, ownership, or refusal boundaries.
 - Smallest next improvement.
 - Ecology dispositions when the request is about compression, cleanup, or surface changes.
 - What was not validated.

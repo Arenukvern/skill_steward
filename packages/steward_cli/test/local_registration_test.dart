@@ -474,6 +474,15 @@ Instruction body.
         expect(agentsMd.existsSync(), isTrue);
         final agentsContent = await agentsMd.readAsString();
         expect(agentsContent, contains('steward map'));
+        expect(agentsContent, contains('## North Star Impact'));
+        expect(agentsContent, contains('north_star_impact'));
+        expect(agentsContent, contains('sub_star'));
+        expect(agentsContent, contains('amends'));
+        expect(agentsContent, contains('conflicts'));
+        expect(
+          agentsContent,
+          contains('whether a mechanism is becoming the mission'),
+        );
         expect(agentsContent, contains('## Claims and Evidence'));
         expect(agentsContent, contains('steward evidence init --minimal'));
         expect(agentsContent, contains('Record non-claims.'));

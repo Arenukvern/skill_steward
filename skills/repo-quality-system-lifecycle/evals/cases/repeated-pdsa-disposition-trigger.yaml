@@ -9,7 +9,40 @@ rules:
     terms: ["repo ecology pass", "compressed", "retired", "moved to checks"]
   - kind: body_includes_any
     path: SKILL.md
-    terms: ["disposition loop", "orient", "compress", "tutor_pain", "leave_native", "stop"]
+    terms: ["disposition loop, not an evidence treadmill or a tool tunnel"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["north_star_impact"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["mechanism"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["new center"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["orient"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["compress"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["validate"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["tutor_pain"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["promote_tool"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["leave_native"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["stop"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["For normal implementation tasks, the shorter output is enough"]
   - kind: body_includes_any
     path: ../../docs/NORTH_STAR.mdx
     terms: ["Orient", "Compress", "Validate", "Tutor pain", "Promote tools"]
