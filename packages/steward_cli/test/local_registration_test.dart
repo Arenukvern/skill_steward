@@ -555,7 +555,32 @@ Second version.
           contains('whether a mechanism is becoming the mission'),
         );
         expect(agentsContent, contains('## Claims and Evidence'));
+        expect(agentsContent, contains('same friction loops twice'));
+        expect(agentsContent, contains('pain signal'));
+        expect(agentsContent, contains('owner'));
+        expect(agentsContent, contains('native validation gate'));
+        expect(agentsContent, contains('smallest disposition'));
+        expect(agentsContent, contains('rerun route'));
+        expect(agentsContent, contains('current ledger'));
+        expect(agentsContent, contains('non-claims'));
         expect(agentsContent, contains('steward evidence init --minimal'));
+        expect(
+          agentsContent,
+          contains('native validation command recorded in `steward.yaml`'),
+        );
+        expect(
+          agentsContent,
+          contains(
+            'Default to no harness: do not add actions, probes, benchmarks, or scenarios',
+          ),
+        );
+        expect(
+          agentsContent,
+          contains(
+            'unless typed actions, probes, or benchmarks help real repo work',
+          ),
+        );
+        expect(agentsContent, isNot(contains('doctor.local:')));
         expect(agentsContent, contains('Record non-claims.'));
       } finally {
         Directory.current = originalCwd;

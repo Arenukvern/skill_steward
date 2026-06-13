@@ -238,6 +238,65 @@ uninstall:
       throwsA(isA<UsageException>()),
     );
   });
+
+  test('v1 bundle rejects absolute in-repository output directory', () {
+    final runner = CommandRunner<void>('steward', 'test')
+      ..addCommand(BundleCommand(StringBuffer(), tempDir));
+
+    expect(
+      () => runner.run([
+        'bundle',
+        '--output-dir',
+        p.join(tempDir.path, '.steward', 'bundles'),
+      ]),
+      throwsA(isA<UsageException>()),
+    );
+  });
+
+  test('v1 bundle normalizes output directory metadata', () async {
+    final runner = CommandRunner<void>('steward', 'test')
+      ..addCommand(BundleCommand(StringBuffer(), tempDir));
+
+    await runner.run(['bundle', '--output-dir', 'foo/../dist']);
+
+    final bundleFile = File(
+      p.join(tempDir.path, 'dist', 'steward-validate-on-save.bundle.json'),
+    );
+    expect(bundleFile.existsSync(), isTrue);
+    expect(
+      File(
+        p.join(tempDir.path, 'foo', 'steward-validate-on-save.bundle.json'),
+      ).existsSync(),
+      isFalse,
+    );
+
+    final indexFile = File(p.join(tempDir.path, 'dist', 'index.json'));
+    final index = jsonDecode(await indexFile.readAsString()) as Map;
+    final bundles = index['bundles'] as List;
+    expect(
+      bundles.single,
+      containsPair('path', 'dist/steward-validate-on-save.bundle.json'),
+    );
+  });
+
+  test('v1 bundle rejects plugin wiring symlink escapes', () async {
+    final outside = File(p.join(tempDir.path, 'outside-hook.sh'))
+      ..writeAsStringSync('');
+    final artifact = File(
+      p.join(
+        tempDir.path,
+        'plugins',
+        'steward-validate-on-save',
+        'hooks',
+        'example.sh',
+      ),
+    )..deleteSync();
+    await Link(artifact.path).create(outside.path);
+    final runner = CommandRunner<void>('steward', 'test')
+      ..addCommand(BundleCommand(StringBuffer(), tempDir));
+
+    expect(() => runner.run(['bundle']), throwsA(isA<UsageException>()));
+  });
 }
 
 Future<void> _writeSkill(final String root, final String id) async {

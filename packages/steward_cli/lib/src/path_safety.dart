@@ -11,6 +11,18 @@ String resolveUnderRoot(final String root, final String childPath) {
   if (!isInsideRoot(rootPath, candidate)) {
     throw ArgumentError('Path is outside the repository root: $childPath');
   }
+  final String? resolvedExisting;
+  try {
+    resolvedExisting = resolveExistingPath(candidate);
+  } on FileSystemException {
+    throw ArgumentError('Path is outside the repository root: $childPath');
+  }
+  if (resolvedExisting != null) {
+    if (!isInsideRoot(rootPath, resolvedExisting)) {
+      throw ArgumentError('Path is outside the repository root: $childPath');
+    }
+    return resolvedExisting;
+  }
   final ancestor = nearestExistingAncestor(candidate);
   final ancestorCanonical = Directory(ancestor).resolveSymbolicLinksSync();
   final suffix = p.relative(candidate, from: ancestor);
@@ -19,6 +31,19 @@ String resolveUnderRoot(final String root, final String childPath) {
     throw ArgumentError('Path is outside the repository root: $childPath');
   }
   return resolved;
+}
+
+String? resolveExistingPath(final String path) {
+  if (Directory(path).existsSync()) {
+    return Directory(path).resolveSymbolicLinksSync();
+  }
+  if (File(path).existsSync()) {
+    return File(path).resolveSymbolicLinksSync();
+  }
+  if (Link(path).existsSync()) {
+    return Link(path).resolveSymbolicLinksSync();
+  }
+  return null;
 }
 
 String repoRelativePath(final String root, final String path) => p

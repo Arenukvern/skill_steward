@@ -33,6 +33,18 @@ rules:
     terms: ["tutor_pain"]
   - kind: body_includes_any
     path: SKILL.md
+    terms: ["pain signal"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["native gate"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["rerun route"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["hot-path residue"]
+  - kind: body_includes_any
+    path: SKILL.md
     terms: ["promote_tool"]
   - kind: body_includes_any
     path: SKILL.md
@@ -43,6 +55,12 @@ rules:
   - kind: body_includes_any
     path: SKILL.md
     terms: ["For normal implementation tasks, the shorter output is enough"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["After two learning loops on the same friction"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["delete/retire duplicate plans or historical packets"]
   - kind: body_includes_any
     path: ../../docs/NORTH_STAR.mdx
     terms: ["Orient", "Compress", "Validate", "Tutor pain", "Promote tools"]

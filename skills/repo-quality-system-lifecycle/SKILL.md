@@ -1,6 +1,6 @@
 ---
 name: repo-quality-system-lifecycle
-description: Establish or audit a structural quality contract for any agent-operated engineering repository: app, library, CLI/tool, plugin, harness, or meta repo. Use when a repo needs charter clarity, docs/decision ownership, type-native validation gates, evidence paths, safe action policy, cold-start legibility, maturity proof, or a repo ecology pass to decide what should be compressed, merged, removed, updated, created, retired, or moved to checks.
+description: Establish or audit a structural quality contract for any agent-operated engineering repository: app, library, CLI/tool, plugin, harness, or meta repo. Use when a repo needs charter clarity, docs/decision ownership, type-native validation gates, evidence paths, safe action policy, cold-start legibility, maturity proof, repair-loop routing, consumer/producer owner-boundary routing, or a repo ecology pass to decide what should be compressed, merged, removed, updated, created, retired, or moved to checks.
 license: MIT
 type: governance
 metadata:
@@ -153,6 +153,8 @@ Inspect the repo ecology surfaces that matter for the request:
 - CLI/MCP/tools: deterministic checks, JSON shape, and bounded effects.
 - Evidence: current proof, historical proof, superseded proof, templates, blocked evidence, current-status pointers, next disposition, and non-claims.
 
+Loop smells to name before creating another artifact: a third evidence note or packet for the same blocker, repeated blocker proof, a tool tunnel, stale proof loop, repair replacing the original goal, or status artifacts multiplying faster than fixes.
+
 Prefer a single disposition table over a new doctrine page:
 
 | Surface | Current owner | Signal | Disposition | Destination | Evidence/gate | Non-claim |
@@ -185,6 +187,7 @@ Run ecology as a disposition loop, not an evidence treadmill or a tool tunnel:
 - Prefer `orient`, `compress`, `validate`, `tutor_pain`, `promote_tool`, `leave_native`, or `stop` before creating any new artifact.
 - When a proposed mechanism starts acting like the umbrella, classify `north_star_impact`. `sub_star` needs a parent/child boundary; `amends` or `conflicts` needs governance and an ADR before product direction changes.
 - When the review finds invalid config, dirty declared inputs, schema/output drift, blocked payload routing, stale navigation, or a broken native gate, update the owning surface and rerun the same gate when that is the smallest safe disposition.
+- For `tutor_pain`, name the pain signal, owner, native gate, smallest disposition, rerun route, hot-path residue, and non-claim.
 - After two learning loops on the same friction, stop PDSA and produce a disposition table. Extract the durable lesson into ADR, FAQ, skill, check, CLI diagnostic, or current ledger, then delete/retire duplicate plans or historical packets from active navigation.
 - Do not add sub-stewards, new broad skills, new benchmark scenarios, or new evidence indices from the same blocked detour unless the repaired owner still cannot represent the repo honestly.
 

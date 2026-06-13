@@ -125,8 +125,10 @@ class McpCommand extends Command<void> {
       // Start tracing logic
       final telemetryEnabled =
           !config.isV1 && config.telemetry['enabled'] == true;
-      final traceFile =
-          config.telemetry['trace_file'] as String? ?? '.steward_trace.json';
+      final traceFileValue = config.telemetry['trace_file'];
+      final traceFile = traceFileValue is String
+          ? traceFileValue
+          : '.steward_trace.json';
 
       void logTelemetry({
         required final bool isError,
@@ -134,7 +136,8 @@ class McpCommand extends Command<void> {
       }) {
         if (!telemetryEnabled) return;
         try {
-          final file = File(resolveUnderRoot(root, traceFile));
+          final file = mcpTelemetryTraceFile(root, traceFile);
+          if (file == null) return;
           final rawArgs = params.value;
           final entry = {
             'timestamp': DateTime.now().toIso8601String(),
@@ -149,7 +152,7 @@ class McpCommand extends Command<void> {
             '${jsonEncode(entry)}\n',
             mode: FileMode.append,
           );
-        } on Exception catch (_) {
+        } on Object catch (_) {
           // Telemetry should never crash the server.
         }
       }
@@ -376,10 +379,8 @@ class McpCommand extends Command<void> {
         final docName = uri.replaceFirst('steward://docs/', '');
         final docPath = config.docs[docName];
         if (docPath != null) {
-          final String resolvedPath;
-          try {
-            resolvedPath = resolveUnderRoot(root, docPath);
-          } on Object {
+          final resolvedPath = mcpDocumentPath(root, docPath);
+          if (resolvedPath == null) {
             return {
               'contents': [
                 {
@@ -416,5 +417,21 @@ class McpCommand extends Command<void> {
     });
 
     await server.listen();
+  }
+}
+
+File? mcpTelemetryTraceFile(final String root, final String traceFile) {
+  try {
+    return File(resolveUnderRoot(root, traceFile));
+  } on Object {
+    return null;
+  }
+}
+
+String? mcpDocumentPath(final String root, final String docPath) {
+  try {
+    return resolveUnderRoot(root, docPath);
+  } on Object {
+    return null;
   }
 }

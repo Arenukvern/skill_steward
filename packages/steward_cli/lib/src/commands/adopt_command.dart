@@ -185,7 +185,10 @@ Before claiming readiness, maturity, harness support, steward status, or adoptio
    - Delete completed plans after extracting durable truth.
 4. Record non-claims.
 
+If the same friction loops twice, stop before making another packet. Name the pain signal, owner, native validation gate, smallest disposition, rerun route, and non-claims; then fix the owner, move repeated drift to a check/tool/skill/current ledger, leave the path native, or stop.
+
 If this repo needs a current claim ledger, run `steward evidence init --minimal`.
+Default to no harness: do not add actions, probes, benchmarks, or scenarios unless typed actions, probes, or benchmarks help real repo work.
 Use `steward.yaml` and harness proof only when typed actions, probes, or benchmarks help real repo work.
 
 ## Active Skills

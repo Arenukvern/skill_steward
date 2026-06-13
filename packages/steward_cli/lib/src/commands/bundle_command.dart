@@ -72,9 +72,10 @@ class BundleCommand extends Command<void> {
     }
 
     final outputDirArg = argResults?['output-dir'] as String;
+    final outputDirName = _normalizeOutputDir(outputDirArg);
     final String outputPath;
     try {
-      outputPath = resolveUnderRoot(root, outputDirArg);
+      outputPath = resolveUnderRoot(root, outputDirName);
     } on Object {
       throw UsageException(
         '--output-dir must be a repository-relative path.',
@@ -91,7 +92,7 @@ class BundleCommand extends Command<void> {
     for (final bundle in bundles) {
       final id = bundle['id'] as String;
       final fileName = '$id.bundle.json';
-      final relPath = p.join(outputDirArg, fileName).replaceAll(r'\', '/');
+      final relPath = p.join(outputDirName, fileName).replaceAll(r'\', '/');
       final content = '${const JsonEncoder.withIndent('  ').convert(bundle)}\n';
       await File(p.join(outputDir.path, fileName)).writeAsString(content);
       indexEntries.add({
@@ -110,7 +111,26 @@ class BundleCommand extends Command<void> {
     await File(p.join(outputDir.path, 'index.json')).writeAsString(
       '${const JsonEncoder.withIndent('  ').convert(fileIndex)}\n',
     );
-    _writeln('Generated ${bundles.length} plugin bundle(s) in $outputDirArg.');
+    _writeln('Generated ${bundles.length} plugin bundle(s) in $outputDirName.');
+  }
+
+  String _normalizeOutputDir(final String value) {
+    if (p.isAbsolute(value)) {
+      throw UsageException(
+        '--output-dir must be a repository-relative path.',
+        usage,
+      );
+    }
+    final normalized = p.normalize(value).replaceAll(r'\', '/');
+    if (normalized.isEmpty ||
+        normalized == '.' ||
+        normalized.startsWith('..')) {
+      throw UsageException(
+        '--output-dir must be a non-empty repository-relative path.',
+        usage,
+      );
+    }
+    return normalized;
   }
 
   Future<void> _runLegacy(final String root, final StewardConfig config) async {
@@ -255,10 +275,11 @@ class BundleCommand extends Command<void> {
     final entries = <Map<String, dynamic>>[];
     for (final id in skills) {
       final path = p.join('skills', id, 'SKILL.md').replaceAll(r'\', '/');
+      final resolved = resolveUnderRoot(root, path);
       entries.add({
         'id': id,
         'path': path,
-        'sha256': await _fileSha256(File(p.join(root, path))),
+        'sha256': await _fileSha256(File(resolved)),
       });
     }
     return entries;
@@ -277,7 +298,11 @@ class BundleCommand extends Command<void> {
     for (final item in raw) {
       final map = Map<String, dynamic>.from(item as Map);
       final artifactPath = map['path'] as String;
-      final sourcePath = _rel(root, p.join(pluginDir.path, artifactPath));
+      final resolvedArtifactPath = resolveUnderRoot(
+        pluginDir.path,
+        artifactPath,
+      );
+      final sourcePath = _rel(root, resolvedArtifactPath);
       entries.add({
         'path': artifactPath,
         'source_path': sourcePath,
@@ -321,8 +346,11 @@ class BundleCommand extends Command<void> {
   Future<String> _fileSha256(final File file) async =>
       sha256.convert(await file.readAsBytes()).toString();
 
-  String _rel(final String root, final String path) =>
-      p.relative(path, from: root).replaceAll(r'\', '/');
+  String _rel(final String root, final String path) {
+    final rootPath = Directory(root).resolveSymbolicLinksSync();
+    final resolvedPath = resolveExistingPath(path) ?? p.normalize(path);
+    return p.relative(resolvedPath, from: rootPath).replaceAll(r'\', '/');
+  }
 
   void _writeln(final Object? value) {
     final output = _output;

@@ -1,0 +1,31 @@
+id: repo-quality-loop-smell-catalog-trigger
+skill: repo-quality-system-lifecycle
+routing: should_trigger
+input: "This would be the third evidence note for the same blocked schema drift, and status artifacts are multiplying faster than fixes. Decide what should happen next without creating another doctrine page."
+rules:
+  - kind: file_exists
+    path: references/evals.md
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["Loop smells to name before creating another artifact"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["third evidence note or packet"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["repeated blocker proof"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["tool tunnel"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["stale proof loop"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["repair replacing the original goal"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["status artifacts multiplying faster than fixes"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["Prefer a single disposition table over a new doctrine page"]

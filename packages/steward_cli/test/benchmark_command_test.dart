@@ -307,6 +307,40 @@ void main() {
     expect(sentinel.existsSync(), isFalse);
   });
 
+  test('benchmark rejects cwd symlinks that resolve outside root', () async {
+    final outside = Directory.systemTemp.createTempSync(
+      'steward_benchmark_outside_',
+    );
+    addTearDown(() {
+      if (outside.existsSync()) {
+        outside.deleteSync(recursive: true);
+      }
+    });
+    await Link(p.join(tempDir.path, 'linked-out')).create(outside.path);
+    await File(p.join(tempDir.path, 'steward.yaml')).writeAsString(
+      validStewardV1(commandArgv: '[/bin/sh, -c, "pwd -P"]', cwd: 'linked-out'),
+    );
+    await _initGitRepo(tempDir);
+    await _commitAll(tempDir, 'cwd benchmark inputs');
+    final buffer = StringBuffer();
+    final runner = CommandRunner<void>('steward', 'test')
+      ..addCommand(BenchmarkCommand(buffer, tempDir));
+
+    await runner.run([
+      'benchmark',
+      '--scenario',
+      'sample_repo.pwd-selection',
+      '--json',
+    ]);
+
+    final payload = jsonDecode(buffer.toString()) as Map<String, dynamic>;
+    expect(payload['result'], 'fail');
+    expect(payload['actions_run'], ['repo.pwd']);
+    final summary = (payload['execution_summaries'] as List).single as Map;
+    expect(summary['status'], 'error');
+    expect(summary['exit_code'], isNull);
+  });
+
   test('benchmark blocks unknown safe_first_probe without execution', () async {
     await File(
       p.join(tempDir.path, 'steward.yaml'),
@@ -382,6 +416,7 @@ String validStewardV1({
   final String? manifestPath,
   final String sourceCommit = '0123456789abcdef0123456789abcdef01234567',
   final String? commandArgv,
+  final String cwd = '.',
   final int timeoutMs = 10000,
 }) {
   final actionArgv =
@@ -443,7 +478,7 @@ actions:
     command:
       argv: $actionArgv
       shell: $shell
-    cwd: .
+    cwd: $cwd
     effects:
       fs_read: ["."]
       fs_write: []

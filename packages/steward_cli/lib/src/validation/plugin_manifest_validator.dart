@@ -4,6 +4,8 @@ import 'package:crypto/crypto.dart';
 import 'package:path/path.dart' as p;
 import 'package:yaml/yaml.dart';
 
+import '../path_safety.dart';
+
 /// Validates Skill Steward local plugin manifests.
 ///
 /// These manifests are not vendor marketplace manifests. They document local
@@ -67,7 +69,25 @@ Future<List<String>> validatePluginManifests(final String rootPath) async {
       diagnostics,
     );
     for (final skillId in referencedSkills) {
-      final skillFile = File(p.join(rootPath, 'skills', skillId, 'SKILL.md'));
+      if (!_isSafePathSegment(skillId)) {
+        diagnostics.add(
+          '${_rel(rootPath, manifest.path)}: referenced_skills contains unsafe skill id "$skillId".',
+        );
+        continue;
+      }
+      final String skillFilePath;
+      try {
+        skillFilePath = resolveUnderRoot(
+          rootPath,
+          p.join('skills', skillId, 'SKILL.md'),
+        );
+      } on Object {
+        diagnostics.add(
+          '${_rel(rootPath, manifest.path)}: referenced skill "$skillId" resolves outside the repository root.',
+        );
+        continue;
+      }
+      final skillFile = File(skillFilePath);
       if (!skillFile.existsSync()) {
         diagnostics.add(
           '${_rel(rootPath, manifest.path)}: referenced_skills contains "$skillId", but skills/$skillId/SKILL.md does not exist.',
@@ -174,12 +194,64 @@ void _validateTargets(
     diagnostics.add('${_rel(rootPath, manifest.path)}: targets must be a map.');
     return;
   }
+  final pluginPath = manifest.parent.path;
+  final wiringArtifactPaths = _declaredWiringArtifactPaths(data);
   for (final key in (targets as Map).keys) {
     final target = key.toString();
     if (!targetAgents.contains(target)) {
       diagnostics.add(
         '${_rel(rootPath, manifest.path)}: targets.$target must also be listed in target_agents.',
       );
+    }
+    final targetConfig = targets[key];
+    if (targetConfig is! YamlMap && targetConfig is! Map) {
+      diagnostics.add(
+        '${_rel(rootPath, manifest.path)}: targets.$target must be a map.',
+      );
+      continue;
+    }
+    final targetMap = Map<String, dynamic>.from(targetConfig as Map);
+    final hooks = targetMap['hooks'];
+    if (hooks == null) {
+      continue;
+    }
+    if (hooks is! YamlList && hooks is! List) {
+      diagnostics.add(
+        '${_rel(rootPath, manifest.path)}: targets.$target.hooks must be a list.',
+      );
+      continue;
+    }
+    var index = 0;
+    for (final hook in hooks as Iterable) {
+      final hookField = 'targets.$target.hooks[$index]';
+      index += 1;
+      if (hook is! YamlMap && hook is! Map) {
+        diagnostics.add(
+          '${_rel(rootPath, manifest.path)}: $hookField must be a map.',
+        );
+        continue;
+      }
+      final hookMap = Map<String, dynamic>.from(hook as Map);
+      _validateTargetPathMetadata(
+        rootPath: rootPath,
+        pluginPath: pluginPath,
+        manifest: manifest,
+        field: '$hookField.script',
+        value: hookMap['script'],
+        wiringArtifactPaths: wiringArtifactPaths,
+        diagnostics: diagnostics,
+      );
+      if (hookMap.containsKey('config_snippet')) {
+        _validateTargetPathMetadata(
+          rootPath: rootPath,
+          pluginPath: pluginPath,
+          manifest: manifest,
+          field: '$hookField.config_snippet',
+          value: hookMap['config_snippet'],
+          wiringArtifactPaths: wiringArtifactPaths,
+          diagnostics: diagnostics,
+        );
+      }
     }
   }
 }
@@ -251,13 +323,33 @@ void _validateWiringArtifacts(
       );
       continue;
     }
-    if (p.isAbsolute(artifactPath) || artifactPath.contains('..')) {
+    final normalizedArtifactPath = _normalizeMetadataPath(artifactPath);
+    if (artifactPath != normalizedArtifactPath) {
+      diagnostics.add(
+        '${_rel(rootPath, p.join(pluginPath, 'plugin.yaml'))}: wiring artifact "$artifactPath" must be normalized as "$normalizedArtifactPath".',
+      );
+      continue;
+    }
+    if (p.isAbsolute(artifactPath) ||
+        artifactPath.contains('..') ||
+        artifactPath
+            .split(RegExp(r'[/\\]+'))
+            .any((final part) => part == '.')) {
       diagnostics.add(
         '${_rel(rootPath, p.join(pluginPath, 'plugin.yaml'))}: wiring artifact "$artifactPath" must stay inside the plugin directory.',
       );
       continue;
     }
-    final file = File(p.join(pluginPath, artifactPath));
+    final String resolvedArtifactPath;
+    try {
+      resolvedArtifactPath = resolveUnderRoot(pluginPath, artifactPath);
+    } on Object {
+      diagnostics.add(
+        '${_rel(rootPath, p.join(pluginPath, 'plugin.yaml'))}: wiring artifact "$artifactPath" must stay inside the plugin directory.',
+      );
+      continue;
+    }
+    final file = File(resolvedArtifactPath);
     if (!file.existsSync()) {
       diagnostics.add(
         '${_rel(rootPath, p.join(pluginPath, 'plugin.yaml'))}: wiring artifact "$artifactPath" does not exist.',
@@ -279,6 +371,83 @@ void _validateWiringArtifacts(
     }
   }
 }
+
+Set<String> _declaredWiringArtifactPaths(final Map<String, dynamic> data) {
+  final artifacts = data['wiring_artifacts'];
+  if (artifacts is! YamlList && artifacts is! List) {
+    return const {};
+  }
+  final paths = <String>{};
+  for (final artifact in artifacts as Iterable) {
+    if (artifact is! YamlMap && artifact is! Map) {
+      continue;
+    }
+    final path = (artifact as Map)['path'];
+    if (path is String) {
+      paths.add(path);
+    }
+  }
+  return paths;
+}
+
+void _validateTargetPathMetadata({
+  required final String rootPath,
+  required final String pluginPath,
+  required final File manifest,
+  required final String field,
+  required final Object? value,
+  required final Set<String> wiringArtifactPaths,
+  required final List<String> diagnostics,
+}) {
+  final manifestPath = _rel(rootPath, manifest.path);
+  if (value is! String || value.trim().isEmpty) {
+    diagnostics.add('$manifestPath: $field must be a non-empty relative path.');
+    return;
+  }
+  if (p.isAbsolute(value)) {
+    diagnostics.add(
+      '$manifestPath: $field "$value" must be relative to the plugin directory.',
+    );
+    return;
+  }
+  final normalized = _normalizeMetadataPath(value);
+  if (normalized.isEmpty || normalized == '.' || normalized.startsWith('..')) {
+    diagnostics.add(
+      '$manifestPath: $field "$value" must stay inside the plugin directory.',
+    );
+    return;
+  }
+  if (value != normalized) {
+    diagnostics.add(
+      '$manifestPath: $field "$value" must be normalized as "$normalized".',
+    );
+    return;
+  }
+  try {
+    resolveUnderRoot(pluginPath, value);
+  } on Object {
+    diagnostics.add(
+      '$manifestPath: $field "$value" must stay inside the plugin directory.',
+    );
+    return;
+  }
+  if (!wiringArtifactPaths.contains(value)) {
+    diagnostics.add(
+      '$manifestPath: $field "$value" must be listed in wiring_artifacts[].path.',
+    );
+  }
+}
+
+String _normalizeMetadataPath(final String value) =>
+    p.normalize(value).replaceAll(r'\', '/');
+
+bool _isSafePathSegment(final String value) =>
+    value.trim().isNotEmpty &&
+    !p.isAbsolute(value) &&
+    !value.contains('/') &&
+    !value.contains(r'\') &&
+    value != '.' &&
+    value != '..';
 
 void _validateLifecycleAction(
   final Map<String, dynamic> data,

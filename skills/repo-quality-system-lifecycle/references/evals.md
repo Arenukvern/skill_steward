@@ -14,6 +14,9 @@ Use these prompts during manual or plugin-eval runs:
 6. "Using all stewardship skills, analyze this repository and decide what should be compressed, changed, merged, removed, updated, created, retired, or moved into checks. This is a repo ecology pass, not necessarily dogfood."
 7. "Set up a unique new repo so agents know when to write evidence, when to use ADRs or checks, and when to adopt Steward tooling instead of building a heavy evidence archive."
 8. "We have repeated PDSA and evidence loops around the same blocker. Re-center on the North Star and decide whether to orient, compress, validate, tutor pain, promote a tool, leave native, or stop instead of writing another evidence artifact."
+9. "This would be the third evidence packet for the same blocked schema drift. Decide whether to repair the owner, move the deterministic lesson to a check, update a current ledger, or stop."
+10. "A repair loop around Steward tooling has replaced the user's original product goal. Route the pain back to owner, native gate, smallest disposition, rerun route, hot-path residue, and non-claims."
+11. "A consumer repo keeps duplicating producer architecture guidance while waiting for publish evidence. Decide what belongs in the producer, what belongs in consumer proof, and what gate proves cutover."
 
 ## Rubric
 
@@ -26,3 +29,5 @@ Use these prompts during manual or plugin-eval runs:
 - Uses a repository ecology disposition table for cleanup/compression requests.
 - Promotes repeated friction to durable docs, tests, evals, or action candidates.
 - Routes repeated PDSA/evidence loops to North Star dispositions instead of creating another artifact by default.
+- Tutors pain with pain signal, owner, native gate, smallest disposition, rerun route, hot-path residue, and non-claim.
+- Keeps producer architecture and release truth separate from consumer adoption proof and cutover gates.
