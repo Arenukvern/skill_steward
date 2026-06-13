@@ -45,7 +45,9 @@ The snapshot composes existing local facts such as Steward config validity, decl
 
 `steward ecology` output uses observational language such as `observed`, `missing`, `blocked`, `stale`, and `not_checked`. It must not claim `healthy`, `adopted`, `H5`, `proven_repo_steward`, or any maturity status by itself.
 
-Future subcommands such as `gaps`, `compare`, `route`, or multi-repo `matrix` are deferred until single-repo snapshots are stable and useful.
+Adopt a disposition loop cap for ecology work. When an ecology review identifies repeated friction such as invalid `steward.yaml`, dirty declared inputs, schema/output drift, blocked payload routing, stale navigation, or a broken native launch path, the next action is to choose the smallest North Star disposition: orient, compress, validate, tutor pain, promote a tool, leave native, or stop. Do not create another PDSA/evidence loop to restate the blocker. After two learning loops on the same friction, extract the lesson into ADR, FAQ, skill, check, CLI diagnostic, or the current ledger, then stop or update the owning surface.
+
+Future subcommands such as `gaps`, `compare`, or multi-repo `matrix` are deferred until single-repo snapshots and route dispositions are stable and useful.
 
 ## Considered Options
 
@@ -56,7 +58,7 @@ Future subcommands such as `gaps`, `compare`, `route`, or multi-repo `matrix` ar
 
 ## Decision Outcome
 
-Chosen: **Repository Ecology Review as a named repo-quality mode plus read-only ecology snapshot tooling**.
+Chosen: **Repository Ecology Review as a named repo-quality mode plus read-only ecology snapshot and route tooling**.
 
 `repo-quality-system-lifecycle` owns judgment and disposition. `repository-governance-lifecycle` owns durable ADR/FAQ/plan-retirement placement. `mixture-of-experts` supplies critical lenses when the pass needs independent critique. `mcp-harness-repo-maintainer` joins only when actions, probes, benchmark scenarios, or CLI/MCP parity are part of the review.
 
@@ -66,17 +68,20 @@ Chosen: **Repository Ecology Review as a named repo-quality mode plus read-only 
 * Good, because plans and specs can retire through the same disposition grammar as docs, skills, schemas, and tools.
 * Good, because deterministic inventory moves into CLI output instead of hand-written audit prose.
 * Good, because the workflow can create fewer artifacts by making deletion, compression, and moving truth to checks normal outcomes.
+* Good, because repeated ecology loops are forced to become dispositions, checks, standing guidance, or owner updates instead of more evidence about evidence.
 * Bad, because a new CLI namespace can still feel like a verdict if users overread it.
 * Bad, because ecology snapshots can become another artifact pile if they are stored without a decision or comparison need.
-* Mitigation: keep `snapshot` read-only, include non-claims in output, and require skill/governance judgment before any maturity or adoption claim.
+* Mitigation: keep `snapshot` and `route` read-only, include non-claims in output, require skill/governance judgment before any maturity or adoption claim, and cap repeated PDSA on the same friction at two loops before extraction or owner update.
 
 ## Confirmation
 
 * `repo-quality-system-lifecycle` includes a Repository Ecology Review subsection and routing eval.
 * `docs/start_here/executable-plans.mdx` routes non-plan cleanup back to repo-quality instead of becoming the umbrella.
 * `steward ecology snapshot --json` is inventory-only and includes non-claims.
+* `steward ecology route --json` composes snapshot facts into North Star dispositions without mutating the repo or awarding maturity.
 * The snapshot command has tests for deterministic output shape.
-* Later ecology commands require evidence from repeated snapshot use before promotion.
+* Later ecology commands require evidence from repeated snapshot/route use before promotion.
+* `DX_FAQ`, `repo-quality-system-lifecycle`, and `mcp-harness-repo-maintainer` route repeated blockers through owner disposition before new evidence.
 
 ## More Information
 

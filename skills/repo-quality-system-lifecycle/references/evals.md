@@ -13,6 +13,7 @@ Use these prompts during manual or plugin-eval runs:
 5. "A growing app has repeated boilerplate and confusing repo boundaries. Decide whether to keep it native, extract a public surface, generate, add harness proof, or delete layers."
 6. "Using all stewardship skills, analyze this repository and decide what should be compressed, changed, merged, removed, updated, created, retired, or moved into checks. This is a repo ecology pass, not necessarily dogfood."
 7. "Set up a unique new repo so agents know when to write evidence, when to use ADRs or checks, and when to adopt Steward tooling instead of building a heavy evidence archive."
+8. "We have repeated PDSA and evidence loops around the same blocker. Re-center on the North Star and decide whether to orient, compress, validate, tutor pain, promote a tool, leave native, or stop instead of writing another evidence artifact."
 
 ## Rubric
 
@@ -24,3 +25,4 @@ Use these prompts during manual or plugin-eval runs:
 - Starts unique repos with an `AGENTS.md` claim/evidence router and a current ledger only when a claim needs it.
 - Uses a repository ecology disposition table for cleanup/compression requests.
 - Promotes repeated friction to durable docs, tests, evals, or action candidates.
+- Routes repeated PDSA/evidence loops to North Star dispositions instead of creating another artifact by default.

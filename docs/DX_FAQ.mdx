@@ -4,6 +4,18 @@ _How to work in this repo and install Skill Steward meta-skills elsewhere. Walk 
 
 ## 🧭 Router
 
+### Ecology disposition fast path
+
+For ordinary repo work, do not start with a maturity ladder or an evidence packet. Start with the repository ecology surface that owns the friction.
+
+1. Name the original user goal and acceptance check.
+2. Identify the repo's primary artifact and native validation gate.
+3. Choose one disposition: `orient`, `compress`, `validate`, `tutor_pain`, `promote_tool`, `leave_native`, or `stop`.
+4. Make the smallest safe change only when that disposition calls for it, including in another allowed repo when that owner is the right place.
+5. Rerun the same native gate or blocked Steward route.
+6. Leave the smallest hot path: better map, shorter doc, native check, schema, test, FAQ row, action candidate, or current-ledger update.
+7. Create evidence only for a claim, blocker, real run, or durable behavior change. Repeated deterministic drift should become a check/tool.
+
 ```text
 CHARTER / scope        → NORTH_STAR.mdx
 REPO QUALITY CONTRACT → repo-quality-contracts.mdx
@@ -39,6 +51,8 @@ Use the smallest distribution surface that matches the job.
 | Validate a JSON artifact against a Steward schema | `steward schema validate` | Portable shape check; not semantic proof beyond the schema |
 | Keep dogfood JSON routes aligned | `steward schema check-outputs`, `steward schema drift` | Part of the machine-readable contract path; not maturity proof by itself |
 | Gather repo ecology inventory | `steward ecology snapshot --json` | Read-only facts for a Repository Ecology Review; not an adoption or maturity verdict |
+| Route repo ecology dispositions | `steward ecology route --json` | Composes snapshot facts into orient/compress/validate/tutor/promote/leave/stop suggestions; not repair automation |
+| Compose current dogfood route | `steward dogfood status --json` | Current ledger plus ecology facts; not maturity, H2/H5, or steward status |
 | Start a minimal current-status ledger | `steward evidence init --minimal` | Creates one claim/status ledger; not an evidence archive, benchmark, or readiness claim |
 | Turn blocked JSON into next actions | `steward blocked explain` | Artifact routing for blocked evidence; does not repair or prove |
 | Validate Skill Steward skills | `pnpm run validate`, `pnpm run eval` | Skill structure and Tier-1 routing cases |
@@ -111,9 +125,11 @@ When working inside an adopter repo, classify the current claim before adding ne
 | `harness_proof` | `doctor`, `actions list`, `action inspect`, `probe`, and strict `benchmark` return `result: "pass"` | Record compact evidence and avoid broader maturity claims. |
 | `protocol_artifact_only` | `steward protocol validate` returns `valid: true` | Keep status at `stewardship_protocol`; do not claim repo steward proof. |
 | `blocked_invalid_config` | `doctor` or `probe` reports invalid config | Repair `steward.yaml` schema/archetype or create an unknown-case artifact if the schema is missing a real repo shape. |
-| `durability_blocked` | Strict benchmark blocks on dirty or untracked contract inputs | Run `steward blocked explain --input <summary.json> --json`, track or commit the contract inputs, then rerun the same benchmark before claiming proof. |
-| `runtime_proof_blocked` | CLI/runtime setup cannot produce the target app, VM URI, semantic node, or redacted assertion | Run `steward blocked explain --input <runtime-block.json> --json`, then capture an unknown-case artifact with commands, logs excerpt, redaction policy, and the exact rerun target. |
+| `durability_blocked` | Strict benchmark blocks on dirty or untracked contract inputs | Pipe the fresh benchmark JSON to `steward blocked explain --stdin --json`, track or commit the contract inputs, then rerun the same benchmark before claiming proof. |
+| `runtime_proof_blocked` | CLI/runtime setup cannot produce the target app, VM URI, semantic node, or redacted assertion | Pipe the fresh runtime block to `steward blocked explain --stdin --json`, then repair the launch path or capture an unknown-case artifact with commands, logs excerpt, redaction policy, and the exact rerun target. |
 | `machine_contract_drift` | `schema check-outputs` or `schema drift` fails on a JSON route used by the dogfood path | Fix the schema/model/output mismatch before relying on that JSON for benchmark or claim evidence. |
+
+Ecology disposition rule: if the blocker is invalid config, dirty declared inputs, schema/output drift, blocked payload routing, stale navigation, or a broken native launch path, choose the smallest useful disposition before adding another artifact. Often that means updating the owner and rerunning the same gate; sometimes it means leaving the work native, converting deterministic drift to a check, or stopping a tool path that has become the work. After two learning loops on the same friction, extract the lesson into ADR/FAQ/skill/check/current ledger or stop; do not create a third loop just to feel surer.
 
 ### Repository ecology review
 
@@ -123,11 +139,12 @@ Use `repo-quality-system-lifecycle` for judgment and disposition. Use `steward e
 
 ```bash
 steward ecology snapshot --json
+steward ecology route --json
 ```
 
-The snapshot is read-only. It can report observed config, action/probe declarations, benchmark summaries, git dirty state, active plan candidates, and evidence pointers, but it does not execute actions, repair drift, or award maturity.
+The snapshot is read-only. It can report observed config, action/probe declarations, benchmark summaries, git dirty state, active plan candidates, and evidence pointers, but it does not execute actions, repair drift, or award maturity. The route command composes those facts into the North Star value paths: orient, compress, validate, tutor pain, promote tools, leave native, or stop.
 
-Benchmark summaries in the snapshot are persisted history from `.steward/benchmark-summaries/`. The snapshot labels them as `persisted_history` and includes commit/freshness hints; `may_be_stale: true` means the summary is a routing clue, not current proof. If a fresh benchmark result should become the next ecology input or feed `steward blocked explain`, run the benchmark with `--output .steward/benchmark-summaries/<scenario>.json`; console-only JSON does not update persisted summaries.
+Benchmark summaries in the snapshot are persisted history from `.steward/benchmark-summaries/`. The snapshot labels them as `persisted_history` and includes commit/freshness hints; `may_be_stale: true` means the summary is a routing clue, not current proof. Pipe fresh blocked JSON to `steward blocked explain --stdin --json`; use `--output .steward/benchmark-summaries/<scenario>.json` only when a fresh benchmark result should replace persisted history or feed a future snapshot.
 
 ### Evidence artifact desk
 

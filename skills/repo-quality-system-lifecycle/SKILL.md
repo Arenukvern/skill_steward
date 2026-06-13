@@ -179,18 +179,27 @@ When `steward ecology snapshot --json` is available, use it as inventory only. T
 
 For evidence surfaces, apply the envelope in [docs/core/evidence-artifacts.mdx](../../docs/core/evidence-artifacts.mdx). Prefer `move to check` over `move to evidence` when the same deterministic drift will recur; prefer a current ledger over many historical notes when the reader only needs the present weakest true claim.
 
+Run ecology as a disposition loop, not an evidence treadmill or a tool tunnel:
+
+- Prefer `orient`, `compress`, `validate`, `tutor_pain`, `promote_tool`, `leave_native`, or `stop` before creating any new artifact.
+- When the review finds invalid config, dirty declared inputs, schema/output drift, blocked payload routing, stale navigation, or a broken native gate, update the owning surface and rerun the same gate when that is the smallest safe disposition.
+- After two learning loops on the same friction, stop PDSA and produce a disposition table. Extract the durable lesson into ADR, FAQ, skill, check, CLI diagnostic, or current ledger, then delete/retire duplicate plans or historical packets from active navigation.
+- Do not add sub-stewards, new broad skills, new benchmark scenarios, or new evidence indices from the same blocked detour unless the repaired owner still cannot represent the repo honestly.
+
 ## Output contract
 
 When reporting an audit or adoption pass, include:
 
 - Repo archetype and primary artifact.
-- Current maturity stage (`S0`-`S5`) and evidence.
-- Missing contract areas.
+- Current maturity stage (`S0`-`S5`) and evidence for audits, adoption claims, or readiness claims.
+- Missing contract areas when they block the requested work or a claim.
 - Pattern layer chosen, smaller layer considered, and expected maintenance delta.
 - Smallest next improvement.
 - Ecology dispositions when the request is about compression, cleanup, or surface changes.
 - What was not validated.
 - Any skipped generators, blocked checks, or non-claims behind broad product language.
+
+For normal implementation tasks, the shorter output is enough: original goal, chosen disposition, native gate, smallest change or reason to leave native/stop, validation result, and the hot-path residue left for future agents.
 
 ## Install
 

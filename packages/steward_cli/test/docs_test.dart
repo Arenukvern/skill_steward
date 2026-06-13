@@ -105,6 +105,77 @@ void main() {
       }
     });
 
+    test('Start Here does not present historical evidence as current proof', () {
+      final content = docsJsonFile.readAsStringSync();
+      final data = jsonDecode(content) as Map<String, dynamic>;
+      final sidebar = data['sidebar'] as List?;
+      expect(sidebar, isNotNull);
+
+      final startHere = sidebar!.whereType<Map<String, dynamic>>().firstWhere(
+        (final group) => group['group'] == 'Start Here',
+      );
+      final pages = (startHere['pages'] as List).whereType<Map>().toList();
+      final evidenceHrefs = pages
+          .map((final page) => page['href'])
+          .whereType<String>()
+          .where((final href) => href.startsWith('/evidence/'))
+          .toList();
+
+      expect(
+        evidenceHrefs,
+        unorderedEquals([
+          '/evidence/current-dogfood-status',
+          '/evidence/first-adopter-golden-path',
+        ]),
+        reason:
+            'Start Here should link only current/fixture evidence. Historical packets belong in the Evidence Archive group.',
+      );
+    });
+
+    test('adoption template navigation is reference language, not proof', () {
+      final content = docsJsonFile.readAsStringSync();
+      final data = jsonDecode(content) as Map<String, dynamic>;
+      final sidebar = data['sidebar'] as List?;
+      expect(sidebar, isNotNull);
+
+      final pages = sidebar!
+          .whereType<Map<String, dynamic>>()
+          .expand((final group) => (group['pages'] as List?) ?? const [])
+          .whereType<Map<String, dynamic>>();
+      final adoptionTemplate = pages.firstWhere(
+        (final page) => page['href'] == '/evidence/adoption-run-v2-template',
+      );
+
+      expect(adoptionTemplate['title'], contains('reference'));
+      expect(
+        '${adoptionTemplate['title']}'.toLowerCase(),
+        isNot(contains('proof')),
+      );
+    });
+
+    test('current dogfood ledger stays a compact current card', () {
+      final ledger = File(
+        p.join(docsDir, 'evidence', 'current-dogfood-status.mdx'),
+      );
+      expect(ledger.existsSync(), isTrue);
+
+      final content = ledger.readAsStringSync();
+      expect(content, contains('## Current Evidence Card'));
+      expect(content, contains('## Current status table'));
+      expect(content, isNot(contains('## PDSA run')));
+      expect(content, isNot(contains('### Plan')));
+      expect(content, isNot(contains('### Do')));
+      expect(content, isNot(contains('### Study')));
+      expect(content, isNot(contains('### Act')));
+      expect(
+        content,
+        allOf(
+          contains('Adoption run v2 template](adoption-run-v2-template)'),
+          contains('template/reference, not evidence of an adoption run'),
+        ),
+      );
+    });
+
     test('All ADR decision files are referenced in docs.json sidebar', () {
       final content = docsJsonFile.readAsStringSync();
       final data = jsonDecode(content) as Map<String, dynamic>;

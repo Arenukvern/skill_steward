@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/arenukvern/skill_steward/schemas/dogfood-status-v1.schema.json",
+  "title": "Steward dogfood status output v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "root",
+    "status",
+    "current_ledger",
+    "ecology",
+    "weakest_current_claim",
+    "next_actions",
+    "non_claims"
+  ],
+  "properties": {
+    "schema_version": { "const": "steward.dogfood.status.v1" },
+    "root": { "type": "string", "minLength": 1 },
+    "status": { "const": "observed" },
+    "current_ledger": {
+      "type": "object",
+      "required": ["present", "path", "frontmatter"],
+      "properties": {
+        "present": { "type": "boolean" },
+        "path": { "type": "string", "minLength": 1 },
+        "frontmatter": { "type": "object" }
+      },
+      "additionalProperties": false
+    },
+    "ecology": {
+      "type": "object",
+      "required": [
+        "config_valid",
+        "schema_outputs_valid",
+        "git_status",
+        "current_dogfood_status_present",
+        "persisted_summaries_status",
+        "persisted_summaries_may_be_stale"
+      ],
+      "properties": {
+        "config_valid": { "type": "boolean" },
+        "schema_outputs_valid": { "type": "boolean" },
+        "git_status": { "type": "string" },
+        "current_dogfood_status_present": { "type": "boolean" },
+        "persisted_summaries_status": { "type": "string" },
+        "persisted_summaries_may_be_stale": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "weakest_current_claim": {
+      "type": "object",
+      "required": [
+        "claim_tested",
+        "proof_level",
+        "result",
+        "limitations",
+        "non_claims"
+      ],
+      "properties": {
+        "claim_tested": {},
+        "proof_level": {},
+        "result": {},
+        "limitations": {},
+        "non_claims": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "next_actions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "non_claims": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    }
+  },
+  "additionalProperties": false
+}

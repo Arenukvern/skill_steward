@@ -14,6 +14,7 @@ import 'commands/bundle_command.dart';
 import 'commands/claim_command.dart';
 import 'commands/diagnose_command.dart';
 import 'commands/doctor_command.dart';
+import 'commands/dogfood_command.dart';
 import 'commands/ecology_command.dart';
 import 'commands/eval_command.dart';
 import 'commands/evidence_command.dart';
@@ -42,6 +43,7 @@ class StewardCli {
           ..addCommand(ValidateCommand())
           ..addCommand(EvalCommand())
           ..addCommand(DoctorCommand())
+          ..addCommand(DogfoodCommand())
           ..addCommand(EcologyCommand())
           ..addCommand(EvidenceCommand())
           ..addCommand(ActionsCommand())

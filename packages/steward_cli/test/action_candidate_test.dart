@@ -70,6 +70,8 @@ void main() {
       'Proposed next bounded probe.',
       '--argv-json',
       '["/usr/bin/touch","should-not-exist"]',
+      '--fs-read',
+      'steward.yaml',
       '--benchmark',
       'sample_repo.next_probe.selection',
       '--json',
@@ -121,6 +123,8 @@ void main() {
         'Proposed next bounded probe.',
         '--argv-json',
         '["/bin/pwd"]',
+        '--fs-read',
+        'steward.yaml',
         '--benchmark',
         'sample_repo.next_probe.selection',
         '--json',
@@ -164,6 +168,8 @@ void main() {
       'Proposed next bounded probe.',
       '--argv-json',
       '["/bin/pwd"]',
+      '--fs-read',
+      'steward.yaml',
       '--benchmark',
       'sample_repo.next_probe.selection',
       '--json',
@@ -214,6 +220,8 @@ void main() {
       'Proposed next bounded probe.',
       '--argv-json',
       '["/bin/pwd"]',
+      '--fs-read',
+      'steward.yaml',
       '--benchmark',
       'sample_repo.next_probe.selection',
       '--json',
@@ -245,6 +253,8 @@ void main() {
         'Duplicate declared action.',
         '--argv-json',
         '["/bin/pwd"]',
+        '--fs-read',
+        'steward.yaml',
         '--benchmark',
         'sample_repo.next_probe.selection',
         '--json',
@@ -269,6 +279,54 @@ void main() {
         'Outside path.',
         '--argv-json',
         '["/bin/pwd"]',
+        '--fs-read',
+        'steward.yaml',
+        '--benchmark',
+        'sample_repo.next_probe.selection',
+        '--json',
+      ]),
+      throwsA(isA<ArgumentError>()),
+    );
+  });
+
+  test('action-candidate create requires explicit narrow fs-read', () async {
+    final unknownCase = await createUnknownCase();
+    final runner = CommandRunner<void>('steward', 'test')
+      ..addCommand(ActionCandidateCommand(StringBuffer(), tempDir));
+
+    expect(
+      () => runner.run([
+        'action-candidate',
+        'create',
+        '--from',
+        unknownCase['path'] as String,
+        '--id',
+        'repo.next_probe',
+        '--desc',
+        'Proposed next bounded probe.',
+        '--argv-json',
+        '["/bin/pwd"]',
+        '--benchmark',
+        'sample_repo.next_probe.selection',
+        '--json',
+      ]),
+      throwsA(isA<ArgumentError>()),
+    );
+
+    expect(
+      () => runner.run([
+        'action-candidate',
+        'create',
+        '--from',
+        unknownCase['path'] as String,
+        '--id',
+        'repo.next_probe',
+        '--desc',
+        'Proposed next bounded probe.',
+        '--argv-json',
+        '["/bin/pwd"]',
+        '--fs-read',
+        '.',
         '--benchmark',
         'sample_repo.next_probe.selection',
         '--json',

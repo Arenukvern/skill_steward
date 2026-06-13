@@ -64,21 +64,26 @@
         { "title": "DESIGN_FAQ", "href": "/DESIGN_FAQ" },
         { "title": "DX_FAQ", "href": "/DX_FAQ" },
         { "title": "First adopter proof", "href": "/evidence/first-adopter-golden-path" },
-        { "title": "Adoption run v2", "href": "/evidence/adoption-run-v2-template" },
-        { "title": "Pattern promotion review", "href": "/evidence/pattern-promotion-review-2026-06-10-generational-lens" },
-        { "title": "Capability-level proof", "href": "/evidence/mcp-flutter-capability-level-proof-2026-06-10" },
-        { "title": "Runtime text-input packet", "href": "/evidence/mcp-flutter-runtime-text-input-capability-proof-2026-06-10" },
-        { "title": "Paired adoption ledger", "href": "/evidence/paired-adoption-ledger-2026-06-10" },
         { "title": "Current dogfood status", "href": "/evidence/current-dogfood-status" },
-        { "title": "Repository ecology PDSA", "href": "/evidence/repository-ecology-pdsa-2026-06-12" },
-        { "title": "Stewardship protocol smoke packet", "href": "/evidence/stewardship-protocol-smoke-packet-2026-06-12" },
-        { "title": "Stewardship adopter run", "href": "/evidence/stewardship-protocol-adopter-run-2026-06-12" },
-        { "title": "H4 workflow check", "href": "/evidence/h4-fresh-agent-workflow-check-2026-06-08" },
         { "title": "Skills Catalog", "href": "/skills-catalog" },
         { "title": "Docs Map", "href": "/start_here/docs_map" },
         { "title": "Plan hygiene (extract & remove)", "href": "/start_here/executable-plans" },
         { "title": "Schemas", "href": "/schemas/README" },
         { "title": "Brand identity", "href": "/brand" }
+      ]
+    },
+    {
+      "group": "Evidence Archive",
+      "pages": [
+        { "title": "Adoption run template (reference)", "href": "/evidence/adoption-run-v2-template" },
+        { "title": "Pattern promotion review", "href": "/evidence/pattern-promotion-review-2026-06-10-generational-lens" },
+        { "title": "Capability-level proof", "href": "/evidence/mcp-flutter-capability-level-proof-2026-06-10" },
+        { "title": "Runtime text-input packet", "href": "/evidence/mcp-flutter-runtime-text-input-capability-proof-2026-06-10" },
+        { "title": "Paired adoption ledger", "href": "/evidence/paired-adoption-ledger-2026-06-10" },
+        { "title": "Repository ecology PDSA", "href": "/evidence/repository-ecology-pdsa-2026-06-12" },
+        { "title": "Stewardship protocol smoke packet", "href": "/evidence/stewardship-protocol-smoke-packet-2026-06-12" },
+        { "title": "Stewardship adopter run", "href": "/evidence/stewardship-protocol-adopter-run-2026-06-12" },
+        { "title": "H4 workflow check", "href": "/evidence/h4-fresh-agent-workflow-check-2026-06-08" }
       ]
     },
     {

@@ -16,6 +16,8 @@ A repo quality contract answers six questions:
 6. **What layer should change?** Native code, repo grammar, public API, schema/codegen, harness, skill, or deletion/collapse. See [Generational architecture ladder](core/generational-architecture-ladder).
 7. **What should the repo ecology do next?** Keep, compress, merge, update, remove, create, defer, move to check, move to evidence, or leave native.
 
+The contract is an ecology disposition aid, not a paperwork gate. For normal repo work, first name the goal, owner, native gate, and smallest useful disposition: orient, compress, validate, tutor pain, promote a tool, leave native, or stop. Prefer error messages, FAQ entries, tests, schemas, scripts, and native commands over new evidence packets unless a claim or blocker needs durable proof.
+
 ## Required baseline
 
 | Area | Minimum proof |
@@ -161,6 +163,8 @@ For multi-repo work, a per-repo green check is not enough. Before saying an inte
 Use the same owner rule for documentation. The producer repo owns architecture, public contract, release provenance, and compatibility claims. Consumer repos own adoption proof, local deltas, blocked state, and cutover commands. Do not duplicate canonical architecture prose in a consumer guide when a link plus local proof would stay fresher.
 
 Example: a library repo can pass tests while its consumer still must wait for a package publish. Publish evidence belongs to the library repo; cutover evidence belongs to the consumer. Do not replace this with local path dependency success.
+
+When user permission spans repositories, update the owning repo and consumer proof in one pass when it is safe and clearly within scope. Record dependency order, protected files, and do-not-touch exceptions, but avoid a plan-only handoff when the owner can be improved and rerun now.
 
 ## Product claim audit
 

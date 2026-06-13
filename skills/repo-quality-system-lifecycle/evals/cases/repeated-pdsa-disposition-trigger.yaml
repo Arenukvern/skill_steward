@@ -1,0 +1,15 @@
+id: repo-quality-repeated-pdsa-disposition-trigger
+skill: repo-quality-system-lifecycle
+routing: should_trigger
+input: "We have repeated PDSA and evidence loops around the same blocker. Re-center on the North Star and decide whether to orient, compress, validate, tutor pain, promote a tool, leave native, or stop instead of writing another evidence artifact."
+rules:
+  - kind: file_exists
+    path: references/evals.md
+  - kind: description_includes_any
+    terms: ["repo ecology pass", "compressed", "retired", "moved to checks"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["disposition loop", "orient", "compress", "tutor_pain", "leave_native", "stop"]
+  - kind: body_includes_any
+    path: ../../docs/NORTH_STAR.mdx
+    terms: ["Orient", "Compress", "Validate", "Tutor pain", "Promote tools"]

@@ -15,6 +15,7 @@ class EcologyCommand extends Command<void> {
     final Directory? startDirectory,
   ]) {
     addSubcommand(EcologySnapshotCommand(outputSink, startDirectory));
+    addSubcommand(EcologyRouteCommand(outputSink, startDirectory));
   }
 
   @override
@@ -58,6 +59,47 @@ class EcologySnapshotCommand extends Command<void> {
       ..writeln('Steward ecology snapshot')
       ..writeln('- root: ${payload['root']}')
       ..writeln('- status: ${payload['status']}');
+  }
+}
+
+class EcologyRouteCommand extends Command<void> {
+  EcologyRouteCommand([this.outputSink, this.startDirectory]) {
+    argParser.addFlag(
+      'json',
+      negatable: false,
+      help: 'Emit machine-readable JSON.',
+    );
+  }
+
+  final StringSink? outputSink;
+  final Directory? startDirectory;
+
+  @override
+  final name = 'route';
+
+  @override
+  final description =
+      'Route ecology facts into North Star dispositions without mutating.';
+
+  @override
+  Future<void> run() async {
+    final root = findRepoRoot(startDirectory ?? Directory.current);
+    final payload = await ecologyRoutePayload(root);
+    final useJson = argResults?['json'] == true;
+    final sink = outputSink ?? stdout;
+    if (useJson) {
+      sink.writeln(const JsonEncoder.withIndent('  ').convert(payload));
+      return;
+    }
+
+    sink
+      ..writeln('Steward ecology route')
+      ..writeln('- root: ${payload['root']}')
+      ..writeln('- status: ${payload['status']}');
+    for (final disposition in payload['dispositions'] as List) {
+      final item = disposition as Map<String, dynamic>;
+      sink.writeln('- ${item['disposition']}: ${item['surface']}');
+    }
   }
 }
 
@@ -107,9 +149,166 @@ Future<Map<String, dynamic>> ecologySnapshotPayload(final String root) async {
   };
 }
 
+Future<Map<String, dynamic>> ecologyRoutePayload(final String root) async {
+  final snapshot = await ecologySnapshotPayload(root);
+  final dispositions = _routeDispositions(snapshot);
+  return {
+    'schema_version': 'steward.ecology.route.v1',
+    'root': root,
+    'status': 'observed',
+    'basis': 'steward.ecology.snapshot.v1',
+    'value_paths': const [
+      'orient',
+      'compress',
+      'validate',
+      'tutor_pain',
+      'promote_tool',
+      'leave_native',
+      'stop',
+    ],
+    'dispositions': dispositions,
+    'non_claims': const [
+      'This route is a stewardship disposition aid, not a maturity verdict.',
+      'This route does not apply patches, execute repo actions, or repair drift.',
+      'This route does not prove H2, H4, H5, S5, adoption, or steward status.',
+      'Use native repo gates for product behavior before promoting Steward tooling.',
+    ],
+  };
+}
+
+List<Map<String, dynamic>> _routeDispositions(
+  final Map<String, dynamic> snapshot,
+) {
+  final dispositions = <Map<String, dynamic>>[];
+
+  void add({
+    required final String disposition,
+    required final String surface,
+    required final String signal,
+    required final String next,
+  }) {
+    dispositions.add({
+      'disposition': disposition,
+      'surface': surface,
+      'signal': signal,
+      'next': next,
+    });
+  }
+
+  final config = snapshot['config'] as Map? ?? const {};
+  if (config['valid'] != true) {
+    add(
+      disposition: 'validate',
+      surface: 'steward.yaml',
+      signal: 'Steward config diagnostics are present.',
+      next:
+          'Address the owning config surface, then rerun the same Steward gate before making a claim.',
+    );
+  }
+
+  final schemaOutputs = snapshot['schema_outputs'] as Map? ?? const {};
+  if (schemaOutputs['valid'] != true) {
+    add(
+      disposition: 'validate',
+      surface: 'schema outputs',
+      signal: 'Machine-readable output checks are not valid.',
+      next:
+          'Align the output producer and schema before relying on JSON routes.',
+    );
+  }
+
+  final activePlans = snapshot['active_plan_candidates'] as List? ?? const [];
+  if (activePlans.isNotEmpty) {
+    add(
+      disposition: 'compress',
+      surface: 'active plan candidates',
+      signal: 'Plan-like files are present in the repo ecology.',
+      next:
+          'Extract durable truth into ADR, FAQ, code, skill, check, or current ledger, then remove stale plan scaffolding.',
+    );
+  }
+
+  final evidence = snapshot['evidence'] as Map? ?? const {};
+  final evidenceFiles = evidence['files'] as List? ?? const [];
+  final templateOrPacketCount = evidenceFiles
+      .where(
+        (final file) =>
+            '$file'.contains('template') ||
+            '$file'.contains('packet') ||
+            '$file'.contains('pdsa'),
+      )
+      .length;
+  if (templateOrPacketCount > 0) {
+    add(
+      disposition: 'compress',
+      surface: 'docs/evidence',
+      signal: 'Evidence contains templates, packets, or PDSA history.',
+      next:
+          'Keep current ledgers visible; route templates and historical packets as archive or skill references.',
+    );
+  }
+
+  final benchmarks = snapshot['benchmarks'] as Map? ?? const {};
+  if (benchmarks['summaries_may_be_stale'] == true) {
+    add(
+      disposition: 'validate',
+      surface: '.steward/benchmark-summaries',
+      signal: 'Persisted benchmark summaries may be stale.',
+      next:
+          'Treat summaries as history unless rerun evidence is needed for an exact claim.',
+    );
+  }
+
+  final git = snapshot['git'] as Map? ?? const {};
+  if (git['dirty'] == true) {
+    add(
+      disposition: 'tutor_pain',
+      surface: 'working tree',
+      signal: 'The git working tree has local changes.',
+      next:
+          'Name whether the dirty paths are protected local state, contract inputs, or ordinary implementation residue.',
+    );
+  }
+
+  final actions = snapshot['actions'] as Map? ?? const {};
+  if (actions['declared'] == 0) {
+    add(
+      disposition: 'orient',
+      surface: 'steward.yaml actions',
+      signal: 'No typed Steward actions are declared.',
+      next:
+          'Use native repo gates first; add actions only when repeated friction proves a Steward surface is useful.',
+    );
+  }
+
+  if (dispositions.isEmpty) {
+    add(
+      disposition: 'stop',
+      surface: 'repo ecology',
+      signal:
+          'No immediate ecology disposition was inferred from the snapshot.',
+      next:
+          'Do not create new evidence, actions, or docs solely to keep looping.',
+    );
+  } else {
+    add(
+      disposition: 'leave_native',
+      surface: 'product/domain work',
+      signal: 'Steward routing is not the product runtime.',
+      next:
+          'Keep product behavior in native repo commands unless repeated friction earns a Steward surface.',
+    );
+  }
+
+  return dispositions;
+}
+
 Future<Map<String, dynamic>> _schemaOutputsSnapshot(final String root) async {
   try {
-    return await checkSchemaOutputsPayload(root);
+    return await checkSchemaOutputsPayload(
+      root,
+      includeCompositeOutputs: false,
+    );
   } on Object catch (error) {
     return {
       'schema_version': 'steward.schema.check_outputs.v1',
@@ -195,7 +394,7 @@ Map<String, dynamic> _benchmarkSnapshot(
     'summary_status': 'persisted_history',
     'summaries_may_be_stale': true,
     'fresh_result_route':
-        'Run benchmark with --output .steward/benchmark-summaries/<scenario>.json when a fresh result should feed future snapshots or blocked explain.',
+        'Pipe fresh blocked JSON to steward blocked explain --stdin --json. Use --output only when a fresh result should replace persisted history or feed future snapshots.',
     'persisted_summaries': summaries,
     // Compatibility alias. Prefer persisted_summaries for new consumers.
     'latest_summaries': summaries,
@@ -228,7 +427,7 @@ Map<String, dynamic> _benchmarkSummary(
         'head_matches_summary': headMatchesSummary,
         'may_be_stale': headMatchesSummary != true || git['dirty'] == true,
         'fresh_result_route':
-            'Use steward benchmark --output to replace this persisted summary.',
+            'Rerun the benchmark for fresh truth; use --output only when this persisted summary should be replaced.',
       };
     }
   } on Object catch (error) {

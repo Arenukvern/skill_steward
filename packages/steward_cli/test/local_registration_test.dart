@@ -10,6 +10,8 @@ import 'package:steward_cli/src/commands/adopt_command.dart';
 import 'package:steward_cli/src/commands/benchmark_command.dart';
 import 'package:steward_cli/src/commands/diagnose_command.dart';
 import 'package:steward_cli/src/commands/doctor_command.dart';
+import 'package:steward_cli/src/commands/dogfood_command.dart';
+import 'package:steward_cli/src/commands/ecology_command.dart';
 import 'package:steward_cli/src/commands/evidence_command.dart';
 import 'package:steward_cli/src/commands/install_command.dart';
 import 'package:steward_cli/src/commands/map_command.dart';
@@ -235,7 +237,9 @@ Body steps.
       final unknownCase = UnknownCaseCommand();
       final diagnose = DiagnoseCommand();
       final benchmark = BenchmarkCommand();
+      final ecology = EcologyCommand();
       final evidence = EvidenceCommand();
+      final dogfood = DogfoodCommand();
 
       expect(adopt.argParser.options.containsKey('archetype'), isTrue);
       expect(adopt.argParser.options.containsKey('with-harness'), isTrue);
@@ -301,6 +305,17 @@ Body steps.
       expect(diagnose.argParser.options.containsKey('from'), isTrue);
       expect(benchmark.argParser.options.containsKey('json'), isTrue);
       expect(benchmark.argParser.options.containsKey('scenario'), isTrue);
+      expect(ecology.subcommands.containsKey('snapshot'), isTrue);
+      expect(ecology.subcommands.containsKey('route'), isTrue);
+      expect(
+        ecology.subcommands['route']!.argParser.options.containsKey('json'),
+        isTrue,
+      );
+      expect(dogfood.subcommands.containsKey('status'), isTrue);
+      expect(
+        dogfood.subcommands['status']!.argParser.options.containsKey('json'),
+        isTrue,
+      );
     });
   });
 
@@ -560,6 +575,10 @@ Instruction body.
           final stewardContent = await stewardYaml.readAsString();
           expect(stewardContent, contains('enabled: true'));
           expect(stewardContent, contains('doctor.local:'));
+          expect(stewardContent, isNot(contains('fs_read: ["."]')));
+          expect(stewardContent, contains('- steward.yaml'));
+          expect(stewardContent, contains('- skills.json'));
+          expect(stewardContent, contains('- AGENTS.md'));
           expect(stewardContent, contains('benchmarks:'));
 
           final scenariosDir = Directory(
@@ -698,8 +717,10 @@ Body steps
         );
         expect(ledger.existsSync(), isTrue);
         final ledgerContent = await ledger.readAsString();
+        final localDate = DateTime.now().toIso8601String().split('T').first;
         expect(ledgerContent, contains('status: current'));
         expect(ledgerContent, contains('evidence_type: ledger'));
+        expect(ledgerContent, contains('date: $localDate'));
         expect(ledgerContent, contains('Does not prove readiness'));
 
         final secondOutput = StringBuffer();

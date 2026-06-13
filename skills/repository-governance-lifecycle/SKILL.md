@@ -13,7 +13,7 @@ metadata:
 
 This is the central nervous system for governing an agent-operated repository. It applies to apps, libraries, tools, plugins, harnesses, and meta repos; Skill Steward itself remains a structural stewardship repo, not a domain tutorial catalog. It unifies ethics, branding, architectural decision logs (ADRs), and living documentation (FAQs) into a single, cohesive loop: **Decide → Document → Cleanup**.
 
-Whenever an agent proposes or executes a structural shift, they must walk this loop.
+Whenever an agent proposes or executes a structural shift, claim change, durable policy change, or docs-lattice change, they must walk this loop. Routine repo repairs should keep the original goal and native gate first; use this governance loop only when the repair changes durable ownership, policy, evidence, ADR/FAQ truth, or plan hygiene.
 
 ## The Governance Loop
 

@@ -32,6 +32,8 @@ An evidence artifact is justified only when it does at least one of these:
 
 Do not use evidence as a plan archive, template dumping ground, or scorecard. If an artifact does not protect a claim, preserve a blocker, record a real run, or justify durable change, extract any useful truth into ADR, FAQ, skill, check, code, or current ledger, then remove it.
 
+Keep one current ledger per active claim scope. Historical PDSA notes, proof packets, and benchmark summaries remain provenance unless the current ledger says they still hold. PDSA evidence is allowed only when it changes future behavior; it is not an iteration diary. When evidence repeats the same blocked state without changing the next action, repair the blocker, move the deterministic lesson into a check/tool/skill, or retire the duplicate route.
+
 Every new durable evidence artifact should carry a lightweight envelope:
 
 ```yaml
@@ -65,12 +67,15 @@ Chosen: **lightweight evidence envelopes plus retention/disposition discipline**
 
 Current status belongs in current ledgers. Durable decisions belong in ADRs. Repeated deterministic truth should move into checks, schemas, CLI diagnostics, tests, or harness probes. Historical evidence remains provenance only when a current ledger or ADR still links to it.
 
+Fresh blocked command output should be routed directly to `steward blocked explain --stdin --json` when available. Persisted summaries should be used for retained history and current ledgers, not as a prerequisite for understanding the current blocker.
+
 ## Consequences
 
 * Good, because agents can distinguish current proof from historical provenance.
 * Good, because evidence can protect blocked states without being mistaken for readiness.
 * Good, because templates and plans get routed out of evidence unless explicitly marked and justified.
 * Good, because repeated evidence can promote into checks and tools instead of more prose.
+* Good, because agents no longer need to create or refresh evidence artifacts merely to classify a fresh blocked JSON result.
 * Bad, because new evidence artifacts require a small amount of metadata.
 * Bad, because older artifacts will be mixed until touched.
 * Mitigation: migrate only current/new evidence first; do not run a broad archive churn pass.
@@ -83,6 +88,7 @@ Current status belongs in current ledgers. Durable decisions belong in ADRs. Rep
 * `repo-quality-system-lifecycle` includes evidence status in ecology review dispositions.
 * `mcp-harness-repo-maintainer` treats persisted summaries as machine evidence and console-only runs as session evidence unless captured.
 * `mixture-of-experts` includes an Evidence / Retention QA lens.
+* Current dogfood/adopter status is routed through one ledger; historical PDSA packets are provenance, not active proof.
 
 ## More Information
 

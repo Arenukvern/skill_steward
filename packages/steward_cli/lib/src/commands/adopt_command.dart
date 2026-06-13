@@ -344,7 +344,10 @@ actions:
       shell: false
     cwd: .
     effects:
-      fs_read: ["."]
+      fs_read:
+        - steward.yaml
+        - skills.json
+        - AGENTS.md
       fs_write: []
       git: false
       network: false

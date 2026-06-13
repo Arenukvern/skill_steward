@@ -12,6 +12,8 @@ Skill Steward gives teams a shared structure for understanding, developing, and 
 
 Usefulness is measured by how well cold exploration becomes durable hot paths for future agents: smaller, safer, inspectable routes through real repo work. A useful adoption reduces future time, uncertainty, and risk without lowering the correctness or evidence bar. It may add a tool, but it may also delete code, collapse a layer, improve an error message, or return to a native command when that better serves the product. See [ADR 0018](decisions/0018-cold-to-hot-path-usefulness) and [Generational architecture ladder](core/generational-architecture-ladder).
 
+Default Steward work is ecology-first: preserve the original user goal, identify which part of the repository ecology owns the friction, then choose the smallest useful disposition. The answer may be to orient, compress, validate, tutor pain, promote a tool, leave work native, or stop. Repair and evidence are supporting moves inside that frame: repair when an owner can be safely improved now, and create evidence only when a claim, blocker, real run, or durable behavior change needs proof.
+
 We are **not** a domain tutorial catalog (React, Flutter, cloud recipes live in their own product/domain repos). We are **not** a public skill package manager ([Skillkit](https://github.com/rohitg00/skillkit), `npx skills`, and [skills.sh](https://skills.sh) cover public discovery and install/update distribution). We are **not** the product runtime for apps, libraries, or tools.
 
 `steward install` and `steward update` are intentional, but narrow: they apply repo-local `skills.json` manifests, copy selected skills into agent-readable folders, and pin refs so teams and agents share the same structure. Public discovery and broad distribution stay with `npx skills` and skills.sh.
@@ -66,16 +68,11 @@ Harness engineering is one pillar, not the umbrella. The umbrella is structural 
 
 ## How we ship value
 
-1. **Portable skills** — `npx skills add arenukvern/skill_steward` installs reusable stewardship procedures.
-2. **Repo-local quality contracts** — `docs/repo-quality-contracts.mdx` and `steward.yaml` describe how an app, library, tool, plugin, harness, or meta repo proves legibility.
-3. **Repo-local registration** — `steward install/update` applies pinned `skills.json` manifests for deterministic local agent structure.
-4. **Docs as system of record** — [docs.page](https://docs.page/arenukvern/skill_steward) from `docs/` + `docs.json`; `AGENTS.md` is the agent map only.
-5. **Mechanical gates** — CI validates skills; contributors run `pnpm run validate`; repo contracts define type-native gates for non-skill repos.
-6. **Plan hygiene** — use any planning tool; when work is done, [extract into ADR/FAQ/code/harness](start_here/executable-plans), then remove stale plan files.
-7. **Cold-to-hot usefulness** — meaningful cold exploration should leave a shorter, safer future path: docs, tests, evals, probes, actions, diagnostics, or tools that help the next fresh agent solve a related problem with less uncertainty.
-8. **Generational architecture checks** — before promoting a tool or abstraction, ask what product stage and pattern layer the problem belongs to, whether a lower layer already solves it, and what code or process can be removed.
-9. **Repository ecology reviews** — when surfaces accumulate, run a disposition pass over plans, specs, docs, skills, schemas, tools, evidence, and validation gates. The outcome may be compression, deletion, a check, an ADR, or no change.
-10. **Evidence retention** — keep proof artifacts only when they protect a claim, preserve a blocker, record a real run, or shorten future work. Current truth belongs in ledgers; repeated deterministic truth should become checks or tools.
+1. **Orient** — portable skills, `AGENTS.md`, docs maps, and repo contracts let agents find the owner, native gate, and boundary quickly.
+2. **Compress** — plans, duplicate prose, stale proof, and overgrown layers are extracted into ADR/FAQ/code/checks or deleted.
+3. **Validate** — type-native gates, schemas, evals, probes, and benchmarks prove the exact claim being made.
+4. **Tutor pain** — repeated friction names the pain, owner, smallest fix, native gate, and future hot path instead of becoming another diary entry.
+5. **Promote tools** — only repeated, falsifiable friction becomes a Steward action, diagnostic, eval, benchmark, generator, or skill change.
 
 ## Delivery surfaces
 

@@ -28,13 +28,14 @@ npx skills add arenukvern/skill_steward --skill repository-governance-lifecycle
 
 ## Non-negotiables
 
-1. **Structural stewardship only** — no domain framework tutorial packs (React, Flutter, …); see North Star.
-2. **`pnpm run validate`** before merging skill changes.
-3. **Claims need matching evidence** — H2 smoke proof is not H4 fresh-agent proof; static evals are not runtime behavior. Use [docs/core/evidence-ladder.mdx](docs/core/evidence-ladder.mdx) before claiming readiness.
-4. **Plan hygiene** — any planning tool is fine; when done, extract into ADR / FAQ / code / harness, then delete stale plan files ([doctrine](docs/start_here/executable-plans.mdx)).
-5. **AGENTS.md stays a map** — skill authoring: [docs/STANDARDS.mdx](docs/STANDARDS.mdx); do not bloat this file.
-6. **Docs ≠ code** — link to behavior SSOT; do not paraphrase implementations in prose.
-7. **Ethical governance** — all design decisions must be auditable against [`charter-and-ethics`](skills/repository-governance-lifecycle/references/charter-and-ethics.md) principles (Anti-Bloat, Reversibility, Legibility, Behavior-as-Truth, Artisan Restraint).
+1. **Original goal and native validation first** — Steward governance exists to shorten future repair loops, not to delay the current fix.
+2. **Structural stewardship only** — no domain framework tutorial packs (React, Flutter, …); see North Star.
+3. **`pnpm run validate`** before merging skill changes.
+4. **Claims need matching evidence** — H2 smoke proof is not H4 fresh-agent proof; static evals are not runtime behavior. Use [docs/core/evidence-ladder.mdx](docs/core/evidence-ladder.mdx) before claiming readiness.
+5. **Plan hygiene** — any planning tool is fine; when done, extract into ADR / FAQ / code / harness, then delete stale plan files ([doctrine](docs/start_here/executable-plans.mdx)).
+6. **AGENTS.md stays a map** — skill authoring: [docs/STANDARDS.mdx](docs/STANDARDS.mdx); do not bloat this file.
+7. **Docs ≠ code** — link to behavior SSOT; do not paraphrase implementations in prose.
+8. **Ethical governance** — all design decisions must be auditable against [`charter-and-ethics`](skills/repository-governance-lifecycle/references/charter-and-ethics.md) principles (Anti-Bloat, Reversibility, Legibility, Behavior-as-Truth, Artisan Restraint).
 
 ## Guild skills (in-repo)
 
@@ -83,7 +84,7 @@ Plugins (hooks) are **not** installed by `npx skills` on Cursor — [plugins/REA
 <!-- gitnexus:start -->
 # GitNexus — Code Intelligence
 
-This project is indexed by GitNexus as **skill_steward** (2164 symbols, 3775 relationships, 176 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
+This project is indexed by GitNexus as **skill_steward** (2804 symbols, 5074 relationships, 225 execution flows). Use the GitNexus MCP tools to understand code, assess impact, and navigate safely.
 
 > If any GitNexus tool warns the index is stale, run `npx gitnexus analyze` in terminal first.
 

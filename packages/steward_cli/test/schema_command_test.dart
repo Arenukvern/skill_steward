@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:args/command_runner.dart';
 import 'package:path/path.dart' as p;
+import 'package:steward_cli/src/commands/dogfood_command.dart';
+import 'package:steward_cli/src/commands/ecology_command.dart';
 import 'package:steward_cli/src/commands/schema_command.dart';
 import 'package:test/test.dart';
 
@@ -81,7 +83,7 @@ void main() {
     expect(exitCode, 1);
   });
 
-  test('schema check-outputs validates current doctor output shape', () async {
+  test('schema check-outputs validates current output shapes', () async {
     final buffer = StringBuffer();
     final runner = CommandRunner<void>('steward', 'test')
       ..addCommand(SchemaCommand(buffer, tempDir));
@@ -91,14 +93,63 @@ void main() {
     final payload = jsonDecode(buffer.toString()) as Map<String, dynamic>;
     expect(payload['schema_version'], 'steward.schema.check_outputs.v1');
     expect(payload['valid'], isTrue);
-    expect(payload['checks'], isNotEmpty);
-    expect(
-      (payload['checks'] as List).single,
-      containsPair('schema', 'doctor'),
-    );
+    final checks = (payload['checks'] as List).cast<Map<String, dynamic>>();
+    final ids = checks.map((final check) => check['id']).toList();
+    final schemas = checks.map((final check) => check['schema']).toList();
+    expect(ids, containsAll(_publicOutputCheckIds));
+    expect(schemas, containsAll(_publicOutputCheckIds));
+    for (final id in _publicOutputCheckIds) {
+      expect(ids.where((final value) => value == id), hasLength(1));
+    }
+    expect(checks, everyElement(containsPair('valid', true)));
     expect(exitCode, 0);
   });
+
+  test(
+    'ecology snapshot embeds core schema checks without recursion',
+    () async {
+      final payload = await ecologySnapshotPayload(tempDir.path);
+      final checks = ((payload['schema_outputs'] as Map)['checks'] as List)
+          .cast<Map<String, dynamic>>();
+      final ids = checks.map((final check) => check['id']).toList();
+
+      expect(ids, containsAll(['doctor', 'blocked-explain']));
+      expect(ids, isNot(contains('dogfood-status')));
+      expect(ids, isNot(contains('ecology-snapshot')));
+      expect(ids, isNot(contains('ecology-route')));
+    },
+  );
+
+  test('schema aliases validate dogfood and ecology JSON routes', () async {
+    final cases = <String, Map<String, dynamic>>{
+      'steward.dogfood.status.v1': await dogfoodStatusPayload(tempDir.path),
+      'steward.ecology.snapshot.v1': await ecologySnapshotPayload(tempDir.path),
+      'steward.ecology.route.v1': await ecologyRoutePayload(tempDir.path),
+    };
+
+    for (final entry in cases.entries) {
+      final file = File(
+        p.join(tempDir.path, '${entry.key.replaceAll('.', '-')}.json'),
+      )..writeAsStringSync(jsonEncode(entry.value));
+      final payload = await validateSchemaFilePayload(
+        tempDir.path,
+        schemaId: entry.key,
+        filePath: p.relative(file.path, from: tempDir.path),
+      );
+
+      expect(payload['valid'], isTrue, reason: '${entry.key} diagnostics');
+      expect(payload['diagnostics'], isEmpty);
+    }
+  });
 }
+
+const _publicOutputCheckIds = [
+  'doctor',
+  'blocked-explain',
+  'dogfood-status',
+  'ecology-snapshot',
+  'ecology-route',
+];
 
 Map<String, dynamic> validSelfModel() => {
   'schema': 'steward/self-model/v1',

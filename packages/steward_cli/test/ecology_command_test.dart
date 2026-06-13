@@ -88,6 +88,104 @@ void main() {
       );
     },
   );
+
+  test(
+    'ecology snapshot reports dirty git state from nested command cwd',
+    () async {
+      _git(tempDir, 'init');
+      _git(tempDir, 'config', 'user.email', 'steward@example.test');
+      _git(tempDir, 'config', 'user.name', 'Skill Steward Test');
+      _git(tempDir, 'add', '.');
+      _git(tempDir, 'commit', '-m', 'baseline');
+
+      File(
+        p.join(tempDir.path, 'steward.yaml'),
+      ).writeAsStringSync('${validStewardV1()}\n# local edit\n');
+      File(p.join(tempDir.path, 'NOTES.md')).writeAsStringSync('scratch\n');
+      final nested = Directory(p.join(tempDir.path, 'packages', 'steward_cli'))
+        ..createSync(recursive: true);
+
+      final buffer = StringBuffer();
+      final runner = CommandRunner<void>('steward', 'test')
+        ..addCommand(EcologyCommand(buffer, nested));
+
+      await runner.run(['ecology', 'snapshot', '--json']);
+
+      final payload = jsonDecode(buffer.toString()) as Map<String, dynamic>;
+      final git = payload['git'] as Map;
+
+      expect(payload['root'], tempDir.path);
+      expect(git['available'], isTrue);
+      expect(git['status'], 'dirty');
+      expect(git['dirty'], isTrue);
+      expect(git['entries'], contains(startsWith(' M steward.yaml')));
+      expect(git['entries'], contains('?? NOTES.md'));
+    },
+  );
+
+  test(
+    'ecology route emits North Star dispositions without awarding maturity',
+    () async {
+      File(p.join(tempDir.path, 'task.md')).writeAsStringSync('- [ ] loop\n');
+
+      final buffer = StringBuffer();
+      final runner = CommandRunner<void>('steward', 'test')
+        ..addCommand(EcologyCommand(buffer, tempDir));
+
+      await runner.run(['ecology', 'route', '--json']);
+
+      final payload = jsonDecode(buffer.toString()) as Map<String, dynamic>;
+      expect(payload['schema_version'], 'steward.ecology.route.v1');
+      expect(payload['status'], 'observed');
+      expect(
+        payload['value_paths'],
+        containsAll([
+          'orient',
+          'compress',
+          'validate',
+          'tutor_pain',
+          'promote_tool',
+          'leave_native',
+          'stop',
+        ]),
+      );
+
+      final dispositions = (payload['dispositions'] as List)
+          .cast<Map<String, dynamic>>();
+      expect(
+        dispositions.map((final item) => item['disposition']),
+        contains('compress'),
+      );
+      expect(
+        dispositions.map((final item) => item['disposition']),
+        contains('validate'),
+      );
+      expect(
+        dispositions.map((final item) => item['disposition']),
+        contains('leave_native'),
+      );
+      expect(jsonEncode(payload), isNot(contains('repair apply')));
+      expect(
+        payload['non_claims'],
+        contains(
+          'This route is a stewardship disposition aid, not a maturity verdict.',
+        ),
+      );
+    },
+  );
+}
+
+void _git(
+  final Directory root,
+  final String command, [
+  final String? a,
+  final String? b,
+]) {
+  final args = [command, ?a, ?b];
+  final result = Process.runSync('git', args, workingDirectory: root.path);
+  if (result.exitCode != 0) {
+    throw StateError('git ${args.join(' ')} failed: ${result.stderr}');
+  }
 }
 
 String validStewardV1() => '''

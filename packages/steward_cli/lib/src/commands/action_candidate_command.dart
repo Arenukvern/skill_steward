@@ -117,8 +117,8 @@ class ActionCandidateCreateCommand extends Command<void> {
       )
       ..addMultiOption(
         'fs-read',
-        defaultsTo: const ['.'],
-        help: 'Filesystem read glob. May be repeated.',
+        help:
+            'Explicit filesystem read glob. May be repeated; broad "." reads are rejected.',
       )
       ..addMultiOption(
         'fs-write',
@@ -259,6 +259,7 @@ Future<Map<String, dynamic>> createActionCandidatePayload(
     throw ArgumentError('Action "$proposedActionId" is already declared.');
   }
   final argv = _parseArgv(argvJson);
+  _validateFsReadSelection(fsRead);
   resolveUnderRoot(root, cwd);
   final unknownCase = await _readUnknownCase(root, unknownCasePath);
   final resolvedUnknownPath = resolveUnderRoot(root, unknownCasePath);
@@ -637,6 +638,26 @@ void _validateProposedActionEffects(
   final Map<String, dynamic> effects,
   final void Function(String path, String message) addDiagnostic,
 ) {
+  final fsRead = effects['fs_read'];
+  if (fsRead is! List ||
+      fsRead.isEmpty ||
+      fsRead.any((final item) => item is! String)) {
+    addDiagnostic(
+      'proposed_action.effects.fs_read',
+      'fs_read must be a non-empty list of explicit repository-relative globs.',
+    );
+  } else {
+    for (var index = 0; index < fsRead.length; index++) {
+      final glob = fsRead[index] as String;
+      if (_isBroadReadGlob(glob)) {
+        addDiagnostic(
+          'proposed_action.effects.fs_read.$index',
+          'Action-candidate reads must name explicit inputs; broad "." reads require a reviewed steward.yaml action, not a candidate default.',
+        );
+      }
+    }
+  }
+
   final fsWrite = effects['fs_write'];
   if (fsWrite == null) {
     return;
@@ -658,6 +679,25 @@ void _validateProposedActionEffects(
       );
     }
   }
+}
+
+void _validateFsReadSelection(final List<String> fsRead) {
+  if (fsRead.isEmpty) {
+    throw ArgumentError(
+      'Action candidates must declare at least one explicit --fs-read path.',
+    );
+  }
+  final broad = fsRead.firstWhere(_isBroadReadGlob, orElse: () => '');
+  if (broad.isNotEmpty) {
+    throw ArgumentError(
+      'Action candidates must not default to broad fs_read "$broad"; pass explicit input paths.',
+    );
+  }
+}
+
+bool _isBroadReadGlob(final String glob) {
+  final normalized = p.normalize(glob.trim()).replaceAll(r'\', '/');
+  return normalized == '.' || normalized == './' || normalized == '**';
 }
 
 bool _isAllowedArtifactWriteGlob(final String root, final String glob) {

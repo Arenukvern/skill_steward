@@ -8,6 +8,8 @@ Meta stewardship CLI for [Skill Steward](https://github.com/arenukvern/skill_ste
 |---------|---------|
 | `steward doctor --json` | Inspect the local Steward contract without running actions |
 | `steward ecology snapshot --json` | Gather read-only repo ecology inventory for disposition review; not a maturity verdict |
+| `steward ecology route --json` | Compose ecology inventory into North Star dispositions; not repair automation |
+| `steward dogfood status --json` | Compose current ledger and ecology routing facts; not a verdict |
 | `steward evidence init --minimal` | Create only `docs/evidence/current-status.mdx` as a current claim ledger |
 | `steward actions list --json` | List typed repo-local actions and their safety/effect summaries |
 | `steward action inspect <id> --json` | Inspect one exact action contract before execution |
@@ -15,7 +17,7 @@ Meta stewardship CLI for [Skill Steward](https://github.com/arenukvern/skill_ste
 | `steward schema check-outputs --json` | Validate core read-only CLI JSON payloads against repo schemas |
 | `steward schema emit --schema <id> --source checked-in\|generated --json` | Emit a portable checked-in schema or generated typed-model schema |
 | `steward schema drift --json` | Compare generated contract schemas with checked-in schema files |
-| `steward blocked explain --input <path> --json` | Turn blocked Steward JSON into next actions and artifact routes |
+| `steward blocked explain (--input <path>\|--stdin) --json` | Turn blocked Steward JSON into next actions and artifact routes |
 | `steward probe --profile quick --json` | Run quick-eligible bounded local observations |
 | `steward observe --profile quick --json` | Persist a compact local observation from a bounded probe |
 | `steward unknown-case create --from <observation> --json` | Turn an observation into an append-only unknown-case record |
@@ -51,23 +53,24 @@ The schema commands sit in the loop because this dogfood route depends on machin
 
 Benchmark execution is durability-gated. If `source.steward_contract` or a file-backed scenario manifest is modified or untracked, the summary must return `result: blocked` with `blocked_by: durability_blocked`; track or commit those contract inputs, then rerun the same benchmark for executable proof. The built-in `contract-status-smoke` scenario proves contract discovery and durability gating only when it returns `result: "pass"`; it does not prove full agent navigation or diagnosis.
 
-When a command writes a blocked JSON result, use:
+When a fresh command returns blocked JSON, route it directly:
 
 ```bash
-steward blocked explain --input .steward/benchmark-summaries/<scenario>.json --json
+steward benchmark --scenario <scenario> --strict --json | steward blocked explain --stdin --json
 ```
 
-The explanation chooses the next artifact route; it does not repair the repo or turn blocked evidence into proof.
+Use `steward blocked explain --input .steward/benchmark-summaries/<scenario>.json --json` only when routing an existing persisted summary. The explanation chooses the next artifact route; it does not repair the repo or turn blocked evidence into proof.
 
 Repository ecology review inventory:
 
 ```bash
 steward ecology snapshot --json
+steward ecology route --json
 ```
 
-The snapshot gathers Steward config status, declared action/probe inventory, benchmark declarations and summaries, schema output status, git state, active plan candidates, and evidence pointers. It is read-only inventory for `repo-quality-system-lifecycle`; it does not execute actions, repair drift, award maturity, or prove adoption.
+The snapshot gathers Steward config status, declared action/probe inventory, benchmark declarations and summaries, schema output status, git state, active plan candidates, and evidence pointers. `ecology route` composes those facts into North Star dispositions: orient, compress, validate, tutor pain, promote tools, leave native, or stop. Both commands are read-only; neither executes actions, applies repairs, awards maturity, or proves adoption.
 
-Snapshot benchmark summaries are persisted history from `.steward/benchmark-summaries/`. The JSON labels them as `persisted_history` and includes commit/freshness hints; treat `may_be_stale: true` as a routing signal, not proof failure. If a fresh benchmark result should become snapshot input or be inspected by `steward blocked explain`, run the benchmark with `--output`; console-only JSON is useful for the current session but does not replace the saved summary.
+Snapshot benchmark summaries are persisted history from `.steward/benchmark-summaries/`. The JSON labels them as `persisted_history` and includes commit/freshness hints; treat `may_be_stale: true` as a routing signal, not proof failure. Pipe fresh blocked JSON to `steward blocked explain --stdin --json`; use `--output` only when a fresh benchmark result should replace persisted history or feed future snapshots.
 
 Minimal evidence bootstrap:
 

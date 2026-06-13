@@ -99,7 +99,7 @@ Proof level reached: **discoverability review plus negative claim gate**. This p
 | `docs/evidence/current-dogfood-status.mdx` | Evidence ledger | Current router for dogfood status | keep | Evidence | Snapshot reports `current_dogfood_status_present: true` | Does not prove maturity by itself |
 | `.steward/benchmark-summaries/*.json` | Local machine-readable evidence | Useful but can be stale relative to console-only benchmark runs | update docs route | DX FAQ + CLI README | Loop 1 and Loop 3 both found persisted summaries diverging from current console evidence | Snapshot latest summaries are not current proof unless refreshed |
 | `docs/evidence/stewardship-protocol-smoke-packet-2026-06-12.mdx` | Historical evidence | Older packet records a blocked benchmark | keep as historical | Evidence | Current dogfood ledger supersedes current status | Historical blocked evidence is not current pass proof |
-| `docs/evidence/adoption-run-v2-template.mdx` | Evidence/template | Template is intentionally routed from docs map | keep | Evidence until a better template home exists | Docs map links it as adoption-run template | Template is not evidence of a run |
+| `docs/evidence/adoption-run-v2-template.mdx` | Template/reference | Kept in place for link stability | keep | Reference surface in evidence directory | Docs map routes it as template/reference only | Template is not proof or current evidence |
 | `docs/evidence/h3-h5-adoption-promotion-packet-2026-06-10.mdx` | Evidence/guidance | Promotion guidance plus worked examples | keep | Evidence | It explains observation to promoted-capability state machine | Guidance is not proof of new capability |
 | `docs/evidence/mcp-flutter-runtime-text-input-capability-proof-2026-06-10.mdx` | Evidence candidate | Proposed runtime proof remains unproven | defer | Evidence | Current dogfood status marks runtime proof blocked | Does not prove runtime text entry |
 | `docs/evidence/schemantic-contract-spike-note-2026-06-12.mdx` | Evidence/decision note | Deferred dependency decision from typed contracts work | keep for now | Evidence, possible future ADR if repeated | No current production adoption of `schemantic` | Does not reject `schemantic` permanently |
@@ -193,10 +193,10 @@ find docs/superpowers docs/exec-plans docs/exec_plans -type f
 5. **Maintainer-local invocations must be labeled.** Raw `dart --packages=... bin/steward.dart` commands are acceptable for dogfood, but they are not adopter instructions.
 6. **Usefulness needs friction measures.** Future loops should count docs consulted, commands attempted, missing fields, and whether the next action was discoverable from snapshot alone.
 7. **Config validity comes before steward mythology.** `ecsly` is a good candidate for product/engine stewardship later, but current evidence says root Steward config repair or unknown-case capture comes first.
-8. **Blocked explanation needs current payloads.** `blocked explain` against an older persisted summary returned an unknown-block route, while the current console benchmark showed `invalid_config`; a future tool could accept stdin or point directly from benchmark output to the route.
-9. **The current ledger is useful, but not machine-composed.** A future status command should join ledger claim, snapshot inventory, schema drift, claim gate, and blocked routes without awarding maturity.
+8. **Blocked explanation needs current payloads.** `blocked explain` against an older persisted summary returned an unknown-block route, while the current console benchmark showed `invalid_config`; this later became the `steward blocked explain --stdin --json` hot path.
+9. **The current ledger is useful, but not machine-composed.** A future status command should join ledger claim, snapshot inventory, schema drift, claim gate, and blocked routes without awarding maturity. This later became the narrow `steward dogfood status --json` hot-path candidate.
 
-## Recommended Next Patch Set
+## Extracted Disposition Set
 
 ### Compress
 
@@ -220,7 +220,8 @@ find docs/superpowers docs/exec-plans docs/exec_plans -type f
 ### Create
 
 - This evidence note records the six PDSA loops.
-- Defer creating `steward ecology route` or `steward dogfood status` until it can compose existing facts into one narrow JSON route without becoming a verdict command.
+- Done after this run: add `steward dogfood status --json` as a narrow current-ledger/ecology composition command, not a verdict command.
+- Done after this run: add `steward ecology route --json` as a North Star disposition command, not repair automation.
 
 ### Defer
 
@@ -229,9 +230,9 @@ find docs/superpowers docs/exec-plans docs/exec_plans -type f
 ### Convert To Check
 
 - Done: add `summary_status`, `persisted_summaries`, `head_matches_summary`, `may_be_stale`, and `fresh_result_route` to `steward ecology snapshot`.
-- Candidate: add an eval or docs test ensuring ecology docs do not imply snapshot verdicts or maturity claims.
+- Done after this run: add an eval and docs test ensuring repeated evidence loops route to ecology dispositions and Start Here does not present historical evidence as current proof.
 - Candidate: add a machine-readable invalid-config next-action route so `ecology snapshot`, `probe`, and `benchmark` converge on the same repair/unknown-case advice.
-- Candidate: support `blocked explain` from stdin or direct benchmark JSON so console-only blocked runs can be routed without writing adopter artifacts.
+- Done after this run: support `blocked explain --stdin --json` so console-only blocked runs can be routed without writing adopter artifacts.
 
 ## Non-claims
 

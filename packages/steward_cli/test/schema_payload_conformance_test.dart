@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:path/path.dart' as p;
 import 'package:steward_cli/src/commands/doctor_command.dart';
+import 'package:steward_cli/src/commands/dogfood_command.dart';
+import 'package:steward_cli/src/commands/ecology_command.dart';
 import 'package:steward_cli/src/commands/protocol_command.dart';
 import 'package:steward_cli/src/commands/unknown_case_command.dart';
 import 'package:steward_cli/src/validation/steward_config.dart';
@@ -18,6 +20,25 @@ void main() {
     await File(
       p.join(tempDir.path, 'steward.yaml'),
     ).writeAsString(validStewardV1());
+    Directory(
+      p.join(tempDir.path, 'docs', 'evidence'),
+    ).createSync(recursive: true);
+    await File(
+      p.join(tempDir.path, 'docs', 'evidence', 'current-dogfood-status.mdx'),
+    ).writeAsString('''
+---
+status: current
+evidence_type: ledger
+claim_tested: Current narrow dogfood status.
+proof_level: current ledger route
+result: stewardship_protocol only
+limitations: No maturity claim.
+non_claims:
+  - H5
+---
+
+# Current dogfood status
+''');
   });
 
   tearDown(() {
@@ -123,6 +144,38 @@ void main() {
       expect(payload['files'], isA<Map>());
       expect((payload['files'] as Map)['mode_events'], isA<Map>());
       expect((payload['files'] as Map)['self_model'], isA<Map>());
+    },
+  );
+
+  test(
+    'dogfood and ecology route payloads conform to checked-in schemas',
+    () async {
+      final dogfood = await dogfoodStatusPayload(tempDir.path);
+      final snapshot = await ecologySnapshotPayload(tempDir.path);
+      final route = await ecologyRoutePayload(tempDir.path);
+
+      expectSchemaConformance(
+        dogfood,
+        loadSchema('dogfood-status-v1.schema.json'),
+      );
+      expectSchemaConformance(
+        snapshot,
+        loadSchema('ecology-snapshot-v1.schema.json'),
+      );
+      expectSchemaConformance(
+        route,
+        loadSchema('ecology-route-v1.schema.json'),
+      );
+
+      final embeddedChecks =
+          ((snapshot['schema_outputs'] as Map)['checks'] as List)
+              .cast<Map<String, dynamic>>();
+      expect(
+        embeddedChecks.map((final check) => check['id']),
+        isNot(contains('ecology-snapshot')),
+        reason:
+            'Ecology snapshot embeds core schema checks only; composite route checks are validated by schema check-outputs.',
+      );
     },
   );
 }

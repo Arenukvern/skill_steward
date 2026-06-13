@@ -9,7 +9,10 @@ import '../path_safety.dart';
 import '../repo_root.dart';
 import '../validation/json_schema_subset.dart';
 import '../validation/steward_config.dart';
+import 'blocked_command.dart';
 import 'doctor_command.dart';
+import 'dogfood_command.dart';
+import 'ecology_command.dart';
 
 class SchemaCommand extends Command<void> {
   SchemaCommand([
@@ -206,21 +209,77 @@ Future<Map<String, dynamic>> validateSchemaFilePayload(
 }
 
 Future<Map<String, dynamic>> checkSchemaOutputsPayload(
-  final String root,
-) async {
+  final String root, {
+  final bool includeCompositeOutputs = true,
+}) async {
   final checks = <SchemaOutputCheckPayload>[];
   final result = await StewardConfig.loadChecked(root);
-  final doctorPayload = stewardDoctorPayload(root, result);
-  final doctorSchema = _loadSchema(root, 'doctor');
-  final doctorResult = validateJsonSchemaSubset(doctorPayload, doctorSchema);
-  checks.add(
-    SchemaOutputCheckPayload(
-      id: 'doctor',
-      schema: 'doctor',
-      valid: doctorResult.valid,
-      diagnostics: doctorResult.diagnostics,
+
+  Future<void> addCheck(
+    final String id,
+    final String schemaName,
+    final Future<Map<String, dynamic>> Function() payloadBuilder,
+  ) async {
+    final diagnostics = <String>[];
+    var valid = false;
+    try {
+      final payload = await payloadBuilder();
+      final schema = _loadSchema(root, schemaName);
+      final result = validateJsonSchemaSubset(payload, schema);
+      valid = result.valid;
+      diagnostics.addAll(result.diagnostics);
+    } on Object catch (error) {
+      diagnostics.add('$error');
+    }
+    checks.add(
+      SchemaOutputCheckPayload(
+        id: id,
+        schema: schemaName,
+        valid: valid,
+        diagnostics: diagnostics,
+      ),
+    );
+  }
+
+  await addCheck(
+    'doctor',
+    'doctor',
+    () async => stewardDoctorPayload(root, result),
+  );
+  await addCheck(
+    'blocked-explain',
+    'blocked-explain',
+    () => explainBlockedPayload(
+      root,
+      inputLabel: 'schema-check-outputs-fixture',
+      inputJson: jsonEncode({
+        'schema': 'steward/benchmark-summary/v1',
+        'result': 'blocked',
+        'blocked_by': 'durability_blocked',
+        'durability': {
+          'blocking_paths': ['steward.yaml'],
+        },
+      }),
     ),
   );
+
+  if (includeCompositeOutputs) {
+    await addCheck(
+      'dogfood-status',
+      'dogfood-status',
+      () => dogfoodStatusPayload(root),
+    );
+    await addCheck(
+      'ecology-snapshot',
+      'ecology-snapshot',
+      () => ecologySnapshotPayload(root),
+    );
+    await addCheck(
+      'ecology-route',
+      'ecology-route',
+      () => ecologyRoutePayload(root),
+    );
+  }
 
   final valid = checks.every((final check) => check.valid);
   return SchemaCheckOutputsPayload(
@@ -463,6 +522,9 @@ String _findSchemaDirectory(final String root) {
 }
 
 String _normalizeSchemaId(final String schemaId) => switch (schemaId.trim()) {
+  'steward.dogfood.status.v1' || 'dogfood-status-v1' => 'dogfood-status',
+  'steward.ecology.snapshot.v1' || 'ecology-snapshot-v1' => 'ecology-snapshot',
+  'steward.ecology.route.v1' || 'ecology-route-v1' => 'ecology-route',
   'steward.claim.check.v1' || 'claim-check-v1' => 'claim-check',
   'steward.blocked.explain.v1' || 'blocked-explain-v1' => 'blocked-explain',
   'steward.schema.validate.v1' || 'schema-validate-v1' => 'schema-validate',
@@ -480,6 +542,9 @@ String _normalizeSchemaId(final String schemaId) => switch (schemaId.trim()) {
 };
 
 String _schemaFile(final String schemaName) => switch (schemaName) {
+  'dogfood-status' => 'dogfood-status-v1.schema.json',
+  'ecology-snapshot' => 'ecology-snapshot-v1.schema.json',
+  'ecology-route' => 'ecology-route-v1.schema.json',
   'claim-check' => 'claim-check-v1.schema.json',
   'blocked-explain' => 'blocked-explain-v1.schema.json',
   'schema-validate' => 'schema-validate-v1.schema.json',

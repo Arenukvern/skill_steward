@@ -74,7 +74,7 @@ Future<Map<String, dynamic>> initializeMinimalEvidence(
   final created = !file.existsSync();
 
   if (created) {
-    final date = DateTime.now().toUtc().toIso8601String().split('T').first;
+    final date = DateTime.now().toIso8601String().split('T').first;
     await file.writeAsString(_currentStatusLedger(date, relativePath));
   }
 

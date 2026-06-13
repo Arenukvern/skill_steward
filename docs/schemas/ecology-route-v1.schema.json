@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/arenukvern/skill_steward/schemas/ecology-route-v1.schema.json",
+  "title": "Steward ecology route output v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "root",
+    "status",
+    "basis",
+    "value_paths",
+    "dispositions",
+    "non_claims"
+  ],
+  "properties": {
+    "schema_version": { "const": "steward.ecology.route.v1" },
+    "root": { "type": "string", "minLength": 1 },
+    "status": { "const": "observed" },
+    "basis": { "const": "steward.ecology.snapshot.v1" },
+    "value_paths": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "dispositions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["disposition", "surface", "signal", "next"],
+        "properties": {
+          "disposition": { "type": "string" },
+          "surface": { "type": "string" },
+          "signal": { "type": "string" },
+          "next": { "type": "string" }
+        },
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "non_claims": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    }
+  },
+  "additionalProperties": false
+}
