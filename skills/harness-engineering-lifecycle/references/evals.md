@@ -22,4 +22,4 @@
 
 | Date | Change | Kept? |
 |------|--------|-------|
-| 2026-06-05 | Added Tier-1 routing cases for producer/consumer boundary coverage | Yes |
+| 2026-06-05 | Added T1 behavior-critical routing cases for producer/consumer boundary coverage | Yes |

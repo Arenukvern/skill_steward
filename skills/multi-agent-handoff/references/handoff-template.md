@@ -39,11 +39,25 @@ pnpm run validate
 - Skipped / blocked:
 - Non-claims:
 
+## Product impact line
+
+<!-- One sentence before any success claim: product_surface: <changed/proven surface>; proof: <native gate/artifact>. If only Steward artifacts changed, write support_only: <why>. -->
+
+Product impact:
+
 ## Partial results
 
 <!-- Missing, partial, superseded, or timed-out agents/lenses -->
 
 - None
+
+## Acceleration note
+
+<!-- Factual usefulness closeout, not maturity proof. If nothing was saved, say so. -->
+
+- Saved:
+- Cost/duplication:
+- Future hot path:
 
 ## Context links
 

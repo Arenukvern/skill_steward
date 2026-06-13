@@ -74,11 +74,23 @@ Write the smallest contract that can be checked.
 | Feedback | How do repeated failures become durable tests, docs, evals, or actions? |
 | Pattern layer | Should this change live in native code, repo grammar, public API, schema/codegen, harness, ecology-level skill/tooling, or deletion? |
 | Product claims | Which claims are implemented, generated, fallback, planned, or speculative, and who owns the proof? |
+| Product impact | Did the work change or directly prove the repo's primary artifact: runtime behavior, public API, command output, plugin install behavior, visual output, performance, release path, or user/developer workflow? |
 | North Star impact | Is the change `none`, `applies`, `clarifies`, `sub_star`, `amends`, or `conflicts`; and is it a mechanism or a new center? |
 
 For multi-repo roadmaps, also record dependency order, source-of-truth repo, consumer gate, dirty-state policy, and do-not-touch exceptions. Do not claim a downstream consumer is ready from local path dependency success when the upstream package or binary still lacks publish evidence. The producer repo owns architecture, public contract, release provenance, and compatibility claims; consumer repos own adoption proof, local deltas, blocked state, and cutover commands.
 
 Use [docs/repo-quality-contracts.mdx](../../docs/repo-quality-contracts.mdx) as the normative spec.
+
+For product repos, do not count Steward activity as product acceleration unless
+it lands in the owner checkout as either a source-owned product delta or a
+product-native proof. Examples: a changed Flutter interaction, a public API or
+adapter contract, a CLI output/failure mode, a plugin install path, a real
+visual screenshot, a performance metric, or a release/publish preflight. If the
+only result is a cleaner ledger, eval, action contract, or proof tool, the honest
+claim is stewardship maintenance, orientation, or harness candidate, not product
+progress. For visual/performance-heavy repos, tests are support evidence; the
+claim ceiling stays low until a human-inspectable capture or metric proves the
+product surface moved.
 
 ### 4. Run the generational architecture check
 
@@ -103,7 +115,7 @@ Use the weakest true claim, not the strongest desired one.
 |-------|----------|
 | Stewardship baseline exists | Charter, agent map, docs map, validation command are discoverable |
 | Quality contract is proven | Type-native gate runs or blocked state is documented |
-| Skill routing is covered | `pnpm run eval` plus Tier-1 cases |
+| Skill routing is covered | `pnpm run eval` plus T1 behavior-critical cases |
 | Harness readiness is proven | `doctor`, `actions list`, `action inspect`, `probe`, benchmark scenario |
 | Fresh-agent workflow is proven | Fresh agent completes one workflow without hidden context |
 
@@ -190,6 +202,10 @@ Run ecology as a disposition loop, not an evidence treadmill or a tool tunnel:
 - When a proposed mechanism starts acting like the umbrella, classify `north_star_impact`. `sub_star` needs a parent/child boundary; `amends` or `conflicts` needs governance and an ADR before product direction changes.
 - When the review finds invalid config, dirty declared inputs, schema/output drift, blocked payload routing, stale navigation, or a broken native gate, update the owning surface and rerun the same gate when that is the smallest safe disposition.
 - For `tutor_pain`, name the pain signal, owner, native gate, smallest disposition, rerun route, hot-path residue, and non-claim.
+- For product repos, name the product impact check before adding or trusting
+  Steward proof. If no product-native behavior, API, UI/visual, performance,
+  release, or workflow surface changed or was directly proven, downgrade the
+  outcome to stewardship support and return to the product owner surface.
 - After two learning loops on the same friction, stop PDSA and produce a disposition table. Extract the durable lesson into ADR, FAQ, skill, check, CLI diagnostic, or current ledger, then delete/retire duplicate plans or historical packets from active navigation.
 - Do not add sub-stewards, new broad skills, new benchmark scenarios, or new evidence indices from the same blocked detour unless the repaired owner still cannot represent the repo honestly.
 
@@ -203,6 +219,8 @@ When reporting an audit or adoption pass, include:
 - Pattern layer chosen, smaller layer considered, and expected maintenance delta.
 - `north_star_impact` when the work could alter the repo center, ownership, or refusal boundaries.
 - Smallest next improvement.
+- Product impact check and product delta, or the explicit reason the work is
+  stewardship support only.
 - Ecology dispositions when the request is about compression, cleanup, or surface changes.
 - What was not validated.
 - Any skipped generators, blocked checks, or non-claims behind broad product language.

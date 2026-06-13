@@ -14,7 +14,7 @@ class EvalReport {
   };
 }
 
-/// Result for a single Tier 1 skill evaluation.
+/// Result for a single T1 behavior-critical skill evaluation.
 class EvalSkillResult {
   const EvalSkillResult({
     required this.skillName,

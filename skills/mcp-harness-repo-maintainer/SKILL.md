@@ -236,7 +236,7 @@ Archetype-specific proof:
 | Platform libs | Protocol adapters are thin, core tests cover behavior, and no product-specific fork is embedded. |
 | CLI harness | CLI command exists for CI/gates; MCP parity is not required unless the repo exposes MCP. |
 | Visual sidecar | Profile/config schemas and compare/deconstruct commands are validated; MCP parity is not required. |
-| Meta steward | Skill/plugin/validator surfaces pass skill validation and Tier-1 routing cases; no product runtime is bundled. |
+| Meta steward | Skill/plugin/validator surfaces pass skill validation and T1 behavior-critical routing cases; no product runtime is bundled. |
 | Security/Ops | Mutation surfaces require explicit risk class, redaction, and authorization policy. |
 
 ## Install

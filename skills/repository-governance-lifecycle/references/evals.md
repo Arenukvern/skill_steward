@@ -25,6 +25,6 @@
 
 | Date | Change | Kept? |
 |------|--------|-------|
-| 2026-06-05 | Added Tier-1 routing cases for governance boundary coverage | Yes |
+| 2026-06-05 | Added T1 behavior-critical routing cases for governance boundary coverage | Yes |
 | 2026-06-12 | Added evidence routing coverage for ADR 0023 claim-proof records | Yes |
 | 2026-06-13 | Added North Star impact routing so mission changes cannot drift silently | Yes |

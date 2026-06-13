@@ -48,7 +48,19 @@ It can be applied to literally anything: a codebase, a feature plan, a deploymen
 3. **Spawn Subagents**
    Use the available subagent capability for the current host to launch these experts independently. Give them explicit prompts to audit the target topic through their specific lens. Keep read-only lenses read-only unless the user explicitly asked for implementation. If no subagent tool is available, run the expert lenses sequentially and label the output as a non-parallel MoE.
 4. **Cross-reference Findings**
-   Wait for all subagents to report back. Synthesize their independent critiques. Look for structural contradictions, missed edge cases, maintenance traps, and (in the case of repo skills) duplicated intent. If a lens times out or returns unusable evidence, label it as `missing_lens`, `partial_lens`, or `superseded_lens`; either retry, continue with downgraded confidence, or state that the missing lens blocks a stronger claim. When the Skeptic lens is active, name the smallest useful layer and any deletion/collapse option before recommending new tools. When the Evidence / Retention QA lens is active, name the artifact status, claim protected, and retention/disposition route before recommending new evidence. If the critique would change durable docs, skills, contracts, or tooling, create or recommend a Pattern Promotion Review under `docs/evidence/` instead of creating a new doctrine.
+   Wait for all subagents to report back, or stop at the declared fallback point. Synthesize their independent critiques. Look for structural contradictions, missed edge cases, maintenance traps, and (in the case of repo skills) duplicated intent. If a lens times out or returns unusable evidence, label it as `missing_lens`, `partial_lens`, `timed_out_lens`, or `superseded_lens`; either retry, continue with downgraded confidence, or state that the missing lens blocks a stronger claim. Include a compact lens-status summary whenever the MoE result affects implementation, evidence, or a readiness claim.
+
+   Example lens-status summary:
+
+   ```markdown
+   | Lens | Status | Integration |
+   |------|--------|-------------|
+   | Evidence QA | integrated | limited the claim ceiling |
+   | Operations QA | partial | accepted as input, not proof |
+   | Skeptic | timed_out | no stronger claim based on this lens |
+   ```
+
+   When the Skeptic lens is active, name the smallest useful layer and any deletion/collapse option before recommending new tools. When the Evidence / Retention QA lens is active, name the artifact status, claim protected, and retention/disposition route before recommending new evidence. If the critique would change durable docs, skills, contracts, or tooling, create or recommend a Pattern Promotion Review under `docs/evidence/` instead of creating a new doctrine.
    For broad repo pain, MoE may discover possible lane candidates and contradictions between lanes. These findings are advisory critique inputs only: they do not authorize writes, assign workers, accept results, or replace parent synthesis. Parent lane contracts and direct-fix authority belong to `multi-agent-handoff`.
 5. **Choose output mode**
    - **Read-only critique mode:** If the user asks to analyze, discuss, criticize, or validate only, summarize findings in chat. Do not create files or plans.
@@ -59,6 +71,11 @@ It can be applied to literally anything: a codebase, a feature plan, a deploymen
    - `chat_only`: useful critique, no durable change.
    - `promote_to_artifact`: update an ADR, FAQ, evidence note, skill, docs map, or Pattern Promotion Review.
    - `convert_to_check`: repeated deterministic truth should become a test, validator, generator freshness check, or harness probe.
+
+   If implementation follows from the MoE, hand off the execution through
+   `multi-agent-handoff` or keep it in the parent with an explicit claim
+   ceiling. MoE findings alone are not terminal lane states and do not make
+   temp or worker proof source-owned.
    Ask for approval only when the next step would mutate files or widen scope.
 
 Compact rule: **spawn for independence, synthesize for contradiction, persist only what changes future behavior.**

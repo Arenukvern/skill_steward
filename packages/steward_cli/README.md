@@ -26,7 +26,7 @@ Meta stewardship CLI for [Skill Steward](https://github.com/arenukvern/skill_ste
 | `steward action-candidate review --from <candidate> --json` | Validate an action candidate without promoting it |
 | `steward benchmark --scenario <id> --json --output <path>` | Run or block a durability-gated dogfood scenario and persist a compact summary |
 | `steward validate` | Validate installable skills and generated registry/index consistency |
-| `steward eval --json` | Run Tier-1 rule-based skill routing evals; runtime dogfood belongs to `benchmark` |
+| `steward eval --json` | Run T1 behavior-critical rule-based skill routing evals; runtime dogfood belongs to `benchmark` |
 | `steward list` | List installable skills |
 | `steward adopt` | Create the baseline `skills.json`, `steward.yaml`, and `AGENTS.md` without typed actions |
 | `steward adopt --with-harness` | Create baseline files plus a quick-safe action and probe; add a contract smoke scenario when durable git source facts exist |

@@ -7,7 +7,7 @@ Use this page to decide the weakest proof level that supports a claim. Use [Evid
 | Exact claim | Minimum evidence | Does not prove |
 |-------------|------------------|----------------|
 | Skill is structurally valid | `pnpm run validate` | Runtime behavior |
-| Tier-1 skill routing is covered | `pnpm run eval` plus `evals/cases/*.yaml` | Production agent behavior |
+| T1 behavior-critical skill routing is covered | `pnpm run eval` plus `evals/cases/*.yaml` | Production agent behavior |
 | Docs site is wired | `pnpm run docs:check` or documented blocked state | Repo correctness |
 | Repo quality contract is proven | Type-native validation command passes, or blocked evidence explains why it cannot | Harness readiness |
 | Cleanup turn is useful evidence | Scope, commands run, commands skipped, skip reason, and non-claims are stated | Merge readiness or maturity proof |

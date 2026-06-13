@@ -13,8 +13,9 @@ For ordinary repo work, do not start with a maturity ladder or an evidence packe
 3. Choose one disposition: `orient`, `compress`, `validate`, `tutor_pain`, `promote_tool`, `leave_native`, or `stop`.
 4. Make the smallest safe change only when that disposition calls for it, including in another allowed repo when that owner is the right place.
 5. Rerun the same native gate or blocked Steward route.
-6. Leave the smallest hot path: better map, shorter doc, native check, schema, test, FAQ row, action candidate, or current-ledger update.
-7. Create evidence only for a claim, blocker, real run, or durable behavior change. Repeated deterministic drift should become a check/tool.
+6. For product repos, name the product impact check: source-owned behavior/API/UI/visual/performance/release/workflow delta, or explicit product-native proof. Green Steward artifacts alone are stewardship support, not product acceleration.
+7. Leave the smallest hot path: better map, shorter doc, native check, schema, test, FAQ row, action candidate, or current-ledger update.
+8. Create evidence only for a claim, blocker, real run, or durable behavior change. Repeated deterministic drift should become a check/tool.
 
 ADR 0024 keeps loop-pain extraction in these existing surfaces: owner, native gate, disposition, rerun route, hot path, and non-claims.
 
@@ -46,7 +47,7 @@ UPDATE installed       → this file (Updating installed skills)
 ANALYZE steward_cli    → pnpm run steward:analyze  (xsoulspace_lints; CI on PR)
 VALIDATE before PR     → pnpm run validate  (skill structure; CI also runs analyze/test/eval/list)
 CITE / EVAL SKILLS     → skill-source-citations, skill-eval-improve
-EVAL CI (Tier 1)       → pnpm run eval · evals/cases/*.yaml · ADR 0011
+EVAL CI (T1 behavior-critical)       → pnpm run eval · evals/cases/*.yaml · ADR 0011
 STEWARD CLI              → ../packages/steward_cli/README.md  (ADR 0007)
 HONEST CLAIM ROUTING    → this file (Honest claim routing) · evidence/first-adopter-golden-path
 EVIDENCE ROUTING       → core/evidence-artifacts.mdx · core/evidence-ladder.mdx · ADR 0023
@@ -72,7 +73,7 @@ Use the smallest distribution surface that matches the job.
 | Compose current dogfood route | `steward dogfood status --json` | Current ledger plus ecology facts; not maturity, H2/H5, or steward status |
 | Start a minimal current-status ledger | `steward evidence init --minimal` | Creates one claim/status ledger; not an evidence archive, benchmark, or readiness claim |
 | Turn blocked JSON into next actions | `steward blocked explain` | Artifact routing for blocked evidence; does not repair or prove |
-| Validate Skill Steward skills | `pnpm run validate`, `pnpm run eval` | Skill structure and Tier-1 routing cases |
+| Validate Skill Steward skills | `pnpm run validate`, `pnpm run eval` | Skill structure and T1 behavior-critical routing cases |
 | Adopt general repo stewardship | `repo-quality-system-lifecycle` + repo-quality-contracts.mdx | Charter, docs lattice, type-native gates, evidence, safety, maturity proof |
 | Prove a repo-local harness contract | `steward doctor/actions/probe/benchmark` | Runtime dogfood evidence; separate from skill evals |
 | Generate plugin/rule descriptors | `steward bundle` | Validated wiring artifacts; host install remains explicit |
@@ -87,7 +88,7 @@ Harness work is one part of engineering stewardship. Use the narrowest pillar th
 | Governance | Charter, ADRs, FAQs, ethics, plan hygiene | `repository-governance-lifecycle` |
 | Knowledge | Source provenance and docs traceability | `skill-source-citations` |
 | Skill lifecycle | Authoring and auditing installable skills | `skill-authoring-lifecycle` |
-| Quality gates | Tier-1 static skill evals and bounded improvement loops | `skill-eval-improve`, `pnpm run eval` |
+| Quality gates | T1 behavior-critical static skill evals and bounded improvement loops | `skill-eval-improve`, `pnpm run eval` |
 | Local harness adoption | `steward.yaml`, typed actions, quick probes, benchmark smoke loops | `mcp-harness-repo-maintainer` |
 | Cross-repo harness engineering | Producer/consumer generalization and sibling dogfood | `harness-engineering-lifecycle` |
 | Release legibility | Changelog, versioning, release artifacts | `release-changelog-harness` |
@@ -380,7 +381,7 @@ pnpm run validate
 ```bash
 pnpm run validate                   # canonical repo-root validation
 pnpm run validate:json              # machine-readable report
-pnpm run eval                       # Tier 1 rule-based skill cases (ADR 0011)
+pnpm run eval                       # T1 behavior-critical rule-based skill cases (ADR 0011)
 pnpm run list                       # skill names + descriptions
 
 # Dart meta CLI (primary)
@@ -394,13 +395,13 @@ Optional Cursor hook: `../plugins/steward-validate-on-save/README.md`.
 
 Fix all `error:` lines before merge. Warnings (long SKILL.md, missing skills.sh entry) should be addressed or justified in PR.
 
-`pnpm run eval` is for Tier-1 skill routing and docs-SSOT quality. Runtime dogfood and local harness benchmarks use `steward benchmark --scenario <id> --json`; do not put product runtime scenarios under skill evals. Benchmark execution is durability-gated: `source.steward_contract` and any file-backed scenario manifest must be clean and tracked before actions run.
+`pnpm run eval` is for T1 behavior-critical skill routing and docs-SSOT quality. Runtime dogfood and local harness benchmarks use `steward benchmark --scenario <id> --json`; do not put product runtime scenarios under skill evals. Benchmark execution is durability-gated: `source.steward_contract` and any file-backed scenario manifest must be clean and tracked before actions run.
 
 ### Validation matrix
 
 | Change | Required validation | Notes |
 |--------|---------------------|-------|
-| Skill text/frontmatter | `pnpm run validate` + `pnpm run eval` when Tier 1 | Update `evals/cases/*.yaml` when routing changed. |
+| Skill text/frontmatter | `pnpm run validate` + `pnpm run eval` when T1 behavior-critical | Update `evals/cases/*.yaml` when routing changed. |
 | Docs only | `pnpm run docs:check` + targeted link/readthrough | Keep docs as pointers to behavior SSOT. |
 | Steward CLI code | `pnpm run steward:analyze` + relevant Dart tests + `pnpm run validate` | Use GitNexus impact before symbol edits. |
 | Local harness contract | `steward doctor/actions/probe/benchmark` in the target repo | Record `durability_blocked` honestly when inputs are dirty. |

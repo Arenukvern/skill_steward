@@ -1,6 +1,6 @@
 ---
 name: skill-eval-improve
-description: Improves Agent Skills via validate → rule-based eval cases → plugin-eval → prompt evals → bounded edits with held-out gates. Use when tuning skill quality, routing, or adopting Chrome/Microsoft eval tiers—not for bulk validate-only or SkillOpt automation.
+description: Improves Agent Skills via validate → rule-based eval cases → plugin-eval → prompt evals → bounded edits with held-out gates. Use when tuning skill quality, routing, or adopting Chrome/Microsoft T-named quality gates—not for bulk validate-only or SkillOpt automation.
 license: MIT
 type: governance
 metadata:
@@ -37,7 +37,7 @@ Cursor scope (optional): activate when editing under `skills/**` or `scripts/val
 | Layer | Expert | Tool / method | Cost |
 |-------|--------|---------------|------|
 | **0 — Gate** | Lint | `pnpm run validate`, `skill-authoring-lifecycle` | seconds |
-| **0b — Rules** | Routing/docs SSOT | `pnpm run eval` (Tier 1 YAML cases) | seconds |
+| **0b — Rules** | Routing/docs SSOT | `pnpm run eval` (T1 behavior-critical YAML cases) | seconds |
 | **1 — Static** | Structure | Codex `plugin-eval analyze` (if available) | seconds |
 | **2 — Human** | Behavior | 3–5 prompts with/without skill | minutes |
 | **3 — Measured** | Usage | `plugin-eval benchmark` + `measurement-plan` | minutes–hours |
@@ -55,16 +55,16 @@ pnpm run validate:json   # CI / automation
 
 Fix all `error:` lines. Treat `warn:` (missing `sources.md`, long SKILL.md) seriously.
 
-## Eval tiers ([ADR 0011](../../docs/decisions/0011-tiered-skill-evals-and-rule-based-ci.mdx))
+## T-named skill quality gates ([ADR 0011](../../docs/decisions/0011-tiered-skill-evals-and-rule-based-ci.mdx), [ADR 0027](../../docs/decisions/0027-t-named-skill-quality-gates.mdx))
 
 | Tier | Skills | CI |
 |------|--------|-----|
-| **1** | Behavior-critical routing skills: harness adoption, skill authoring, governance, harness generalization, marketplace setup, MoE, and vision alignment | `pnpm run eval` + validate |
-| **2** | All others | `pnpm run validate` |
+| **T1 — Behavior-critical eval-gated** | Routing/procedure skills where drift can change agent decisions, claims, delegation, governance, or evidence boundaries | `pnpm run eval` + validate |
+| **T2 — Structural validate-only** | All others | `pnpm run validate` |
 
-Tier 1 currently includes `mcp-harness-repo-maintainer`, `skill-authoring-lifecycle`, `skill-eval-improve`, `repository-governance-lifecycle`, `repo-quality-system-lifecycle`, `harness-engineering-lifecycle`, `plugin-marketplace-setup`, `mixture-of-experts`, and `vision-alignment-foresight`. Each requires `evals/cases/*.yaml` (≥2) + `references/evals.md`. Schema: [eval-case-schema.md](references/eval-case-schema.md).
+T1 behavior-critical currently includes `harness-engineering-lifecycle`, `mcp-harness-repo-maintainer`, `mixture-of-experts`, `multi-agent-handoff`, `plugin-marketplace-setup`, `repo-quality-system-lifecycle`, `repository-governance-lifecycle`, `skill-authoring-lifecycle`, `skill-eval-improve`, `steward-continuity-boundary-lifecycle`, and `vision-alignment-foresight`. Each requires `evals/cases/*.yaml` (≥2) + `references/evals.md`. Schema: [eval-case-schema.md](references/eval-case-schema.md).
 
-## Layer 0b — Rule-based cases (Tier 1 CI)
+## Layer 0b — Rule-based cases (T1 behavior-critical CI)
 
 ```bash
 pnpm run eval
@@ -146,7 +146,7 @@ At 10,000x scale, NLP prompt evaluation fails because LLMs suffer **Cognitive Ov
 
 1. **Capture compact traces:** Store action IDs, tool counts, artifact digests, and redacted excerpts, not raw product traces.
 2. **Define assertions:** Expected action trajectory, declared surfaces used first, maximum tool calls, maximum repair/setup attempts, maximum unrelated tool calls, required `return_to_goal_step`, required artifacts, and negative checks for unrelated actions.
-3. **Run dogfood benchmarks:** Use `steward benchmark --scenario <id> --json` for runtime dogfood scenarios. Do not put product runtime scenarios under Tier-1 skill evals.
+3. **Run dogfood benchmarks:** Use `steward benchmark --scenario <id> --json` for runtime dogfood scenarios. Do not put product runtime scenarios under T1 behavior-critical skill evals.
 
 The current `steward eval --name` registered-eval path is legacy/experimental. Skill quality remains `pnpm run eval`; runtime dogfood belongs to `steward benchmark`, where `durability_blocked` is valid blocked evidence when contract inputs are modified or untracked, not proof of runtime behavior.
 
@@ -155,7 +155,7 @@ The current `steward eval --name` registered-eval path is legacy/experimental. S
 ```
 - [ ] sources.md cites plugin-eval + SkillOpt if used
 - [ ] pnpm run validate
-- [ ] Tier 1: `pnpm run eval` + cases updated
+- [ ] T1 behavior-critical: `pnpm run eval` + cases updated
 - [ ] plugin-eval analyze (optional)
 - [ ] 3+ prompt evals documented in references/evals.md
 - [ ] Bounded edit applied; held-out improved

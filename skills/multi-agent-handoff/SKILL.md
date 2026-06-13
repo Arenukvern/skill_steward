@@ -1,6 +1,6 @@
 ---
 name: multi-agent-handoff
-description: Plan and document handoffs between specialized AI agents (foreman, workers, reviewers). Use for multi-agent workflows, subagent delegation, baton passes, or guild-style agent coordination.
+description: Plan and document handoffs, parent lane contracts, and parallel batch contracts between specialized AI agents (foreman, workers, reviewers). Use for multi-agent workflows, subagents, original goal preservation, native gates, claim ceilings, terminal states, baton passes, or guild-style agent coordination.
 license: MIT
 type: governance
 metadata:
@@ -62,11 +62,40 @@ For broad decomposable work, the parent may use a disposable batch section inste
 
 - original goal and user acceptance check;
 - default native gate and aggregate gates;
+- product impact check for the primary artifact, especially when the repo is an
+  app, library, CLI/tool, plugin, or prototype;
 - detour budget and stop condition;
 - integration capacity, merge order, and conflict policy;
 - comparison strategy for lane outputs;
 - final evidence boundary, claim ceiling, and non-claims;
+- acceleration note with three fields: `Saved`, `Cost/duplication`, and `Future hot path`;
 - hot-path promotion check for repeated verification or comparison work.
+
+Use this compact shape before dispatching parallel lanes:
+
+```markdown
+## Parallel Batch
+Original goal: {user-visible outcome}
+Acceptance check: {how the parent will know the original goal is satisfied}
+Product impact check: {source-owned product behavior/API/UI/perf/doc-user workflow that must change or be proven unchanged}
+Default native gate: {repo-native command or reason none exists}
+Aggregate gate: {final validation before claiming completion}
+Detour budget: {when to stop repairing tools and return to the goal}
+Claim ceiling: {strongest claim allowed if all lanes pass}
+Non-claims: {adjacent claims this batch cannot prove}
+Acceleration note:
+- Product impact line: {product surface changed/proven, or support_only: Steward scaffolding only}
+- Saved: {time, uncertainty, or risk reduced by running lanes in parallel}
+- Cost/duplication: {duplicated work, integration cost, or coordination drag caused or avoided}
+- Future hot path: {command, check, skill, script, deletion, or native route created for the next run}
+
+| Lane | Agent/role | Scope | Write set | Forbidden paths | Native gate | Direct fix? | Terminal state |
+|------|------------|-------|-----------|-----------------|-------------|-------------|----------------|
+| L1 | {owner} | {bounded work} | `{paths}` | `{paths}` | `{command}` | yes/no | pending |
+```
+
+Delete or collapse this batch section after synthesis unless it becomes a
+review artifact. Do not preserve lane maps as project management state.
 
 ## Parent lane contract
 
@@ -83,16 +112,50 @@ Only a parent lane contract may set `direct_fix_allowed: true`. Direct fixes mus
 
 A2A artifacts never authorize writes, widen scope, accept/reject lanes, or launder steward judgment. The parent or explicit A2Human checkpoint owns authorization, synthesis, final claims, and scope changes.
 
+## Landing phase
+
+When a lane proves a fix in a temp clone, fork, worktree, or external checkout,
+that proof is `accepted_as_input` until the owner checkout carries the smallest
+source-owned diff and reruns the native gate. Do not treat temp proof as
+repo-owned evidence by default.
+
+Before claiming a lane is integrated:
+
+1. Isolate the minimal source-owned diff from the temp or worker result.
+2. Apply only that diff to the owner checkout.
+3. Rerun the lane's native gate in the owner checkout.
+4. Update the current ledger or evidence note only if the claim changed.
+5. Record `source_owner_status` as `temp_only`,
+   `owner_landed_pending_gate`, `owner_gate_passed`, or
+   `blocked_owner_dirty`.
+6. Mark the terminal state as `integrated_to_owner`, `blocked_to_current_ledger`,
+   `accepted_as_input`, or `rejected`.
+
+If the source checkout is dirty or cannot accept the diff safely, record the
+temp proof as a candidate and keep the stronger source-owned claim unproven.
+After one bounded landing attempt, close the lane as blocked or rejected rather
+than creating another proof packet for the same unlanded result.
+
 ## Workflow
 
 1. **Decompose** — break the goal into independent slices where possible.
 2. **Assign roles** — e.g. Explore (read-only), Implement (write), Review (read-only critique).
-3. **Write baton** — fill the template; keep "Next" to ≤7 concrete steps.
+3. **Write baton** — fill the template; keep "Next" to ≤7 concrete steps. For parallel work, include the compact batch table before dispatch.
 4. **Execute one slice** — receiving agent does only "Next"; updates "Done".
 5. **Record proof** — update validation status before claiming completion. Skipped checks and blocked generators are non-proof, not quiet success.
-6. **Capture durable learning** — if a finding changes future behavior, route it to an ADR, FAQ, skill, evidence note, validator, generator, test, or check.
-7. **Re-handoff** — pass updated `HANDOFF.md` to the next agent or subagent.
-8. **Close** — delete or archive handoff file when goal is verified.
+6. **Land source-owned changes** — convert temp or worker proof into the owner checkout and rerun the native gate before strengthening the claim.
+7. **Close every lane** — assign a terminal state to each lane or lens, including timed-out, blocked, or superseded work.
+8. **Measure acceleration** — fill the acceleration note with what was saved, what duplicated work or coordination cost appeared, and what future command/check/hot path now exists. If nothing was saved, say so and keep the claim ceiling low.
+9. **Check product impact** — for product repos, name the source-owned product
+   delta or product-native gate reached. If the batch only improved Steward
+   scaffolding, proof artifacts, or tools-about-tools, claim orientation or
+   harness maintenance only, not product acceleration.
+   If `Cost/duplication` is not lower than the saved uncertainty, risk, or
+   repeat work, default to `leave_native`, `rejected`, or a low-confidence
+   support claim.
+10. **Capture durable learning** — if a finding changes future behavior, route it to an ADR, FAQ, skill, evidence note, validator, generator, test, or check.
+11. **Re-handoff** — pass updated `HANDOFF.md` to the next agent or subagent.
+12. **Close** — delete or archive handoff file when goal is verified.
 
 ## Anti-patterns
 
@@ -101,6 +164,10 @@ A2A artifacts never authorize writes, widen scope, accept/reject lanes, or laund
 - Duplicate conflicting instructions across parent and child agents
 - Subagents that repeat the parent plan instead of looking for contradiction, stale assumptions, missing evidence, or smaller deletable designs
 - Final handoffs that sound complete while validation is skipped, blocked, or only manually inferred
+- Clean temp proof presented as source-owned adoption before landing and rerunning the owner checkout's native gate
+- Long-running or vanished subagents silently absorbed into parent synthesis without a `partial`, `timed_out`, `blocked`, or `superseded` terminal state
+- Parallel work claimed as faster without naming saved uncertainty, duplicated work, and the future command/check/hot path it created
+- A batch that closes with green Steward gates but no product delta, product-native gate, screenshot/perf proof, API behavior change, or user-facing workflow improvement while still claiming product acceleration
 
 ## Subagent hints (Codex / Cursor / Zed)
 

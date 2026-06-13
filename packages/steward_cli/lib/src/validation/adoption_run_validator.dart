@@ -150,6 +150,13 @@ void _validateRecord(
     );
   }
 
+  final productImpactLine = _stringValue(outcome, 'product_impact_line');
+  if (productImpactLine.isEmpty) {
+    diagnostics.add(
+      '$label: outcome.product_impact_line is required before claiming success.',
+    );
+  }
+
   final attempts = _intValue(toolDetour, 'attempts') ?? 0;
   if (attempts >= 2) {
     if (_boolValue(toolDetour, 'stop_rule_triggered') != true) {
@@ -181,6 +188,27 @@ void _validateRecord(
   }
 
   final claimedLevel = _stringValue(promotion, 'claimed_level');
+  final supportOnly = productImpactLine.toLowerCase().startsWith(
+    'support_only:',
+  );
+  if (supportOnly) {
+    if (_stringValue(outcome, 'decision') == 'promote') {
+      diagnostics.add(
+        '$label: outcome.decision must not be promote when product_impact_line is support_only.',
+      );
+    }
+    if (_boolValue(promotion, 'can_promote_in_this_run') == true) {
+      diagnostics.add(
+        '$label: promotion.can_promote_in_this_run must be false when product_impact_line is support_only.',
+      );
+    }
+    if (claimedLevel.isNotEmpty && claimedLevel != 'none') {
+      diagnostics.add(
+        '$label: promotion.claimed_level must stay none when product_impact_line is support_only.',
+      );
+    }
+  }
+
   if (claimedLevel == 'H5' || claimedLevel == 'S5') {
     final repeatedEvidence = _stringListValue(promotion, 'repeated_evidence');
     if (repeatedEvidence.length < 2) {

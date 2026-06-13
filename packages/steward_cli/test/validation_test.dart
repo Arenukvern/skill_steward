@@ -378,6 +378,71 @@ probes:
         }
       });
 
+      test('requires product impact line before success claims', () async {
+        final tempDir = Directory.systemTemp.createTempSync(
+          'steward_adoption_run_product_impact_',
+        );
+        try {
+          _writeAdoptionRunRecord(tempDir.path, productImpactLine: '');
+
+          final diagnostics = await validateAdoptionRunEvidence(tempDir.path);
+
+          expect(
+            diagnostics,
+            contains(
+              contains('outcome.product_impact_line is required'),
+            ),
+          );
+        } finally {
+          tempDir.deleteSync(recursive: true);
+        }
+      });
+
+      test('support-only impact cannot promote', () async {
+        final tempDir = Directory.systemTemp.createTempSync(
+          'steward_adoption_run_support_only_',
+        );
+        try {
+          _writeAdoptionRunRecord(
+            tempDir.path,
+            productImpactLine:
+                'support_only: Steward evals became greener; no product surface changed.',
+            outcomeDecision: 'promote',
+            claimedLevel: 'H2',
+            canPromoteInThisRun: true,
+          );
+
+          final diagnostics = await validateAdoptionRunEvidence(tempDir.path);
+
+          expect(
+            diagnostics,
+            contains(
+              contains(
+                'outcome.decision must not be promote when product_impact_line is support_only',
+              ),
+            ),
+          );
+          expect(
+            diagnostics,
+            contains(
+              contains(
+                'promotion.can_promote_in_this_run must be false when product_impact_line is support_only',
+              ),
+            ),
+          );
+          expect(
+            diagnostics,
+            contains(
+              contains(
+                'promotion.claimed_level must stay none when product_impact_line is support_only',
+              ),
+            ),
+          );
+        } finally {
+          tempDir.deleteSync(recursive: true);
+        }
+      });
+
       test('requires declared surfaces before raw exploration', () async {
         final tempDir = Directory.systemTemp.createTempSync(
           'steward_adoption_run_surfaces_',
@@ -475,6 +540,8 @@ void _writeAdoptionRunRecord(
   final List<String> declaredSurfacesUsedFirst = const ['AGENTS.md'],
   final String observedEffect =
       'Future agents can identify the native gate result.',
+  final String productImpactLine =
+      'product_surface: native gate result; proof: tool/check.sh passed',
 }) {
   final evidenceDir = Directory(p.join(rootPath, 'docs', 'evidence'))
     ..createSync(recursive: true);
@@ -524,6 +591,7 @@ generational_architecture_check:
 outcome:
   decision: $outcomeDecision
   reason: "This serves the user goal."
+  product_impact_line: "$productImpactLine"
   docs_or_adr_destination: none
 hot_path_claim:
   problem_class: "native gate proof"

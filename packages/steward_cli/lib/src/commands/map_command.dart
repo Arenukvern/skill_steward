@@ -314,7 +314,7 @@ class MapCommand extends Command<void> {
       recs.add({
         'name': 'skill-eval-improve',
         'why':
-            'Adds Tier-1 rule-based evals, prompt suites, and bounded improvement loops for behavior-critical skills.',
+            'Adds T1 behavior-critical rule-based evals, prompt suites, and bounded improvement loops.',
       });
     }
     if (!installedNames.contains('mcp-harness-repo-maintainer')) {

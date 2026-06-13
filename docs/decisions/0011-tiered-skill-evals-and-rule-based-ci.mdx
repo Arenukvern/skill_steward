@@ -6,7 +6,7 @@ consulted:
 informed:
 ---
 
-# Tiered skill evals and rule-based CI
+# T1/T2 skill quality gates and rule-based CI
 
 ## Context and Problem Statement
 
@@ -18,7 +18,7 @@ How much automation belongs in this repo?
 
 * **Agent heterogeneity** — Skills run in Cursor, Claude Code, Codex, Zed, and other agents; no single CI agent is canonical.
 * **Cost & flake** — LLM judges in PR CI are expensive and non-reproducible.
-* **Charter risk** — Tier-1 stewardship skills need stronger gates than utility skills.
+* **Charter risk** — T1 behavior-critical stewardship skills need stronger gates than utility skills.
 * **Legibility** — Eval cases live in git (`evals/cases/*.yaml`), like changesets for releases.
 * **Existing skill** — `skill-eval-improve` defines layered improvement; this ADR makes rule-based CI normative.
 
@@ -26,16 +26,16 @@ How much automation belongs in this repo?
 
 * **Manual only** — `references/evals.md`; no CI.
 * **Full agent matrix in CI** — Nightly agent runs + judge.
-* **Tiered rule-based CI + optional human/LLM offline** — Objective checks in the Dart `steward eval` runner; behavioral suites documented, not gated in CI.
+* **T-named rule-based CI + optional human/LLM offline** — Objective checks in the Dart `steward eval` runner; behavioral suites documented, not gated in CI.
 
 ## Decision Outcome
 
-Chosen: **Tiered rule-based CI + offline behavioral evals.**
+Chosen: **T-named rule-based CI + offline behavioral evals.**
 
 | Tier | Skills | CI (`pnpm run eval`) | Offline (maintainer) |
 |------|--------|----------------------|----------------------|
-| **1 — Behavioral** | `harness-engineering-lifecycle`, `mcp-harness-repo-maintainer`, `mixture-of-experts`, `plugin-marketplace-setup`, `repo-quality-system-lifecycle`, `repository-governance-lifecycle`, `skill-authoring-lifecycle`, `vision-alignment-foresight` | >=2 `evals/cases/*.yaml`; schema + static rules | `references/evals.md`, held-out prompts, plugin-eval, SkillOpt loop |
-| **2 — Structural** | All other marketplace skills | `pnpm run validate` only | Optional `evals.md` when behavior-critical |
+| **T1 — Behavior-critical eval-gated** | `harness-engineering-lifecycle`, `mcp-harness-repo-maintainer`, `mixture-of-experts`, `multi-agent-handoff`, `plugin-marketplace-setup`, `repo-quality-system-lifecycle`, `repository-governance-lifecycle`, `skill-authoring-lifecycle`, `skill-eval-improve`, `steward-continuity-boundary-lifecycle`, `vision-alignment-foresight` | >=2 `evals/cases/*.yaml`; schema + static rules | `references/evals.md`, held-out prompts, plugin-eval, SkillOpt loop |
+| **T2 — Structural validate-only** | All other marketplace skills | `pnpm run validate` only | Optional `evals.md` when behavior-critical |
 
 **CI scope (explicit non-goals):** No LLM judge in CI. No claim that rule-based routing simulation equals production agent routing or repo quality proof.
 
@@ -45,13 +45,13 @@ Chosen: **Tiered rule-based CI + offline behavioral evals.**
 
 * Good, because PRs catch missing eval fixtures and description/body drift on charter skills.
 * Good, because the Dart `steward eval` runner is the current local implementation and avoids stale Node script drift.
-* Bad, because Tier-1 can pass CI while still failing real agent sessions.
+* Bad, because T1 behavior-critical evals can pass CI while still failing real agent sessions.
 * Neutral, because repo-level quality proof is handled by `docs/repo-quality-contracts.mdx` and type-native validation, not by skill routing evals alone.
 
 ### Confirmation
 
-* `packages/steward_cli/lib/src/eval/eval_tiers.dart` is the Tier-1 skill SSOT for the Dart runner.
-* [docs/STANDARDS.mdx](../STANDARDS) documents tiers.
+* `packages/steward_cli/lib/src/eval/eval_tiers.dart` is the T1 behavior-critical skill SSOT for the Dart runner.
+* [docs/STANDARDS.mdx](../STANDARDS) documents T-named gates.
 * `skill-eval-improve` references the eval case schema and offline behavioral layers.
 * `repo-quality-system-lifecycle` explains when skill evals are not enough and a repo quality contract is required.
 

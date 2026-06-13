@@ -3,11 +3,12 @@
 /// See ADR 0011 for policy and docs/STANDARDS.mdx for maintainer guidance.
 library;
 
-/// Skills that require Tier 1 rule-based eval cases.
-const List<String> tier1Skills = [
+/// T1 behavior-critical skills require rule-based eval cases.
+const List<String> t1BehaviorCriticalSkills = [
   'harness-engineering-lifecycle',
   'mixture-of-experts',
   'mcp-harness-repo-maintainer',
+  'multi-agent-handoff',
   'plugin-marketplace-setup',
   'repo-quality-system-lifecycle',
   'repository-governance-lifecycle',
@@ -17,5 +18,5 @@ const List<String> tier1Skills = [
   'vision-alignment-foresight',
 ];
 
-/// Minimum number of eval case files required for a Tier 1 skill.
-const int tier1MinCases = 2;
+/// Minimum number of eval case files required for a T1 behavior-critical skill.
+const int t1BehaviorCriticalMinCases = 2;

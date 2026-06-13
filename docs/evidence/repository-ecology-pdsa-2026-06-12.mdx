@@ -30,7 +30,7 @@ Repository Ecology Review plus `steward ecology snapshot --json` should help a f
 
 | PDSA | Result |
 |------|--------|
-| Plan | Use `steward ecology snapshot --json` as read-only inventory for this repo, then pair it with schema/output drift checks and Tier-1 evals. |
+| Plan | Use `steward ecology snapshot --json` as read-only inventory for this repo, then pair it with schema/output drift checks and T1 behavior-critical evals. |
 | Do | Ran the repo-local snapshot, `schema check-outputs`, `schema drift`, and `pnpm run eval`. |
 | Study | Snapshot was enough to identify repo archetype, valid config, actions/probes, declared benchmarks, clean git state, evidence files, and non-claims. It was not enough to know current benchmark proof because persisted `.steward/benchmark-summaries/skill-steward-protocol-smoke.json` still showed an older `durability_blocked` result while `current-dogfood-status.mdx` records a later console-run pass. |
 | Act | Added a docs route and converted the repeated friction into CLI/test behavior: ecology snapshot benchmark summaries are labeled `persisted_history`, include commit/freshness hints, and point users to `--output` when fresh benchmark results should feed later snapshot or blocked-explain workflows. |

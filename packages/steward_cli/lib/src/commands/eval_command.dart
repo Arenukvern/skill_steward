@@ -22,13 +22,14 @@ class EvalCommand extends Command<void> {
       ..addFlag(
         'json',
         negatable: false,
-        help: 'Emit machine-readable JSON for Tier-1 skill evals.',
+        help:
+            'Emit machine-readable JSON for T1 behavior-critical skill evals.',
       )
       ..addFlag(
         'skill',
         negatable: false,
         help:
-            'Run Tier-1 skill evals. This is the default when --name is omitted.',
+            'Run T1 behavior-critical skill evals. This is the default when --name is omitted.',
       );
   }
 
@@ -37,7 +38,7 @@ class EvalCommand extends Command<void> {
 
   @override
   final description =
-      'Runs Tier-1 skill evals; --name runs a registered steward.yaml eval.';
+      'Runs T1 behavior-critical skill evals; --name runs a registered steward.yaml eval.';
 
   @override
   Future<void> run() async {
@@ -65,7 +66,7 @@ class EvalCommand extends Command<void> {
     if (useJson) {
       _write(jsonEncode(report.toJson()));
     } else {
-      _write('Tier-1 skill evals');
+      _write('T1 behavior-critical skill evals');
       for (final result in report.results) {
         final status = result.isOk ? 'ok' : 'error';
         _write(

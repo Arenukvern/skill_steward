@@ -1,6 +1,6 @@
 # Eval notes
 
-Tier-1 rule-based cases check activation and dormant prompts only. They do not prove that a real agent can adopt a repository.
+T1 behavior-critical rule-based cases check activation and dormant prompts only. They do not prove that a real agent can adopt a repository.
 
 ## Human/agent behavioral suite
 
@@ -17,6 +17,7 @@ Use these prompts during manual or plugin-eval runs:
 9. "This would be the third evidence packet for the same blocked schema drift. Decide whether to repair the owner, move the deterministic lesson to a check, update a current ledger, or stop."
 10. "A repair loop around Steward tooling has replaced the user's original product goal. Route the pain back to owner, native gate, smallest disposition, rerun route, hot-path residue, and non-claims."
 11. "A consumer repo keeps duplicating producer architecture guidance while waiting for publish evidence. Decide what belongs in the producer, what belongs in consumer proof, and what gate proves cutover."
+12. "An adopter repo has green Steward ledgers/evals/actions but no changed product behavior, API, visual output, performance, release path, or user workflow. Decide whether product acceleration was proven."
 
 ## Rubric
 
@@ -31,3 +32,4 @@ Use these prompts during manual or plugin-eval runs:
 - Routes repeated PDSA/evidence loops to North Star dispositions instead of creating another artifact by default.
 - Tutors pain with pain signal, owner, native gate, smallest disposition, rerun route, hot-path residue, and non-claim.
 - Keeps producer architecture and release truth separate from consumer adoption proof and cutover gates.
+- Downgrades green Steward-only work to stewardship support when there is no source-owned product delta or product-native proof.

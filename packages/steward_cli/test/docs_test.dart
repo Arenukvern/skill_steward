@@ -158,7 +158,7 @@ void main() {
         'Default Steward work is ecology-first',
         'preserve the original user goal',
         'orient, compress, validate, tutor pain, promote a tool, leave work native, or stop',
-        'Tier-1 evals are static routing checks',
+        'T1 behavior-critical evals are static routing checks',
         'do not prove product runtime correctness',
         'We are **not** the product runtime',
       ]) {

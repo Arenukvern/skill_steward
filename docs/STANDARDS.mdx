@@ -41,12 +41,12 @@ skill-name/
 
 Every skill must include **`references/sources.md`** listing URLs for specs, papers, and reference repos used. Update when research changes. Skill: `skill-source-citations`.
 
-### Eval tiers ([ADR 0011](decisions/0011-tiered-skill-evals-and-rule-based-ci))
+### T-named skill quality gates ([ADR 0011](decisions/0011-tiered-skill-evals-and-rule-based-ci), [ADR 0027](decisions/0027-t-named-skill-quality-gates))
 
 | Tier | Skills | Required |
 |------|--------|----------|
-| **1 — Behavioral** | `mcp-harness-repo-maintainer`, `skill-authoring-lifecycle`, `skill-eval-improve`, `repository-governance-lifecycle`, `repo-quality-system-lifecycle`, `harness-engineering-lifecycle`, `plugin-marketplace-setup`, `mixture-of-experts`, `vision-alignment-foresight`, `steward-continuity-boundary-lifecycle` | `references/evals.md` + ≥2 files in `evals/cases/*.yaml`; `pnpm run eval` passes |
-| **2 — Structural** | All other skills under `skills/` | `pnpm run validate`; optional `evals.md` when behavior-critical |
+| **T1 — Behavior-critical eval-gated** | `harness-engineering-lifecycle`, `mcp-harness-repo-maintainer`, `mixture-of-experts`, `multi-agent-handoff`, `plugin-marketplace-setup`, `repo-quality-system-lifecycle`, `repository-governance-lifecycle`, `skill-authoring-lifecycle`, `skill-eval-improve`, `steward-continuity-boundary-lifecycle`, `vision-alignment-foresight` | `references/evals.md` + ≥2 files in `evals/cases/*.yaml`; `pnpm run eval` passes |
+| **T2 — Structural validate-only** | All other skills under `skills/` | `pnpm run validate`; optional `evals.md` when behavior-critical |
 
 Case schema: [eval-case-schema.md](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-eval-improve/references/eval-case-schema.md). Skill: `skill-eval-improve`.
 
@@ -203,7 +203,7 @@ Before merging:
 - [ ] `description` includes trigger phrases
 - [ ] No `README.md` inside skill folder (agents ignore it; use `references/` instead)
 - [ ] `pnpm run validate` passes
-- [ ] **Tier 1 only:** `pnpm run eval` passes; `evals/cases/` updated if routing/description changed
+- [ ] **T1 behavior-critical only:** `pnpm run eval` passes; `evals/cases/` updated if routing/description changed
 - [ ] Skill listed in `skills.sh.json` and root `README.md`
 - [ ] No secrets, API keys, or machine-specific absolute paths
 
@@ -219,6 +219,6 @@ This repo validates skills using the `steward` CLI (or via `pnpm` scripts in dev
 
 ```bash
 pnpm run validate    # all skills — structure (delegates to steward validate)
-pnpm run eval        # Tier 1 — evals/cases/*.yaml rules only (delegates to steward eval)
+pnpm run eval        # T1 behavior-critical — evals/cases/*.yaml rules only (delegates to steward eval)
 pnpm run eval:json   # machine-readable output
 ```

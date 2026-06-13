@@ -132,13 +132,14 @@
     "outcome": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["decision", "reason", "docs_or_adr_destination"],
+      "required": ["decision", "reason", "product_impact_line", "docs_or_adr_destination"],
       "properties": {
         "decision": {
           "type": "string",
           "enum": ["continue", "refactor", "stop", "abandon", "promote"]
         },
         "reason": { "type": "string", "minLength": 1 },
+        "product_impact_line": { "type": "string", "minLength": 1 },
         "docs_or_adr_destination": { "type": "string", "minLength": 1 }
       }
     },

@@ -111,6 +111,7 @@ class ClaimValidator {
           'repeated',
           'hot_path_claim',
           'observed_effect',
+          'product_impact_line',
           'non-claims',
         ]);
     }

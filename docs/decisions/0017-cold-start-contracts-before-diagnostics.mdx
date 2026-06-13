@@ -24,12 +24,12 @@ Adopted repos must prove cold-start legibility before promoted diagnostics:
 
 Scenario names must not overclaim. A first scenario that only checks contract state should use smoke-test language such as `contract-status-smoke`; reserve `cold-start` or diagnostic names for benchmarks that actually prove navigation, observation capture, unknown-case behavior, or diagnostic refusal.
 
-Runtime dogfood belongs to `steward benchmark`, not Tier-1 skill evals. Tier-1 skill evals measure skill routing and static rules; benchmark summaries measure repo-local action evidence.
+Runtime dogfood belongs to `steward benchmark`, not T1 behavior-critical skill evals. T1 behavior-critical skill evals measure skill routing and static rules; benchmark summaries measure repo-local action evidence.
 
 ## Considered Options
 
 * **Symptom-first diagnostics.** Rejected because fresh repos lack reviewed cases, so agents would encode guesses as doctrine.
-* **Reuse Tier-1 skill evals for runtime dogfood.** Rejected because rule-based skill routing checks cannot prove repo-local action selection, durability, or artifact evidence.
+* **Reuse T1 behavior-critical skill evals for runtime dogfood.** Rejected because rule-based skill routing checks cannot prove repo-local action selection, durability, or artifact evidence.
 * **Benchmark-first without contract inspection.** Rejected because executing a scenario before action discovery and inspection hides the executable boundary from fresh agents.
 * **Cold-start contract proof before diagnostics.** Accepted because it separates discovery, safety inspection, bounded observation, durable execution, and later promotion.
 

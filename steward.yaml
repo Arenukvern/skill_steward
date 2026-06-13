@@ -39,11 +39,11 @@ stewardship:
     validate: "pnpm run validate"
     skill_eval: "pnpm run eval"
     eval_suites:
-      - id: skill-routing-tier1
+      - id: skill-routing-t1-behavior-critical
         command: "pnpm run eval"
         scope: "skills/*/evals/cases/*.yaml"
         runner_ssot: "packages/steward_cli/lib/src/eval/eval_tiers.dart"
-        proves: "rule-based Tier-1 skill routing coverage, not real agent behavior"
+        proves: "rule-based T1 behavior-critical skill routing coverage, not real agent behavior"
       - id: repo-quality-baseline
         spec: "docs/repo-quality-contracts.mdx"
         proves: "repo stewardship baseline when paired with type-native gates"
@@ -227,7 +227,7 @@ actions:
 
   eval.skills:
     kind: command
-    desc: Run Tier-1 rule-based skill evals.
+    desc: Run T1 behavior-critical rule-based skill evals.
     command:
       argv: ["pnpm", "run", "eval"]
       shell: false

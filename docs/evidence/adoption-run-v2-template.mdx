@@ -57,6 +57,7 @@ generational_architecture_check:
 outcome:
   decision: continue # continue | refactor | stop | abandon | promote
   reason: "<why this outcome serves the user goal and repo ecology>"
+  product_impact_line: "product_surface: <changed/proven product surface>; proof: <native gate/artifact>" # or support_only: <Steward scaffolding only; no product acceleration claim>
   docs_or_adr_destination: "<ADR, DESIGN_FAQ, DX_FAQ, evidence note, eval, steward.yaml, or none>"
 
 hot_path_claim:
@@ -91,6 +92,10 @@ Tool-building is allowed only while it serves the user goal.
 ## False-green guard
 
 A command returning success is not enough. Record the observed effect that proves the user-visible or repo-visible state changed as intended. If the tool reports success without effect, keep the run below promotion, record the caveat or unknown case, and return to the original acceptance check through a native or portable fallback.
+
+Before claiming success, fill `outcome.product_impact_line` with one sentence:
+`product_surface: ...; proof: ...`. If only Steward artifacts changed, write
+`support_only: ...` and keep `decision` and `promotion` below promote.
 
 ## Generational architecture check
 

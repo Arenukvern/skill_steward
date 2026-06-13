@@ -26,11 +26,11 @@ Sibling work: product harness repositories own runtime/framework harnesses. Skil
 
 | Status | Evidence | Do not overclaim |
 |--------|----------|------------------|
-| Proven | Installable skills, docs lattice, `pnpm run validate`, Tier-1 static/rule evals, schema files, repo-local `steward.yaml` contract shape | Product runtime correctness or production agent behavior |
+| Proven | Installable skills, docs lattice, `pnpm run validate`, T1 behavior-critical static/rule evals, schema files, repo-local `steward.yaml` contract shape | Product runtime correctness or production agent behavior |
 | Emerging | Benchmark loops, MCP/CLI parity checks, security posture, org patterns, richer fresh-agent workflows | Harness readiness without benchmark evidence |
 | Not owned | Product diagnostics, framework automation, public package-manager behavior, domain tutorial catalogs | Replacing product repos or public skill registries |
 
-Tier-1 evals are static routing checks. They catch skill drift; they do not prove product runtime correctness, production agent behavior, H2 smoke proof, or H4 fresh-agent workflow proof.
+T1 behavior-critical evals are static routing checks. They catch skill drift in skills whose routing mistakes can change agent decisions; they do not prove product runtime correctness, production agent behavior, H2 smoke proof, or H4 fresh-agent workflow proof.
 
 ## What we own
 
@@ -57,7 +57,7 @@ Harness engineering is one pillar, not the umbrella. The umbrella is structural 
 | Knowledge | FAQ split, docs maps, concept docs, source citations, durable provenance | Active: docs lattice + `skill-source-citations` |
 | Repo quality contracts | Type-native gates, safe actions, evidence, maturity proof | Active: `repo-quality-system-lifecycle`, `steward.yaml` |
 | Skill lifecycle | Skill authoring, packaging, installability, marketplace readiness | Active: `skill-authoring-lifecycle`, `plugin-marketplace-setup` |
-| Quality gates | Validation, Tier-1 static skill evals, prompt suites, bounded improvement loops | Active: `skill-eval-improve`, `pnpm run eval` |
+| Quality gates | Validation, T1 behavior-critical static skill evals, prompt suites, bounded improvement loops | Active: `skill-eval-improve`, `pnpm run eval` |
 | Harness engineering | CLI/MCP/core parity, repo-local contracts, dogfood feedback loops | Active: `mcp-harness-repo-maintainer`, `harness-engineering-lifecycle` |
 | Release legibility | Changelog, versioning, artifact provenance, release impact | Active: `release-changelog-harness` |
 | Review and handoff | MoE critique, multi-agent handoff, PR review patterns | Active: `mixture-of-experts`, `multi-agent-handoff` |

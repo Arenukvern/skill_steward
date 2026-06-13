@@ -1,4 +1,4 @@
-/// Dart port of eval-skill.mjs — Tier 1 rule-based skill evaluator.
+/// Dart port of eval-skill.mjs — T1 behavior-critical skill evaluator.
 ///
 /// Mirrors the logic in the original Node script exactly:
 ///   - Loads YAML eval cases from skills/{name}/evals/cases/*.yaml
@@ -166,7 +166,7 @@ Future<List<String>> _runCaseRules(
 /// Evaluates a single skill by name.
 ///
 /// [skillsDir] is the `skills/` directory path.
-/// Mirrors the Node [evalSkill] function exactly, including Tier 1 gating.
+/// Mirrors the Node [evalSkill] function exactly, including T1 gating.
 Future<EvalSkillResult> evalSkill(
   final String skillsDir,
   final String skillName,
@@ -185,8 +185,10 @@ Future<EvalSkillResult> evalSkill(
     );
   }
 
-  if (!tier1Skills.contains(skillName)) {
-    warnings.add('$skillName is not Tier 1 — skipping case requirements');
+  if (!t1BehaviorCriticalSkills.contains(skillName)) {
+    warnings.add(
+      '$skillName is not T1 behavior-critical — skipping case requirements',
+    );
     return EvalSkillResult(
       skillName: skillName,
       errors: const [],
@@ -198,7 +200,10 @@ Future<EvalSkillResult> evalSkill(
 
   final casesDir = Directory(p.join(skillPath, 'evals', 'cases'));
   if (!casesDir.existsSync()) {
-    errors.add('Tier 1 requires evals/cases/*.yaml (min $tier1MinCases)');
+    errors.add(
+      'T1 behavior-critical requires evals/cases/*.yaml '
+      '(min $t1BehaviorCriticalMinCases)',
+    );
     return EvalSkillResult(
       skillName: skillName,
       errors: errors,
@@ -214,9 +219,9 @@ Future<EvalSkillResult> evalSkill(
       .where((final f) => f.path.endsWith('.yaml') || f.path.endsWith('.yml'))
       .toList();
 
-  if (caseFiles.length < tier1MinCases) {
+  if (caseFiles.length < t1BehaviorCriticalMinCases) {
     errors.add(
-      'Tier 1 requires ≥$tier1MinCases case files; found ${caseFiles.length}',
+      'T1 behavior-critical requires ≥$t1BehaviorCriticalMinCases case files; found ${caseFiles.length}',
     );
   }
 
@@ -273,14 +278,14 @@ Future<EvalSkillResult> evalSkill(
 
 // ─── Aggregate runner ─────────────────────────────────────────────────────────
 
-/// Runs evals for [targets] (defaults to all [tier1Skills]).
+/// Runs evals for [targets] (defaults to all [t1BehaviorCriticalSkills]).
 ///
 /// [skillsDir] must be the absolute path to the repo `skills/` directory.
 Future<EvalReport> evalAllSkills(
   final String skillsDir, {
   final List<String>? targets,
 }) async {
-  final names = targets ?? tier1Skills;
+  final names = targets ?? t1BehaviorCriticalSkills;
   final results = <EvalSkillResult>[];
 
   for (final name in names) {

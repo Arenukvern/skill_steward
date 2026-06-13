@@ -48,7 +48,7 @@ npx skills add arenukvern/skill_steward --skill repository-governance-lifecycle
 | `harness-engineering-lifecycle` | Cross-repo harness generalization after a local contract exists |
 | `release-changelog-harness` | Release and changelog tooling per ecosystem (Changesets, Melos, etc.) |
 | `skill-authoring-lifecycle` | Creating, auditing, and maintaining SKILL.md under `skills/` |
-| `skill-eval-improve` | Tiered evaluations (`evals/cases/*.yaml`) and CI improve loops |
+| `skill-eval-improve` | T-named skill quality gates (`evals/cases/*.yaml`) and CI improve loops |
 | `mixture-of-experts` | Parallel agent reasoning, critical evaluation, and self-auditing |
 | `multi-agent-handoff` | Spawning and communicating with subagents, handoffs |
 | `plugin-marketplace-setup` | Skill and plugin marketplace distribution setup |
@@ -58,7 +58,7 @@ npx skills add arenukvern/skill_steward --skill repository-governance-lifecycle
 ## Add or change a skill (checklist)
 
 1. `skills/{name}/SKILL.md` — `name` == directory; see [STANDARDS](docs/STANDARDS.mdx).
-2. `pnpm run validate` (Tier 1 skill changes also require `pnpm run eval`)
+2. `pnpm run validate` (T1 behavior-critical skill changes also require `pnpm run eval`)
 3. `skills.sh.json` + [README](README.md) table
 4. No secrets; no domain tutorials
 
