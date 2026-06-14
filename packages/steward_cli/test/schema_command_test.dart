@@ -221,6 +221,7 @@ const _publicCheckedInSchemaAliases = [
   'dogfood-status-v1',
   'ecology-route-v1',
   'ecology-snapshot-v1',
+  'experiment-campaign-summary-v1',
   'mode-event-v1',
   'observation-v1',
   'plugin-bundle-index-v1',

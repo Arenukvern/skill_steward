@@ -542,6 +542,8 @@ String _normalizeSchemaId(final String schemaId) => switch (schemaId.trim()) {
   'steward/adoption-run/v2' || 'adoption-run-v2' => 'adoption-run',
   'steward/benchmark-summary/v1' ||
   'benchmark-summary-v1' => 'benchmark-summary',
+  'steward/experiment-campaign-summary/v1' ||
+  'experiment-campaign-summary-v1' => 'experiment-campaign-summary',
   'steward.dogfood.status.v1' || 'dogfood-status-v1' => 'dogfood-status',
   'steward.ecology.snapshot.v1' || 'ecology-snapshot-v1' => 'ecology-snapshot',
   'steward.ecology.route.v1' || 'ecology-route-v1' => 'ecology-route',
@@ -573,6 +575,7 @@ String _schemaFile(final String schemaName) => switch (schemaName) {
   'action-candidate' => 'action-candidate-v1.schema.json',
   'adoption-run' => 'adoption-run-v2.schema.json',
   'benchmark-summary' => 'benchmark-summary-v1.schema.json',
+  'experiment-campaign-summary' => 'experiment-campaign-summary-v1.schema.json',
   'dogfood-status' => 'dogfood-status-v1.schema.json',
   'ecology-snapshot' => 'ecology-snapshot-v1.schema.json',
   'ecology-route' => 'ecology-route-v1.schema.json',

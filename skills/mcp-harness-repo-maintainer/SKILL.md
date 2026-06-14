@@ -49,6 +49,14 @@ Full layering: [core-and-interfaces.md](references/core-and-interfaces.md). **Pa
 
 **Goal-first adoption:** The original user goal remains the acceptance check. Tool repair, install work, wrappers, action candidates, evals, and refactors are detours unless they directly solve that goal or preserve a reusable lesson. After two failed repair/setup attempts, stop tool restoration, use a type-native command or portable fallback when possible, record the friction, return to the task, and do not promote from that same detour.
 
+**Product experiment ownership:** When the goal is visual quality, shader
+behavior, loader correctness, renderer throughput, or performance, the product
+repo owns the high-throughput experiment runner and oracle. Steward can validate
+or summarize an `experiment-campaign-summary/v1` artifact after the product loop
+has produced captures/metrics. Do not promote a Steward action, benchmark, or
+MCP tool as product acceleration unless the product campaign names what surface
+changed or was directly proven.
+
 **Skeptic before promotion:** A missing capability is a harness gap only after smaller layers fail. First ask whether the fix belongs in a native command, error message, FAQ, docs map, public API, schema/codegen, or deletion/collapse. Promote a Steward action, MCP tool, or benchmark only when it improves a real proof path and carries a falsifier.
 
 ## Core Beliefs & Culture
@@ -168,6 +176,12 @@ Prefer useful native gates over Steward-only scorekeeping. A repo may promote an
 - a strict benchmark or eval that makes the capability discoverable
 - a held-out benchmark or future-agent repeat that proves transfer
 - explicit non-claims for product runtime correctness and broad H5 maturity
+
+For visual/performance campaign work, a native gate must be able to run variants
+without rebuild-per-hypothesis when the product stack allows it, keep warm
+browser/server state for runtime sweeps, and emit the winning evidence rather
+than raw screenshot piles. If two harness loops do not move the product oracle or
+metric, stop harness work and return to product-native experimentation.
 
 This is the path for turning evidence into a tool improvement packet. If the result cannot teach a later agent how to maintain or improve the repo's real tool surface, keep it as an observation or unknown case instead of promoting it.
 

@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://docs.page/arenukvern/skill_steward/schemas/experiment-campaign-summary-v1.schema.json",
+  "title": "Experiment campaign summary v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "original_goal",
+    "product_repo",
+    "baseline_metrics",
+    "variant_count",
+    "winning_variant",
+    "before_after_metrics",
+    "screenshot_video_paths",
+    "product_surface_changed_or_directly_proven",
+    "non_claims",
+    "product_acceleration",
+    "support_only"
+  ],
+  "properties": {
+    "schema": {
+      "const": "steward/experiment-campaign-summary/v1"
+    },
+    "original_goal": {
+      "type": "string",
+      "minLength": 1
+    },
+    "product_repo": {
+      "type": "string",
+      "minLength": 1
+    },
+    "baseline_metrics": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "variant_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "winning_variant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "controls", "metrics"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label": {
+          "type": "string"
+        },
+        "controls": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "metrics": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "screenshot_path": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "before_after_metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["before", "after", "deltas"],
+      "properties": {
+        "before": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "after": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "deltas": {
+          "type": ["object", "null"],
+          "additionalProperties": true
+        }
+      }
+    },
+    "screenshot_video_paths": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["variant_id", "screenshot_path"],
+        "properties": {
+          "variant_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "screenshot_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "video_path": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "product_surface_changed_or_directly_proven": {
+      "type": "string",
+      "minLength": 1
+    },
+    "non_claims": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "product_acceleration": {
+      "type": "boolean"
+    },
+    "support_only": {
+      "type": "boolean"
+    }
+  }
+}

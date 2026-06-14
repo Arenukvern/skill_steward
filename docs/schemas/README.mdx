@@ -19,6 +19,7 @@ For the broader Engineering Stewardship baseline that applies before a repo need
 | Action candidate record | [action-candidate-v1.schema.json](action-candidate-v1.schema.json) | action-candidate promotion validators |
 | Benchmark summary | [benchmark-summary-v1.schema.json](benchmark-summary-v1.schema.json) | `steward benchmark --json` |
 | Adoption run | [adoption-run-v2.schema.json](adoption-run-v2.schema.json) | `steward validate` adoption-run evidence scan |
+| Experiment campaign summary | [experiment-campaign-summary-v1.schema.json](experiment-campaign-summary-v1.schema.json) | `steward schema validate --schema experiment-campaign-summary` |
 | Mode event | [mode-event-v1.schema.json](mode-event-v1.schema.json) | `steward protocol validate` |
 | Self-model artifact | [self-model-v1.schema.json](self-model-v1.schema.json) | `steward protocol validate` |
 | Claim check output | [claim-check-v1.schema.json](claim-check-v1.schema.json) | `steward claim check --json` |
@@ -38,6 +39,7 @@ Portable schema commands:
 steward schema validate --schema doctor --file .steward/doctor.json --json
 steward schema validate --schema mode-event --file .steward/events.jsonl --json
 steward schema validate --schema steward/benchmark-summary/v1 --file .steward/benchmark-summaries/run.json --json
+steward schema validate --schema steward/experiment-campaign-summary/v1 --file build/experiment-runs/latest/experiment-campaign-summary.json --json
 steward schema check-outputs --json
 steward schema emit --schema schema-validate --source generated --json
 steward schema drift --json
@@ -99,6 +101,7 @@ JSON Schema covers portable shape checks. Executable validators remain responsib
 - repo-maturity adoption-run claims require explicit broad evidence
 - adoption-run proof needs `hot_path_claim.observed_effect`; a success return code alone is not promotion evidence
 - adoption-run proof needs `outcome.product_impact_line` with a recognized prefix: `runtime_behavior:`, `public_api:`, `product_native_gate:`, `visual_capture:`, `performance_metric:`, `release_path:`, `developer_workflow:`, `command_output:`, `plugin_install:`, or `support_only:`; `support_only:` cannot promote as product acceleration
+- experiment-campaign summaries can be product acceleration only when `product_acceleration: true`, `support_only: false`, and `product_surface_changed_or_directly_proven` names a product-owned capture, metric, runtime behavior, or source delta; Steward-only harness/docs/schema work must set `support_only: true`
 - stewardship protocol validation checks mode-event and self-model artifact shape plus raw private-material tripwires; it does not promote `proven_repo_steward`
 - stewardship claim checks are negative gates against obvious overclaims; they do not accept claims or reason over evidence quality
 - blocked-state explanations route `durability_blocked`, `blocked_invalid_config`, and runtime proof blocks into next actions; they do not repair the repo or turn blocked evidence into proof

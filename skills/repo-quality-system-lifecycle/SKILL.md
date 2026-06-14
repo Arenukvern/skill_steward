@@ -92,6 +92,16 @@ progress. For visual/performance-heavy repos, tests are support evidence; the
 claim ceiling stays low until a human-inspectable capture or metric proves the
 product surface moved.
 
+For visual, shader, renderer, loader, or performance tasks, route to the
+product-native experiment loop before Steward work. The product repo owns the
+variant runner, browser/server orchestration, image oracle, screenshots, videos,
+and performance metrics. Steward may summarize the winning campaign through an
+`experiment-campaign-summary/v1` artifact, block false claims, and record
+non-claims. It must not become the inner loop. If two Steward detours fail to
+improve the product metric, stop Steward work and return to native experiments.
+Parallel lanes should test independent product hypotheses, not evidence
+paperwork.
+
 ### 4. Run the generational architecture check
 
 Before adding automation or a new abstraction, ask the Skeptic questions:
@@ -206,6 +216,9 @@ Run ecology as a disposition loop, not an evidence treadmill or a tool tunnel:
   Steward proof. If no product-native behavior, API, UI/visual, performance,
   release, or workflow surface changed or was directly proven, downgrade the
   outcome to stewardship support and return to the product owner surface.
+- For experiment campaigns, require a product-owned oracle/capture/metric before
+  any product-acceleration claim. Summaries with only Steward docs, schemas,
+  evals, or harness changes are `support_only: true`.
 - After two learning loops on the same friction, stop PDSA and produce a disposition table. Extract the durable lesson into ADR, FAQ, skill, check, CLI diagnostic, or current ledger, then delete/retire duplicate plans or historical packets from active navigation.
 - Do not add sub-stewards, new broad skills, new benchmark scenarios, or new evidence indices from the same blocked detour unless the repaired owner still cannot represent the repo honestly.
 
