@@ -137,7 +137,7 @@ void main() {
 
       final payload = jsonDecode(buffer.toString()) as Map<String, dynamic>;
       expect(payload['valid'], isFalse);
-      expect((payload['diagnostics'] as List), isNotEmpty);
+      expect(payload['diagnostics'] as List, isNotEmpty);
       expect(exitCode, 1);
     },
   );
