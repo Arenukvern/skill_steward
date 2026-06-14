@@ -1,0 +1,102 @@
+# Concept: evidence artifacts
+
+Evidence artifacts are claim-proof records. They preserve observations, proof, blockers, limitations, and non-claims from real repository work.
+
+They are not ADRs. ADRs record durable decisions. Evidence records what happened, under what conditions, and what can be claimed from it.
+
+They are not plans. Plans are scratch or coordination. When work is done, extract decisions into ADRs, standing guidance into FAQ/skills, deterministic truth into checks/tools, and proof or blockers into evidence only when that evidence changes future behavior.
+
+## When to create evidence
+
+Create or keep evidence only when it does at least one of these:
+
+- protects a claim from overstatement,
+- preserves a blocked state future agents must not misread,
+- records a real run with commands, results, limitations, and non-claims,
+- justifies a durable change to docs, skills, schemas, CLI behavior, harness contracts, or governance,
+- teaches a future agent a shorter or safer path without lowering the evidence bar.
+
+Do not create evidence for a normal implementation note, a completed checklist, a template without a home, or a chat summary that does not affect future behavior.
+
+## New Repo Bootstrap
+
+New repositories do not need a full evidence archive. Start with a claim router in `AGENTS.md`:
+
+| Durable value | Route |
+|---------------|-------|
+| Decision or trade-off | ADR |
+| Standing why/how | FAQ or docs |
+| Repeated deterministic drift | Check, schema, validator, test, CLI diagnostic, or probe |
+| Weakest true current status | Current ledger |
+| Real proof or blocked proof | Evidence artifact |
+| Completed plan | Extract and remove |
+
+Create `docs/evidence/current-status.mdx` only when a current claim needs a durable pointer. Use `steward evidence init --minimal` when the repo has the Steward CLI; otherwise create the same ledger manually. Add `steward.yaml`, probes, or benchmarks later only when typed actions and machine-readable proof reduce repeated work.
+
+## Envelope
+
+Use this lightweight envelope for new durable evidence. The body can vary by type.
+
+```yaml
+status: current | historical | superseded | template | retired
+evidence_type: benchmark | adoption_run | pdsa | pattern_review | postmortem | unknown_case | ledger | reference
+date: YYYY-MM-DD
+scope:
+claim_tested:
+proof_level:
+commands_or_sources:
+result:
+limitations:
+non_claims:
+next_disposition:
+current_status_pointer:
+```
+
+## Status meanings
+
+| Status | Meaning |
+|--------|---------|
+| `current` | The artifact is the current status pointer or directly supports one. |
+| `historical` | The artifact remains useful provenance but is not current proof by itself. |
+| `superseded` | A newer artifact replaces the status or claim. |
+| `template` | The artifact is a reusable shape, not evidence of a run. Prefer moving it to a skill/reference/template when stable. |
+| `retired` | The useful truth was extracted elsewhere; the artifact should be removed or explicitly ignored. |
+
+## Artifact types
+
+| Type | Owns | Does not own |
+|------|------|--------------|
+| `ledger` | Current status, weakest true claim, latest blocker, rerun path | Detailed proof body for every run |
+| `benchmark` | Machine-readable pass/blocked proof for one scenario | H4/H5 proof unless the ladder says so |
+| `adoption_run` | One repo task attempt with goal, surfaces, result, blockers | Repo-wide maturity |
+| `pdsa` | A learning loop that changes process, docs, tools, or checks | Permanent doctrine by itself |
+| `pattern_review` | Promotion/demotion/deletion decision from repeated friction | Broad maturity |
+| `postmortem` | Failure learning and follow-up actions | Blame or scorekeeping |
+| `unknown_case` | Append-only blocked or unhandled state | Promoted diagnostic |
+| `reference` | Sanitized worked example or fixture | Current proof |
+
+## Routing
+
+| If the durable value is... | Put it in... |
+|---------------------------|--------------|
+| A decision or trade-off | ADR |
+| Standing why/how | DESIGN_FAQ or DX_FAQ |
+| Repeatable agent procedure | Skill |
+| Deterministic drift or freshness | Check, schema, validator, test, or CLI diagnostic |
+| Current truth | Current ledger |
+| Real run proof or blocker | Evidence |
+| Completed plan with no proof value | Extract and remove |
+
+When preserving a stale or superseded artifact for link stability, mark it `historical` or `superseded` in the page status and point current truth to the current ledger.
+
+## Non-claims
+
+Evidence volume is not maturity.
+
+Historical evidence is not current proof unless a current ledger says it still holds.
+
+Blocked evidence is not proof, but it can be useful evidence when it preserves the next route.
+
+Templates are not evidence of a run.
+
+Console-only command output is session evidence unless captured in a durable artifact or rerun with a persisted output path.

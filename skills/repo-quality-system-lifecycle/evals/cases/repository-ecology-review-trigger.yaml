@@ -1,0 +1,15 @@
+id: repo-quality-repository-ecology-review-trigger
+skill: repo-quality-system-lifecycle
+routing: should_trigger
+input: "Using all stewardship skills, analyze this repository and decide what should be compressed, changed, merged, removed, updated, created, retired, or moved into checks. This is a repo ecology pass, not necessarily dogfood."
+rules:
+  - kind: file_exists
+    path: references/evals.md
+  - kind: description_includes_any
+    terms: ["repo ecology pass", "compressed", "merged", "removed"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["repository ecology review", "Disposition", "move to check"]
+  - kind: body_includes_any
+    path: ../../docs/start_here/executable-plans.mdx
+    terms: ["Doc retirement dispositions", "Move to check", "Delete"]

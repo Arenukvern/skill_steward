@@ -1,0 +1,93 @@
+# 0022. Repository Ecology Review and Snapshot
+
+Date: 2026-06-12
+
+## Status
+
+Accepted
+
+## Context
+
+Skill Steward repeatedly uses the same stewardship pass across this repo family: inspect plans, specs, docs, skills, schemas, CLI surfaces, evidence, and validation gates; then decide what should be kept, compressed, merged, updated, moved to checks, moved to evidence, or deleted after extraction.
+
+The pattern already exists in the [stewardship loop](../core/stewardship-loop), [doc lattice](../core/doc-lattice), [plan hygiene](../start_here/executable-plans), [repo quality contracts](../repo-quality-contracts), and [ADR 0019](0019-pattern-promotion-review-as-lens-and-proof-loop). The failure mode is that agents must rediscover the composition each time. That makes plan/spec retirement and repo surface cleanup tedious, and it creates pressure to add another broad governance skill.
+
+The design question is whether to create a standalone ecology skill, fold the behavior into `repo-quality-system-lifecycle`, add CLI support, or keep the concept informal.
+
+## Decision
+
+Name the workflow **Repository Ecology Review**.
+
+Treat it as a first-class mode inside `repo-quality-system-lifecycle`, not as a new standalone skill. The review inspects repo ecology surfaces and returns explicit dispositions:
+
+- keep
+- compress
+- merge
+- update
+- remove
+- create
+- defer
+- move to ADR
+- move to FAQ
+- move to skill
+- move to check
+- move to evidence
+- move to consumer proof
+- leave native
+
+Add a read-only CLI namespace for tedious inventory work:
+
+```bash
+steward ecology snapshot --json
+```
+
+The snapshot composes existing local facts such as Steward config validity, declared actions and probes, benchmark declarations, recent benchmark summaries, schema/output drift status when available, git dirty state, active plan candidates, and evidence pointers. It must not execute repo actions, mutate files, repair drift, or award maturity.
+
+`steward ecology` output uses observational language such as `observed`, `missing`, `blocked`, `stale`, and `not_checked`. It must not claim `healthy`, `adopted`, `H5`, `proven_repo_steward`, or any maturity status by itself.
+
+Adopt a disposition loop cap for ecology work. When an ecology review identifies repeated friction such as invalid `steward.yaml`, dirty declared inputs, schema/output drift, blocked payload routing, stale navigation, or a broken native launch path, the next action is to choose the smallest North Star disposition: orient, compress, validate, tutor pain, promote a tool, leave native, or stop. Do not create another PDSA/evidence loop to restate the blocker. After two learning loops on the same friction, extract the lesson into ADR, FAQ, skill, check, CLI diagnostic, or the current ledger, then stop or update the owning surface.
+
+Future subcommands such as `gaps`, `compare`, or multi-repo `matrix` are deferred until single-repo snapshots and route dispositions are stable and useful.
+
+## Considered Options
+
+* **Create `steward-ecology-lifecycle` as a new skill.** Rejected for now. The workflow overlaps heavily with `repo-quality-system-lifecycle`, `repository-governance-lifecycle`, the docs lattice, plan hygiene, and the generational architecture ladder. A new skill would add activation ambiguity before proving that existing skills cannot route the work.
+* **Keep ecology review informal.** Rejected because the pattern is already repeated and useful. Without a name, agents treat every pass as bespoke and spend too much effort reconstructing disposition grammar.
+* **Fold the review into `repo-quality-system-lifecycle` only.** Partially accepted. Judgment belongs there, but repeated inventory gathering is tedious enough to justify deterministic CLI support.
+* **Add a read-only `steward ecology` CLI namespace.** Accepted as the smallest tool slice. The command gathers facts; the skill interprets them.
+
+## Decision Outcome
+
+Chosen: **Repository Ecology Review as a named repo-quality mode plus read-only ecology snapshot and route tooling**.
+
+`repo-quality-system-lifecycle` owns judgment and disposition. `repository-governance-lifecycle` owns durable ADR/FAQ/plan-retirement placement. `mixture-of-experts` supplies critical lenses when the pass needs independent critique. `mcp-harness-repo-maintainer` joins only when actions, probes, benchmark scenarios, or CLI/MCP parity are part of the review.
+
+## Consequences
+
+* Good, because repeated cleanup now has a shared name and output shape.
+* Good, because plans and specs can retire through the same disposition grammar as docs, skills, schemas, and tools.
+* Good, because deterministic inventory moves into CLI output instead of hand-written audit prose.
+* Good, because the workflow can create fewer artifacts by making deletion, compression, and moving truth to checks normal outcomes.
+* Good, because repeated ecology loops are forced to become dispositions, checks, standing guidance, or owner updates instead of more evidence about evidence.
+* Bad, because a new CLI namespace can still feel like a verdict if users overread it.
+* Bad, because ecology snapshots can become another artifact pile if they are stored without a decision or comparison need.
+* Mitigation: keep `snapshot` and `route` read-only, include non-claims in output, require skill/governance judgment before any maturity or adoption claim, and cap repeated PDSA on the same friction at two loops before extraction or owner update.
+
+## Confirmation
+
+* `repo-quality-system-lifecycle` includes a Repository Ecology Review subsection and routing eval.
+* `docs/start_here/executable-plans.mdx` routes non-plan cleanup back to repo-quality instead of becoming the umbrella.
+* `steward ecology snapshot --json` is inventory-only and includes non-claims.
+* `steward ecology route --json` composes snapshot facts into North Star dispositions without mutating the repo or awarding maturity.
+* The snapshot command has tests for deterministic output shape.
+* Later ecology commands require evidence from repeated snapshot/route use before promotion.
+* `DX_FAQ`, `repo-quality-system-lifecycle`, and `mcp-harness-repo-maintainer` route repeated blockers through owner disposition before new evidence.
+
+## More Information
+
+* [ADR 0019 — Pattern Promotion Review as lens and proof loop](0019-pattern-promotion-review-as-lens-and-proof-loop)
+* [ADR 0018 — Cold-to-hot path usefulness](0018-cold-to-hot-path-usefulness)
+* [Stewardship loop](../core/stewardship-loop)
+* [Doc lattice](../core/doc-lattice)
+* [Plan hygiene](../start_here/executable-plans)
+* [Repo quality contracts](../repo-quality-contracts)

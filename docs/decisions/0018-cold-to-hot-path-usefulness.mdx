@@ -1,0 +1,111 @@
+# 0018. Cold-to-hot path usefulness
+
+Date: 2026-06-10
+
+## Status
+
+Accepted
+
+## Context
+
+Skill Steward needs a usefulness model that does more than count docs, evals, actions, benchmarks, or adopted repositories.
+
+Agent work often starts on a **cold path**: a fresh agent explores a repo, discovers boundaries, trips over missing context, and resolves a problem for the first time. Useful stewardship should convert that cold-path learning into a **hot path**: a smaller, safer, inspectable route that lets a future fresh agent solve the same or adjacent problem faster without hidden local context.
+
+The game-engine analogy is useful but imperfect. In engines, hot paths are performance-critical code paths. In agent-operated repositories, hot paths are durable surfaces such as docs, tests, evals, probes, actions, diagnostics, CLI commands, or skills. A cold path may use existing hot paths, and a hot path may compose smaller hot paths.
+
+The risk is Goodharting. If speed or reuse count becomes the target, agents can appear useful by skipping validation, selecting near-duplicate tasks, promoting automation from one transcript, writing bloated docs, or hiding costs in maintenance debt.
+
+## Decision
+
+Skill Steward will measure stewardship usefulness as:
+
+> compounding, evidence-backed reduction in time, uncertainty, and risk for a named class of future work.
+
+Usefulness is not raw speed. It is **faster correct resolution with the same or stronger evidence bar**.
+
+Adopt the following cold-to-hot ladder:
+
+| Stage | Name | Meaning |
+|-------|------|---------|
+| **C0** | Cold solve | Solved once; no durable residue. |
+| **C1** | Captured path | Notes or docs reduce rediscovery. |
+| **C2** | Repeatable path | Commands, checklists, or examples reproduce the outcome. |
+| **C3** | Guarded path | Tests, evals, probes, or benchmarks detect drift. |
+| **C4** | Transferable path | A fresh agent can use the persisted surface without hidden context. |
+| **C5** | Promoted capability | Repeated evidence justifies an owned skill, action, eval, diagnostic, tool, or harness feature. |
+
+Measure candidate hot paths by signals that reduce future uncertainty:
+
+- legibility: can a fresh agent find the entrypoint and proof path?
+- executability: does it run without local-only paths or sibling checkout assumptions?
+- diagnosability: does failure name owner, input, remediation, or next action?
+- safety: are effects, limits, redaction, and protected state visible before execution?
+- generativity: does the cold run produce a lesson, unknown case, test, eval, action candidate, diagnostic, or tool improvement?
+- compression: does one small surface replace rediscovery rather than adding doc volume?
+- claim honesty: blocked evidence remains blocked; proof level matches the claim.
+
+Use paired evidence when possible:
+
+```text
+baseline fresh agent vs fresh agent + persisted hot path
+same quality bar
+same safety bar
+same evidence bar
+held-out but related task
+```
+
+Promote only when the artifact improves a real repo workflow and remains inspectable. A deterministic native gate may become a hot path when it already has positive proof, a falsifier, owner, risk class, redaction, validation, and benchmark or eval evidence.
+
+For repeated PDSA work, apply this exit invariant:
+
+> After two loops on the same friction, the next action must be one of: implement the smallest safe fix, move deterministic truth into a check/tool/skill, delete or merge a stale surface, name a blocked owner with a rerun gate, or stop the loop. Do not create another evidence artifact that only restates the same candidate.
+
+## Considered Options
+
+* **Measure artifact volume.** Rejected because countable docs, evals, benchmarks, actions, or repos can grow without helping future agents.
+* **Measure raw speed.** Rejected because faster answers can be less correct, less safe, or merely warmed by current-session context.
+* **Measure reuse count.** Rejected as the primary metric because it rewards tiny repeated tasks and ignores rare high-impact cold paths.
+* **Measure cold-to-hot acceleration with evidence gates.** Accepted because it rewards durable, transferable, safe reductions in future problem-solving cost while preserving correctness and claim honesty.
+
+## Decision Outcome
+
+Chosen: **cold-to-hot path usefulness**.
+
+Skill Steward should ask, after meaningful cold exploration:
+
+1. What problem class was learned?
+2. What smaller future path was created?
+3. What evidence proves the future path is correct and safe?
+4. Can a fresh agent use it without hidden local context?
+5. What falsifier or drift check prevents wrong acceleration?
+6. What remains a non-claim?
+7. Which loop exit was chosen: implemented fix, check/tool/skill, deletion/merge, blocked owner, or stop?
+
+Adoption evidence must also preserve the original user goal. If tool restoration, installation, wrapper work, or harness repair takes over the run, the agent should stop after a small detour budget, record the friction, and return to the acceptance check. Refactoring, stopping, or abandoning a proposed hot path is acceptable when it prevents tool-building from replacing the user's task.
+
+## Consequences
+
+* Good, because usefulness becomes tied to future validated work rather than internal activity.
+* Good, because cold exploration remains valuable even when it does not immediately produce automation.
+* Good, because the model aligns H3/H5 promotion with real repo maintenance value.
+* Good, because it makes anti-metrics explicit: repo count, benchmark count, eval count, green dashboards, raw log volume, and raw token/time reduction.
+* Good, because repeated PDSA cannot keep producing evidence notes after it has learned the same friction twice.
+* Bad, because measurement becomes more demanding: a true acceleration claim needs held-out or future fresh-agent evidence.
+* Bad, because not every useful cold path can be quantified immediately.
+* Mitigation: report cold-start, hot-start, H4 fresh-agent, and H5 promoted-capability claims separately; keep uncertainty visible.
+
+## Confirmation
+
+* North Star names cold-to-hot usefulness as part of how Skill Steward ships value.
+* Maturity claims continue to require matching evidence from the evidence ladder.
+* H5 remains a promoted capability claim, not a single-run speed claim.
+* Adoption evidence records should identify the original goal, capability classification, created hot path, detours, falsifier, owner, risk, redaction, validation, outcome, and non-claims.
+
+## More Information
+
+* [North Star](../NORTH_STAR)
+* [Evidence ladder](../core/evidence-ladder)
+* [Adoption run v2 template](../evidence/adoption-run-v2-template)
+* [H3 to H5 adoption promotion packet](../evidence/h3-h5-adoption-promotion-packet-2026-06-10)
+* [mcp_flutter capability-level proof](../evidence/mcp-flutter-capability-level-proof-2026-06-10)

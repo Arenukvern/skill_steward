@@ -19,7 +19,7 @@ How should we document significant decisions in this repository?
 * Decisions must live in git next to the code and skills they affect.
 * Format should align with the open [adr.github.io](https://adr.github.io/) ecosystem.
 * Contributors and AI agents should be able to read and update records without proprietary tools.
-* The repo already ships an `adr-records` skill; dogfooding that format reduces drift.
+* The repo already ships ADR guidance through `repository-governance-lifecycle`; dogfooding that format reduces drift.
 
 ## Considered Options
 
@@ -30,7 +30,7 @@ How should we document significant decisions in this repository?
 
 ## Decision Outcome
 
-Chosen option: **"MADR in `docs/decisions/`"**, because it matches adr.github.io conventions, supports status and supersession, and is the format taught by our own `adr-records` skill.
+Chosen option: **"MADR in `docs/decisions/`"**, because it matches adr.github.io conventions, supports status and supersession, and is the format taught by our own `repository-governance-lifecycle` skill.
 
 ### Consequences
 
@@ -70,4 +70,4 @@ Chosen option: **"MADR in `docs/decisions/`"**, because it matches adr.github.io
 ## More Information
 
 * [docs/STANDARDS.mdx](../STANDARDS) — Agent Skills packaging rules for this repo.
-* [skills/adr-records/](https://github.com/arenukvern/skill_steward/blob/main/skills/adr-records) — Skill for authoring ADRs in any repository.
+* [skills/repository-governance-lifecycle/](https://github.com/arenukvern/skill_steward/blob/main/skills/repository-governance-lifecycle) — Skill for authoring ADRs and maintaining repository governance.

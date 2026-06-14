@@ -1,0 +1,17 @@
+id: repo-quality-generational-architecture-trigger
+skill: repo-quality-system-lifecycle
+routing: should_trigger
+input: "This app is growing and we see repeated boilerplate and confusing repo boundaries; decide whether to keep it native, extract an API, add codegen, improve docs, add harness proof, or delete layers"
+rules:
+  - kind: file_exists
+    path: references/evals.md
+  - kind: file_exists
+    path: ../../docs/core/generational-architecture-ladder.mdx
+  - kind: description_includes_any
+    terms: ["quality contract", "maturity proof", "evidence"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["generational architecture check", "smaller layer", "deleting, merging, or demoting"]
+  - kind: body_includes_any
+    path: ../../docs/core/generational-architecture-ladder.mdx
+    terms: ["Skeptic Checks", "Pattern Promotion Rules", "maintenance_delta"]

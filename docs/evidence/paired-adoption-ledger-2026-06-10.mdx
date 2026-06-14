@@ -1,0 +1,50 @@
+# Paired adoption ledger — 2026-06-10
+
+**Status:** historical paired adoption ledger; one capability-level S5/H5 proof recorded · **Audience:** maintainers and agents
+
+## Claim boundary
+
+Skill Steward proves the measuring instrument; `mcp_flutter` proves the first real measurement. The paired claim is: Skill Steward can describe and verify its own stewardship contract, and one external harness/product repo can run the current cold-start contract loop, complete one bounded fresh-agent workflow, and promote one useful repo-local gate into a reusable Steward capability.
+
+This ledger claims capability-level S5/H5 only for the hosted IntentCall dependency cutover gate. It does not claim broad repo H5, product runtime correctness, or ecosystem-wide maturity.
+
+Current dogfood/adopter status is not owned by this 2026-06-10 ledger. Use [Current dogfood status](current-dogfood-status) for current claims, blockers, and rerun routes.
+
+## Evidence matrix
+
+| Repo | Role | Evidence | 2026-06-10 claim | Non-claims |
+|------|------|----------|---------------|------------|
+| `agent_guild` / Skill Steward | Measuring instrument | [Self H2 smoke proof](self-h2-smoke-proof-2026-06-10) | Self-stewarded `meta_governance` repo with internal H2 smoke proof | External adoption, H4 workflow, H5 maturity |
+| `mcp_flutter` | First external measurement | Branch `codex/steward-adoption-h2`; PR #93; `docs/evidence/steward-h2-proof-2026-06-10.mdx`; `docs/evidence/h4-fresh-agent-workflow-2026-06-10.mdx`; `docs/evidence/intentcall-hosted-cutover-steward-action-2026-06-10.mdx`; `docs/evidence/steward-h5-hosted-cutover-promotion-2026-06-10.mdx`; tracked redacted summaries under `docs/evidence/generated/`; [capability-level proof checklist](mcp-flutter-capability-level-proof-2026-06-10) | External H2 smoke proof, one bounded H4 fresh-agent workflow, and one capability-level H5 promoted hosted-dependency Steward action | Product runtime correctness, all workflows H4, broad repo H5 maturity |
+| `mcp_flutter` | Next harder candidate | [Runtime text-input capability packet](mcp-flutter-runtime-text-input-capability-proof-2026-06-10) | Historical recipe for `semantic_snapshot -> enter_text -> evaluate_dart_expression`; current status and any later candidate repeats live in [Current dogfood status](current-dogfood-status) | This ledger does not prove current source-checkout runtime text input or broad runtime maturity |
+
+## Capability-level adoption definition
+
+Use [mcp_flutter capability-level proof](mcp-flutter-capability-level-proof-2026-06-10) as the acceptance checklist for the first adoption. The claim means every relevant S/H ladder stage is proven for one named capability, not that every workflow in the target repo is mature.
+
+Required artifacts:
+
+- H2 proof loop: `doctor -> actions list -> action inspect -> probe -> benchmark`.
+- H4 fresh-agent proof: bounded workflow completed without hidden local context.
+- H5 promoted capability: owner, risk/safety, redaction, validation, falsifier, positive proof, and non-claims.
+- Generative usefulness: evidence teaches a later agent how to solve or improve a real tool surface while preserving the original user goal.
+
+## Sequence completed
+
+1. Skill Steward scenario subject refreshed and self-H2 rerun with the repo-local CLI.
+2. `mcp_flutter` contract aligned to current `steward/v1` vocabulary by replacing private `product_mcp` with public `harness` and adding `stewardship.repo_quality`.
+3. `mcp_flutter` initially used a temporary `tool/steward/run.sh` compatibility bridge for stale global `steward` binaries. The reusable adoption guidance is now the released `steward` executable plus `install.sh` or setup action.
+4. `mcp_flutter` native gate `make check-contracts` passed.
+5. `mcp_flutter` H2 loop passed: `doctor`, `actions list`, `action inspect`, `probe`, and strict `benchmark`.
+6. A fresh agent completed the bounded H4 workflow for `mcp_flutter`: prove the first dogfood scenario status using declared surfaces first.
+7. Skill Steward added the [H3 to H5 adoption promotion packet](h3-h5-adoption-promotion-packet-2026-06-10) to teach agents to move from observations to unknown cases, action candidates, reviewed benchmarks, and promoted capabilities.
+8. `mcp_flutter` promoted one deterministic product gate into Steward: `fmt.check.intentcall-hosted-deps` plus scenario `mcp_flutter.intentcall-hosted-cutover`.
+9. Skill Steward froze the capability-level proof checklist and tool improvement packet so future agents can distinguish useful capability promotion from measurement for measurement's sake.
+10. Skill Steward added an adoption-run/v2 template so agents can classify capabilities, record detours, stop or abandon bad tool paths, and route durable outcomes into docs, ADRs, evals, or Steward contracts.
+
+## Known limits
+
+- Raw machine summaries under `.steward/benchmark-summaries/` are local evidence. Public review uses redacted summaries tracked in `mcp_flutter/docs/evidence/generated/`.
+- Scenario `source.commit` is a subject commit. Because updating a scenario creates a later commit, local HEAD can differ from `source.commit`; this is not remote-equivalence proof.
+- `mcp_flutter` still reports existing skill metadata/source warnings during `make check-contracts`; they are warnings, not gate failures.
+- Broad H5 remains unclaimed until repeated evidence promotes reusable capabilities across producer and consumer contexts with owner, risk, redaction, validation, falsifiers, and fresh-agent proof.

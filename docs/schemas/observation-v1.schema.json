@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/arenukvern/skill_steward/schemas/observation-v1.schema.json",
+  "title": "Steward observation v1",
+  "type": "object",
+  "required": ["schema", "id", "repo", "repo_commit", "dirty", "action_id", "started_at", "duration_ms", "exit_code", "summary", "artifacts", "redaction", "retention"],
+  "properties": {
+    "schema": { "const": "steward/observation/v1" },
+    "id": { "type": "string", "minLength": 1 },
+    "repo": { "type": "string", "minLength": 1 },
+    "repo_commit": { "type": "string", "minLength": 1 },
+    "dirty": { "type": "boolean" },
+    "action_id": { "type": "string", "minLength": 1 },
+    "started_at": { "type": "string", "minLength": 1 },
+    "duration_ms": { "type": "integer", "minimum": 0 },
+    "exit_code": { "type": "integer" },
+    "summary": { "type": "object" },
+    "artifacts": { "type": "array" },
+    "redaction": { "type": "object" },
+    "retention": { "type": "string", "minLength": 1 }
+  },
+  "additionalProperties": true
+}

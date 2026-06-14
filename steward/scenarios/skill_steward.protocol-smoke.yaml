@@ -1,0 +1,31 @@
+schema: steward/scenario-manifest/v1
+repo: skill_steward
+scenario: skill_steward.protocol-smoke
+status: runnable
+source:
+  git: https://github.com/Arenukvern/skill_steward.git
+  commit: 325d73d3a9d505e9523cc37c830fc30e4e6e4444
+  steward_contract: steward.yaml
+safe_first_probe: steward.protocol.validate-example
+required_actions:
+  - steward.protocol.validate-example
+artifacts:
+  - id: mode_events_example
+    kind: jsonl
+    path: .steward/events.example.jsonl
+    required: true
+    durability: input
+  - id: self_model_example
+    kind: json
+    path: .steward/self-model.example.json
+    required: true
+    durability: input
+owner: skill-steward
+claims:
+  proves:
+    - protocol artifacts are discoverable
+    - protocol artifacts are schema-valid
+  non_claims:
+    - does not prove production agent behavior
+    - does not prove proven_repo_steward
+    - does not prove H4 or H5

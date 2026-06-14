@@ -4,88 +4,125 @@ Quick reference for **why** this repository is shaped the way it is. For charter
 
 ## Charter
 
-**Q: Where is the repo charter maintained?**  
-A: [NORTH_STAR.mdx](NORTH_STAR) is canonical; published via [docs.json](https://github.com/arenukvern/skill_steward/blob/main/docs.json). `AGENTS.md` is only the agent map (~100 lines). Skill `north-star-governance` maintains this split.
+**Q: Where is the repo charter maintained?**
+A: [NORTH_STAR.mdx](NORTH_STAR) is canonical; published via [docs.json](https://github.com/arenukvern/skill_steward/blob/main/docs.json). `AGENTS.md` is only the agent map (~100 lines). Skill `repository-governance-lifecycle` maintains this split.
 
-**Q: Why are plans and roadmaps not kept after implementation?**  
+**Q: Why are plans and roadmaps not kept after implementation?**
 A: Any plan format is fine (Superpowers, session plans, Issues, etc.)—Skill Steward does not define a template. When done, **extract** durable knowledge to ADR, FAQ, code, or harness, then **remove** the plan file so agents are not misled. [Plan hygiene](start_here/executable-plans) · [ADR 0005](decisions/0005-executable-plans-and-docs-page).
 
-**Q: Why does Skill Steward exist instead of another skills catalog?**  
-A: The open skills ecosystem has huge domain libraries; Guild is a **meta-layer**—managing, validating, and improving skills and processes—not competing on React/Flutter/cloud recipes. Domain skills stay in other repos.
+**Q: Why Engineering Stewardship for any repository?**
+A: Agent-operated engineering work depends on more than agent internals or product code. Repositories need a shared software ecology: charter, decisions, docs, specs, validation gates, release evidence, debugging paths, handoffs, safety policy, and harness feedback. Skill Steward provides that structural layer for apps, libraries, tools, plugins, harnesses, and meta repos. Agent Skills are one delivery surface, not the mission boundary.
 
-**Q: Why skills and plugins instead of skills only?**  
+**Q: How can the North Star change without silent drift?**
+A: Structural work gets a `north_star_impact` classification before it becomes durable. `none` and `applies` stay in the native workflow; `clarifies` can update FAQ, skill, map, or check text; `sub_star` must declare a parent/child boundary; `amends` or `conflicts` requires an explicit ADR and North Star diff before the product center moves. This keeps repair, evidence, harnesses, and dogfood JSON as mechanisms unless we deliberately decide otherwise.
+
+**Q: Why can stewardship use parallel lanes without becoming a scheduler?**
+A: The smallest useful disposition is the smallest truthful coordination unit, not always one serial action. When repo-wide pain is safely decomposable, a parent agent may use advisory lane hints, MoE critique, and handoff contracts to move several independent lanes while preserving owner boundaries, native gates, synthesis, and claim ceilings. Skill Steward does not schedule agents or authorize writes from ecology output; parent-assigned handoff contracts own any direct-fix authority. Temp or worker proof remains input until the owner checkout lands the minimal diff, reruns the native gate, and records a terminal state. Product acceleration also needs product impact: a source-owned product delta or product-native proof, not only greener Steward artifacts. [ADR 0026](decisions/0026-parallel-acceleration-governance).
+
+**Q: How should Steward handle visual or performance experiment campaigns?**
+A: The product repo owns the high-throughput inner loop: variants, warm
+server/browser runs, screenshots, videos, image oracles, and metrics. Steward is
+the outer-loop governor. It can validate an
+`experiment-campaign-summary/v1`, summarize the winning evidence, preserve
+non-claims, and block false acceleration claims. If the only changes are
+Steward docs, schemas, evals, or harness artifacts, the result is
+`support_only: true`. If two Steward detours do not improve the product metric,
+stop and return to native product experiments.
+
+**Q: Why does Skill Steward exist instead of another skills catalog?**
+A: The open skills ecosystem has huge domain libraries; Skill Steward is an **Engineering Stewardship layer**—governing, validating, documenting, packaging, and improving repo systems and agent workflows—not competing on React/Flutter/cloud recipes. Domain skills stay in the governed product or domain repos.
+
+**Q: Why describe Skill Steward as engineering stewardship instead of a harness project?**
+A: Harnesses are only the executable feedback lane. Skill Steward also owns governance, ADRs, FAQs, source provenance, skill lifecycle, quality gates, release legibility, review patterns, security posture, and repo archetypes. The promise is broader: decisions are recorded, docs are searchable, gates are mechanical, releases are legible, reviews are critical, security is explicit, and harnesses provide feedback.
+
+**Q: Why skills and plugins instead of skills only?**
 A: **Skills** are portable instructions (`SKILL.md`, `npx skills`). **Plugins** are wiring (editor hooks, install glue) that skills CLI does not handle automatically. See [ADR 0004](decisions/0004-plugin-packaging-and-install-path).
 
-**Q: How do public vs private marketplaces work across agents?**  
+**Q: How do public vs private marketplaces work across agents?**
 A: **Public skills:** public Git + `npx skills add` + skills.sh. **Public plugins:** Editor marketplace manifests (`.cursor-plugin/`, `.claude-plugin/`). **Private:** private Git with team install (editor team marketplaces, agent `/plugin` commands + tokens, same `npx skills` if clone access). Skill `plugin-marketplace-setup` has the full matrix.
 
-**Q: How should sibling repos differ?**  
-A: One archetype per repo (agent-enabled product, platform libs, CLI harness, visual sidecar, meta steward). Product-centric repos own plugin SSOT + `init`; skill_steward owns meta-skills only. Skill `harness-repo-maintainer` (mixture-of-experts checklists) documents layout, contract gates, and production agent patterns.
+**Q: How should sibling repos differ?**
+A: One primary archetype per repo: app, library, CLI/tool, plugin, harness/action contract, or meta/governance. Product-centric repos own their runtime and domain guidance; Skill Steward owns structural stewardship patterns, skills, specs, and quality contracts. Skill `mcp-harness-repo-maintainer` documents layout, contract gates, and production agent patterns.
 
-**Q: Why both CLI and agent-protocol in product harnesses?**  
+**Q: Why both CLI and agent-protocol in product harnesses?**
 A: They are **thin interfaces** to the same **core**—CLI for CI and scripts, agent-protocols for in-chat agents. Logic belongs in core packages (e.g. product packages or core libraries); adapters must not diverge. Repos without agent-protocols (CLI harnesses, visual sidecars) still use CLI → core only.
 
-**Q: Why require `references/sources.md` per skill?**  
+**Q: Why require `references/sources.md` per skill?**
 A: Research and external knowledge must survive beyond one chat—links are provenance for humans and agents. Skill `skill-source-citations` defines the practice; `skill-eval-improve` adds eval/improve loops (plugin-eval, SkillOpt-style gates). Validator warns if `sources.md` is missing.
 
-**Q: Why keep each skill small and focused?**  
+**Q: Why keep each skill small and focused?**
 A: Agents load name + description first; bloated skills waste context. One outcome per skill; depth in `references/` or separate skills.
 
-**Q: Why Changesets for a skills repo that is not an npm product?**  
+**Q: Why is generational architecture a lens instead of a new doctrine?**
+A: Skill Steward should help maintainers notice when a repo has outgrown its current shape, choose the smallest next layer, and prove the change reduces future work. That can mean docs, API extraction, schema/codegen, harness proof, a skill update, or deletion/collapse. A standalone skill comes only after repeated Pattern Promotion Reviews show existing stewardship skills cannot cover the workflow. [Generational architecture ladder](core/generational-architecture-ladder) · [ADR 0019](decisions/0019-pattern-promotion-review-as-lens-and-proof-loop).
+
+**Q: Why distinguish steward personality from tool-mode?**
+A: Relational and governance work needs continuity, boundary awareness, ethical care, and accountable synthesis from steward presence. Deterministic generation, validation, and transformation should stay narrow tool-mode. The distinction keeps cascading delegation traceable: a steward may delegate to tools or sub-steward lenses, but remains visible and accountable in relational contexts. [ADR 0020](decisions/0020-ethical-boundaries-steward-personalities-and-tool-delegation) · skill `steward-continuity-boundary-lifecycle`.
+
+**Q: When does a stewardship protocol earn steward status?**
+A: Only when repeated or held-out evidence shows continuity improves real repo work. Keep the vocabulary and non-claims in one place: [ADR 0021](decisions/0021-protocol-first-steward-status-gates) defines the gates, and [NORTH_STAR](NORTH_STAR#adoption-claim-vocabulary) defines adjacent adoption/maturity claims.
+
+**Q: Why Changesets for a skills repo that is not an npm product?**
 A: **Release legibility**—structured `.changeset/*.md` in PRs and `CHANGELOG.md` in git so humans and agents know what shipped at each repo version. Skills themselves are not semver’d; the root `skill-steward` package version tags the repository. [ADR 0009](decisions/0009-adopt-changesets-for-repo-releases) · skill `release-changelog-harness`.
 
-**Q: Why does Skill Steward ship precompiled release binaries?**  
+**Q: Why does Skill Steward ship precompiled release binaries?**
 A: **Zero-dependency consumer access.** While primary artifacts are portable skills, the `steward` CLI performs project-local installation and validation. Requiring Dart SDK for non-Dart teams was a high-friction barrier. Compiling native target-specific binaries (darwin-arm64, linux-x64) via GitHub Actions enables a fast, zero-dependency `install.sh` bootstrapper. [ADR 0014](decisions/0014-distribute-steward-cli-as-binary) (modifying [ADR 0010](decisions/0010-binary-releases-for-product-harness-not-meta-steward)).
 
-**Q: How are skills evaluated (Microsoft / Google / Codex style)?**  
-A: **Tiered:** Tier-1 charter skills require `evals/cases/*.yaml` + `pnpm run eval` (rule-based, no LLM in CI). Behavioral suites and judges stay offline (`references/evals.md`, plugin-eval, SkillOpt loop). Design language from [Chrome evals](https://developer.chrome.com/docs/ai/evals/design). [ADR 0011](decisions/0011-tiered-skill-evals-and-rule-based-ci) · skill `skill-eval-improve`.
+**Q: How are skills evaluated (Microsoft / Google / Codex style)?**
+A: **T-named quality gates:** T1 behavior-critical charter skills require `evals/cases/*.yaml` + `pnpm run eval` (rule-based, no LLM in CI). T2 structural skills require validation only unless real usage promotes them to T1. Behavioral suites and judges stay offline (`references/evals.md`, plugin-eval, SkillOpt loop). Design language from [Chrome evals](https://developer.chrome.com/docs/ai/evals/design). [ADR 0011](decisions/0011-tiered-skill-evals-and-rule-based-ci) · [ADR 0027](decisions/0027-t-named-skill-quality-gates) · skill `skill-eval-improve`.
 
-**Q: Where does GitHub profile / bio copy live?**  
-A: **Not in this repo.** Public bio should point at the product harness and [skill_steward](https://github.com/Arenukvern/skill_steward) ([ADR 0008](decisions/0008-adopt-skill-steward-product-name)). Repo-shape audits use `north-star-governance` + `concept-doc-store`, not product-specific boundary audits.
+**Q: Where does GitHub profile / bio copy live?**
+A: **Not in this repo.** Public bio should point at the product harness and [skill_steward](https://github.com/Arenukvern/skill_steward) ([ADR 0008](decisions/0008-adopt-skill-steward-product-name)). Repo-shape audits use `repo-quality-system-lifecycle` plus `repository-governance-lifecycle`; use `mcp-harness-repo-maintainer` only when typed action contracts or harness proof are in scope.
 
 ## Documentation
 
-**Q: Why ADRs in `docs/decisions/`?**  
+**Q: Why ADRs in `docs/decisions/`?**
 A: Durable **why** for repo evolution; PR-reviewable. FAQs hold operational compression; ADRs hold strategic decisions. [ADR 0000](decisions/0000-use-markdown-architectural-decision-records).
 
-**Q: Why DESIGN_FAQ and DX_FAQ at repo root?**  
+**Q: Why DESIGN_FAQ and DX_FAQ at repo root?**
 A: [FAQ-driven development](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl) separates **why** (this file) from **how** (DX_FAQ). No duplication between them. [ADR 0002](decisions/0002-adopt-faq-driven-documentation).
 
-**Q: Why a concept doc lattice skill but no full `docs/superpowers/` in Guild?**  
-A: Guild is small; router + ADRs + FAQs suffice. Teams may still use Superpowers (or any planner) in Guild or product repos—`concept-doc-store` teaches the layered doc lattice when you need it. [ADR 0003](decisions/0003-concept-doc-store-lattice).
+**Q: Why a concept doc lattice skill but no full `docs/superpowers/` in Skill Steward?**
+A: Skill Steward is small; router + ADRs + FAQs suffice. Teams may still use Superpowers (or any planner) in Skill Steward or product repos—`repository-governance-lifecycle` teaches the layered doc lattice when you need it. [ADR 0003](decisions/0003-north-star-governance-lattice).
 
-**Q: Where is the visual brand identity documented?**  
+**Q: Where is the visual brand identity documented?**
 A: Practical reference + hero prompts in [brand.mdx](brand) · strategic decision, palette, and exact prompts in [ADR 0012](decisions/0012-adopt-visual-brand-identity-system). Wired into README hero and `docs.json` (`socialPreview` + theme).
 
 ## Packaging
 
-**Q: Why are all installable skills under `skills/` only?**  
+**Q: Why are all installable skills under `skills/` only?**
 A: `npx skills` discovers `skills/{name}/SKILL.md`. Templates live in `templates/`; plugins in `plugins/`—neither is a skill package.
 
-**Q: Why must `name` in frontmatter match the directory name?**  
+**Q: Why must `name` in frontmatter match the directory name?**
 A: Agent Skills spec + our validator; prevents install/discovery mismatches across 50+ agents.
 
-**Q: Why `skills.sh.json` groupings?**  
+**Q: Why `skills.sh.json` groupings?**
 A: skills.sh directory UI categories—not install logic. Listing is optional metadata for discovery.
 
-**Q: Why no SKILL.md copies inside `plugins/`?**  
+**Q: Why no SKILL.md copies inside `plugins/`?**
 A: Skills are canonical in `skills/`; plugins reference skill ids in `plugin.yaml` to avoid drift. [ADR 0004](decisions/0004-plugin-packaging-and-install-path).
 
 ## Harness
 
-**Q: Why a harness-engineering-culture skill instead of only product CLIs?**  
-A: Guild teaches **how to build** agent-first harnesses (CLI+MCP parity, docs map, Guild skill composition). Product repos ship the actual tools; see [OpenAI harness engineering](https://openai.com/index/harness-engineering/).
+**Q: Why a mcp-harness-repo-maintainer skill instead of only product CLIs?**
+A: Skill Steward teaches **how to build** agent-first harnesses (CLI+MCP parity, docs map, Skill Steward skill composition). Product repos ship the actual tools; see [OpenAI harness engineering](https://openai.com/index/harness-engineering/).
 
-**Q: Why emphasize CLI before MCP in harness docs?**  
+**Q: Why emphasize CLI before MCP in harness docs?**
 A: Deterministic gates (`doctor`, contracts, validate) belong in terminal/CI; MCP is the conversational layer on the same catalog—standard CLI vs MCP parity pattern.
+
+**Q: Why cold-start contract proof before diagnosis?**
+A: Fresh repos do not yet have trustworthy symptom catalogs. First prove or truthfully block the declared contract path, including schema/output drift checks when machine-readable payloads are part of the path; only then should repeated observations become unknown cases, action candidates, or promoted diagnostics. This prevents agents from inventing diagnoses from one-off symptoms. Decision: [ADR 0017](decisions/0017-cold-start-contracts-before-diagnostics). How-to: [DX_FAQ honest claim routing](DX_FAQ#honest-claim-routing).
+
+**Q: Is `steward mcp` production-ready?**
+A: Not yet. The current MCP surface is dogfood/experimental until it uses production MCP transport, typed action effects, timeouts, output caps, redaction, and permission gates. Product repos should treat MCP as a thin adapter over a validated core, not as a place to run raw shell or permanently mutate `steward.yaml`.
 
 ## Quality
 
-**Q: Why `pnpm run validate` instead of only human review?**  
+**Q: Why `pnpm run validate` instead of only human review?**
 A: Cheap CI gate on frontmatter, naming, and registry consistency before merge.
 
-**Q: Why reject domain/framework skills in this repo?**  
+**Q: Why reject domain/framework skills in this repo?**
 A: Inclusion criteria in ADR 0001—out-of-scope PRs dilute the meta-layer and rot faster than maintainers can update.
 
-**Q: Why MIT license at repo root?**  
+**Q: Why MIT license at repo root?**
 A: Default for marketplace skills; per-skill `license` frontmatter can narrow if needed later.

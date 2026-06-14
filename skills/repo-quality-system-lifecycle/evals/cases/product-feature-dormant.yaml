@@ -1,0 +1,12 @@
+id: repo-quality-product-feature-dormant
+skill: repo-quality-system-lifecycle
+routing: should_not_trigger
+input: "Implement the React checkout screen and wire the payment button"
+rules:
+  - kind: file_exists
+    path: references/evals.md
+  - kind: description_excludes_all
+    terms: ["React checkout", "payment button"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["When not to use", "Writing product/domain features directly"]

@@ -99,11 +99,13 @@ compile_binary() {
   local output="$2"
   local target_os="$3"
   local target_arch="$4"
+  local version="$5"
 
   (
     cd "$ROOT_DIR/packages/steward_cli"
     dart pub get
     HOME=/tmp DART_SUPPRESS_ANALYTICS=true dart compile exe \
+      -DSTEWARD_VERSION="$version" \
       "$entrypoint" \
       --target-os "$target_os" \
       --target-arch "$target_arch" \
@@ -122,15 +124,18 @@ for triple in "${TRIPLES[@]}"; do
   rm -rf "$stage_dir" "$archive_path"
   mkdir -p "$stage_dir/bin"
 
-  compile_binary "bin/steward.dart" "$stage_dir/bin/steward" "$target_os" "$target_arch"
+  compile_binary "bin/steward.dart" "$stage_dir/bin/steward" "$target_os" "$target_arch" "$VERSION"
 
   cp "$ROOT_DIR/LICENSE" "$stage_dir/LICENSE"
+  mkdir -p "$stage_dir/docs"
+  cp -R "$ROOT_DIR/docs/schemas" "$stage_dir/docs/schemas"
 
   tar -C "$DIST_DIR" -czf "$archive_path" "$package_name"
 
   smoke_dir="$(mktemp -d)"
   tar -C "$smoke_dir" -xzf "$archive_path"
   "$smoke_dir/$package_name/bin/steward" --help >/dev/null
+  "$smoke_dir/$package_name/bin/steward" schema emit --schema doctor --source checked-in --json >/dev/null
   rm -rf "$smoke_dir"
 
   rm -rf "$stage_dir"

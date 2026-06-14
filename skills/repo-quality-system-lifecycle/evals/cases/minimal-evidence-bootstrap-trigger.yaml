@@ -1,0 +1,12 @@
+id: repo-quality-minimal-evidence-bootstrap-trigger
+skill: repo-quality-system-lifecycle
+routing: should_trigger
+input: "Set up a unique new repo so agents know when to write evidence, when to use ADRs or checks, and when to adopt Steward tooling instead of building a heavy evidence archive."
+rules:
+  - kind: file_exists
+    path: references/evals.md
+  - kind: description_includes_any
+    terms: ["evidence paths", "validation gates", "repo ecology"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["Claims and evidence router", "north_star_impact", "steward adopt", "without adding harness machinery"]

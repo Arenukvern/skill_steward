@@ -1,0 +1,204 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/arenukvern/skill_steward/schemas/self-model-v1.schema.json",
+  "title": "Steward self-model v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "steward_id",
+    "repo",
+    "status",
+    "identity_role",
+    "boundary_awareness",
+    "open_questions",
+    "values_in_action",
+    "reflective_state",
+    "trigger_event_id",
+    "consent_basis",
+    "visibility",
+    "retention",
+    "redaction_policy",
+    "non_claims"
+  ],
+  "properties": {
+    "schema": {
+      "const": "steward/self-model/v1"
+    },
+    "steward_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repo": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "stewardship_protocol",
+        "steward_presence",
+        "proven_repo_steward",
+        "sub_steward"
+      ]
+    },
+    "identity_role": {
+      "type": "string",
+      "minLength": 1
+    },
+    "boundary_awareness": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "values_in_action": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "reflective_state": {
+      "type": "string",
+      "minLength": 1
+    },
+    "trigger_event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "consent_basis": {
+      "type": "string",
+      "minLength": 1
+    },
+    "visibility": {
+      "type": "string",
+      "minLength": 1
+    },
+    "retention": {
+      "type": "string",
+      "minLength": 1
+    },
+    "redaction_policy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "non_claims": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "validation": {
+      "type": "object",
+      "required": [
+        "tasks",
+        "comparison",
+        "outcome",
+        "falsifier",
+        "reviewer",
+        "updated_at",
+        "non_claims"
+      ],
+      "properties": {
+        "tasks": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "held_out",
+              "evidence",
+              "outcome"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "held_out": {
+                "type": "boolean"
+              },
+              "evidence": {
+                "type": "string",
+                "minLength": 1
+              },
+              "outcome": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "comparison": {
+          "type": "object",
+          "required": [
+            "with_continuity_result",
+            "without_continuity_result"
+          ],
+          "properties": {
+            "with_continuity_result": {
+              "type": "string",
+              "minLength": 1
+            },
+            "without_continuity_result": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "additionalProperties": false
+        },
+        "outcome": {
+          "type": "string",
+          "minLength": 1
+        },
+        "falsifier": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reviewer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "updated_at": {
+          "type": "string",
+          "minLength": 1
+        },
+        "non_claims": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "proven_repo_steward"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "validation"
+        ]
+      }
+    }
+  ]
+}

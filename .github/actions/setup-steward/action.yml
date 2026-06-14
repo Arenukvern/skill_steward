@@ -1,0 +1,33 @@
+name: Setup Skill Steward
+description: Install the steward CLI from the Skill Steward release contract.
+
+inputs:
+  version:
+    description: Optional steward release tag or semver. Defaults to this action checkout's package version.
+    required: false
+    default: ""
+  install-dir:
+    description: Directory where the steward executable should be installed.
+    required: false
+    default: ${{ runner.temp }}/steward/bin
+
+runs:
+  using: composite
+  steps:
+    - name: Install steward
+      shell: bash
+      env:
+        STEWARD_VERSION_INPUT: ${{ inputs.version }}
+        STEWARD_INSTALL_DIR_INPUT: ${{ inputs.install-dir }}
+        STEWARD_NO_PATH_UPDATE: "1"
+      run: |
+        set -euo pipefail
+        repo_root="$(cd "$GITHUB_ACTION_PATH/../../.." && pwd)"
+        args=(--install-dir "$STEWARD_INSTALL_DIR_INPUT")
+        if [[ -n "$STEWARD_VERSION_INPUT" ]]; then
+          args+=(--version "$STEWARD_VERSION_INPUT")
+        fi
+
+        bash "$repo_root/install.sh" "${args[@]}"
+        echo "$STEWARD_INSTALL_DIR_INPUT" >> "$GITHUB_PATH"
+        "$STEWARD_INSTALL_DIR_INPUT/steward" --help >/dev/null

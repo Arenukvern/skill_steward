@@ -1,0 +1,235 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/arenukvern/skill_steward/schemas/steward-v1.schema.json",
+  "title": "Steward v1 repository contract",
+  "type": "object",
+  "required": [
+    "schema",
+    "repo",
+    "harness",
+    "adoption",
+    "stewardship",
+    "actions",
+    "probes",
+    "diagnostics",
+    "unknown_cases",
+    "provenance"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "stewardship": {
+            "properties": {
+              "harness": {
+                "properties": {
+                  "enabled": { "const": true }
+                },
+                "required": ["enabled"]
+              }
+            },
+            "required": ["harness"]
+          }
+        },
+        "required": ["stewardship"]
+      },
+      "then": {
+        "properties": {
+          "actions": { "minProperties": 1 },
+          "probes": { "minProperties": 1 }
+        }
+      }
+    }
+  ],
+  "properties": {
+    "schema": { "const": "steward/v1" },
+    "repo": {
+      "type": "object",
+      "required": ["id", "archetype"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "archetype": {
+          "type": "string",
+          "enum": [
+            "app",
+            "library",
+            "cli_tool",
+            "plugin",
+            "harness",
+            "meta_governance"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "harness": {
+      "type": "object",
+      "required": ["name", "mode", "entrypoints"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "mode": { "type": "string", "minLength": 1 },
+        "entrypoints": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": { "type": "string", "minLength": 1 }
+        }
+      },
+      "additionalProperties": true
+    },
+    "adoption": {
+      "type": "object",
+      "required": ["status", "owner", "gate"],
+      "properties": {
+        "status": { "type": "string", "minLength": 1 },
+        "owner": { "type": "string", "minLength": 1 },
+        "gate": { "type": "object", "minProperties": 1 }
+      },
+      "additionalProperties": true
+    },
+    "stewardship": {
+      "type": "object",
+      "required": [
+        "governance",
+        "knowledge",
+        "repo_quality",
+        "skill_lifecycle",
+        "quality",
+        "harness",
+        "release",
+        "review_handoff",
+        "strategic_alignment",
+        "security",
+        "org"
+      ],
+      "properties": {
+        "governance": { "type": "object", "minProperties": 1 },
+        "knowledge": { "type": "object", "minProperties": 1 },
+        "repo_quality": { "type": "object", "minProperties": 1 },
+        "skill_lifecycle": { "type": "object", "minProperties": 1 },
+        "quality": { "type": "object", "minProperties": 1 },
+        "harness": { "type": "object", "minProperties": 1 },
+        "release": { "type": "object", "minProperties": 1 },
+        "review_handoff": { "type": "object", "minProperties": 1 },
+        "strategic_alignment": { "type": "object", "minProperties": 1 },
+        "security": { "type": "object", "minProperties": 1 },
+        "org": { "type": "object", "minProperties": 1 }
+      },
+      "additionalProperties": true
+    },
+    "actions": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/action" }
+    },
+    "probes": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/probe" }
+    },
+    "diagnostics": { "type": "object" },
+    "unknown_cases": {
+      "type": "object",
+      "required": ["path", "retention"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "retention": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": true
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["dependencies", "artifacts", "benchmarks"],
+      "properties": {
+        "dependencies": { "type": "array" },
+        "artifacts": { "type": "array" },
+        "benchmarks": { "type": "array" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "action": {
+      "type": "object",
+      "required": ["kind", "desc", "command", "cwd", "effects", "safety", "limits", "outputs", "evidence"],
+      "properties": {
+        "kind": { "const": "command" },
+        "desc": { "type": "string", "minLength": 1 },
+        "command": {
+          "type": "object",
+          "required": ["argv", "shell"],
+          "properties": {
+            "argv": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "type": "string" }
+            },
+            "shell": { "type": "boolean" }
+          },
+          "additionalProperties": true
+        },
+        "cwd": { "type": "string", "minLength": 1 },
+        "effects": {
+          "type": "object",
+          "required": ["fs_read", "fs_write", "git", "network", "secrets", "destructive"],
+          "properties": {
+            "fs_read": { "type": "array", "items": { "type": "string" } },
+            "fs_write": { "type": "array", "items": { "type": "string" } },
+            "git": {},
+            "network": { "type": "boolean" },
+            "secrets": { "type": "boolean" },
+            "destructive": { "type": "boolean" }
+          },
+          "not": { "required": ["filesystem"] },
+          "additionalProperties": true
+        },
+        "safety": {
+          "type": "object",
+          "required": ["class", "default_policy", "requires_confirmation"],
+          "properties": {
+            "class": { "type": "string", "minLength": 1 },
+            "default_policy": { "type": "string", "minLength": 1 },
+            "requires_confirmation": { "type": "boolean" }
+          },
+          "additionalProperties": true
+        },
+        "limits": {
+          "type": "object",
+          "required": ["timeout_ms", "max_output_bytes"],
+          "properties": {
+            "timeout_ms": { "type": "integer", "minimum": 1 },
+            "max_output_bytes": { "type": "integer", "minimum": 1 }
+          },
+          "additionalProperties": true
+        },
+        "outputs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/output" }
+        },
+        "evidence": { "type": "object", "minProperties": 1 }
+      },
+      "additionalProperties": true
+    },
+    "output": {
+      "type": "object",
+      "required": ["id", "kind", "required", "retention"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "kind": { "type": "string", "minLength": 1 },
+        "required": { "type": "boolean" },
+        "retention": { "type": "string", "minLength": 1 },
+        "path": { "type": "string" },
+        "format": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "probe": {
+      "type": "object",
+      "required": ["profile", "actions"],
+      "properties": {
+        "profile": { "type": "string", "minLength": 1 },
+        "actions": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

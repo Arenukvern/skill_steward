@@ -6,53 +6,54 @@ consulted:
 informed:
 ---
 
-# Tiered skill evals and rule-based CI
+# T1/T2 skill quality gates and rule-based CI
 
 ## Context and Problem Statement
 
-Skill Steward needs **measurable** skill quality without pretending markdown-only CI can score full agent sessions. Industry practice (Google Chrome evals course, Microsoft SkillOpt, Codex plugin-eval) separates **objective gates**, **human/LLM behavioral suites**, and **text optimization loops**.
+Skill Steward needs measurable skill quality without pretending markdown-only CI can score full agent sessions. Industry practice separates objective gates, human/LLM behavioral suites, and text optimization loops.
 
-How much automation belongs in this meta repo?
+How much automation belongs in this repo?
 
 ## Decision Drivers
 
-* **Agent heterogeneity** — Skills run in Cursor, Claude Code, Codex, etc.; no single CI agent is canonical.
+* **Agent heterogeneity** — Skills run in Cursor, Claude Code, Codex, Zed, and other agents; no single CI agent is canonical.
 * **Cost & flake** — LLM judges in PR CI are expensive and non-reproducible.
-* **Charter risk** — Tier-1 skills (`north-star-governance`, `create-skill`, …) need stronger gates than utility skills.
+* **Charter risk** — T1 behavior-critical stewardship skills need stronger gates than utility skills.
 * **Legibility** — Eval cases live in git (`evals/cases/*.yaml`), like changesets for releases.
-* **Existing skill** — `skill-eval-improve` already defines layers 0–4; this ADR makes tiers and L0–L1 CI normative.
+* **Existing skill** — `skill-eval-improve` defines layered improvement; this ADR makes rule-based CI normative.
 
 ## Considered Options
 
-* **Manual only** — `references/evals.md`; no CI (status quo).
-* **Full agent matrix in CI** — Nightly Cursor/SDK runs + judge (high cost).
-* **Tiered rule-based CI + optional human/LLM offline** — Chrome-style objective checks in `scripts/eval-skill.mjs`; behavioral suites documented, not gated in CI.
+* **Manual only** — `references/evals.md`; no CI.
+* **Full agent matrix in CI** — Nightly agent runs + judge.
+* **T-named rule-based CI + optional human/LLM offline** — Objective checks in the Dart `steward eval` runner; behavioral suites documented, not gated in CI.
 
 ## Decision Outcome
 
-Chosen: **Tiered rule-based CI + offline behavioral evals.**
+Chosen: **T-named rule-based CI + offline behavioral evals.**
 
 | Tier | Skills | CI (`pnpm run eval`) | Offline (maintainer) |
 |------|--------|----------------------|----------------------|
-| **1 — Behavioral** | `north-star-governance`, `harness-engineering-culture`, `mcp-harness-repo-maintainer`, `create-skill` | ≥2 `evals/cases/*.yaml`; schema + static rules | `references/evals.md`, held-out prompts, plugin-eval, SkillOpt loop |
-| **2 — Structural** | All other marketplace skills | `pnpm run validate` only | Optional `evals.md` when behavior-critical |
+| **T1 — Behavior-critical eval-gated** | `harness-engineering-lifecycle`, `mcp-harness-repo-maintainer`, `mixture-of-experts`, `multi-agent-handoff`, `plugin-marketplace-setup`, `repo-quality-system-lifecycle`, `repository-governance-lifecycle`, `skill-authoring-lifecycle`, `skill-eval-improve`, `steward-continuity-boundary-lifecycle`, `vision-alignment-foresight` | >=2 `evals/cases/*.yaml`; schema + static rules | `references/evals.md`, held-out prompts, plugin-eval, SkillOpt loop |
+| **T2 — Structural validate-only** | All other marketplace skills | `pnpm run validate` only | Optional `evals.md` when behavior-critical |
 
-**CI scope (explicit non-goals):** No LLM judge in CI. No claim that rule-based routing simulation equals production agent routing.
+**CI scope (explicit non-goals):** No LLM judge in CI. No claim that rule-based routing simulation equals production agent routing or repo quality proof.
 
 **Schema:** `skills/skill-eval-improve/references/eval-case-schema.md` — versioned case files under `skills/{name}/evals/cases/`.
 
 ### Consequences
 
 * Good, because PRs catch missing eval fixtures and description/body drift on charter skills.
-* Good, because Chrome/Microsoft patterns are teachable without over-building.
-* Bad, because Tier-1 can pass CI while still failing real agent sessions (mitigate with offline layer 2–3).
-* Neutral, because Tier-2 skills remain validate-only until promoted.
+* Good, because the Dart `steward eval` runner is the current local implementation and avoids stale Node script drift.
+* Bad, because T1 behavior-critical evals can pass CI while still failing real agent sessions.
+* Neutral, because repo-level quality proof is handled by `docs/repo-quality-contracts.mdx` and type-native validation, not by skill routing evals alone.
 
 ### Confirmation
 
-* `scripts/eval-skill.mjs` in CI after `pnpm run validate`.
-* [docs/STANDARDS.mdx](../STANDARDS) documents tiers.
-* `skill-eval-improve` v1.1+ references Chrome eval design.
+* `packages/steward_cli/lib/src/eval/eval_tiers.dart` is the T1 behavior-critical skill SSOT for the Dart runner.
+* [docs/STANDARDS.mdx](../STANDARDS) documents T-named gates.
+* `skill-eval-improve` references the eval case schema and offline behavioral layers.
+* `repo-quality-system-lifecycle` explains when skill evals are not enough and a repo quality contract is required.
 
 ## More Information
 

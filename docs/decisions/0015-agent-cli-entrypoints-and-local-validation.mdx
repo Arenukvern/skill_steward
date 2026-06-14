@@ -1,0 +1,72 @@
+---
+status: accepted
+date: 2026-06-02
+decision-makers: Skill Steward maintainers
+consulted:
+informed:
+---
+
+# Agent CLI entrypoints, local validation, and skill-type filtering
+
+## Context and Problem Statement
+
+As the `steward` CLI evolves into a native precompiled utility distributed directly to consumer repositories (as decided in [ADR 0014](0014-distribute-steward-cli-as-binary)), we have identified integration boundaries and gaps that prevent it from being a seamless "agent starting point":
+
+1. **Strict Root Resolution:** The CLI root path discovery currently crashes in consumer projects because it exclusively looks for `skills.sh.json` (a file only present in the Skill Steward monorepo).
+2. **Missing Operational Map:** Incoming AI agents have codebase search tools, but they lack a structured starting point outlining active skills, relevant documentation guides (FAQs, ADRs), and task runner commands.
+3. **Stale Plan Accumulation:** The "ephemeral plans doctrine" ([ADR 0005](0005-executable-plans-and-docs-page)) requires plans to be deleted upon completion, but humans/agents frequently forget, and there is no automated validation gate to enforce this.
+4. **Governance vs. Developer Clutter:** Consumers installing a library are cluttered with the library's internal repository governance/maintenance skills instead of getting only developer-facing usage skills.
+
+## Decision Drivers
+
+* **Legibility & DX:** Provide incoming AI agents with a quick, standardized starting map of the codebase harness.
+* **Mechanical Gates:** Enforce plan hygiene programmatically in local checks and CI workflows.
+* **Separation of Concerns:** Categorize skills clearly so developer/consumer skills and governance/maintainer skills do not pollute each other.
+* **Robustness:** Ensure the CLI runs safely in any repository without crashing.
+
+## Considered Options
+
+* **Status Quo:** Keep the CLI maintainer-only, do not enforce plan hygiene in code, and require custom local scripts in consumer repos.
+* **Harness Commands & Local Validation (Chosen):** Fix root directory resolution, introduce `--type` filtering, add a plan hygiene check in CLI validation, and implement `steward adopt`, `uninstall`, and `map` commands.
+
+## Decision Outcome
+
+Chosen option: **"Harness Commands & Local Validation"**.
+
+We will modify the CLI and skill standards to make Skill Steward a robust starting map for agents:
+
+### 1. Robust Root Resolution
+- Update `findRepoRoot` to search for `skills.sh.json` (maintainer), `skills.json` (local config), or `.git` (repository marker).
+- Fall back gracefully to `Directory.current` instead of throwing a `StateError` crash if none are found.
+
+### 2. Agent-Focused CLI Commands
+- **`steward map`:** Prints a concise Markdown-formatted map of the codebase for incoming agents (showing detected task runner, key commands, active local skills, doc links, and plan hygiene warnings).
+- **`steward adopt` (or `init`):** Automates initial setup by creating `skills.json` and generating a basic `AGENTS.md` map.
+- **`steward uninstall <skill-name>`:** Cleanly deletes the skill directory and updates the `skills.json` manifest.
+- **Context-Aware `steward list`:** Lists monorepo skills when run in the core repo, and lists *locally installed* skills when run in consumer workspaces.
+
+### 3. Skill Type Categorization
+- Add a standard `type` attribute under `SKILL.md` frontmatter:
+  ```yaml
+  type: "governance" | "developer"
+  ```
+- Support a `--type` flag during `steward install` and `steward update` to copy/update only developer-facing or governance-facing skills.
+
+### 4. Automated Plan Hygiene Linter
+- Add a validator step to local validation checks that scans the workspace for unmerged plan files (like `task.md`, `implementation_plan.md`, or active items under `docs/exec-plans/active/`).
+- Fail with a non-zero exit code if active plans are detected in CI/PR runs.
+
+## Consequences
+
+* **Good:** Incoming agents get an immediate starting map by querying the CLI.
+* **Good:** Active plan files can no longer be merged into main branches accidentally.
+* **Good:** Consumer repositories are no longer cluttered with maintenance-only rules.
+* **Neutral:** We must update existing guild skills to include the new `type: governance` field.
+
+## Confirmation
+
+* `packages/steward_cli/lib/src/repo_root.dart` updated.
+* `steward adopt`, `steward uninstall`, and `steward map` commands implemented.
+* `steward validate --local` updated to scan for plan files.
+* Guild skills updated with `type: governance`.
+* Unit tests in `local_registration_test.dart` extended.

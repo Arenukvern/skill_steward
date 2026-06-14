@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/arenukvern/skill_steward/schemas/blocked-explain-v1.schema.json",
+  "title": "Steward blocked explanation output v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "root",
+    "input",
+    "blocked_by",
+    "artifact_route",
+    "next_actions",
+    "non_claims"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "default": "steward.blocked.explain.v1"
+    },
+    "root": {
+      "type": "string"
+    },
+    "input": {
+      "type": "string"
+    },
+    "blocked_by": {
+      "type": "string"
+    },
+    "artifact_route": {
+      "type": "string"
+    },
+    "next_actions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "non_claims": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

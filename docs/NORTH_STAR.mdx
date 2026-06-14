@@ -4,47 +4,193 @@
 
 ## What we are
 
-**Skill Steward** is a **meta-layer** for the Agent Skills ecosystem: small **skills** and **plugins** that help teams **manage other skills**, validate quality, document decisions, and improve agent workflows.
+**Skill Steward** is an **Engineering Stewardship layer for agent-operated engineering repositories**: apps, libraries, tools, plugins, harnesses, and meta repos.
 
-We are **not** a general domain skill catalog (React, Flutter, cloud recipes live elsewhere). We are **not** a skill package manager ([Skillkit](https://github.com/rohitg00/skillkit), [skills.sh](https://skills.sh)).
+Engineering Stewardship is an old-new idea: step back from only managing an AI agent as a program, or only developing product features, and tend the **software ecology** around the work. That ecology includes charter, decisions, docs, skills, specs, scripts, programming languages, existing tools, debugging loops, validation gates, release processes, handoffs, and the harnesses that make a repository legible to humans and agents.
 
-Sibling work: Product harness repositories (such as product-level MCP/CLI toolkits) own runtime/framework harnesses. Skill Steward owns meta-skills and documentation patterns. Principles: [credo](https://dev.to/arenukvern/my-principles-at-work-credo-182c).
+Skill Steward gives teams a shared structure for understanding, developing, and improving that ecology. It ships through portable Agent Skills plus a narrow `steward` CLI for repo-local registration, validation, and contract proof. The object of stewardship is the **repository as a whole**.
+
+Usefulness is measured by how well cold exploration becomes durable hot paths for future agents: smaller, safer, inspectable routes through real repo work. A useful adoption reduces future time, uncertainty, and risk without lowering the correctness or evidence bar. It may add a tool, but it may also delete code, collapse a layer, improve an error message, or return to a native command when that better serves the product. See [ADR 0018](decisions/0018-cold-to-hot-path-usefulness) and [Generational architecture ladder](core/generational-architecture-ladder).
+
+Default Steward work is ecology-first: preserve the original user goal, identify which part of the repository ecology owns the friction, then choose the smallest useful disposition. The answer may be to orient, compress, validate, tutor pain, promote a tool, leave work native, or stop. Repair and evidence are supporting moves inside that frame: repair when an owner can be safely improved now, and create evidence only when a claim, blocker, real run, or durable behavior change needs proof.
+
+Smallest useful disposition means the smallest truthful coordination unit, not always the smallest action. When repo-wide pain is safely decomposable, governance should let many agents move faster without losing truth, ownership, parent synthesis, native gates, or proof. Parallel lane hints are advisory scaffolding, not write authorization, scheduler state, maturity evidence, or a new repository center. See [ADR 0026](decisions/0026-parallel-acceleration-governance).
+
+We are **not** a domain tutorial catalog (React, Flutter, cloud recipes live in their own product/domain repos). We are **not** a public skill package manager ([Skillkit](https://github.com/rohitg00/skillkit), `npx skills`, and [skills.sh](https://skills.sh) cover public discovery and install/update distribution). We are **not** the product runtime for apps, libraries, or tools.
+
+`steward install` and `steward update` are intentional, but narrow: they apply repo-local `skills.json` manifests, copy selected skills into agent-readable folders, and pin refs so teams and agents share the same structure. Public discovery and broad distribution stay with `npx skills` and skills.sh.
+
+Sibling work: product harness repositories own runtime/framework harnesses. Skill Steward owns structural guidance, governance skills, quality contracts, validation patterns, packaging patterns, and documentation patterns. Principles: [credo](https://dev.to/arenukvern/my-principles-at-work-credo-182c).
+
+## Current proof
+
+| Status | Evidence | Do not overclaim |
+|--------|----------|------------------|
+| Proven | Installable skills, docs lattice, `pnpm run validate`, T1 behavior-critical static/rule evals, schema files, repo-local `steward.yaml` contract shape | Product runtime correctness or production agent behavior |
+| Emerging | Benchmark loops, MCP/CLI parity checks, security posture, org patterns, richer fresh-agent workflows | Harness readiness without benchmark evidence |
+| Not owned | Product diagnostics, framework automation, public package-manager behavior, domain tutorial catalogs | Replacing product repos or public skill registries |
+
+T1 behavior-critical evals are static routing checks. They catch skill drift in skills whose routing mistakes can change agent decisions; they do not prove product runtime correctness, production agent behavior, H2 smoke proof, or H4 fresh-agent workflow proof.
 
 ## What we own
 
 | Own | Do not own |
 |-----|------------|
-| Meta-skills (`skills/`) | Domain/framework instruction packs |
-| Skill validation (`pnpm run validate`) | Product MCP servers and framework wrappers |
-| Doc patterns (FAQ, ADR, docs.page lattice) | Finished plan files as permanent docs |
-| Plugin manifests (`plugins/`) when wired | Copy-pasted API docs of other products |
-| Harness **culture** skill (how to build CLI/MCP harnesses) | Executable app/runtime code |
+| Repo stewardship baselines: charter, boundaries, AGENTS map, docs map | Product/domain runtime implementation |
+| Decision and knowledge systems: ADRs, FAQs, concept docs, source provenance | Domain/framework tutorial packs in this repo |
+| Repo quality contracts: validation commands, evidence, safe action metadata, maturity proof | Replacing product test suites or language-native tooling |
+| Usefulness measurement: cold-to-hot path acceleration, transferability, falsifiers, non-claims | Raw speed, artifact volume, or green dashboards as standalone proof |
+| Generational architecture guidance: deciding whether to keep native code, document, extract, generate, add harness proof, or delete | Prescribing a universal architecture pattern before product evidence exists |
+| Skill lifecycle: authoring, packaging, installability, registry hygiene | Becoming a general-purpose skills marketplace |
+| Plugin and rule wiring descriptors when explicitly installed | Mutating host tools without explicit install steps |
+| Harness culture: CLI/MCP/core parity, cold-start proof, benchmark evidence | Product-specific MCP servers and framework wrappers |
+| Release legibility: changelog, versioning, artifact provenance | Hidden release magic without auditable artifacts |
+| Review, handoff, and strategic alignment patterns | Permanent stale plan files as documentation |
+
+## Stewardship pillars
+
+Harness engineering is one pillar, not the umbrella. The umbrella is structural stewardship for the whole repository.
+
+| Pillar | Owns | Current status |
+|--------|------|----------------|
+| Governance | Charter, boundaries, ethics, ADRs, plan hygiene | Active: `repository-governance-lifecycle` |
+| Knowledge | FAQ split, docs maps, concept docs, source citations, durable provenance | Active: docs lattice + `skill-source-citations` |
+| Repo quality contracts | Type-native gates, safe actions, evidence, maturity proof | Active: `repo-quality-system-lifecycle`, `steward.yaml` |
+| Skill lifecycle | Skill authoring, packaging, installability, marketplace readiness | Active: `skill-authoring-lifecycle`, `plugin-marketplace-setup` |
+| Quality gates | Validation, T1 behavior-critical static skill evals, prompt suites, bounded improvement loops | Active: `skill-eval-improve`, `pnpm run eval` |
+| Harness engineering | CLI/MCP/core parity, repo-local contracts, dogfood feedback loops | Active: `mcp-harness-repo-maintainer`, `harness-engineering-lifecycle` |
+| Release legibility | Changelog, versioning, artifact provenance, release impact | Active: `release-changelog-harness` |
+| Review and handoff | MoE critique, multi-agent handoff, PR review patterns | Active: `mixture-of-experts`, `multi-agent-handoff` |
+| Strategic alignment | Vision vs implementation fit, usage evidence, future-fit analysis, falsifiers | Active: `vision-alignment-foresight` |
+| Usefulness learning | Cold exploration records, future-agent hot paths, transfer evidence, anti-metrics | Active: ADR 0018 + H3/H5 adoption evidence |
+| Pattern stewardship | Stage-aware pattern discovery, deletion/collapse checks, codegen/harness promotion guards | Active: [Generational architecture ladder](core/generational-architecture-ladder) |
+| Evidence stewardship | Claim-proof records, current ledgers, blocked-state preservation, historical provenance, and retention discipline | Active: [Evidence ladder](core/evidence-ladder) + [Evidence artifacts](core/evidence-artifacts) |
+| Security posture | Secret hygiene, action risk classes, provenance, supply-chain review | Developing: encoded in repo-quality contracts; standalone skill deferred |
+| Org patterns | Repo archetypes, ownership, operating model, agent routing | Developing: encoded in repo taxonomy; standalone skill deferred |
 
 ## How we ship value
 
-1. **`npx skills add arenukvern/skill_steward`** — portable `SKILL.md` packages.
-2. **Docs as system of record** — [docs.page](https://docs.page/arenukvern/skill_steward) from `docs/` + `docs.json`; `AGENTS.md` is the agent map only.
-3. **Mechanical gates** — CI validates skills; contributors run `pnpm run validate`.
-4. **Plan hygiene (any format)** — use any planning tool; when work is done, [extract into ADR/FAQ/code/harness](start_here/executable-plans), then **remove** stale plan files from the repo.
+1. **Orient** — portable skills, `AGENTS.md`, docs maps, and repo contracts let agents find the owner, native gate, and boundary quickly.
+2. **Compress** — plans, duplicate prose, stale proof, and overgrown layers are extracted into ADR/FAQ/code/checks or deleted.
+3. **Validate** — type-native gates, schemas, evals, probes, and benchmarks prove the exact claim being made.
+4. **Tutor pain** — repeated friction names the pain, owner, smallest fix, native gate, and future hot path instead of becoming another diary entry.
+5. **Promote tools** — only repeated, falsifiable friction becomes a Steward action, diagnostic, eval, benchmark, generator, or skill change.
 
-## Boundaries (non‑negotiable)
+## Delivery surfaces
+
+| Surface | Owns | Does not own |
+|---------|------|--------------|
+| Agent Skills | Portable stewardship procedures installed by agents | Full product/domain knowledge |
+| `npx skills` | Public skill install/update across supported agents | Steward contract validation or repo harness behavior |
+| skills.sh | Public discovery and catalog indexing | Team-specific pinned manifests |
+| `steward install/update` | Repo-local skill registration from `skills.json`, agent folder layout, commit/ref pinning | Public marketplace discovery or replacing `npx skills` |
+| `steward validate/eval/list` | Skill structure, routing cases, registry checks | Product runtime correctness |
+| `steward doctor/actions/probe/benchmark` | Evidence-gated local contract discovery, safe action proof, dogfood summaries | Unreviewed permanent shell automation or product diagnosis |
+| `steward bundle` | Validated wiring descriptors for plugins/rules | Mutating host configuration without explicit install steps |
+
+## Repo archetypes
+
+Use one primary artifact and one lead lens per repo. A repo may contain several surfaces, but its stewardship contract should say which surface is primary.
+
+| Archetype | Primary artifact | Stewardship proof |
+|-----------|------------------|-------------------|
+| App | Product behavior and user-facing runtime | Charter, architecture map, validation gate, release path, observable debugging loop |
+| Library | Public API, package contract, compatibility matrix | API docs, tests, versioning, changelog, consumer proof |
+| CLI/tool | Commands and machine-readable outputs | `--help`, `--json`, tests, effects/limits, release artifact provenance |
+| Plugin | Host integration and install/update behavior | Manifest, explicit install steps, permissions, compatibility, rollback |
+| Harness/action contract | Agent-facing actions, probes, benchmarks, MCP/CLI adapters | `steward.yaml`, quick-safe action, scenario, benchmark evidence |
+| Meta/governance | Skills, docs, policies, validation patterns | Installable procedures, docs SSOT, eval cases, registry consistency |
+
+## General stewardship maturity ladder
+
+Use these stages before claiming a repository is stewarded or agent-operable.
+
+| Stage | Name | Proof |
+|-------|------|-------|
+| **S0** | Baseline mapped | Repo has a charter/scope pointer, `AGENTS.md` or equivalent agent map, and a known validation command. |
+| **S1** | Knowledge lattice declared | Why/how docs, decision records, docs map, and behavior SSOT boundaries are discoverable. |
+| **S2** | Quality contract proven | Type-native checks run or truthfully report why they are blocked; evidence path is documented. |
+| **S3** | Feedback loop active | Repeated failures become ADRs, FAQ updates, tests, eval cases, or action candidates. |
+| **S4** | Fresh-agent workflow | A fresh agent can complete one repo-specific workflow without hidden local context or raw shell spelunking. |
+| **S5** | Promoted stewardship capability | Repeated evidence, including at least one held-out or future-agent repeat, promotes a reusable skill, action, eval, diagnostic, or harness feature with owner, risk class, and a proven cold-to-hot usefulness claim. |
+
+## Harness/action-contract maturity ladder
+
+Use these stages before claiming a repo is harness-ready. They are stricter than the general stewardship ladder.
+
+| Stage | Name | Proof |
+|-------|------|-------|
+| **H0** | Relevant skills installed | Agent can discover the Skill Steward skills for repo quality and harness maintenance. |
+| **H1** | Local contract declared | `steward.yaml` exists with one quick-safe action and docs point to it. |
+| **H2** | Smoke loop proven | `doctor`, `actions list`, `action inspect`, `probe`, and one `benchmark` scenario produce a durable `result: "pass"` summary. `durability_blocked` is honest non-proof and keeps the repo below H2 until rerun cleanly. |
+| **H3** | Repo feedback loop | Target repo persists benchmark summaries, unknown cases, and action candidates from real work. |
+| **H4** | Fresh-agent workflow proven | A fresh agent completes one repo-specific workflow without raw shell spelunking or hidden local context, with a review artifact or transcript naming task, repo state, commands/actions, outcome, and remaining gaps. |
+| **H5** | Promoted harness capability | Repeated evidence, including at least one held-out benchmark or future-agent repeat, promotes a diagnostic, action, eval, or local harness feature with owner, risk, redaction, validation, falsifier, and future-agent usefulness evidence. |
+
+## Adoption claim vocabulary
+
+Skill Steward treats repositories as living systems. A repo is not "fully adopted" just because one proof path is polished.
+
+Use these terms:
+
+| Term | Means | Does not mean |
+|------|-------|---------------|
+| Adoption run | One agent attempts one useful repo task and records the original goal, acceptance check, surfaces used, outcome, blockers, and lesson. | A maturity claim. |
+| Capability-level S5/H5 proof | One named capability climbed the relevant ladder with owner, risk, redaction, validation, falsifier, non-claims, repeated evidence, and held-out or future-agent usefulness evidence. | The whole repo is S5/H5. |
+| Repo maturity | The current broad S/H stage of the repo, based on matching evidence across its real work. | A sum of small polished proofs. |
+
+## Steward status vocabulary
+
+Skill Steward treats steward identity as an earned claim, not a default label.
+
+| Status | Means | Does not mean |
+|--------|-------|---------------|
+| `stewardship_protocol` | Mode rules, memory boundaries, handoff rules, and evidence gates are declared. | A repo has a proven steward personality. |
+| `steward_presence` | An agent may enter steward mode at threshold moments and must stay accountable for synthesis. | All work should be performed as a steward. |
+| `proven_repo_steward` | Repeated or held-out tasks show continuity improves decisions, handoffs, boundary detection, evidence precision, or repeated-context cost. | The steward has unverified consciousness or final authority. |
+| `sub_steward` | A subdomain has earned distinct continuity after repeated real work. | Every package, prototype, or component gets its own identity by default. |
+
+Start with protocol. Let presence and stewardhood earn their names through evidence.
+
+Steward presence readiness is detected by signs, not by hand-picked special tasks. A repo is ready to try `steward_presence` when ordinary tool-execution repeatedly loses continuity, judgment, boundaries, or claim honesty. Good signs include repeated threshold work, continuity loss, fragile evidence claims, delegation pressure, boundary pressure, a recurring hot-path opportunity, and a favorable maintenance delta. Three signs across at least two repo surfaces are enough to run a bounded steward-presence trial; they are not enough to claim `proven_repo_steward`. See [ADR 0025](decisions/0025-steward-presence-readiness-signs).
+
+Every adoption run must preserve the original user goal. Tool repair, refactors, new actions, evals, or docs are useful only when they help solve that goal or a named future problem class with the same or stronger evidence bar. It is acceptable to stop, refactor, abandon a proposed tool path, or return to native commands when tool restoration would become the work.
+
+Adoption evidence should also record the pattern layer being changed and the maintenance delta expected. A promoted tool is not useful just because it exists; it must reduce future uncertainty, time, or risk enough to justify the maintenance it adds.
+
+## Boundaries (non-negotiable)
 
 - One clear outcome per skill; `SKILL.md` stays lean.
 - Skills in `skills/`; wiring in `plugins/`; templates in `templates/` (not installable).
-- **Behavior SSOT is code** — docs link inward; they do not paraphrase implementations.
-- New strategic **why** → ADR; standing **why** → [DESIGN_FAQ.mdx](DESIGN_FAQ); **how** → [DX_FAQ.mdx](DX_FAQ).
-- **Ethical governance model** — use [`ethical-stewardship`](https://github.com/arenukvern/skill_steward/blob/main/skills/ethical-stewardship/SKILL.md) to bootstrap, audit, and refine the credo and design constraints for this repo.
+- **Behavior SSOT is code and schemas** — docs link inward; they do not paraphrase implementations.
+- New strategic **why** → ADR; standing **why** → [DESIGN_FAQ.mdx](DESIGN_FAQ); operational **how** → [DX_FAQ.mdx](DX_FAQ); repo quality contract → [repo-quality-contracts.mdx](repo-quality-contracts).
+- Domain content belongs in the governed product/domain repo when it is that repo's product. It does not belong in Skill Steward as a generic tutorial pack.
+- **Ethical governance model** — use [`repository-governance-lifecycle`](https://github.com/arenukvern/skill_steward/blob/main/skills/repository-governance-lifecycle/SKILL.md) and its charter references to bootstrap, audit, and refine the credo and design constraints for this repo.
 
 ## Success looks like
 
-- Agents and humans can install Skill Steward meta-skills without confusion about scope.
-- Product repos adopt our harness + FAQ patterns via installed skills.
-- The repo stays small enough to maintain; stale plans do not accumulate.
+- Apps, libraries, tools, plugins, harnesses, and meta repos can adopt a small stewardship baseline without pretending they are all harness repos.
+- Agents and humans can install Skill Steward skills without confusion about scope or delivery surface.
+- Adopted repos provide cold-start legibility evidence so fresh agents can begin without hidden local context.
+- Cold exploration compounds into hot paths: future fresh agents solve related problems faster, with the same or stronger proof and safety bar.
+- Quality claims are backed by type-native gates, eval cases, benchmark summaries, or explicit blocked evidence.
+- Growth decisions are reversible: repeated patterns can promote to docs, APIs, schemas, generated code, actions, or skills, and stale layers can be collapsed or deleted.
+- The repo stays small enough to maintain; stale plans do not accumulate; domain tutorials live elsewhere.
 
 ## References
 
 - [ADR 0001 — repository purpose](decisions/0001-repository-purpose-as-skills-meta-layer)
 - [ADR 0008 — Skill Steward product name](decisions/0008-adopt-skill-steward-product-name)
-- [Skill: ethical-stewardship](https://github.com/arenukvern/skill_steward/blob/main/skills/ethical-stewardship/SKILL.md) — governance model (Anti-Bloat, Reversibility, Legibility, Behavior-as-Truth, Artisan Restraint)
+- [ADR 0017 — cold-start contracts before diagnostics](decisions/0017-cold-start-contracts-before-diagnostics)
+- [ADR 0018 — cold-to-hot path usefulness](decisions/0018-cold-to-hot-path-usefulness)
+- [ADR 0025 — steward presence readiness signs](decisions/0025-steward-presence-readiness-signs)
+- [Repo quality contracts](repo-quality-contracts)
+- [Concept: stewardship loop](core/stewardship-loop)
+- [Concept: distribution boundaries](core/distribution-boundaries)
+- [Concept: evidence ladder](core/evidence-ladder)
+- [Concept: docs lattice](core/doc-lattice)
+- [Concept: generational architecture ladder](core/generational-architecture-ladder)
+- [Skill: repository-governance-lifecycle](https://github.com/arenukvern/skill_steward/blob/main/skills/repository-governance-lifecycle/SKILL.md)
+- [Skill: repo-quality-system-lifecycle](https://github.com/arenukvern/skill_steward/blob/main/skills/repo-quality-system-lifecycle/SKILL.md)
 - [Harness engineering (OpenAI)](https://openai.com/index/harness-engineering/)
 - [FAQ-driven development](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl)

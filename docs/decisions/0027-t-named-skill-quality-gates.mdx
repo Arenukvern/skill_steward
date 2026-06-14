@@ -1,0 +1,92 @@
+---
+status: accepted
+date: 2026-06-13
+decision-makers: Skill Steward maintainers
+consulted:
+informed:
+---
+
+# T-named skill quality gates
+
+## Context and Problem Statement
+
+ADR 0011 introduced skill eval tiers, but labels such as "Tier 1" and
+"Tier 2" were easy to read as rank, maturity, or importance. The real
+distinction is operational: some skills are behavior-critical and need
+rule-based routing gates, while others need structural validation only.
+
+The tier ladder is still useful because compact IDs let docs, code, and CI
+refer to the same gate. The names around those IDs need to explain the reason
+for the gate.
+
+## Decision Drivers
+
+* **Legibility** — agents should know why a skill is gated without memorizing
+  ADR history.
+* **Non-overclaiming** — T1 must not sound like maturity, production behavior,
+  or real-agent proof.
+* **Stable references** — compact IDs such as `T1` and `T2` are useful in code,
+  docs, CI output, and checklists.
+* **Anti-bureaucracy** — new tiers add maintenance and should not appear just
+  because a skill feels important.
+
+## Decision Outcome
+
+Use stable `T{N}` IDs plus descriptive names:
+
+| ID | Name | Meaning | Gate |
+|----|------|---------|------|
+| **T1** | **Behavior-critical eval-gated** | Skills whose routing or procedural drift can change agent decisions, claims, delegation, repo quality, governance, or evidence boundaries. | `pnpm run validate` plus `pnpm run eval`; at least two rule-based cases and `references/evals.md`. |
+| **T2** | **Structural validate-only** | Skills that must be well-formed, installable, and cited, but are not currently behavior-critical enough for routing evals. | `pnpm run validate`; optional eval notes when useful. |
+
+Human-facing docs should prefer `T1 behavior-critical` and `T2 structural`.
+Code identifiers should include both the stable ID and the reason, for example
+`t1BehaviorCriticalSkills`.
+
+## Creating New Tiers
+
+Create a new tier only when all of these are true:
+
+1. A repeated real failure cannot be represented honestly by T1, T2, offline
+   held-out evals, plugin-eval, native repo gates, or benchmark evidence.
+2. The proposed tier has a distinct owner, gate, failure mode, and non-claim.
+3. The gate is cheap and deterministic enough for its intended automation
+   layer, or explicitly offline if it is not.
+4. At least two existing skills or repo workflows would use the tier
+   immediately.
+5. An ADR names the migration path, code identifier, docs wording, validation
+   command, and removal/collapse condition.
+
+Reasons against adding a new tier:
+
+* The difference is only severity or prestige, not a different gate.
+* A skill can move between T1 and T2 instead.
+* A native product test, benchmark, schema, or docs check owns the proof better.
+* The proposed gate needs an LLM judge in PR CI.
+* The tier would make agents optimize for labels instead of original goals,
+  native gates, and evidence boundaries.
+* One conversation or one failed run is the only signal.
+
+## Consequences
+
+* Good, because references stay compact while names explain the operational
+  reason for each gate.
+* Good, because future tiers require a proof burden and an ADR instead of
+  ad hoc naming.
+* Bad, because renaming touches docs, code identifiers, and tests.
+* Neutral, because this does not change the gate behavior of ADR 0011.
+
+## Confirmation
+
+* ADR 0011 names T1 as behavior-critical eval-gated and T2 as structural
+  validate-only.
+* `packages/steward_cli/lib/src/eval/eval_tiers.dart` uses descriptive code
+  identifiers for T1 behavior-critical skills.
+* `docs/STANDARDS.mdx`, `DX_FAQ`, `DESIGN_FAQ`, and `skill-eval-improve`
+  use the T-named vocabulary.
+
+## More Information
+
+* [ADR 0011 — T1/T2 skill quality gates and rule-based CI](0011-tiered-skill-evals-and-rule-based-ci)
+* [North Star](../NORTH_STAR)
+* Skill: `skill-eval-improve`

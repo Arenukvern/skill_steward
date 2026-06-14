@@ -1,0 +1,30 @@
+# Concept: docs lattice
+
+The docs lattice keeps different kinds of truth from collapsing into one giant README.
+
+| Layer | Owns | Canonical file in Skill Steward |
+|-------|------|---------------------------------|
+| Charter | Scope, boundaries, success, maturity | `docs/NORTH_STAR.mdx` |
+| Why | Standing decisions and rationale | `docs/DESIGN_FAQ.mdx`, `docs/decisions/` |
+| How | Commands and contributor workflows | `docs/DX_FAQ.mdx`, `CONTRIBUTING.md` |
+| Spec | Normative rules | `docs/STANDARDS.mdx`, `docs/repo-quality-contracts.mdx` |
+| Map | Where to go first | `AGENTS.md`, `docs/start_here/docs_map.mdx` |
+| Evidence | Claim-proof records, current ledgers, blocked states, templates, and historical provenance | `docs/evidence/`, `docs/core/evidence-artifacts.mdx` |
+| Behavior | Runtime truth | Code, schemas, validators, tests |
+| Procedure | Agent workflow | `skills/*/SKILL.md` |
+
+When a topic appears in multiple places, one page must be the canonical owner and the others should link to it.
+
+Keep decisions, evidence, and current truth separate: ADRs own durable choices, evidence artifacts own real runs or blockers, and current ledgers own the weakest claim that is true now. Historical evidence is provenance unless a current ledger points to it.
+
+For producer/consumer repo chains, the producer owns architecture, public contracts, release provenance, and compatibility claims. Consumer repos own adoption proof, local integration deltas, blocked state, and cutover commands. A consumer guide should link to the producer's canonical truth instead of copying it.
+
+## Adoption check
+
+Use this concept when a reader or agent could update the wrong document. Minimum artifact: one canonical owner plus links from every secondary mention.
+
+Do not duplicate implementation behavior in prose when code, schemas, tests, or generated artifacts already own the truth.
+
+When a document is no longer the canonical owner, choose a disposition: keep, merge, move to ADR, move to FAQ, move to skill, move to check, move to consumer proof, or delete.
+
+For broader cleanup across docs, plans, specs, skills, tools, schemas, and evidence, run a Repository Ecology Review through `repo-quality-system-lifecycle`. The doc lattice supplies owner and disposition rules; it is not the whole review by itself.

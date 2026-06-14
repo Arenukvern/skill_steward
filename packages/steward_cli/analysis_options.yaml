@@ -2,6 +2,9 @@
 include: package:xsoulspace_lints/library.yaml
 
 analyzer:
+  exclude:
+    - lib/src/contracts/*.freezed.dart
+    - lib/src/contracts/*.g.dart
   language:
     strict-casts: true
   errors:

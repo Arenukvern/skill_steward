@@ -2,6 +2,7 @@
 name: release-changelog-harness
 description: Chooses ecosystem-native release and changelog tooling (Changesets, Melos, release-plz) plus binary distribution (GitHub Release tarballs, install.sh) when the product is an executable. Use for release CI, install.sh, versioning, CHANGELOGs, shipping MCP/CLI without clone, or meta repos that only ship skills via npx skills—not domain app tutorials.
 license: MIT
+type: governance
 metadata:
   author: skill-steward
   version: "1.1.0"
@@ -59,7 +60,6 @@ Before picking a tool, agree the repo obeys:
 | Dart monorepo (`melos.yaml`) | [Melos](https://melos.invertase.dev/) `version` + changelog | Align with pub publish order in DX_FAQ. |
 | Single Dart package | `CHANGELOG.md` + git tag + `dart pub publish` | Keep entries agent-editable markdown. |
 | Rust workspace | [release-plz](https://github.com/MarcoIeni/release-plz) or cargo-release + git-cliff | Prefer automation that opens version PRs. |
-| Meta / skills-only (Skill Steward) | [Changesets](https://github.com/changesets/changesets) + `CHANGELOG.md` + git tag ([ADR 0009](../../docs/decisions/0009-adopt-changesets-for-repo-releases.mdx)) | Repo semver only; skills unversioned; document consumer impact in `.changeset/*.md`. |
 | Product harness w/ binaries | release-please + tag CI + `install.sh` | **Do not** add a second version source; follow [binary-release-contract.md](references/binary-release-contract.md) |
 | Meta / skills-only (Skill Steward) | Changesets + tag CI + `install.sh` | Version synchronized with CLI binary releases via [binary-release-contract.md](references/binary-release-contract.md) per [ADR 0014](../../docs/decisions/0014-distribute-steward-cli-as-binary.mdx) |
 
@@ -70,13 +70,13 @@ Full matrix: [ecosystem-tooling.md](references/ecosystem-tooling.md). Binary/ins
 - “We should use Changesets like the JS community”
 - Release process is unclear, versions drift, or agents can’t tell what shipped
 - Adding release CI, versioning policy, or monorepo publish workflow
-- Auditing whether changelog tooling matches repo archetype (`mcp-harness-repo-maintainer`)
+- Auditing whether changelog tooling matches repo archetype (`repo-quality-system-lifecycle`)
 
 ## Workflow
 
 ### 1. Classify the repo
 
-Use `mcp-harness-repo-maintainer` archetype (product MCP, platform lib, harness, meta steward). **Meta and harness repos** need legibility; **app repos** need legibility **and** runtime compatibility notes.
+Use `repo-quality-system-lifecycle` archetypes (app, library, CLI/tool, plugin, harness, meta/governance). **Meta and harness repos** need legibility; **app repos** need legibility **and** runtime compatibility notes.
 
 ### 2. Choose generator (ADR if non-obvious)
 
@@ -165,11 +165,10 @@ Publish: project-specific (`changeset publish`, GitHub Action, or npm provenance
 
 | Skill | Use for |
 |-------|---------|
-| `harness-engineering-culture` | Mechanical gates, docs as SSOT |
-| `faq-driven-docs` | DX_FAQ release commands |
-| `adr-records` | Record toolchain choice |
-| `mcp-harness-repo-maintainer` | Archetype + sibling release consistency |
-| `north-star-governance` | Don’t leave release plans as permanent plan files |
+| `repo-quality-system-lifecycle` | Repo archetype, mechanical gates, evidence path |
+| `mcp-harness-repo-maintainer` | Typed actions, probes, benchmarks, CLI/MCP parity |
+| `repository-governance-lifecycle` | ADRs, DESIGN_FAQ/DX_FAQ updates, and plan hygiene |
+| `skill-source-citations` | Durable release-tooling sources |
 
 ## Install
 

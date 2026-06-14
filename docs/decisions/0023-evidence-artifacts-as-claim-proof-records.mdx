@@ -1,0 +1,100 @@
+# 0023. Evidence Artifacts as Claim-Proof Records
+
+Date: 2026-06-12
+
+## Status
+
+Accepted
+
+## Context
+
+Skill Steward now has several evidence-like artifacts: current dogfood ledgers, adoption runs, protocol smoke packets, pattern promotion reviews, PDSA records, benchmark summaries, unknown cases, and templates. This is useful because agent-operated repositories need traceable proof boundaries. It is also risky because evidence can become another archive where stale plans, templates, and old runs look authoritative.
+
+ADRs, evidence artifacts, and current ledgers serve different jobs:
+
+- ADRs record durable decisions and consequences.
+- Evidence artifacts record observations, proof, blockers, and limitations from real runs.
+- Current ledgers point to what is true now and downgrade historical evidence to provenance.
+
+The repository needs a light evidence discipline that preserves proof without creating a paperwork swamp.
+
+## Decision
+
+Treat evidence artifacts as **claim-proof records**.
+
+An evidence artifact is justified only when it does at least one of these:
+
+- protects a claim from overstatement,
+- preserves a blocked state a future agent must not misread,
+- records a real run with commands, results, limitations, and non-claims,
+- justifies a durable change to docs, skills, schemas, CLI behavior, harness contracts, or governance,
+- teaches a future agent a shorter or safer path without lowering the evidence bar.
+
+Do not use evidence as a plan archive, template dumping ground, or scorecard. If an artifact does not protect a claim, preserve a blocker, record a real run, or justify durable change, extract any useful truth into ADR, FAQ, skill, check, code, or current ledger, then remove it.
+
+Keep one current ledger per active claim scope. Historical PDSA notes, proof packets, and benchmark summaries remain provenance unless the current ledger says they still hold. PDSA evidence is allowed only when it changes future behavior; it is not an iteration diary. When evidence repeats the same blocked state without changing the next action, repair the blocker, move the deterministic lesson into a check/tool/skill, or retire the duplicate route.
+
+Every new durable evidence artifact should carry a lightweight envelope:
+
+```yaml
+status: current | historical | superseded | template | retired
+evidence_type: benchmark | adoption_run | pdsa | pattern_review | postmortem | unknown_case | ledger | reference
+date:
+scope:
+claim_tested:
+proof_level:
+commands_or_sources:
+result:
+limitations:
+non_claims:
+next_disposition:
+current_status_pointer:
+```
+
+Existing evidence does not need a single mechanical migration. Add the envelope first to current and newly edited evidence, then migrate older artifacts only when they are touched or when a current ledger depends on them.
+
+## Considered Options
+
+* **Keep evidence informal.** Rejected because informal evidence lets stale or blocked runs become accidental proof.
+* **Turn every run into evidence.** Rejected because this would create volume without judgment and make maturity look like artifact count.
+* **Replace ADRs with evidence records.** Rejected because decisions and observations have different ownership.
+* **Create a strict universal evidence template.** Rejected because benchmark summaries, current ledgers, PDSA notes, adoption runs, and unknown cases need different bodies.
+* **Standardize a lightweight envelope and retention rule.** Accepted because it keeps evidence useful while preserving artifact-specific shape.
+
+## Decision Outcome
+
+Chosen: **lightweight evidence envelopes plus retention/disposition discipline**.
+
+Current status belongs in current ledgers. Durable decisions belong in ADRs. Repeated deterministic truth should move into checks, schemas, CLI diagnostics, tests, or harness probes. Historical evidence remains provenance only when a current ledger or ADR still links to it.
+
+Fresh blocked command output should be routed directly to `steward blocked explain --stdin --json` when available. Persisted summaries should be used for retained history and current ledgers, not as a prerequisite for understanding the current blocker.
+
+## Consequences
+
+* Good, because agents can distinguish current proof from historical provenance.
+* Good, because evidence can protect blocked states without being mistaken for readiness.
+* Good, because templates and plans get routed out of evidence unless explicitly marked and justified.
+* Good, because repeated evidence can promote into checks and tools instead of more prose.
+* Good, because agents no longer need to create or refresh evidence artifacts merely to classify a fresh blocked JSON result.
+* Bad, because new evidence artifacts require a small amount of metadata.
+* Bad, because older artifacts will be mixed until touched.
+* Mitigation: migrate only current/new evidence first; do not run a broad archive churn pass.
+
+## Confirmation
+
+* [Evidence artifacts](../core/evidence-artifacts) defines the envelope and retention rules.
+* [Evidence ladder](../core/evidence-ladder) separates exact claims from proof level.
+* `repository-governance-lifecycle` routes ADR versus evidence versus FAQ versus check.
+* `repo-quality-system-lifecycle` includes evidence status in ecology review dispositions.
+* `mcp-harness-repo-maintainer` treats persisted summaries as machine evidence and console-only runs as session evidence unless captured.
+* `mixture-of-experts` includes an Evidence / Retention QA lens.
+* Current dogfood/adopter status is routed through one ledger; historical PDSA packets are provenance, not active proof.
+
+## More Information
+
+* [Evidence artifacts](../core/evidence-artifacts)
+* [Evidence ladder](../core/evidence-ladder)
+* [Doc lattice](../core/doc-lattice)
+* [Plan hygiene](../start_here/executable-plans)
+* [ADR 0019 — Pattern Promotion Review as lens and proof loop](0019-pattern-promotion-review-as-lens-and-proof-loop)
+* [ADR 0022 — Repository Ecology Review and Snapshot](0022-repository-ecology-review-and-snapshot)

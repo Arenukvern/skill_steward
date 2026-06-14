@@ -4,6 +4,8 @@
 
 This page explains **why** plan artifacts should not stay in the repo as source of truth after work finishes — and **where** durable knowledge should go instead.
 
+The same instinct applies to overgrown non-plan docs: keep the canonical owner, merge or delete duplicate surfaces, and move deterministic repeated truth into checks instead of prose. For broader plans/specs/docs/skills/tools/evidence cleanup, run a Repository Ecology Review through `repo-quality-system-lifecycle`; plan hygiene is one ecology case, not the umbrella.
+
 ## The rule (format-agnostic)
 
 When work is **done**:
@@ -22,12 +24,28 @@ Plans are **scratch paper**, not documentation. Keeping finished checklists in-t
 | Behavior, gates, automation | Code, CI, CLI, MCP, `plugins/` |
 | Repeatable agent procedure | `skills/{name}/SKILL.md` |
 | Charter / scope change | [North Star](../NORTH_STAR) + ADR if significant |
+| Real run proof or blocked state | [Evidence artifact](../core/evidence-artifacts) only when it protects a claim or changes future behavior |
+
+## Doc retirement dispositions
+
+When a cleanup finds stale or overlapping docs, choose one explicit disposition:
+
+| Disposition | Use when |
+|-------------|----------|
+| Keep | This is the canonical owner and still current. |
+| Merge | Another live guide should absorb the remaining truth. |
+| Move to ADR | The durable value is a decision or trade-off. |
+| Move to FAQ | The durable value is standing why/how guidance. |
+| Move to skill | The durable value is repeatable agent procedure. |
+| Move to check | The durable value is deterministic failure, drift, or generated freshness. |
+| Move to consumer proof | The producer owns architecture; this repo only needs adoption evidence or local deltas. |
+| Delete | The content is implemented, stale, duplicated, or no longer useful after extraction. |
 
 ## Any planning tool is fine
 
 | You might use… | Guild stance |
 |----------------|--------------|
-| [Superpowers](https://github.com/obra/superpowers) / spec-driven programs | OK — use `docs/superpowers/` (or equivalent) in **your** repo; see `concept-doc-store` skill |
+| [Superpowers](https://github.com/obra/superpowers) / spec-driven programs | OK — use `docs/superpowers/` (or equivalent) in **your** repo; see `repository-governance-lifecycle` skill |
 | Cursor / Codex session plans | OK — ephemeral by default |
 | `docs/exec-plans/active/` in this repo | **Optional** scratch only; not a standard |
 | Issues / Projects | OK — tracking outside git truth |
@@ -47,15 +65,19 @@ Plans are **scratch paper**, not documentation. Keeping finished checklists in-t
 - Finished checklists left in `ROADMAP.md`, `docs/plans/`, or `TODO.md` as if still current
 - Duplicate plan + ADR with the same “truth”
 - Archived phase plans executed as if they were the live tracker (use tracker/spec + closure in Superpowers-style layouts, or delete/archive)
+- Consumer docs that copy producer architecture instead of linking to the owner and recording local proof
+- Repeated operational prose that should be a validator, generator freshness check, test, or harness probe
+- Completed plans converted into evidence even though they record no real run, blocker, claim boundary, or future behavior change
 
 ## Agent workflow
 
 1. Read [North Star](../NORTH_STAR) before multi-step work.
 2. Plan with **whatever** the user or product repo already uses.
 3. On completion: extract → ADR / FAQ / code / skill → **remove** the plan file.
-4. Update [docs_map](docs_map) only if navigation changed.
+4. For doc cleanup, name the retirement disposition before deleting or merging.
+5. Update [docs_map](docs_map) only if navigation changed.
 
 ## Related
 
-- Skill: `north-star-governance`
+- Skill: `repository-governance-lifecycle`
 - [ADR 0005 — docs.page + ephemeral plans doctrine](../decisions/0005-executable-plans-and-docs-page)

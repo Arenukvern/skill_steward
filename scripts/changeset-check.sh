@@ -26,7 +26,7 @@ fi
 needs=false
 for f in "${CHANGED[@]}"; do
   case "$f" in
-    skills/*|plugins/*|docs/*|package.json|pnpm-lock.yaml|skills.sh.json|README.md|AGENTS.md|docs.json|CONTRIBUTING.md|CHANGELOG.md|scripts/*|.github/workflows/*)
+    skills/*|plugins/*|docs/*|packages/steward_cli/*|steward.yaml|package.json|pnpm-lock.yaml|skills.sh.json|README.md|AGENTS.md|docs.json|CONTRIBUTING.md|CHANGELOG.md|scripts/*|.github/workflows/*)
       needs=true
       break
       ;;

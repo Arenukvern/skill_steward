@@ -1,0 +1,56 @@
+# H4 fresh-agent workflow check — 2026-06-08
+
+**Status:** blocked evidence · **Audience:** maintainers and agents
+
+This fixture records a Harness QA lens against the Skill Steward repo after the North Star alignment pass. It is intentionally strict: a blocked result is preserved as product evidence instead of being converted into a readiness claim.
+
+## Scope
+
+Check whether a fresh agent can use declared repo surfaces to prove the current contract smoke path before falling back to raw shell exploration.
+
+## Repo state
+
+- Worktree state: dirty.
+- Contract-relevant state: `steward.yaml` modified.
+- Untracked local state: `docs/evidence/` and `scratch/`.
+
+## Declared surfaces used first
+
+1. `AGENTS.md`
+2. `docs/NORTH_STAR.mdx`
+3. `docs/core/evidence-ladder.mdx`
+4. `steward.yaml`
+5. `steward/scenarios/skill-steward-contract-status-smoke.yaml`
+
+## Commands and actions exercised
+
+| Surface | Result |
+|---------|--------|
+| Global `steward doctor --json` | Blocked: installed global `steward` did not expose contract commands. |
+| Global `steward actions list --json` | Blocked: installed global `steward` did not expose contract commands. |
+| Global `steward action inspect steward.contract.status.quick --json` | Blocked: installed global `steward` did not expose contract commands. |
+| Global `steward probe --profile quick --json` | Blocked: installed global `steward` did not expose contract commands. |
+| Declared action-equivalent git status command | Passed and reported `M steward.yaml`. |
+| Repo-local dev CLI: `cd packages/steward_cli && dart run :steward doctor --json` | Passed after using the checkout-local entrypoint. |
+| Repo-local dev CLI: `cd packages/steward_cli && dart run :steward actions list --json` | Passed. |
+| Repo-local dev CLI: `cd packages/steward_cli && dart run :steward action inspect steward.contract.status.quick --json` | Passed. |
+| Repo-local dev CLI: `cd packages/steward_cli && dart run :steward probe --profile quick --json` | Passed and observed dirty `steward.yaml`. |
+| Repo-local strict benchmark | Blocked with `blocked_by: durability_blocked` because `steward.yaml` is dirty. |
+
+## Evidence level reached
+
+| Claim | Status |
+|-------|--------|
+| H1 local contract declared | Reached. |
+| H2 smoke loop proven | Not reached. Strict benchmark returned `result: "blocked"`, not `result: "pass"`. |
+| H4 fresh-agent workflow proven | Not reached. The workflow surfaced an entrypoint mismatch and dirty contract input before durable proof. |
+
+## Product lesson
+
+The repo-local contract must name the checkout-local CLI entrypoint, not assume a globally installed `steward` binary is current. The contract now records `cd packages/steward_cli && dart run :steward` as the local CLI entrypoint for this repo.
+
+## Remaining non-proof
+
+- No durable H2 benchmark `pass` exists while `steward.yaml` is dirty.
+- No H4 workflow transcript proves a fresh agent completed a repo-specific workflow without hidden local context.
+- The next H4 fixture should run from a clean contract state and include task, repo state, declared surfaces used, commands/actions, outcome, and remaining gaps.

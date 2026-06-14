@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/arenukvern/skill_steward/schemas/action-candidate-v1.schema.json",
+  "title": "Steward action candidate v1",
+  "type": "object",
+  "required": ["schema", "candidate_id", "status", "repo", "source_unknown_cases", "proposed_action", "review", "promotion_gate"],
+  "properties": {
+    "schema": { "const": "steward/action-candidate/v1" },
+    "candidate_id": { "type": "string", "minLength": 1 },
+    "status": { "const": "action_candidate" },
+    "repo": { "type": "string", "minLength": 1 },
+    "source_unknown_cases": { "type": "array", "minItems": 1 },
+    "proposed_action": { "type": "object" },
+    "review": { "type": "object" },
+    "promotion_gate": { "type": "object" }
+  },
+  "additionalProperties": true
+}

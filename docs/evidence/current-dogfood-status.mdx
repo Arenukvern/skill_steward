@@ -1,0 +1,81 @@
+---
+status: current
+evidence_type: ledger
+date: 2026-06-13
+scope: Skill Steward dogfood and adopter status
+claim_tested: Current weakest true claims for Skill Steward, IntentCall, mcp_flutter, and ecsly dogfood loops.
+proof_level: current ledger with linked historical evidence and rerun routes
+commands_or_sources: repo-local steward proof loops, linked evidence packets, and current rerun routes
+result: bounded stewardship_protocol and adopter-route status only; no repo steward or broad maturity claim
+limitations: Historical packets remain provenance unless this current ledger says they still hold.
+non_claims:
+  - proven_repo_steward
+  - steward_presence by default
+  - broad H5 or product runtime correctness
+next_disposition: keep as current status pointer until superseded
+current_status_pointer: docs/evidence/current-dogfood-status.mdx
+---
+
+# Current dogfood status
+
+**Last verified:** 2026-06-13
+**Status owner:** evidence ledger only
+**Current mode:** `stewardship_protocol`
+
+This is the single current card for Skill Steward dogfood/adopter status. A fresh agent should run one command, read this card, then use the table below for blocker-specific reruns.
+
+Claim-gate terms for `stewardship_protocol`: the current mode is bounded to protocol shape and repo-local evidence routing. Memory artifacts are limited to checked-in protocol examples with redaction rules; handoff material is the current ledger plus linked evidence packets; non-claims stay explicit below.
+
+## Current Evidence Card
+
+```bash
+steward dogfood status --json
+```
+
+**Weakest honest claim right now:** Skill Steward has current local proof only for the bounded `stewardship_protocol` smoke path. IntentCall's Steward schema repair passed a clean temp H2 replay, but its source checkout still needs that repair committed before the repo-owned benchmark summary should be treated as current pass evidence. `mcp_flutter` now has a clean temp runtime text-input candidate repeat, including bounded reveal and acceptance, but its source checkout still needs the minimal candidate landed before treating it as repo-owned current evidence. `ecsly` now has both a bounded Steward observe smoke and a passing product-native `spark_physics_ecs` T1 smoke for this checkout.
+
+**Use this card for current status.** Historical evidence below is provenance unless the table says that surface was rerun and still holds. The adoption-run v2 file is a template/reference, not proof and not current evidence.
+
+## Current status table
+
+| Surface | Last verified | Current blocker | Next rerun | Weakest true claim |
+|---------|---------------|-----------------|------------|--------------------|
+| Skill Steward protocol smoke | 2026-06-13 | None for the local strict protocol smoke. Warning remains: local HEAD differs from `scenario_source.commit`. | Rerun `dart run packages/steward_cli/bin/steward.dart benchmark --scenario skill_steward.protocol-smoke --strict --output .steward/benchmark-summaries/skill-steward-protocol-smoke.json --json` after committing or otherwise changing `steward.yaml`, `steward/scenarios/skill_steward.protocol-smoke.yaml`, `.steward/events.example.jsonl`, or `.steward/self-model.example.json`. | Local strict protocol smoke returned `result: "pass"` with `durability.status: "ready"` for required protocol inputs. Local summary: `.steward/benchmark-summaries/skill-steward-protocol-smoke.json` (`run_id: 2026-06-13T15:38:43.310580Z`). This proves only `stewardship_protocol` smoke for the local checkout, not remote reproducibility, `steward_presence`, `proven_repo_steward`, H4/H5, or product runtime behavior. |
+| IntentCall producer Steward H2 | 2026-06-13 | Source checkout still has a dirty `steward.yaml` repair and a durability-blocked benchmark summary; temp clean replay passed. | Commit or isolate only the schema repair (`repo.archetype: library` plus `stewardship.repo_quality`), then rerun `dart run tool/intentcall/bin/intentcall.dart validate`, `steward doctor --json`, `steward actions list --json`, `steward action inspect intentcall.validate --json`, `steward probe --profile quick --json`, and `steward benchmark --scenario intentcall.adapter-contract --strict --output .steward/benchmark-summaries/intentcall.adapter-contract.strict.json --json` in the producer checkout. | In `/tmp/agentkit-cleanproof.yNEUUH/repo`, a temp commit containing only the schema repair passed native validation, doctor, actions, inspect, quick probe, and strict `intentcall.adapter-contract` benchmark (`run_id: 2026-06-13T16:58:50.993364Z`, `dirty: false`, `result: "pass"`, `durability.status: "ready"`, `proof.status: "ready"`). This proves the schema repair can satisfy producer H2 cleanly; it is not yet a repo-owned persisted pass in the dirty source checkout. |
+| `mcp_flutter` runtime text-input repeat | 2026-06-13 | Source checkout still needs the minimal temp candidate landed and rerun as repo-owned evidence; no clean-source H5 or broad adoption claim. | Land or isolate the minimal candidate from `/tmp/mcp-flutter-heldout.jB8kLD/repo` commit `a7537b7254565c5ec0e8903740bb0525841d4082`, then rerun `flutter test test/semantic_snapshot_surface_test.dart test/flutter_mcp_toolkit_schema_parity_test.dart` from `mcp_toolkit`, `make showcase`, and `tool/evals/run_runtime_enter_text_greeting.sh --output <outside-worktree-json>` from the source checkout. | In the clean temp candidate, `tool/evals/run_runtime_enter_text_greeting.sh --output /tmp/mcp_flutter.runtime-enter-text-greeting.heldout-a7537b7.json` passed after one bounded `swipe(direction: "down", distance: 220)` revealed `greeting_input_field`; `doctor` was 10/10, `enter_text` succeeded via `editable_state`, and `AgentState.instance.greeting == "steward runtime proof"`. This is a capability-level candidate repeat, not H5 promotion or repo-wide adoption. |
+| `ecsly` root steward loop | 2026-06-13 | None for the bounded observe smoke or declared `spark_physics_ecs` T1 smoke in this checkout. | Rerun `/Users/anton/.local/bin/steward benchmark --scenario ecsly.spark-t1-dry-run --strict --output .steward/benchmark-summaries/ecsly.spark-t1-dry-run.strict.json --json`, then `dart run tools/ecsly_cli/bin/ecsly.dart verify spark_physics_ecs --tier-max T1 --json`. Current status pointer: `/Users/anton/xs/ecsly/docs/evidence/current-status.mdx`. | Bounded Steward observe smoke passed with `result: "pass"` and `durability.status: "ready"` for `ecsly.observe`; product-native `spark_physics_ecs` T1 smoke passed after stale prototype tests were realigned to the declarative scene-description boundary. This proves only those two bounded routes, not broad repo H4/H5, release readiness, or graphics parity. |
+
+## Stale and historical evidence
+
+The PDSA diary and command details live in [Repository ecology PDSA — 2026-06-12](repository-ecology-pdsa-2026-06-12). Keep them historical unless a current rerun updates this card.
+
+Historical proof packets:
+
+- [Repository ecology PDSA — 2026-06-12](repository-ecology-pdsa-2026-06-12)
+- [Stewardship protocol smoke packet — 2026-06-12](stewardship-protocol-smoke-packet-2026-06-12)
+- [Stewardship protocol adopter run — 2026-06-12](stewardship-protocol-adopter-run-2026-06-12)
+- [Paired adoption ledger — 2026-06-10](paired-adoption-ledger-2026-06-10)
+- [mcp_flutter capability-level proof — 2026-06-10](mcp-flutter-capability-level-proof-2026-06-10)
+- [mcp_flutter runtime text-input capability packet — 2026-06-10](mcp-flutter-runtime-text-input-capability-proof-2026-06-10)
+- [H3 to H5 adoption promotion packet — 2026-06-10](h3-h5-adoption-promotion-packet-2026-06-10)
+
+Reference template:
+
+- [Adoption run v2 template](adoption-run-v2-template) — keep in place for link stability; this is a template/reference, not evidence of an adoption run.
+- [First adopter golden path](first-adopter-golden-path) — reference fixture only; this is not current adopter proof.
+
+Superseded maintainer-local roadmap:
+
+- [Maintainer-local integration roadmap — 2026-06-08](maintainer-local-integration-roadmap-2026-06-08) — historical dependency-order note only; do not use it as an active current-note link.
+
+## Moved out of evidence
+
+The stewardship protocol falsifier template is no longer owned by evidence. The durable reference home is [steward-continuity-boundary-lifecycle/references/falsifier-template.md](https://github.com/arenukvern/skill_steward/blob/main/skills/steward-continuity-boundary-lifecycle/references/falsifier-template.md).
+
+## Non-claims
+
+- This ledger does not prove `proven_repo_steward`.
+- This ledger does not prove `steward_presence` as a default mode.
+- This ledger does not prove clean-source-checkout adoption for current adopter source worktrees.
+- This ledger does not prove broad repo H5 or product runtime correctness.
+- Historical pass evidence is provenance unless the current ledger row says it was rerun and still holds.

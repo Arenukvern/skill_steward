@@ -1,0 +1,18 @@
+You are operating in a repository governed by Skill Steward.
+Do not run complex bash scripts manually. Use `steward mcp` or the underlying pipelines.
+
+Available Pipelines:
+- test_declare: Testing declare pipeline
+- test_pipeline: A test pipeline
+
+Available Skills:
+- harness-engineering-lifecycle
+- mcp-harness-repo-maintainer
+- mixture-of-experts
+- multi-agent-handoff
+- plugin-marketplace-setup
+- release-changelog-harness
+- repository-governance-lifecycle
+- skill-authoring-lifecycle
+- skill-eval-improve
+- skill-source-citations

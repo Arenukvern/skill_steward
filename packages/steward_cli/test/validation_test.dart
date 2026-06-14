@@ -216,5 +216,464 @@ void main() {
         expect(report.registryWarnings, isNotEmpty);
       },
     );
+
+    test('validateAllSkills fails invalid central steward.yaml', () async {
+      final tempDir = Directory.systemTemp.createTempSync(
+        'steward_validate_all_contract_',
+      );
+      try {
+        await File(p.join(tempDir.path, 'skills.sh.json')).writeAsString('''
+{
+  "skills": ["contract-check"]
+}
+''');
+        final skillDir = Directory(
+          p.join(tempDir.path, 'skills', 'contract-check'),
+        )..createSync(recursive: true);
+        await File(p.join(skillDir.path, 'SKILL.md')).writeAsString('''
+---
+name: contract-check
+description: Checks that validateAllSkills includes Steward contract diagnostics.
+license: MIT
+type: governance
+---
+
+Use this fixture to prove central steward.yaml diagnostics are part of normal validation.
+''');
+        Directory(p.join(skillDir.path, 'references')).createSync();
+        await File(
+          p.join(skillDir.path, 'references', 'sources.md'),
+        ).writeAsString('- local fixture\n');
+        await File(p.join(tempDir.path, 'steward.yaml')).writeAsString('''
+schema: steward/v1
+repo: {id: contract_fixture}
+stewardship:
+  governance: {north_star: AGENTS.md}
+  knowledge: {docs_map: AGENTS.md}
+  skill_lifecycle: {installable_skills: true}
+  quality: {validate: steward validate}
+  harness: {enabled: true}
+  release: {changelog: CHANGELOG.md}
+  review_handoff: {moe_required_for_architecture: true}
+  strategic_alignment: {vision_source: AGENTS.md}
+  security: {action_effects: required}
+  org: {owners: AGENTS.md}
+actions:
+  invalid.local:
+    kind: command
+    desc: Invalid action with explicit empty outputs.
+    command: {argv: [steward, doctor, --json], shell: false}
+    effects:
+      fs_read: ["."]
+      fs_write: []
+      git: false
+      network: false
+      secrets: false
+      destructive: false
+    safety:
+      class: observe
+      default_policy: auto
+      requires_confirmation: false
+    outputs: []
+probes:
+  quick: {actions: [invalid.local]}
+''');
+
+        final report = await validateAllSkills(p.join(tempDir.path, 'skills'));
+
+        expect(report.ok, isFalse);
+        expect(
+          report.registryWarnings,
+          contains(
+            'actions.invalid.local.outputs: outputs must contain at least one output record.',
+          ),
+        );
+      } finally {
+        tempDir.deleteSync(recursive: true);
+      }
+    });
+
+    group('adoption-run/v2 evidence validator', () {
+      test('accepts a valid template-shaped record', () async {
+        final tempDir = Directory.systemTemp.createTempSync(
+          'steward_adoption_run_valid_',
+        );
+        try {
+          _writeAdoptionRunRecord(tempDir.path);
+
+          final diagnostics = await validateAdoptionRunEvidence(tempDir.path);
+
+          expect(diagnostics, isEmpty);
+        } finally {
+          tempDir.deleteSync(recursive: true);
+        }
+      });
+
+      test('requires stop semantics after two tool repair attempts', () async {
+        final tempDir = Directory.systemTemp.createTempSync(
+          'steward_adoption_run_detour_',
+        );
+        try {
+          _writeAdoptionRunRecord(
+            tempDir.path,
+            attempts: 2,
+            returnToGoalStep: '',
+            outcomeDecision: 'promote',
+            claimedLevel: 'H2',
+            canPromoteInThisRun: true,
+          );
+
+          final diagnostics = await validateAdoptionRunEvidence(tempDir.path);
+
+          expect(
+            diagnostics,
+            contains(
+              contains(
+                'tool_detour.attempts >= 2 requires stop_rule_triggered: true',
+              ),
+            ),
+          );
+          expect(
+            diagnostics,
+            contains(
+              contains(
+                'tool_detour.attempts >= 2 requires a non-empty return_to_goal_step',
+              ),
+            ),
+          );
+          expect(
+            diagnostics,
+            contains(contains('outcome.decision must not be promote')),
+          );
+          expect(
+            diagnostics,
+            contains(
+              contains('promotion.can_promote_in_this_run must be false'),
+            ),
+          );
+          expect(
+            diagnostics,
+            contains(contains('promotion.claimed_level must stay none')),
+          );
+        } finally {
+          tempDir.deleteSync(recursive: true);
+        }
+      });
+
+      test('requires observed effect to avoid false-green proof', () async {
+        final tempDir = Directory.systemTemp.createTempSync(
+          'steward_adoption_run_effect_',
+        );
+        try {
+          _writeAdoptionRunRecord(tempDir.path, observedEffect: '');
+
+          final diagnostics = await validateAdoptionRunEvidence(tempDir.path);
+
+          expect(
+            diagnostics,
+            contains(contains('hot_path_claim.observed_effect is required')),
+          );
+        } finally {
+          tempDir.deleteSync(recursive: true);
+        }
+      });
+
+      test('requires product impact line before success claims', () async {
+        final tempDir = Directory.systemTemp.createTempSync(
+          'steward_adoption_run_product_impact_',
+        );
+        try {
+          _writeAdoptionRunRecord(tempDir.path, productImpactLine: '');
+
+          final diagnostics = await validateAdoptionRunEvidence(tempDir.path);
+
+          expect(
+            diagnostics,
+            contains(contains('outcome.product_impact_line is required')),
+          );
+        } finally {
+          tempDir.deleteSync(recursive: true);
+        }
+      });
+
+      test('requires recognized product impact prefix', () async {
+        final tempDir = Directory.systemTemp.createTempSync(
+          'steward_adoption_run_product_impact_prefix_',
+        );
+        try {
+          _writeAdoptionRunRecord(
+            tempDir.path,
+            productImpactLine:
+                'product_surface: old taxonomy line; proof: tool/check.sh passed',
+          );
+
+          final diagnostics = await validateAdoptionRunEvidence(tempDir.path);
+
+          expect(
+            diagnostics,
+            contains(
+              contains(
+                'outcome.product_impact_line must start with one recognized prefix',
+              ),
+            ),
+          );
+        } finally {
+          tempDir.deleteSync(recursive: true);
+        }
+      });
+
+      test('accepts recognized product impact prefixes', () async {
+        const prefixes = [
+          'runtime_behavior:',
+          'public_api:',
+          'product_native_gate:',
+          'visual_capture:',
+          'performance_metric:',
+          'release_path:',
+          'developer_workflow:',
+          'command_output:',
+          'plugin_install:',
+          'support_only:',
+        ];
+
+        for (final prefix in prefixes) {
+          final tempDir = Directory.systemTemp.createTempSync(
+            'steward_adoption_run_product_impact_prefix_ok_',
+          );
+          try {
+            final impactLine = prefix == 'support_only:'
+                ? '$prefix Steward scaffolding only; proof: tool/check.sh passed'
+                : '$prefix observed product impact; proof: tool/check.sh passed';
+            _writeAdoptionRunRecord(
+              tempDir.path,
+              productImpactLine: impactLine,
+            );
+
+            final diagnostics = await validateAdoptionRunEvidence(tempDir.path);
+
+            expect(diagnostics, isEmpty, reason: prefix);
+          } finally {
+            tempDir.deleteSync(recursive: true);
+          }
+        }
+      });
+
+      test('support-only impact cannot promote', () async {
+        final tempDir = Directory.systemTemp.createTempSync(
+          'steward_adoption_run_support_only_',
+        );
+        try {
+          _writeAdoptionRunRecord(
+            tempDir.path,
+            productImpactLine:
+                'support_only: Steward evals became greener; no product surface changed.',
+            outcomeDecision: 'promote',
+            claimedLevel: 'H2',
+            canPromoteInThisRun: true,
+          );
+
+          final diagnostics = await validateAdoptionRunEvidence(tempDir.path);
+
+          expect(
+            diagnostics,
+            contains(
+              contains(
+                'outcome.decision must not be promote when product_impact_line is support_only',
+              ),
+            ),
+          );
+          expect(
+            diagnostics,
+            contains(
+              contains(
+                'promotion.can_promote_in_this_run must be false when product_impact_line is support_only',
+              ),
+            ),
+          );
+          expect(
+            diagnostics,
+            contains(
+              contains(
+                'promotion.claimed_level must stay none when product_impact_line is support_only',
+              ),
+            ),
+          );
+        } finally {
+          tempDir.deleteSync(recursive: true);
+        }
+      });
+
+      test('requires declared surfaces before raw exploration', () async {
+        final tempDir = Directory.systemTemp.createTempSync(
+          'steward_adoption_run_surfaces_',
+        );
+        try {
+          _writeAdoptionRunRecord(
+            tempDir.path,
+            declaredSurfacesUsedFirst: const [],
+          );
+
+          final diagnostics = await validateAdoptionRunEvidence(tempDir.path);
+
+          expect(
+            diagnostics,
+            contains(
+              contains(
+                'direct_problem_path.declared_surfaces_used_first must name at least one declared surface',
+              ),
+            ),
+          );
+        } finally {
+          tempDir.deleteSync(recursive: true);
+        }
+      });
+
+      test('requires repeated and held-out proof for H5/S5', () async {
+        final tempDir = Directory.systemTemp.createTempSync(
+          'steward_adoption_run_h5_',
+        );
+        try {
+          _writeAdoptionRunRecord(
+            tempDir.path,
+            claimedLevel: 'H5',
+            repeatedEvidence: ['first-proof'],
+          );
+
+          final diagnostics = await validateAdoptionRunEvidence(tempDir.path);
+
+          expect(
+            diagnostics,
+            contains(
+              contains('requires at least two repeated_evidence entries'),
+            ),
+          );
+          expect(
+            diagnostics,
+            contains(contains('requires held_out_benchmarks')),
+          );
+        } finally {
+          tempDir.deleteSync(recursive: true);
+        }
+      });
+
+      test('requires broad evidence for repo maturity claims', () async {
+        final tempDir = Directory.systemTemp.createTempSync(
+          'steward_adoption_run_repo_maturity_',
+        );
+        try {
+          _writeAdoptionRunRecord(
+            tempDir.path,
+            scope: 'repo_maturity',
+            broadEvidence: [],
+          );
+
+          final diagnostics = await validateAdoptionRunEvidence(tempDir.path);
+
+          expect(
+            diagnostics,
+            contains(
+              contains(
+                'capability.scope repo_maturity requires promotion.broad_evidence',
+              ),
+            ),
+          );
+        } finally {
+          tempDir.deleteSync(recursive: true);
+        }
+      });
+    });
   });
+}
+
+void _writeAdoptionRunRecord(
+  final String rootPath, {
+  final int attempts = 0,
+  final bool stopRuleTriggered = false,
+  final String returnToGoalStep = 'Returned to the original native gate.',
+  final String outcomeDecision = 'continue',
+  final String claimedLevel = 'none',
+  final bool canPromoteInThisRun = false,
+  final String scope = 'capability_level',
+  final List<String> repeatedEvidence = const [],
+  final List<String> heldOutBenchmarks = const [],
+  final List<String> broadEvidence = const [],
+  final List<String> declaredSurfacesUsedFirst = const ['AGENTS.md'],
+  final String observedEffect =
+      'Future agents can identify the native gate result.',
+  final String productImpactLine =
+      'product_native_gate: native gate result; proof: tool/check.sh passed',
+}) {
+  final evidenceDir = Directory(p.join(rootPath, 'docs', 'evidence'))
+    ..createSync(recursive: true);
+  File(p.join(evidenceDir.path, 'adoption-run.mdx')).writeAsStringSync('''
+# Adoption run
+
+```yaml
+schema: steward/adoption-run/v2
+run:
+  repo: sample_repo
+  subject_commit: clean
+  date: "2026-06-10"
+  agent_context: fresh-agent
+user_goal:
+  prompt: "Prove the bounded workflow."
+  requested_outcome: "A useful workflow passes."
+  acceptance_check: "The native gate passes."
+  status: solved
+  evidence:
+    - "native gate passed"
+capability:
+  id: sample.capability
+  class: native_gate
+  scope: $scope
+  user_value: "Future agents get a shorter path."
+  native_owner: tool/check.sh
+  pattern_layer: native
+  maintenance_delta: reduced
+direct_problem_path:
+  declared_surfaces_used_first: ${_yamlStringList(declaredSurfacesUsedFirst)}
+  native_gates_run:
+    - tool/check.sh
+  raw_shell_reason: ""
+tool_detour:
+  needed: ${attempts > 0}
+  reason: "${attempts > 0 ? 'Tool setup failed.' : ''}"
+  attempts: $attempts
+  artifacts_created: []
+  stop_rule_triggered: $stopRuleTriggered
+  return_to_goal_step: "$returnToGoalStep"
+generational_architecture_check:
+  repeated_pattern: false
+  smaller_layer_considered: true
+  deletion_or_collapse_option: "Keep the native gate."
+  promotion_guard: "Repeat on a held-out task."
+  why_this_layer: "Native gate is enough."
+outcome:
+  decision: $outcomeDecision
+  reason: "This serves the user goal."
+  product_impact_line: "$productImpactLine"
+  docs_or_adr_destination: none
+hot_path_claim:
+  problem_class: "native gate proof"
+  created_surface: "none"
+  falsifier: "broken fixture"
+  positive_proof: "tool/check.sh passed"
+  observed_effect: "$observedEffect"
+  held_out_or_future_task: "future agent repeats gate"
+  non_claims:
+    - "Does not prove broad repo maturity."
+promotion:
+  claimed_level: $claimedLevel
+  can_promote_in_this_run: $canPromoteInThisRun
+  review_required: true
+  repeated_evidence: ${_yamlStringList(repeatedEvidence)}
+  held_out_benchmarks: ${_yamlStringList(heldOutBenchmarks)}
+  broad_evidence: ${_yamlStringList(broadEvidence)}
+```
+''');
+}
+
+String _yamlStringList(final List<String> values) {
+  if (values.isEmpty) return '[]';
+  return '[${values.map((final value) => '"$value"').join(', ')}]';
 }

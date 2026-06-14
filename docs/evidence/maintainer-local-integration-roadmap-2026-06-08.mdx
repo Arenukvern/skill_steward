@@ -1,0 +1,23 @@
+# Maintainer-local integration roadmap — 2026-06-08
+
+**Status:** superseded historical maintainer-local roadmap · **Audience:** maintainers
+
+This note preserves the 2026-06-08 sibling-checkout dependency order for link stability and historical context. It is not current dogfood/adopter status, not general consumer adoption guidance, and not a public product promise.
+
+Use [Current dogfood status](current-dogfood-status) for the current weakest true claims, blockers, and rerun routes.
+
+## Rule
+
+When a roadmap crosses sibling repositories, record dependency order before claiming a repo is green. A local contract can pass while a downstream consumer is still blocked by an unpublished package or stale override.
+
+## Historical `~/mcp` / `~/xs` order
+
+The table below was the maintainer-local order on 2026-06-08. Treat it as provenance unless the current ledger repeats a row as still active.
+
+| Step | Repo | Role | Allowed next action | Required evidence | Do not touch |
+|------|------|------|---------------------|-------------------|--------------|
+| 1 | `agentkit` / IntentCall | Platform libraries | Make the release tree clean, configure pub.dev credentials, run real publish dry-run, then publish packages in documented order. | `just validate`, `just analyze`, `just test`, real `just publish-dry-run`, then pub.dev package pages for `intentcall_*`. | Do not fix `mcp_flutter` against local-only API shape before publish. |
+| 2 | `mcp_flutter` | Product MCP/toolkit consumer | Cut over from local path dependencies to hosted `intentcall_*` packages after publish. | `make check-intentcall-integration`, `make check-contracts`, and hosted dependency lockfile proof. | Do not publish IntentCall from this repo; `agentkit` is the publish SSOT. |
+| 3 | `flutter_harness` | CLI harness consumer | Refresh stale local overrides or hosted deps after `mcp_flutter` cutover. | `just check` plus a strict harness benchmark when contract inputs are stable. | Do not preserve old `agentkit_*` package paths after the IntentCall rename. |
+| 4 | `vitamins_quiz_bot` | App-local steward | Stabilize only contract inputs and redacted inspect proof. | `steward action inspect shippic.inspect.redacted --json` and redacted benchmark proof. | Keep `.env` and SQLite DB/WAL/SHM files as protected temporary local state; do not read, remove, or add them as contract inputs. |
+| 5 | `ecsly` | Product app | Refresh proof after higher-priority integration blockers are clear. | Native validation plus strict Steward benchmark when needed. | Do not treat a dirty product worktree as harness failure without contract evidence. |

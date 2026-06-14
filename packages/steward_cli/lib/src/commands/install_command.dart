@@ -4,6 +4,7 @@ import 'package:args/command_runner.dart';
 import 'package:path/path.dart' as p;
 
 import '../repo_root.dart';
+import '../validation/skill_frontmatter.dart';
 
 class InstallCommand extends Command<void> {
   InstallCommand() {
@@ -21,15 +22,21 @@ class InstallCommand extends Command<void> {
         allowed: ['cursor', 'claude', 'generic'],
         defaultsTo: 'generic',
       )
+      ..addOption(
+        'type',
+        help: 'Filter skill installation by type (governance | developer).',
+        allowed: ['governance', 'developer'],
+      )
       ..addFlag(
         'lock',
         help: 'Lock/pin the commit hash in skills.json.',
         defaultsTo: true,
       )
+      ..addFlag('force', abbr: 'f', help: 'Overwrite existing local skills.')
       ..addFlag(
-        'force',
-        abbr: 'f',
-        help: 'Overwrite existing local skills.',
+        'json',
+        help:
+            'Output structured diagnostic JSON instead of human-readable text.',
       );
   }
 
@@ -43,6 +50,7 @@ class InstallCommand extends Command<void> {
   Future<void> run() async {
     final isLocal = argResults!['local'] as bool;
     final target = argResults!['target'] as String;
+    final typeFilter = argResults!['type'] as String?;
     final lock = argResults!['lock'] as bool;
     final force = argResults!['force'] as bool;
 
@@ -52,10 +60,9 @@ class InstallCommand extends Command<void> {
       // 1. Install all skills from local skills.json
       final skillsJsonFile = File(p.join(root, 'skills.json'));
       if (!skillsJsonFile.existsSync()) {
-        stderr.writeln(
+        throw Exception(
           'No skill specified and no skills.json found in project root.',
         );
-        exit(1);
       }
 
       await _installFromConfig(
@@ -63,13 +70,22 @@ class InstallCommand extends Command<void> {
         root,
         isLocal,
         target,
+        typeFilter,
         lock,
         force,
       );
     } else {
       // 2. Install a specific skill
       final arg = argResults!.rest.first;
-      await _installSpecific(arg, root, isLocal, target, lock, force);
+      await _installSpecific(
+        arg,
+        root,
+        isLocal,
+        target,
+        typeFilter,
+        lock,
+        force,
+      );
     }
   }
 
@@ -78,6 +94,7 @@ class InstallCommand extends Command<void> {
     final String root,
     final bool isLocal,
     final String target,
+    final String? typeFilter,
     final bool lock,
     final bool force,
   ) async {
@@ -115,6 +132,7 @@ class InstallCommand extends Command<void> {
           root,
           isLocal,
           target,
+          typeFilter,
           lock,
           force,
         );
@@ -127,19 +145,26 @@ class InstallCommand extends Command<void> {
     final String root,
     final bool isLocal,
     final String target,
+    final String? typeFilter,
     final bool lock,
     final bool force,
   ) async {
     // Expected formats:
-    // - local path: e.g. "skills/ethical-stewardship"
-    // - repo/skill: e.g. "Arenukvern/skill_steward/ethical-stewardship"
+    // - local path: e.g. "skills/repository-governance-lifecycle"
+    // - repo/skill: e.g. "Arenukvern/skill_steward/repository-governance-lifecycle"
     // - repo only (installs all): e.g. "Arenukvern/skill_steward"
 
     if (Directory(arg).existsSync()) {
       // Local directory copy
       final skillName = p.basename(arg);
       final destDir = _getDestDir(root, isLocal, skillName);
-      await _copySkillDirectory(Directory(arg), destDir, target, force);
+      await _copySkillDirectory(
+        Directory(arg),
+        destDir,
+        target,
+        typeFilter,
+        force,
+      );
       return;
     }
 
@@ -158,14 +183,14 @@ class InstallCommand extends Command<void> {
         root,
         isLocal,
         target,
+        typeFilter,
         lock,
         force,
       );
     } else {
-      stderr.writeln(
+      throw Exception(
         'Invalid install target: $arg. Use local path or repo format (owner/repo/skill).',
       );
-      exit(1);
     }
   }
 
@@ -176,12 +201,11 @@ class InstallCommand extends Command<void> {
     final String root,
     final bool isLocal,
     final String target,
+    final String? typeFilter,
     final bool lock,
     final bool force,
   ) async {
-    final repoUrl = source.startsWith('http')
-        ? source
-        : 'https://github.com/$source.git';
+    final repoUrl = _repoUrlForSource(source, root);
     stdout.writeln('Cloning $repoUrl...');
 
     final tempDir = Directory(p.join(root, '.steward_temp'));
@@ -189,16 +213,36 @@ class InstallCommand extends Command<void> {
       await tempDir.delete(recursive: true);
     }
 
-    final cloneArgs = ['clone', '--depth', '1', repoUrl, tempDir.path];
-    if (pin != null) {
-      // Depth 1 clone of specific branch/ref
-      cloneArgs.addAll(['--branch', pin]);
+    final trimmedPin = pin?.trim();
+    final commitPin =
+        trimmedPin != null &&
+        RegExp(r'^[0-9a-fA-F]{7,40}$').hasMatch(trimmedPin);
+    final cloneArgs = ['clone'];
+    if (trimmedPin == null || trimmedPin.isEmpty) {
+      cloneArgs.addAll(['--depth', '1']);
+    } else if (!commitPin) {
+      cloneArgs.addAll(['--depth', '1', '--branch', trimmedPin]);
     }
+    cloneArgs.addAll([repoUrl, tempDir.path]);
 
     final cloneRes = await Process.run('git', cloneArgs);
     if (cloneRes.exitCode != 0) {
-      stderr.writeln('Failed to clone repository: ${cloneRes.stderr}');
-      return;
+      throw Exception('Failed to clone repository: ${cloneRes.stderr}');
+    }
+
+    if (commitPin) {
+      final checkoutRes = await Process.run('git', [
+        '-C',
+        tempDir.path,
+        'checkout',
+        '--detach',
+        trimmedPin,
+      ]);
+      if (checkoutRes.exitCode != 0) {
+        throw Exception(
+          'Failed to checkout commit $trimmedPin: ${checkoutRes.stderr}',
+        );
+      }
     }
 
     // Get the actual commit SHA for lock pinning
@@ -236,6 +280,7 @@ class InstallCommand extends Command<void> {
         targetsToInstall.addAll(skillNames);
       }
 
+      final List<String> successfullyInstalled = [];
       for (final skillName in targetsToInstall) {
         // Resolve skill source dir inside temp clone
         Directory? srcDir;
@@ -253,18 +298,31 @@ class InstallCommand extends Command<void> {
         }
 
         if (srcDir == null) {
-          stderr.writeln(
+          throw Exception(
             'Could not find skill "$skillName" in cloned repository.',
           );
-          continue;
         }
 
         final destDir = _getDestDir(root, isLocal, skillName);
-        await _copySkillDirectory(srcDir, destDir, target, force);
+        final success = await _copySkillDirectory(
+          srcDir,
+          destDir,
+          target,
+          typeFilter,
+          force,
+        );
+        if (success) {
+          successfullyInstalled.add(skillName);
+        }
       }
 
-      if (lock && commitSha != null) {
-        await _updateSkillsJsonLock(root, source, commitSha, targetsToInstall);
+      if (lock && commitSha != null && successfullyInstalled.isNotEmpty) {
+        await _updateSkillsJsonLock(
+          root,
+          source,
+          commitSha,
+          successfullyInstalled,
+        );
       }
     } finally {
       if (tempDir.existsSync()) {
@@ -284,18 +342,52 @@ class InstallCommand extends Command<void> {
     return Directory(p.join(root, 'skills', skillName));
   }
 
-  Future<void> _copySkillDirectory(
+  String _repoUrlForSource(final String source, final String root) {
+    final trimmed = source.trim();
+    if (trimmed.startsWith('http://') ||
+        trimmed.startsWith('https://') ||
+        trimmed.startsWith('ssh://') ||
+        trimmed.startsWith('git@') ||
+        trimmed.startsWith('file://')) {
+      return trimmed;
+    }
+
+    final localPath = p.isAbsolute(trimmed)
+        ? trimmed
+        : p.normalize(p.join(root, trimmed));
+    if (Directory(localPath).existsSync()) {
+      return localPath;
+    }
+
+    return 'https://github.com/$trimmed.git';
+  }
+
+  Future<bool> _copySkillDirectory(
     final Directory src,
     final Directory dest,
     final String target,
+    final String? typeFilter,
     final bool force,
   ) async {
+    final skillMdFile = File(p.join(src.path, 'SKILL.md'));
+    if (skillMdFile.existsSync() && typeFilter != null) {
+      final content = await skillMdFile.readAsString();
+      final parsed = parseFrontmatter(content);
+      final skillType = parsed['type'];
+      if (skillType != typeFilter) {
+        stdout.writeln(
+          'Skipping skill "${p.basename(src.path)}" (type "$skillType" != filter "$typeFilter").',
+        );
+        return false;
+      }
+    }
+
     if (dest.existsSync()) {
       if (!force) {
         stdout.writeln(
           'Skill already exists at ${dest.path}. Use --force to overwrite.',
         );
-        return;
+        return false;
       }
       await dest.delete(recursive: true);
     }
@@ -305,14 +397,15 @@ class InstallCommand extends Command<void> {
     await _copyDirectory(src, dest);
 
     // Profile translation on the output SKILL.md
-    final skillMdFile = File(p.join(dest.path, 'SKILL.md'));
     if (skillMdFile.existsSync()) {
       final content = await skillMdFile.readAsString();
       final translated = translateFrontmatter(content, target);
-      await skillMdFile.writeAsString(translated);
+      final finalSkillMdFile = File(p.join(dest.path, 'SKILL.md'));
+      await finalSkillMdFile.writeAsString(translated);
     }
 
     stdout.writeln('Successfully installed skill to ${dest.path}');
+    return true;
   }
 
   Future<void> _copyDirectory(final Directory src, final Directory dest) async {

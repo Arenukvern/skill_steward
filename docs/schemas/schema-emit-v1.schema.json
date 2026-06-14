@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/arenukvern/skill_steward/schemas/schema-emit-v1.schema.json",
+  "title": "Steward schema emit output v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "schema",
+    "source",
+    "valid",
+    "json_schema",
+    "diagnostics"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "default": "steward.schema.emit.v1"
+    },
+    "schema": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "valid": {
+      "type": "boolean"
+    },
+    "json_schema": {
+      "type": "object"
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

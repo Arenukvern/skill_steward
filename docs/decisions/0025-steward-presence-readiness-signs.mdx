@@ -1,0 +1,104 @@
+# 0025. Steward Presence Readiness Signs
+
+Date: 2026-06-13
+
+## Status
+
+Accepted
+
+## Context
+
+[ADR 0020](0020-ethical-boundaries-steward-personalities-and-tool-delegation) established explicit mode boundaries between steward presence, tool execution, and delegation. [ADR 0021](0021-protocol-first-steward-status-gates) made steward status protocol-first: start at `stewardship_protocol`; let `steward_presence` and `proven_repo_steward` earn their names through evidence.
+
+Recent design work on parallel acceleration showed the same shape in another domain: the right move is not always the smallest action, but the smallest truthful coordination unit. A broad repo pain may need several agents, a parent synthesis contract, and evidence boundaries. Steward presence needs the same discipline. It should not be entered because a task feels important, and it should not be blocked until proven steward status already exists.
+
+The missing layer is readiness: how an agent can tell that ordinary tool-execution is becoming too thin for the work, while still keeping `proven_repo_steward` as an earned status.
+
+## Decision
+
+Adopt a sign-based readiness lens for trying `steward_presence`.
+
+Steward presence readiness is detected by a constellation of repo signals, not by hand-picked special tasks or raw task importance. A repo is ready to try a bounded steward-presence run when ordinary tool-execution repeatedly loses continuity, judgment, boundaries, or claim honesty.
+
+The readiness ladder is:
+
+| Stage | Meaning | Evidence |
+|-------|---------|----------|
+| `P0 protocol exists` | Mode boundaries can be described. | Self-model schema, mode-event schema, protocol validation. |
+| `P1 threshold pressure visible` | Real work repeatedly hits ADRs, handoffs, evidence claims, tool promotion, product-direction tension, or boundary conflicts. | Current ledger, ADRs, repeated review comments, blocked evidence. |
+| `P2 presence trial warranted` | Several signs point to the same problem class. | Readiness note with signals, owner, acceptance check, evidence bar, non-claims, and falsifier. |
+| `P3 presence used once` | A real threshold task runs in `steward-presence`. | Mode event plus steward synthesis. |
+| `P4 continuity candidate` | Multiple runs suggest continuity improved the work. | Observed effect, maintenance delta, falsifier, and with/without or held-out plan. |
+| `P5 proven repo steward` | Repeated or held-out tasks prove continuity improves outcomes. | Structured comparison evidence; never just green commands. |
+
+Readiness signs include:
+
+- repeated threshold density: recent work repeatedly involves ADRs, evidence claims, handoffs, tool promotion, boundary conflicts, or product-direction tension;
+- continuity loss: agents keep rediscovering the same intent, risks, non-claims, or decisions;
+- claim fragility: work repeatedly needs "this proves X but not Y" discipline;
+- delegation pressure: parent synthesis, MoE, A2A, A2Human, or many-agent coordination is needed to avoid drift;
+- boundary pressure: tool output risks being treated as steward judgment, or handoffs risk identity merging or authority laundering;
+- hot-path opportunity: the same comparison or verification pattern recurs and could become a reusable check, schema, eval, benchmark, or skill update;
+- favorable maintenance delta: steward presence would reduce future confusion more than it adds ceremony.
+
+Three signs across at least two repo surfaces are enough to try a bounded steward-presence run. They are not enough to claim `proven_repo_steward`.
+
+The readiness record should stay compact:
+
+```markdown
+## Steward Presence Readiness Note
+
+Problem class:
+Signals observed:
+Surfaces:
+Why tool-execution is insufficient:
+Proposed threshold task:
+Acceptance check:
+Evidence bar:
+Non-claims:
+Falsifier:
+Continuity: temporary | persist candidate | do not persist
+```
+
+## Considered Options
+
+* **Pick two or three threshold tasks manually.** Rejected. This is useful for brainstorming but too implicit; future agents would not know why those tasks were selected.
+* **Require proven steward evidence before trying steward presence.** Rejected. This creates a circular gate: presence cannot be proven before it is tried.
+* **Enter steward presence for all governance-shaped work.** Rejected. This would inflate routine tool work into personality mode and weaken ADR 0020.
+* **Use sign-based readiness with a small artifact.** Accepted. It lets agents try presence when the repo shows real threshold pressure, while keeping claim ceilings honest.
+
+## Decision Outcome
+
+Chosen: **sign-based steward presence readiness**.
+
+`steward-continuity-boundary-lifecycle` owns the operational readiness lens and note shape. [North Star](../NORTH_STAR) owns the compact doctrine: readiness permits a bounded trial, not a status upgrade. [Evidence ladder](../core/evidence-ladder) owns the proof boundary between readiness, one steward-presence run, and proven repo steward status.
+
+This is not a new maturity model for the whole repository. It is a threshold detector for when steward presence may be the smallest truthful coordination unit.
+
+## Consequences
+
+* Good, because future agents can identify readiness from evidence rather than intuition.
+* Good, because the lens mirrors parallel acceleration: choose the smallest truthful coordination unit, not the smallest action.
+* Good, because `steward_presence` can be tried without weakening the proof bar for `proven_repo_steward`.
+* Good, because readiness notes are disposable unless they change future governance behavior.
+* Bad, because sign-counting can become a checkbox ritual if agents stop explaining the problem class and maintenance delta.
+* Bad, because three signs across two surfaces is a heuristic, not proof of usefulness.
+* Mitigation: keep readiness notes compact, require non-claims and falsifiers, and promote only repeated observed effect with held-out or future-agent evidence.
+
+## Confirmation
+
+* `stewardship_protocol` remains the default status.
+* `steward_presence` remains a threshold mode, not a default mode.
+* `proven_repo_steward` still requires repeated or held-out proof that continuity improves work.
+* Readiness notes do not replace mode events, parent synthesis, self-model validation, claim checks, or adoption evidence.
+* Tool-output and CLI/schema validation remain tool-mode unless a real threshold is named.
+
+## More Information
+
+* [North Star](../NORTH_STAR)
+* [Evidence ladder](../core/evidence-ladder)
+* [ADR 0018 — Cold-to-hot path usefulness](0018-cold-to-hot-path-usefulness)
+* [ADR 0020 — Ethical Boundaries for Steward Personalities and Tool Delegation](0020-ethical-boundaries-steward-personalities-and-tool-delegation)
+* [ADR 0021 — Protocol-First Steward Status Gates](0021-protocol-first-steward-status-gates)
+* [ADR 0024 — Loop Pain Extraction into Stewardship Patterns](0024-loop-pain-extraction-into-stewardship-patterns)
+* [ADR 0026 — Parallel Acceleration Governance](0026-parallel-acceleration-governance)

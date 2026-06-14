@@ -8,7 +8,7 @@ Neither `skill/` nor `plugin/` is installable via `npx skills`. They exist only 
 
 | Directory | Purpose | Target Location | Used By |
 |-----------|---------|------------------|---------|
-| `skill/` | Template for new **skills** | `skills/{name}/` | `create-skill` skill, manual contribution |
+| `skill/` | Template for new **skills** | `skills/{name}/` | `skill-authoring-lifecycle` skill, manual contribution |
 | `plugin/` | Template for new **plugins** (hooks, wiring) | `plugins/{id}/` | `plugin-marketplace-setup` skill, manual contribution |
 
 ## Why the separation?
@@ -27,12 +27,12 @@ Keeping the scaffolding templates co-located under `templates/` makes the distin
 ```bash
 cp -r templates/skill skills/my-skill-name
 # or
-npx skills add arenukvern/skill_steward --skill create-skill
+npx skills add arenukvern/skill_steward --skill skill-authoring-lifecycle
 ```
 
 See:
 - [DX_FAQ.mdx](../docs/DX_FAQ.mdx) (Add a skill section)
-- [skills/create-skill/SKILL.md](../skills/create-skill/SKILL.md)
+- [skills/skill-authoring-lifecycle/SKILL.md](../skills/skill-authoring-lifecycle/SKILL.md)
 - [CONTRIBUTING.md](../CONTRIBUTING.md)
 
 ### Adding a new plugin
@@ -49,7 +49,7 @@ See:
 ## Governance
 
 - Changes to these templates should be minimal and deliberate.
-- The templates should stay aligned with `docs/STANDARDS.md`, `skills/skill-spec-review/`, and the current version of the Agent Skills spec.
+- The templates should stay aligned with `docs/STANDARDS.md`, `skills/skill-authoring-lifecycle/`, and the current version of the Agent Skills spec.
 - When the templates drift from reality, update the templates (not the other way around).
 
 ## History

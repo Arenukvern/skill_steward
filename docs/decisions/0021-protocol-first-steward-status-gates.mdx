@@ -1,0 +1,59 @@
+# 0021. Protocol-First Steward Status Gates
+
+Date: 2026-06-12
+
+## Status
+
+Accepted
+
+## Context
+
+[ADR 0020](0020-ethical-boundaries-steward-personalities-and-tool-delegation) protects the ethical boundary between steward personality presence and deterministic tool execution. The follow-up risk is premature enchantment: treating a repository as if it has a proven steward personality before the repository has evidence that continuity improves real work.
+
+Skill Steward's [North Star](../NORTH_STAR) requires evidence-backed repo ecology, not mythology. A repo-facing steward claim must reduce future uncertainty, improve handoffs, catch boundary or evidence drift, or strengthen product and stewardship judgment beyond ordinary docs and tools.
+
+The useful core is still real: repositories need continuity for decisions, boundaries, evidence, handoffs, and tool promotion. The unsafe move is making that continuity a personality claim by default. The protocol must earn presence through threshold use, and steward status must earn its name through repeated or held-out evidence.
+
+## Decision
+
+Repository stewardship starts as a **stewardship protocol**, not as a personality claim.
+
+Use this status vocabulary:
+
+1. `stewardship_protocol` - mode rules, memory rules, handoff rules, and evidence gates exist.
+2. `steward_presence` - an agent may enter steward mode at threshold moments such as ADRs, handoffs, evidence claims, boundary conflicts, tool promotion, product-direction tension, or privacy-sensitive memory updates.
+3. `proven_repo_steward` - repeated or held-out repo tasks show that continuity improves decisions, boundary drift detection, handoff quality, evidence precision, or repeated-context cost.
+4. `sub_steward` - a subdomain earns distinct continuity after repeated real work proves it needs a separate memory and evidence boundary.
+
+Steward or personality language is allowed only as a contextual mode or as a proven status. It is not the default name for an installed protocol, skill, chatbot interface, or deterministic tool.
+
+The steward never becomes final authority. The steward raises a governance concern with evidence, boundary context, uncertainty, and non-claims.
+
+## Consequences
+
+* Good, because ADR 0020 keeps its ethical force without turning personality into a default product claim.
+* Good, because "repo steward" becomes an earned status instead of a marketing label.
+* Good, because it prevents authority laundering through "the steward says."
+* Good, because it gives harnesses and future validators a concrete claim vocabulary.
+* Bad, because this adds another status vocabulary maintainers must learn.
+* Bad, because agents may still overuse steward mode unless threshold language is enforced in skills and evals.
+* Mitigation: keep the vocabulary short and connect every status to evidence, non-claims, or a falsifier.
+
+## Confirmation
+
+* `stewardship_protocol` can be validated structurally.
+* `steward_presence` can be recorded in mode events and handoffs.
+* `proven_repo_steward` requires repeated or held-out proof.
+* `sub_steward` requires proof that one root steward plus temporary lenses is not enough.
+* A failed proof should collapse the claim back into docs, tools, ADRs, skills, or deterministic harness actions.
+* Protocol schemas reject unknown fields by default so raw memory cannot hide in permissive artifacts.
+* Persisted self-models require trigger, consent, visibility, retention, and redaction provenance.
+* `steward claim check` is a negative gate: `result: "not_rejected"` is not acceptance, and the machine-readable payload keeps `accepted: false`.
+
+## More Information
+
+* [ADR 0020](0020-ethical-boundaries-steward-personalities-and-tool-delegation)
+* [ADR 0018](0018-cold-to-hot-path-usefulness)
+* [ADR 0019](0019-pattern-promotion-review-as-lens-and-proof-loop)
+* [North Star](../NORTH_STAR)
+* [Evidence ladder](../core/evidence-ladder)

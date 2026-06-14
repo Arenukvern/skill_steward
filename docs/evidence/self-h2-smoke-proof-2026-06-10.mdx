@@ -1,0 +1,60 @@
+# Skill Steward self H2 smoke proof — 2026-06-10
+
+**Status:** H2 smoke passed · **Audience:** maintainers and agents
+
+## Claim
+
+Skill Steward is self-stewarded as a `meta_governance` repository with a narrow internal harness smoke proof. This proves contract discovery and one safe first observation path for this repository. It does not prove broad adopter readiness, product runtime correctness, H4 fresh-agent workflow completion, or H5 promoted harness maturity.
+
+## Repo state
+
+- Branch: `feat/steward-cascading-architecture`
+- Subject commit recorded in scenario: `325d73d3a9d505e9523cc37c830fc30e4e6e4444`
+- Runner commit: `74c6f2af137ff7b791a24ed27a20ee25a35efb97`
+- Worktree note: unrelated local changes were present in `README.md`, `docs/DX_FAQ.mdx`, and `scratch/`; contract inputs were clean.
+
+## Portable commands
+
+For a released or activated `steward` command, run from the Skill Steward repository root:
+
+```bash
+steward doctor --json
+steward actions list --json
+steward action inspect steward.contract.status.quick --json
+steward probe --profile quick --json
+steward benchmark --scenario skill_steward.contract-status-smoke --strict --output .steward/benchmark-summaries/skill-steward-contract-status-smoke.json --json
+```
+
+Maintainer source fallback:
+
+```bash
+cd packages/steward_cli
+dart run :steward doctor --json
+dart run :steward actions list --json
+dart run :steward action inspect steward.contract.status.quick --json
+dart run :steward probe --profile quick --json
+dart run :steward benchmark --scenario skill_steward.contract-status-smoke --strict --output ../../.steward/benchmark-summaries/skill-steward-contract-status-smoke.json --json
+```
+
+## Local provenance
+
+The original run used the maintainer's local Dart SDK binary and package config directly. That raw `dart --packages=... packages/steward_cli/bin/steward.dart` form is non-copyable provenance only; do not use absolute machine paths as adoption instructions. See [portable Steward invocation](../core/portable-steward-invocation).
+
+## Results
+
+| Gate | Result |
+|------|--------|
+| `doctor --json` | Passed; `config.valid: true` |
+| `actions list --json` | Passed; exposed `steward.contract.status.quick`, `validate.skills`, and `eval.skills` |
+| `action inspect steward.contract.status.quick --json` | Passed; action is `observe` / `auto` |
+| `probe --profile quick --json` | Passed; selected `steward.contract.status.quick` |
+| `benchmark --strict --output ...` | Passed; `result: "pass"`, `blocked_by: null`, `durability.status: "ready"`, `proof.status: "ready"` |
+
+Local ignored summary: `.steward/benchmark-summaries/skill-steward-contract-status-smoke.json`
+
+## Non-claims
+
+- This does not prove H4 fresh-agent workflow completion.
+- This does not prove external adoption.
+- This does not promote diagnostics, actions, evals, or harness capabilities to H5.
+- The next adoption proof must use a real external repo, currently `mcp_flutter`.

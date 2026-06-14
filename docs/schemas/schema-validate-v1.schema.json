@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/arenukvern/skill_steward/schemas/schema-validate-v1.schema.json",
+  "title": "Steward schema validate output v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "root",
+    "schema",
+    "file",
+    "valid",
+    "diagnostics"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "default": "steward.schema.validate.v1"
+    },
+    "root": {
+      "type": "string"
+    },
+    "schema": {
+      "type": "string"
+    },
+    "file": {
+      "type": "string"
+    },
+    "valid": {
+      "type": "boolean"
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,214 @@
+# Repo quality contracts
+
+**Audience:** maintainers and agents adopting Engineering Stewardship in an app, library, tool, plugin, harness, or meta repo.
+
+This is the sibling spec to [STANDARDS](STANDARDS). `STANDARDS` defines the Agent Skills package format. This file defines the broader repo-level quality contract: what a repository must make legible before humans or agents can safely claim it is stewarded.
+
+## Contract goal
+
+A repo quality contract answers six questions:
+
+1. **What is this repo for?** Charter, archetype, boundaries, non-goals.
+2. **Where is truth?** Behavior SSOT, docs lattice, decisions, schemas, source provenance.
+3. **How is quality proven?** Type-native validation commands, tests, evals, probes, or truthful blocked evidence with status, scope, limitations, non-claims, and a current-status pointer.
+4. **How can agents act safely when actions exist?** Effects, limits, redaction, permissions, rollback, and owner review for executable actions.
+5. **How does learning persist?** Failures become ADRs, FAQs, tests, eval cases, action candidates, or harness improvements.
+6. **What layer should change?** Native code, repo grammar, public API, schema/codegen, harness, skill, or deletion/collapse. See [Generational architecture ladder](core/generational-architecture-ladder).
+7. **What should the repo ecology do next?** Keep, compress, merge, update, remove, create, defer, move to check, move to evidence, or leave native.
+
+The contract is an ecology disposition aid, not a paperwork gate. For normal repo work, first name the goal, owner, native gate, and smallest useful disposition: orient, compress, validate, tutor pain, promote a tool, leave native, or stop. Prefer error messages, FAQ entries, tests, schemas, scripts, and native commands over new evidence packets unless a claim or blocker needs durable proof.
+
+## Required baseline
+
+| Area | Minimum proof |
+|------|---------------|
+| Charter | `docs/NORTH_STAR.mdx`, README section, or equivalent scope pointer |
+| Agent map | `AGENTS.md`, `CLAUDE.md`, `.cursor/rules`, or equivalent entry map |
+| Docs map | Clear router showing canonical owners for why/how/spec/behavior |
+| Decisions | ADR directory or issue/decision record policy for structural changes |
+| Behavior SSOT | Code/schemas/tests identified as truth; docs link inward instead of paraphrasing behavior |
+| Validation | One command or documented blocked state for the repo's native quality gate |
+| Release | Versioning/changelog/artifact provenance path, even if unreleased |
+| Safety | For agent-executable actions: effects, limits, redaction, network/secrets/destructive policy |
+| Evidence | Place where validation output, benchmark summaries, unknown cases, or eval outcomes are persisted |
+| Evidence retention | Lightweight rule for current, historical, superseded, template, and retired evidence artifacts |
+| Pattern layer | A lightweight rule for when repeated friction promotes to docs, APIs, generated artifacts, harness actions, skills, or deletion |
+| Ecology review | A disposition pass for plans, specs, docs, skills, schemas, tools, evidence, and validation surfaces when the repo needs cleanup or compression |
+| Product claims | Broad compatibility, platform, maturity, or integration claims are tiered against owner, evidence, validation, falsifier, and non-claims |
+
+## Minimal evidence bootstrap
+
+Every repo is allowed to stay small. A repo without Steward CLI can still use the evidence discipline by adding one `AGENTS.md` router and, when needed, one `docs/evidence/current-status.mdx` ledger.
+
+| If the durable value is... | Put it in... |
+|---------------------------|--------------|
+| A decision or trade-off | ADR |
+| Standing why/how | FAQ or docs |
+| Repeated deterministic drift | Native check, schema, validator, test, CLI diagnostic, or probe |
+| Weakest true current status | Current ledger |
+| Real proof or blocked proof | Evidence artifact |
+| Completed plan | Extract and remove |
+
+Adopt `steward.yaml`, typed actions, probes, or benchmarks only when machine-readable proof reduces repeated work. Until then, the native validation command plus a current ledger is enough for an honest S0/S1 baseline.
+
+## Repo archetypes
+
+| Archetype | Primary artifact | Type-native gate examples |
+|-----------|------------------|---------------------------|
+| App | Product runtime and user behavior | unit/integration/UI tests, preview build, logs, screenshot or runtime harness |
+| Library | Public API and compatibility | tests, API docs, package dry-run, compatibility matrix |
+| CLI/tool | Commands and outputs | `--help`, `--json`, golden output tests, release artifact checksum |
+| Plugin | Host integration | manifest validation, install/rollback test, permissions review |
+| Harness/action contract | Agent-facing actions and probes | `steward doctor/actions/probe/benchmark`, scenario manifests |
+| Meta/governance | Skills, docs, policies, validators | `pnpm run validate`, `pnpm run eval`, docs check, registry check |
+
+## Steward contract shape
+
+Use `steward.yaml` when a repo needs machine-readable contract discovery. Keep it small and honest.
+
+This is a minimal valid baseline shape. It is not harness-ready; `actions` and `probes` are deliberately empty while `stewardship.harness.enabled` is `false`.
+
+```yaml
+schema: steward/v1
+
+repo:
+  id: example_repo
+  archetype: app
+
+harness:
+  name: steward
+  mode: cli
+  entrypoints:
+    cli: steward
+
+adoption:
+  status: adopting
+  owner: example_repo
+  gate:
+    pillar: quality
+
+stewardship:
+  governance:
+    charter: docs/NORTH_STAR.mdx
+    adr_dir: docs/decisions
+  knowledge:
+    docs_map: AGENTS.md
+    source_policy: required_for_external_claims
+  repo_quality:
+    contract_spec: steward.yaml
+    maturity_model: general_stewardship
+  skill_lifecycle:
+    installable_skills: false
+    registry: skills.json
+  quality:
+    validate: pnpm run validate
+    evidence: .steward/evidence
+  harness:
+    enabled: false
+    action_contract: deferred
+  release:
+    changelog: CHANGELOG.md
+    artifact_provenance: required
+  review_handoff:
+    moe_required_for_architecture: true
+  strategic_alignment:
+    vision_source: docs/NORTH_STAR.mdx
+    success_evidence: required
+  security:
+    action_effects: required
+    redaction: steward/redaction/v1
+  org:
+    owners: AGENTS.md
+
+actions: {}
+
+probes: {}
+
+diagnostics:
+  cases: {}
+
+unknown_cases:
+  path: .steward/unknown-cases/
+  retention: local
+
+steward_protocol:
+  status: stewardship_protocol
+  mode_events: .steward/events.jsonl
+  self_model: .steward/self-model.json
+  private_memory: .steward/private/
+  private_memory_policy: gitignored
+  claim_gate: required_for_steward_status
+
+provenance:
+  dependencies: []
+  artifacts: []
+  benchmarks: []
+```
+
+For harness/action-contract repos, set `stewardship.harness.enabled: true` and add typed `actions`, `probes`, and `benchmarks` only after the repo has a safe first observation path. Do not store raw shell improvisation as permanent automation.
+
+## Sequenced integration claims
+
+For multi-repo work, a per-repo green check is not enough. Before saying an integration roadmap is ready, record:
+
+| Field | Required proof |
+|-------|----------------|
+| Dependency order | Which repo must publish, tag, or stabilize before the next repo can move. |
+| Source of truth | Which repo owns the package, binary, schema, contract, or public API. |
+| Consumer gate | The downstream command that proves the published or tagged artifact works for its consumer. |
+| Dirty-state policy | Which local changes block durable proof and which files are protected temporary state. |
+| Do-not-touch exceptions | Files or resources agents must not read, clean, delete, or add to action inputs. |
+| Generational layer | Whether the change belongs in native code, repo grammar, public API, schema/codegen, harness, or ecology-level skill/tooling. |
+
+Use the same owner rule for documentation. The producer repo owns architecture, public contract, release provenance, and compatibility claims. Consumer repos own adoption proof, local deltas, blocked state, and cutover commands. Do not duplicate canonical architecture prose in a consumer guide when a link plus local proof would stay fresher.
+
+Example: a library repo can pass tests while its consumer still must wait for a package publish. Publish evidence belongs to the library repo; cutover evidence belongs to the consumer. Do not replace this with local path dependency success.
+
+When user permission spans repositories, update the owning repo and consumer proof in one pass when it is safe and clearly within scope. Record dependency order, protected files, and do-not-touch exceptions, but avoid a plan-only handoff when the owner can be improved and rerun now.
+
+## Product claim audit
+
+Use this before broad language such as "works everywhere", "production-ready", "harness-ready", "fully adopted", or "compatible with X".
+
+| Field | Meaning |
+|-------|---------|
+| `claim` | Exact sentence or readiness statement. |
+| `tier` | `implemented`, `generated`, `fallback`, `planned`, or `speculative`. |
+| `owner` | Repo or package that owns the canonical truth. |
+| `evidence` | Code, schema, test, docs, source, or benchmark that supports only this tier. |
+| `validation` | Command, generator, freshness check, source date, or blocked state. |
+| `falsifier` | What would prove the claim stale or too broad. |
+| `non_claims` | Adjacent stronger claims not proven. |
+
+If an external API, platform, package registry, or host contract is part of the claim, include the verification date/source or keep the claim at `planned` or `speculative`.
+
+## Maturity levels
+
+The canonical `S0`-`S5` ladder lives in [North Star](NORTH_STAR#general-stewardship-maturity-ladder). This contract uses that ladder without redefining it:
+
+- `S0`/`S1` prove the baseline map and knowledge lattice.
+- `S2` proves or truthfully blocks the repo quality contract.
+- `S3`-`S5` prove feedback, fresh-agent workflow, and promoted reusable capability.
+
+## Claims to avoid
+
+- Do not call a repo harness-ready just because docs exist.
+- Do not call a repo stewarded if no validation command or blocked evidence is recorded.
+- Do not claim `pnpm run eval` proves real agent behavior; it proves rule-based routing cases.
+- Do not call a repo "stewarded by a personality" or "repo-stewarded" from installed skills, docs, or one successful session alone. Use `stewardship_protocol` until repeated or held-out evidence proves steward continuity improves real repo work.
+- Do not call `durability_blocked` H2 proof. It is honest blocked evidence that must be rerun cleanly before claiming smoke proof.
+- Do not promote diagnostics from a single observed failure; capture unknown cases first.
+- Do not claim H5/S5 from one proof. Promoted capability claims need repeated evidence plus at least one held-out benchmark, repeat run, or future-agent artifact.
+- Do not add a harness action, generator, or skill rule when a smaller native command, FAQ, validation message, or deletion would solve the problem.
+- Do not treat higher abstraction as maturity. Mature stewardship can mean collapsing or deleting a layer.
+- Do not put domain tutorials in Skill Steward when the domain belongs to the governed repo.
+- Do not let skipped validation, blocked generators, or manually synced generated files support readiness claims.
+- Do not copy producer architecture truth into consumer docs; consumer docs should carry proof, local deltas, and links to the owner.
+- Do not treat `steward ecology snapshot` as a verdict. It is read-only inventory for a Repository Ecology Review, not proof of adoption or maturity.
+
+## Related skills
+
+- `repo-quality-system-lifecycle` — adopt or audit this contract for any repo type.
+- `repository-governance-lifecycle` — ADR/FAQ/ethics/plan hygiene loop.
+- `mcp-harness-repo-maintainer` — harness/action-contract proof after a repo needs typed actions.
+- `harness-engineering-lifecycle` — producer/consumer harness generalization after local proof exists.

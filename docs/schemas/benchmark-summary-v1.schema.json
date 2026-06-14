@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/arenukvern/skill_steward/schemas/benchmark-summary-v1.schema.json",
+  "title": "Steward benchmark summary v1",
+  "type": "object",
+  "required": ["schema", "repo", "repo_commit", "dirty", "runner", "scenario", "scenario_source", "run_id", "mode", "result", "actions_run", "selection_trace", "artifacts", "input_digests", "durability", "proof", "owner", "lesson_status"],
+  "properties": {
+    "schema": { "const": "steward/benchmark-summary/v1" },
+    "repo": { "type": "string", "minLength": 1 },
+    "repo_commit": { "type": "string", "minLength": 1 },
+    "dirty": { "type": "boolean" },
+    "runner": { "type": "string", "minLength": 1 },
+    "scenario": { "type": "string", "minLength": 1 },
+    "scenario_source": { "type": "object" },
+    "scenario_manifest": { "type": ["string", "null"] },
+    "scenario_manifest_sha256": {
+      "type": ["string", "null"],
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "run_id": { "type": "string", "minLength": 1 },
+    "mode": { "type": "string", "minLength": 1 },
+    "result": { "enum": ["pass", "fail", "blocked", "unknown_case"] },
+    "actions_run": { "type": "array", "items": { "type": "string" } },
+    "selection_trace": { "type": "object" },
+    "execution_summaries": { "type": "array" },
+    "artifacts": { "type": "array" },
+    "input_digests": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["path", "sha256"],
+        "properties": {
+          "path": { "type": "string", "minLength": 1 },
+          "sha256": {
+            "type": ["string", "null"],
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "error": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "durability": {
+      "type": "object",
+      "required": ["status", "checked_paths", "blocking_paths", "warnings"],
+      "properties": {
+        "status": { "enum": ["ready", "blocked"] },
+        "checked_paths": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["kind", "path", "git_status", "clean"],
+            "properties": {
+              "kind": { "type": "string", "minLength": 1 },
+              "path": { "type": "string", "minLength": 1 },
+              "git_status": { "type": "string", "minLength": 1 },
+              "clean": { "type": "boolean" },
+              "sha256": {
+                "type": ["string", "null"],
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "reason": { "type": "string" }
+            },
+            "additionalProperties": true
+          }
+        },
+        "blocking_paths": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "warnings": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": true
+    },
+    "proof": {
+      "type": "object",
+      "required": ["mode", "status", "broad_read_actions", "blocking_paths", "warnings"],
+      "properties": {
+        "mode": { "enum": ["standard", "strict"] },
+        "status": { "enum": ["ready", "blocked"] },
+        "broad_read_actions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "blocking_paths": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "warnings": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": true
+    },
+    "owner": { "type": "string", "minLength": 1 },
+    "blocked_by": { "type": ["string", "null"] },
+    "lesson_status": { "type": "string", "minLength": 1 },
+    "diagnostics": { "type": "array" }
+  },
+  "additionalProperties": true
+}

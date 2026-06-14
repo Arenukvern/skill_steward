@@ -12,6 +12,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Diff whitespace check
+        run: |
+          set -euo pipefail
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            git fetch --no-tags --depth=1 origin "$GITHUB_BASE_REF"
+            git diff --check "origin/$GITHUB_BASE_REF" HEAD
+          elif git rev-parse HEAD^ >/dev/null 2>&1; then
+            git diff --check HEAD^ HEAD
+          else
+            git diff --check
+          fi
+
       - uses: pnpm/action-setup@v4
 
       - uses: actions/setup-node@v4
@@ -42,6 +54,14 @@ jobs:
         working-directory: packages/steward_cli
         run: dart run :steward validate
 
+      - name: Check schema output contracts
+        working-directory: packages/steward_cli
+        run: dart run :steward schema check-outputs --json
+
+      - name: Check schema drift
+        working-directory: packages/steward_cli
+        run: dart run :steward schema drift --json
+
       - name: Eval skills (Tier-1 rule-based)
         working-directory: packages/steward_cli
         run: dart run :steward eval
@@ -55,3 +75,77 @@ jobs:
 
       - name: Check docs.page links (docs.json + docs/)
         run: pnpm run docs:check
+
+  steward-contract-smoke:
+    name: Steward contract H2 smoke (not H4)
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+
+      - name: Dart pub get (steward_cli)
+        working-directory: packages/steward_cli
+        run: dart pub get
+
+      - name: Contract discovery
+        working-directory: packages/steward_cli
+        run: dart run :steward doctor --json
+
+      - name: Action catalog
+        working-directory: packages/steward_cli
+        run: dart run :steward actions list --json
+
+      - name: Quick action boundary
+        working-directory: packages/steward_cli
+        run: dart run :steward action inspect steward.contract.status.quick --json
+
+      - name: Quick probe
+        working-directory: packages/steward_cli
+        run: dart run :steward probe --profile quick --json
+
+      - name: Strict contract smoke benchmark
+        working-directory: packages/steward_cli
+        run: |
+          dart run :steward benchmark \
+            --scenario skill_steward.contract-status-smoke \
+            --strict \
+            --output .steward/benchmark-summaries/skill-steward-contract-status-smoke.json \
+            --json
+
+      - name: Validate benchmark summary schema
+        working-directory: packages/steward_cli
+        run: |
+          dart run :steward schema validate \
+            --schema steward/benchmark-summary/v1 \
+            --file .steward/benchmark-summaries/skill-steward-contract-status-smoke.json \
+            --json
+
+      - name: Assert H2 smoke proof
+        run: |
+          python3 - <<'PY'
+          import json
+          import pathlib
+          import sys
+
+          path = pathlib.Path(".steward/benchmark-summaries/skill-steward-contract-status-smoke.json")
+          payload = json.loads(path.read_text())
+          if payload.get("result") != "pass":
+              print(json.dumps({
+                  "result": payload.get("result"),
+                  "blocked_by": payload.get("blocked_by"),
+                  "durability": payload.get("durability", {}).get("status"),
+                  "proof": payload.get("proof", {}).get("status"),
+              }, indent=2))
+              sys.exit("H2 smoke proof requires result: pass; blocked is truthful but not proof.")
+          PY
+
+      - name: Upload contract smoke summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: skill-steward-contract-smoke
+          path: .steward/benchmark-summaries/skill-steward-contract-status-smoke.json

@@ -12,7 +12,8 @@ final RegExp _nameRegex = RegExp(r'^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$');
 /// References:
 /// - https://spdx.org/licenses/
 /// - skills/skill-source-citations/SKILL.md (citation + provenance requirements)
-/// - skills/ethical-stewardship/SKILL.md (Artisan Credit & Craftsmanship principle)
+/// - skills/repository-governance-lifecycle/references/charter-and-ethics.md
+///   (Artisan Credit & Craftsmanship principle)
 const _knownSpdxIds = {
   'MIT',
   'Apache-2.0',
@@ -106,7 +107,8 @@ List<String> validateDescription(final String? description) {
 ///
 /// References:
 /// - skills/skill-source-citations/SKILL.md
-/// - skills/ethical-stewardship/SKILL.md (Artisan Credit & Craftsmanship)
+/// - skills/repository-governance-lifecycle/references/charter-and-ethics.md
+///   (Artisan Credit & Craftsmanship)
 List<String> validateLicense(final String? license) {
   final warnings = <String>[];
 
@@ -127,6 +129,18 @@ List<String> validateLicense(final String? license) {
   }
 
   return warnings;
+}
+
+/// Validates the `type` field if present.
+List<String> validateType(final String? type) {
+  final errors = <String>[];
+  if (type != null &&
+      type.isNotEmpty &&
+      type != 'governance' &&
+      type != 'developer') {
+    errors.add('type "$type" is invalid: must be "governance" or "developer"');
+  }
+  return errors;
 }
 
 /// Runs all structural checks (frontmatter, name/desc, length, sources, README presence)
@@ -172,7 +186,8 @@ Future<({List<String> errors, List<String> warnings})> validateSkillStructure(
 
   errors
     ..addAll(validateName(parsed['name'], dirName))
-    ..addAll(validateDescription(parsed['description']));
+    ..addAll(validateDescription(parsed['description']))
+    ..addAll(validateType(parsed['type']));
 
   // Proper line count using the value computed in parseFrontmatter.
   // This replaces the previous rough (body + raw splits + 2) formula and is more

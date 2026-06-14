@@ -1,0 +1,67 @@
+# First adopter golden path
+
+**Status:** reference fixture · **Audience:** maintainers and agents
+
+This fixture describes the smallest useful Skill Steward adoption path. It is sanitized: it uses placeholder repo ids and does not depend on a private sibling checkout. It is a reference path, not proof from a live adopter run.
+
+For current dogfood/adopter claims, blockers, and rerun routes, use [Current dogfood status](current-dogfood-status). Do not cite this fixture as current evidence.
+
+Command examples assume a portable `steward` command installed through the released binary, a Dart source run, or local clone activation. See [portable Steward invocation](../core/portable-steward-invocation) before copying commands into adopter evidence.
+
+## Intent
+
+Show how a fresh repository can get a stewardship baseline before it becomes a harness/action-contract repo.
+
+## Baseline path
+
+```bash
+steward adopt
+steward map
+npx skills add arenukvern/skill_steward --skill repo-quality-system-lifecycle
+```
+
+| Command | Expected artifact | Claim boundary |
+|---------|-------------------|----------------|
+| `steward adopt` | `skills.json`, `steward.yaml`, `AGENTS.md` | S0/S1 baseline can be created without typed actions. |
+| `steward map` | Markdown operational map | A fresh agent can see archetype, task runner, docs pointers, and recommended skills. |
+| `npx skills add ... repo-quality-system-lifecycle` | Installed skill under the target agent path | Agents get the broad repo-quality workflow before harness proof. |
+
+Baseline `steward.yaml` should keep `stewardship.harness.enabled: false`, `actions: {}`, and `probes: {}`. Empty action and probe maps are valid only while harness proof is disabled. That prevents every repo from looking harness-shaped by default.
+
+## Harness path
+
+Use this path only when the repo is ready to declare typed actions and smoke benchmark evidence. `steward adopt --with-harness` flips the harness gate on, so the contract must declare at least one quick-safe action and probe. The scenario is generated only when the command can read a durable git remote and resolved HEAD commit.
+
+```bash
+steward adopt --with-harness
+steward doctor --json
+steward actions list --json
+steward action inspect doctor.local --json
+steward probe --profile quick --json
+steward benchmark \
+  --scenario <repo-id>.contract-status-smoke \
+  --strict \
+  --output .steward/benchmark-summaries/contract-status-smoke.json \
+  --json
+```
+
+| Command | Claim boundary |
+|---------|----------------|
+| `doctor` | Contract discovery works without running repository actions. |
+| `actions list` | Declared actions are visible and machine-readable. |
+| `action inspect` | The executable boundary, effects, limits, and safety policy are inspectable. |
+| `probe --profile quick` | The first quick-safe observation can run. |
+| `benchmark --strict` | Durable smoke proof runs, or truthfully reports why it is blocked. |
+
+## Non-claims
+
+- This does not prove product runtime correctness.
+- This does not prove H4 fresh-agent workflow completion.
+- This does not promote diagnostics from a single observation.
+- This does not make `npx skills` a repo-local harness validator.
+
+## Current routing
+
+The next product pipeline artifact should still be one H4 scenario where a fresh agent completes a bounded repo workflow using declared surfaces before falling back to raw shell exploration, but current status belongs in the current ledger, not this fixture.
+
+Historical check: [H4 fresh-agent workflow check — 2026-06-08](h4-fresh-agent-workflow-check-2026-06-08) records blocked evidence and the repo-local CLI entrypoint lesson.

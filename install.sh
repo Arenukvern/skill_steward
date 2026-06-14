@@ -29,6 +29,7 @@ Installs steward CLI. Falls back to compiling from source if run from a git clon
 When run from a git clone, version defaults to the packages/steward_cli pubspec.yaml.
 When piped from curl without --version, the latest GitHub release is used if available.
 Override with STEWARD_VERSION or --version.
+Set STEWARD_NO_PATH_UPDATE=1 for CI/action installs that manage PATH themselves.
 USAGE
 }
 
@@ -160,10 +161,13 @@ if [[ -n "$ROOT_DIR" ]] && [[ -f "$ROOT_DIR/packages/steward_cli/pubspec.yaml" ]
       echo "Running 'dart pub get'..."
       dart pub get >/dev/null
       echo "Compiling 'bin/steward.dart' to native executable..."
-      dart compile exe bin/steward.dart -o "$INSTALL_DIR/steward" >/dev/null
+      dart compile exe -DSTEWARD_VERSION="$version_no_prefix" bin/steward.dart -o "$INSTALL_DIR/steward" >/dev/null
     )
     BUILT_FROM_SOURCE=1
     echo "Successfully compiled and installed binary to $INSTALL_DIR/steward"
+    rm -rf "$INSTALL_DIR/steward_schemas"
+    cp -R "$ROOT_DIR/docs/schemas" "$INSTALL_DIR/steward_schemas"
+    echo "Installed schemas to $INSTALL_DIR/steward_schemas"
   fi
 fi
 
@@ -265,13 +269,16 @@ EOF
 
   mkdir -p "$INSTALL_DIR"
   install -m 0755 "$package_dir/bin/steward" "$INSTALL_DIR/steward"
+  rm -rf "$INSTALL_DIR/steward_schemas"
+  cp -R "$package_dir/docs/schemas" "$INSTALL_DIR/steward_schemas"
 
   echo "Installed binary to $INSTALL_DIR"
+  echo "Installed schemas to $INSTALL_DIR/steward_schemas"
 fi
 
 "$INSTALL_DIR/steward" --help >/dev/null
 
-if [[ ":$PATH:" != *":$INSTALL_DIR:"* ]]; then
+if [[ "${STEWARD_NO_PATH_UPDATE:-0}" != "1" && ":$PATH:" != *":$INSTALL_DIR:"* ]]; then
   shell_name="$(basename "${SHELL:-sh}")"
   rc_file="$HOME/.profile"
   case "$shell_name" in

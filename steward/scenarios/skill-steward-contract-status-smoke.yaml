@@ -1,0 +1,18 @@
+schema: steward/scenario-manifest/v1
+repo: skill_steward
+scenario: skill_steward.contract-status-smoke
+status: runnable
+source:
+  git: https://github.com/Arenukvern/skill_steward.git
+  commit: 325d73d3a9d505e9523cc37c830fc30e4e6e4444
+  steward_contract: steward.yaml
+safe_first_probe: steward.contract.status.quick
+required_actions:
+  - steward.contract.status.quick
+artifacts:
+  - id: steward_contract
+    kind: yaml
+    path: steward.yaml
+    required: true
+    durability: input
+owner: skill-steward

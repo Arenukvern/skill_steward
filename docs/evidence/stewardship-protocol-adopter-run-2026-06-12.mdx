@@ -1,0 +1,174 @@
+# Stewardship Protocol Adopter Run — 2026-06-12
+
+## Claim
+
+Skill Steward can use the protocol-first adopter plan to run bounded checks against two different repositories without claiming repo steward status.
+
+## mcp_flutter
+
+Repository: `/Users/anton/mcp/mcp_flutter`
+Branch: `codex/steward-adoption-h2`
+Dirty state: `62` `git status --short` entries before the run.
+
+### Root Steward Surface
+
+| Command | Result | Evidence |
+|---------|--------|----------|
+| `steward doctor --json` | Pass | `config.valid: true`; repo archetype `harness`; actions `fmt.check.tool-prefix` and `fmt.check.intentcall-hosted-deps` are quick-eligible. |
+| `steward actions list --json` | Pass | Both declared actions are visible. |
+| `steward action inspect fmt.check.tool-prefix --json` | Pass | Action is bounded local, read-only, no network, no secrets, no destructive effects. |
+| `steward probe --profile quick --json` | Pass | `fmt.check.tool-prefix` passed; `fmt.check.intentcall-hosted-deps` passed. |
+| `steward benchmark --scenario mcp_flutter.web-dogfood-warm --strict --json` | Pass | `result: "pass"`; `durability.status: "ready"`; action run: `fmt.check.tool-prefix`; warning: local HEAD does not match scenario source commit and unrelated dirty files remain. |
+
+### Warm Runtime Text-Entry Falsifier
+
+Target acceptance check:
+
+`AgentState.instance.greeting == "steward runtime proof"` after `enter_text`, selected through semantics identifier `greeting_input_field`, with a prior value that differs.
+
+Commands attempted:
+
+```bash
+make showcase
+tool/evals/run_runtime_enter_text_greeting.sh --help
+```
+
+Observed result:
+
+- `make showcase` built the macOS debug app.
+- Flutter then failed before producing a VM service URI:
+  `Error waiting for a debug connection: The log reader stopped unexpectedly, or never started.`
+- The showcase wrapper needed explicit cleanup; `scripts/stop_showcase.sh` ran and the remaining wrapper shell was killed.
+- No `WS_URI` or `MACOS_WS_URI` was available in the environment.
+- Therefore `tool/evals/run_runtime_enter_text_greeting.sh` could not run the runtime `enter_text` proof.
+
+### mcp_flutter Non-claims
+
+- This is not `proven_repo_steward`.
+- This is not a clean checkout proof.
+- This does not prove warm runtime text entry in this run.
+- The strict `mcp_flutter.web-dogfood-warm` benchmark proves the declared tool-prefix contract only, not runtime UI interaction.
+- The existing generated runtime evidence in `mcp_flutter` remains prior dirty-run evidence, not this run's fresh result.
+
+### mcp_flutter Runtime Handoff
+
+## Goal
+Produce a fresh warm runtime text-entry proof through declared CLI/MCP semantics, or capture an unknown-case artifact explaining why the runtime proof is blocked.
+
+## Done
+- Root Steward contract loop passed through strict benchmark for `fmt.check.tool-prefix`.
+- Runtime text-entry target was defined: `AgentState.instance.greeting == "steward runtime proof"` after `enter_text` through `greeting_input_field`.
+- `make showcase` failed before a VM service URI was available.
+
+## Next
+1. In `/Users/anton/mcp/mcp_flutter`, rerun the runtime launch with the repo's current preferred non-interactive command.
+2. If a VM URI appears, run `tool/evals/run_runtime_enter_text_greeting.sh` with the discovered `WS_URI` or `MACOS_WS_URI`.
+3. If no VM URI appears, create a redacted unknown-case artifact with the command, exit state, log excerpt, and cleanup action.
+4. Do not treat existing generated runtime evidence as fresh proof for this run.
+
+## Constraints
+- Root steward only.
+- No absolute local runner hacks.
+- No raw screenshots or unredacted logs in git.
+- Keep mode at `tool-execution` / `stewardship_protocol`.
+
+## Verification
+- `steward doctor --json`
+- `steward actions list --json`
+- `steward action inspect fmt.check.tool-prefix --json`
+- `steward probe --profile quick --json`
+- `steward benchmark --scenario mcp_flutter.web-dogfood-warm --strict --json`
+- Runtime proof command only after a fresh VM URI exists.
+
+## Validation status
+- Contract benchmark: passed for declared tool-prefix surface.
+- Runtime proof: blocked by missing VM/debug connection.
+- Claim not proven: warm runtime text entry.
+
+## Artifact capture
+- If blocked again, create an unknown-case artifact rather than expanding this evidence note.
+
+## ecsly
+
+Repository: `/Users/anton/xs/ecsly`
+Branch: `codex/adopt-steward-dogfood`
+Dirty state: `107` `git status --short` entries before the run.
+
+### Root Steward Surface
+
+| Command | Result | Evidence |
+|---------|--------|----------|
+| `steward doctor --json` | Invalid config | `stewardship.repo_quality` missing; `repo.archetype: cli_harness` is outside current schema enum. |
+| `steward actions list --json` | Lists action with invalid config | `ecsly.observe` is visible, but `config_valid: false`. |
+| `steward action inspect ecsly.observe --json` | Lists action with invalid config | Action is bounded local and read-only, but config diagnostics remain. |
+| `steward probe --profile quick --json` | Blocked | `status: blocked_invalid_config`; action skipped; unknown case recommended. |
+
+### Repo-Owned CLI Surface
+
+| Command | Result | Evidence |
+|---------|--------|----------|
+| `dart run tools/ecsly_cli/bin/ecsly.dart observe --json` | Pass | `ok: true`; toolchain found `cargo`, `dart`, `flutter`, `pod`, `wasm-bindgen`; GitNexus index present. |
+| `dart run tools/ecsly_cli/bin/ecsly.dart observe -p spark_physics_ecs --json` | Pass | `ok: true`; `mcp_binding: true`; `verify_pipeline_registered: true`; `graphics_capture_hint: desktop_window`; native dylib embed path exists. |
+| `dart run tools/ecsly_cli/bin/ecsly.dart doctor -p spark_physics_ecs --json` | Pass | Toolchain checks passed. |
+| `dart run tools/ecsly_cli/bin/ecsly.dart verify spark_physics_ecs --tier-max T1 --dry-run --json` | Pass as dry-run expansion | Expands two T1 steps: `flutter test test/ecs_physics_lib_path_io_test.dart` in `plugins/ecs_physics_rapier_bridge`, and `flutter test` in `prototypes/spark_physics_ecs`. |
+
+### Temporary Lens Boundary
+
+The Spark lens was used only after root observe and Steward probe showed the current state:
+
+- Steward probe cannot execute until `steward.yaml` schema is repaired.
+- Repo-owned observe can still route a fresh agent toward Spark-specific proof surfaces.
+- No persistent `sub_steward` is justified from this run.
+
+### ecsly Non-claims
+
+- This is not `proven_repo_steward`.
+- This is not a clean checkout proof.
+- This does not prove a non-dry-run T1 pass.
+- This does not prove graphics/runtime parity.
+- This does not authorize persistent sub-stewards.
+- The next Skill Steward action should be config repair or an unknown-case artifact, not promotion.
+
+### ecsly Config Handoff
+
+## Goal
+Repair the root Steward config enough for `ecsly.observe` to run through the Skill Steward loop, or capture an unknown-case artifact if the current schema cannot represent the repo.
+
+## Done
+- `steward doctor --json` found the config but rejected it.
+- `ecsly.observe` is visible and read-only.
+- Repo-owned CLI observe/doctor/dry-run verify produced useful Spark routing evidence.
+
+## Next
+1. In `/Users/anton/xs/ecsly`, change `repo.archetype` from `cli_harness` to the closest public enum value, likely `harness` unless the repo chooses `app` for product-first proof.
+2. Add missing `stewardship.repo_quality` to `steward.yaml`.
+3. Rerun `steward doctor --json`, `steward actions list --json`, `steward action inspect ecsly.observe --json`, and `steward probe --profile quick --json`.
+4. If the enum cannot represent `ecsly` without distortion, create an unknown-case artifact proposing the schema change instead of forcing a misleading archetype.
+
+## Constraints
+- Root observe first.
+- Temporary lenses only after root observe proves insufficient.
+- No persistent sub-stewards from this run.
+- Avoid broad `fs_read: ["."]` contracts.
+
+## Verification
+- `steward doctor --json` must report valid config before probe execution can count.
+- `steward probe --profile quick --json` must execute `ecsly.observe`.
+- A non-dry-run T1 or graphics proof remains out of scope until root Steward config is valid.
+
+## Validation status
+- Steward loop: blocked by invalid config.
+- Repo-owned CLI observe: passed.
+- Claim not proven: harness-ready adoption.
+
+## Artifact capture
+- Prefer config repair. Use unknown-case only if the schema vocabulary is genuinely insufficient.
+
+## Overall Result
+
+The protocol-first approach was useful as a boundary discipline:
+
+- mcp_flutter: declared root contract passed; harder runtime falsifier blocked on VM/debug launch.
+- ecsly: root Steward contract blocked on schema drift; repo-owned CLI observe still produced useful routing evidence.
+
+This supports continuing with `stewardship_protocol` status only. It does not support `steward_presence` as a default mode or `proven_repo_steward` for either adopter.

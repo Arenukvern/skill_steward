@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:path/path.dart' as p;
 
 import 'skill_validator.dart' show validateSingleSkill;
+import 'steward_config.dart';
 import 'validation_result.dart';
 
 /// Validates repository-local skill registration.
@@ -83,6 +84,56 @@ Future<ValidationReport> validateLocalSkills(final String projectRoot) async {
       }
     }
   }
+
+  // 3. Scan for active plan files (ephemeral plans doctrine)
+  final activePlans = <String>[];
+  final taskFile = File(p.join(projectRoot, 'task.md'));
+  if (taskFile.existsSync()) {
+    activePlans.add('task.md');
+  }
+  final planFile = File(p.join(projectRoot, 'implementation_plan.md'));
+  if (planFile.existsSync()) {
+    activePlans.add('implementation_plan.md');
+  }
+  final activePlansDir = Directory(
+    p.join(projectRoot, 'docs', 'exec-plans', 'active'),
+  );
+  if (activePlansDir.existsSync()) {
+    try {
+      final planFiles = activePlansDir.listSync().whereType<File>();
+      for (final f in planFiles) {
+        final name = p.basename(f.path);
+        if (!name.startsWith('.')) {
+          activePlans.add('docs/exec-plans/active/$name');
+        }
+      }
+    } on Object catch (_) {}
+  }
+
+  for (final plan in activePlans) {
+    registryWarnings.add(
+      'Stale/active plan file found: $plan. Extract durable findings to ADR/FAQ/Code, then delete the plan file to maintain hygiene.',
+    );
+  }
+
+  // Run Steward contract checks and custom validators from steward.yaml.
+  try {
+    final configResult = await StewardConfig.loadChecked(projectRoot);
+    final config = configResult.config;
+    if (config.configPath != null) {
+      registryWarnings.addAll(
+        configResult.diagnostics
+            .where((final diagnostic) => diagnostic.isError)
+            .map(
+              (final diagnostic) => '${diagnostic.path}: ${diagnostic.message}',
+            ),
+      );
+    }
+    for (final validator in config.validators) {
+      final customErrors = await validator.validate(projectRoot);
+      registryWarnings.addAll(customErrors);
+    }
+  } on Object catch (_) {}
 
   final failedCount = results.where((final r) => !r.isValid).length;
   final ok = failedCount == 0 && registryWarnings.isEmpty;

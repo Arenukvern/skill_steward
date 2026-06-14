@@ -1,0 +1,12 @@
+id: repo-quality-baseline-trigger
+skill: repo-quality-system-lifecycle
+routing: should_trigger
+input: "Set up an agent-operated stewardship baseline for this app repo with docs, decisions, validation gates, and evidence"
+rules:
+  - kind: file_exists
+    path: references/evals.md
+  - kind: description_includes_any
+    terms: ["agent-operated", "quality contract", "validation gates", "evidence"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["stewardship baseline", "quality contract", "repo archetype"]

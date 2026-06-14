@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/arenukvern/skill_steward/schemas/protocol-validate-v1.schema.json",
+  "title": "Steward protocol validate output v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "root",
+    "valid",
+    "diagnostics",
+    "files"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "default": "steward.protocol.validate.v1"
+    },
+    "root": {
+      "type": "string"
+    },
+    "valid": {
+      "type": "boolean"
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "files": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

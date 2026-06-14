@@ -1,0 +1,36 @@
+id: repo-quality-multi-repo-integration-sequence-trigger
+skill: repo-quality-system-lifecycle
+routing: should_trigger
+input: "Audit this roadmap across agentkit, mcp_flutter, and flutter_harness: IntentCall must publish to pub.dev before the consumer repos cut over"
+rules:
+  - kind: file_exists
+    path: references/evals.md
+  - kind: description_includes_any
+    terms: ["quality contract", "evidence", "maturity proof"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["multi-repo integration chain", "dependency order", "publish evidence"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["The producer repo owns architecture"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["public contract"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["compatibility claims"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["consumer repos own adoption proof"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["local deltas"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["blocked state"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["cutover commands"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["move to consumer proof"]

@@ -1,4 +1,42 @@
+schema: steward/plugin-manifest/v1
 id: steward-validate-on-save
-name: Steward validate on save
 version: 0.1.0
-description: Cursor afterFileEdit hook — run skill validation when SKILL.md changes.
+description: Cursor afterFileEdit hook that runs Skill Steward validation after SKILL.md edits.
+referenced_skills:
+  - skill-authoring-lifecycle
+  - skill-eval-improve
+  - skill-source-citations
+target_agents:
+  - cursor
+targets:
+  cursor:
+    hooks:
+      - event: afterFileEdit
+        script: hooks/validate-on-skill-edit.sh
+        config_snippet: hooks.json.snippet
+wiring_artifacts:
+  - path: hooks/validate-on-skill-edit.sh
+    sha256: 55e402ade4daeaaa9914539c2e73a051c1d8b919c9fca492461e4614845aeac5
+  - path: hooks.json.snippet
+    sha256: acbcd5c0fac95c73b41b5d6a9d64bd2513ec56d9f3b68b6e71d805c9d269cbde
+conflict_policy: fail
+install:
+  actions:
+    - install_referenced_skills
+    - merge_cursor_hooks_json
+    - chmod_hook_scripts
+update:
+  actions:
+    - refresh_referenced_skills
+    - replace_matching_cursor_hook
+    - verify_wiring_artifacts
+uninstall:
+  actions:
+    - remove_matching_cursor_hook
+reproducibility:
+  source: git+https://github.com/arenukvern/skill_steward.git
+  built_from:
+    - plugins/steward-validate-on-save/plugin.yaml
+    - skills/skill-authoring-lifecycle/SKILL.md
+    - skills/skill-eval-improve/SKILL.md
+    - skills/skill-source-citations/SKILL.md

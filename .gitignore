@@ -8,5 +8,8 @@ node_modules/
 .cursor/skills/
 .claude/skills/
 .codex/skills/
+.steward/*
+!.steward/events.example.jsonl
+!.steward/self-model.example.json
 dist/
 coverage/

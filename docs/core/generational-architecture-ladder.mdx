@@ -1,0 +1,85 @@
+# Generational Architecture Ladder
+
+**Status:** concept · **Audience:** maintainers and agents
+
+Engineering Stewardship should help a repo grow the next useful layer only when the product has earned it. Early projects need simple language and framework abstractions. Growing products reveal repeated patterns, hidden knowledge, duplicated actions, slow feedback loops, and maintenance drag. The steward's job is to notice those signals, choose the smallest useful layer, and keep the original product goal ahead of tool-building.
+
+This ladder is a Skeptic lens for deciding whether to add code, extract a pattern, generate artifacts, improve a harness, or delete complexity.
+
+## Ladder
+
+| Level | Name | Use when | Prefer |
+|-------|------|----------|--------|
+| **G0** | Native workbench | The repo is still proving product shape. | Language/framework features, direct tests, short docs. |
+| **G1** | Visible repo grammar | Agents repeatedly ask where truth lives. | Clear folders, AGENTS map, docs map, FAQ split, behavior SSOT links. |
+| **G2** | Stable public surface | Callers need a dependable contract. | Public API, schema, adapter boundary, DTO/runtime separation, compatibility tests. |
+| **G3** | Declarative or generated layer | The same pattern appears often enough that hand-written repetition is now risk. | Schema, codegen, lint rule, template, fixture, golden test. |
+| **G4** | Harness and feedback loop | Agents need repeatable proof, probes, actions, or benchmarks. | Thin CLI/MCP adapters over core logic, typed actions, redacted evidence, falsifiers. |
+| **G5** | Ecology improvement | A proven local lesson should improve future tools or skills. | Skill update, eval case, action candidate, diagnostic, release rule, deletion of stale layers. |
+
+Higher is not better by default. A mature repo may intentionally move down the ladder by deleting a generator, collapsing packages, or replacing a tool path with one native command.
+
+## Skeptic Checks
+
+Before adding a new abstraction, tool, action, or skill rule, answer:
+
+- What user or maintainer goal does this serve?
+- Is the pain repeated, or is it a one-off from the current run?
+- Can an existing language feature, framework convention, native command, FAQ, or error message solve it?
+- Would deleting code, collapsing layers, or moving knowledge closer to behavior solve it with less maintenance?
+- If generation is proposed, is the source schema smaller and more stable than the generated output?
+- If a harness action is proposed, does it improve a real proof path instead of becoming a detour?
+- What falsifier shows this new layer is wrong, stale, or no longer worth maintaining?
+
+If the answer is unclear, capture an observation or unknown case. Do not promote.
+
+## Pattern Promotion Rules
+
+| Signal | First response | Promote only when |
+|--------|----------------|-------------------|
+| Repeated command confusion | Improve DX_FAQ, script help, or validation error | A native command has stable inputs/outputs and proof. |
+| Repeated structural confusion | Update AGENTS map, docs map, or concept doc | Multiple agents miss the same boundary after docs are fixed. |
+| Repeated boilerplate | Add a template, schema, or generator candidate | The generated surface is tested and easier to maintain than hand code. |
+| Repeated manual inspection | Add a probe or read-only action candidate | Effects, limits, redaction, owner, and benchmark proof exist. |
+| Repeated skill drift | Add or tighten eval cases | Held-out prompts show the edit improves behavior without overfitting. |
+| Shrinking or overgrown surface | Delete, merge, or demote a layer | The smaller shape still passes the repo's native gate. |
+
+## Evidence Fields
+
+Adoption evidence should record the generational judgment, not just the result:
+
+- `pattern_layer`: `native`, `repo_grammar`, `public_surface`, `schema_codegen`, `harness`, `ecology`, or `none`.
+- `maintenance_delta`: `reduced`, `neutral`, `increased`, or `unknown`.
+- `smaller_layer_considered`: whether a simpler existing layer could solve the problem.
+- `deletion_or_collapse_option`: what could be removed or simplified instead.
+- `promotion_guard`: the falsifier or held-out task that prevents tool-loop drift.
+
+These fields are useful only when they guide decisions. They are not a scorecard.
+
+## Pattern Promotion Review
+
+Use a Pattern Promotion Review when a real run exposes repeated friction or a proposal to add a new abstraction, generator, harness action, skill, package boundary, or deletion/collapse. The review is a lightweight evidence note, not a new doctrine or maturity claim.
+
+Save it under `docs/evidence/pattern-promotion-review-YYYY-MM-DD-topic.mdx` when the decision changes durable docs, skills, contracts, or tooling. If the review is part of an adoption run, link it from the adoption-run `outcome.docs_or_adr_destination`.
+
+Minimum shape:
+
+- Original user or maintainer goal.
+- Observed repeated pattern or growth pressure.
+- Current layer and proposed next layer.
+- Smallest useful move.
+- Deletion or collapse option.
+- Maintenance delta.
+- Evidence needed before promotion.
+- Promotion guard or falsifier.
+- Non-claims.
+
+Do not create a standalone skill from one review. Promote the workflow only after repeated evidence shows agents need a separate lifecycle that existing stewardship skills cannot cover.
+
+## Related
+
+- [North Star](../NORTH_STAR)
+- [Repo quality contracts](../repo-quality-contracts)
+- [Evidence ladder](evidence-ladder)
+- [Stewardship loop](stewardship-loop)
+- [Adoption run v2 template](../evidence/adoption-run-v2-template)

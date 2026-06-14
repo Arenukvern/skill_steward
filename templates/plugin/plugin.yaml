@@ -1,15 +1,42 @@
-# Skill Steward plugin manifest (v1 draft — see ADR 0004)
+# Skill Steward local meta-plugin manifest (v1 — see ADR 0004).
+# This is not a Codex, Cursor, Claude, or Open Plugin marketplace manifest.
+schema: steward/plugin-manifest/v1
 id: your-plugin-id
 version: "0.1.0"
 description: One line — what wiring this bundle adds beyond skills alone.
 
 # Skills already in repo skills/ — installed separately via npx skills
-skills:
-  - skill-spec-review
+referenced_skills:
+  - skill-authoring-lifecycle
+
+target_agents:
+  - cursor
 
 targets:
   cursor:
     hooks:
       - event: afterFileEdit
         script: hooks/example.sh
-        # matcher: "Write"   # optional — see Cursor hooks docs
+        config_snippet: hooks.json.snippet
+
+wiring_artifacts:
+  - path: hooks/example.sh
+    sha256: replace-with-64-character-lowercase-sha256
+
+conflict_policy: fail
+install:
+  actions:
+    - install_referenced_skills
+    - merge_cursor_hooks_json
+update:
+  actions:
+    - refresh_referenced_skills
+    - replace_matching_cursor_hook
+uninstall:
+  actions:
+    - remove_matching_cursor_hook
+
+reproducibility:
+  source: git+https://github.com/arenukvern/skill_steward.git
+  built_from:
+    - plugins/your-plugin-id/plugin.yaml

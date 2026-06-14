@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/arenukvern/skill_steward/schemas/ecology-snapshot-v1.schema.json",
+  "title": "Steward ecology snapshot output v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "root",
+    "status",
+    "config",
+    "repo",
+    "stewardship_pillars",
+    "actions",
+    "probes",
+    "benchmarks",
+    "git",
+    "schema_outputs",
+    "active_plan_candidates",
+    "evidence",
+    "diagnostics",
+    "non_claims"
+  ],
+  "properties": {
+    "schema_version": { "const": "steward.ecology.snapshot.v1" },
+    "root": { "type": "string", "minLength": 1 },
+    "status": { "const": "observed" },
+    "config": { "type": "object" },
+    "repo": { "type": "object" },
+    "stewardship_pillars": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "actions": {
+      "type": "object",
+      "required": ["declared", "quick_eligible", "auto_eligible"],
+      "properties": {
+        "declared": { "type": "integer" },
+        "quick_eligible": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "auto_eligible": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "probes": {
+      "type": "object",
+      "required": ["declared"],
+      "properties": {
+        "declared": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "benchmarks": {
+      "type": "object",
+      "required": [
+        "declared",
+        "summary_status",
+        "summaries_may_be_stale",
+        "fresh_result_route",
+        "persisted_summaries",
+        "latest_summaries"
+      ],
+      "properties": {
+        "declared": { "type": "array" },
+        "summary_status": { "type": "string" },
+        "summaries_may_be_stale": { "type": "boolean" },
+        "fresh_result_route": { "type": "string" },
+        "persisted_summaries": { "type": "array" },
+        "latest_summaries": { "type": "array" }
+      },
+      "additionalProperties": false
+    },
+    "git": {
+      "type": "object",
+      "required": ["available", "status"],
+      "properties": {
+        "available": { "type": "boolean" },
+        "status": { "type": "string" },
+        "commit": {},
+        "dirty": { "type": "boolean" },
+        "entries": { "type": "array", "items": { "type": "string" } },
+        "diagnostics": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "schema_outputs": {
+      "type": "object",
+      "required": ["schema_version", "root", "valid", "checks"],
+      "properties": {
+        "schema_version": { "const": "steward.schema.check_outputs.v1" },
+        "root": { "type": "string", "minLength": 1 },
+        "valid": { "type": "boolean" },
+        "status": { "type": "string" },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "schema", "valid", "diagnostics"],
+            "properties": {
+              "id": { "type": "string" },
+              "schema": { "type": "string" },
+              "valid": { "type": "boolean" },
+              "diagnostics": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "diagnostics": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "active_plan_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "status", "route"],
+        "properties": {
+          "path": { "type": "string" },
+          "status": { "type": "string" },
+          "route": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["files", "current_dogfood_status_present"],
+      "properties": {
+        "files": { "type": "array", "items": { "type": "string" } },
+        "current_dogfood_status_present": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "diagnostics": { "type": "array" },
+    "non_claims": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    }
+  },
+  "additionalProperties": false
+}

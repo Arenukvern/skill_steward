@@ -1,0 +1,75 @@
+# 0026. Parallel Acceleration Governance
+
+Date: 2026-06-13
+
+## Status
+
+Accepted
+
+## Context
+
+Skill Steward's North Star already measures usefulness by whether cold exploration becomes durable hot paths for future agents without lowering the evidence bar. That can be misread as caution-first or "one next step" when the actual repo pain is broad, decomposable, and safe to work in parallel.
+
+The failure mode is not many agents. The failure mode is unclear decomposition: workers without owner boundaries, exact write sets, native gates, evidence limits, or parent synthesis. Serial governance can become its own drag when it asks for smaller and smaller motions while repo-wide pain remains unsolved.
+
+This decision has `north_star_impact: clarifies`. It does not change what Skill Steward owns. It clarifies how the existing North Star behaves when a parent agent can assign independent work lanes, compare results, and keep final claims honest.
+
+## Decision
+
+Governance should accelerate many agents without losing truth, ownership, or proof.
+
+Use the smallest truthful coordination unit, not always the smallest action. For local pain, that may be one fix, FAQ row, validation command, or evidence update. For repo-wide pain, it may be a disposable batch handoff with multiple independent lanes, as long as the parent can review, integrate, validate, and size the final claim.
+
+Keep the responsibilities separate:
+
+- `repo-quality-system-lifecycle` may identify disposable `dispatch_lane_candidate` hints during ecology review.
+- `steward ecology route --json` may emit advisory `dispatch_lane_candidates` derived from existing route facts.
+- `multi-agent-handoff` owns parent-assigned lane contracts, write authority, direct-fix rules, synthesis, and closure.
+- `mixture-of-experts` supplies lane discovery, contradiction detection, and evidence-boundary critique.
+- `steward-continuity-boundary-lifecycle` treats many-agent coordination as at most one readiness sign, not steward-presence or steward-status proof.
+
+Advisory lane candidates are not parent lane contracts, action candidates, project management artifacts, backlog items, or write authorization. CLI-emitted candidates must be marked `advisory`, `ephemeral`, `requires_parent_assignment`, `not_write_authorization`, `authorization_source: none`, `advisory_direct_fix_allowed: false`, and `retention: delete_after_integration`. They must not contain `direct_fix_allowed`.
+
+Parent-assigned contracts are the only surface that may set `direct_fix_allowed: true`, and only for bounded low-risk work with exact write sets, forbidden paths, inherited repo safety rules, required impact/permission checks, and available validation.
+
+## Considered Options
+
+* **Keep "smallest useful disposition" implicit.** Rejected because agents can interpret it as serial caution even when parallel work is the truthful coordination unit.
+* **Create a standalone parallel-acceleration skill.** Rejected for now. Existing repo-quality, handoff, MoE, and continuity skills can carry the behavior without adding activation ambiguity.
+* **Add a Steward scheduler or persisted lane store.** Rejected. Skill Steward should stay agnostic about host coordination algorithms and must not preserve lane maps as permanent management artifacts.
+* **Emit advisory lane candidates from ecology route.** Accepted as a narrow, non-mutating CLI extension when derived from existing route facts and schema-checked safety markers.
+
+## Decision Outcome
+
+Chosen: **parallel acceleration as a North Star clarification plus advisory lane candidates and parent-owned handoff contracts**.
+
+The first implementation can claim only that lane-candidate routing is documented, schema-conformant, and statically wired. It does not prove acceleration usefulness, parent synthesis quality, worker correctness, production agent behavior, repo maturity, adoption, H2/H4/H5/S5, or steward status.
+
+Hot-path promotion needs repeated proof, observed effect, falsifier, maintenance delta, owner, risk/redaction boundary, and held-out or future-agent repeat evidence. One successful batch is not a promoted capability.
+
+## Consequences
+
+* Good, because broad repo pain can be decomposed without turning governance into a serial brake.
+* Good, because advisory route output stays non-mutating and cannot authorize writes.
+* Good, because parent synthesis remains accountable for integration, conflicts, validation, and final claims.
+* Good, because repeated comparison or verification can still promote to a check, schema, eval, benchmark, diagnostic, or skill update when earned.
+* Bad, because lane vocabulary could become a second governance grammar if over-expanded.
+* Bad, because schema-backed candidate fields add maintenance surface.
+* Mitigation: keep candidates disposable, avoid `leave_native` candidates, do not persist lane maps, and retire planning specs after extraction.
+
+## Confirmation
+
+* [North Star](../NORTH_STAR) states the compact acceleration rule.
+* `repo-quality-system-lifecycle` treats lane candidates as disposable ecology hints.
+* `multi-agent-handoff` owns parent lane contracts and direct-fix authorization.
+* `mixture-of-experts` treats lane discovery as advisory critique input.
+* `steward-continuity-boundary-lifecycle` bounds many-agent coordination as one readiness sign.
+* `steward ecology route --json` emits optional advisory `dispatch_lane_candidates` without write authorization.
+* [Ecology route v1 schema](../schemas/ecology-route-v1.schema.json) closes the candidate shape, requires `advisory_direct_fix_allowed: false`, and rejects `direct_fix_allowed`.
+
+## More Information
+
+* [ADR 0018 — Cold-to-hot path usefulness](0018-cold-to-hot-path-usefulness)
+* [ADR 0022 — Repository Ecology Review and Snapshot](0022-repository-ecology-review-and-snapshot)
+* [ADR 0023 — Evidence Artifacts as Claim-Proof Records](0023-evidence-artifacts-as-claim-proof-records)
+* [ADR 0025 — Steward Presence Readiness Signs](0025-steward-presence-readiness-signs)

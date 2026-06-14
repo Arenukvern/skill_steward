@@ -1,0 +1,12 @@
+id: vision-alignment-accepted-adr-dormant
+skill: vision-alignment-foresight
+routing: should_not_trigger
+input: "Write an ADR for an accepted repository decision"
+rules:
+  - kind: file_exists
+    path: references/evals.md
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["Should not trigger", "repository-governance-lifecycle"]
+  - kind: description_excludes_all
+    terms: ["accepted decision", "ADR writing"]

@@ -1,0 +1,119 @@
+# Adoption run v2 template
+
+**Status:** template/reference, not proof · **Audience:** maintainers and agents
+
+Use this template when a fresh agent attempts one useful repo task and the result might teach future agents. The template keeps the user goal ahead of tool-building, classifies the capability being measured, and makes `continue`, `refactor`, `stop`, `abandon`, and `promote` all valid review outcomes.
+
+This file is a reusable shape only. It is not evidence that an adoption run happened, not current dogfood status, and not proof for any S/H maturity claim. Use [Current dogfood status](current-dogfood-status) for current adopter truth.
+
+Portable shape: [adoption-run-v2.schema.json](../schemas/adoption-run-v2.schema.json).
+
+```yaml
+schema: steward/adoption-run/v2
+
+run:
+  repo: "<repo id>"
+  subject_commit: "<commit or explicit dirty-state note>"
+  date: "YYYY-MM-DD"
+  agent_context: "fresh-agent | maintainer-local | CI | other"
+
+user_goal:
+  prompt: "<original request, quoted or summarized>"
+  requested_outcome: "<what the user needed solved>"
+  acceptance_check: "<what would prove the user's goal is solved>"
+  status: solved # solved | partially_solved | blocked | abandoned
+  evidence:
+    - "<command, artifact, review note, or runtime proof>"
+
+capability:
+  id: "<stable capability id>"
+  class: native_gate # doc_path | native_gate | steward_action | eval_case | diagnostic | mcp_tool_runtime | harness_feature | skill_guidance
+  scope: capability_level # adoption_run | capability_level | repo_maturity
+  user_value: "<future work made safer, faster, or less confusing>"
+  native_owner: "<script, test, docs page, CLI command, MCP tool, or code owner>"
+  pattern_layer: native # native | repo_grammar | public_surface | schema_codegen | harness | ecology | none
+  maintenance_delta: reduced # reduced | neutral | increased | unknown
+
+direct_problem_path:
+  declared_surfaces_used_first:
+    - "<AGENTS.md, docs map, native command, steward action, MCP tool, etc.>"
+  native_gates_run:
+    - "<type-native command or test>"
+  raw_shell_reason: "<why shell exploration was needed, or empty>"
+
+tool_detour:
+  needed: false
+  reason: "<why tool repair/build/refactor was necessary, or empty>"
+  attempts: 0
+  artifacts_created: []
+  stop_rule_triggered: false
+  return_to_goal_step: "<how the agent returned to the original task>"
+
+generational_architecture_check:
+  repeated_pattern: false
+  smaller_layer_considered: true
+  deletion_or_collapse_option: "<what could be removed, simplified, or left native>"
+  promotion_guard: "<falsifier, held-out task, or condition that prevents tool-loop drift>"
+  why_this_layer: "<why the selected layer is useful now>"
+
+outcome:
+  decision: continue # continue | refactor | stop | abandon | promote
+  reason: "<why this outcome serves the user goal and repo ecology>"
+  product_impact_line: "product_native_gate: <changed/proven product-native gate>; proof: <native gate/artifact>" # use an allowed prefix below
+  docs_or_adr_destination: "<ADR, DESIGN_FAQ, DX_FAQ, evidence note, eval, steward.yaml, or none>"
+
+hot_path_claim:
+  problem_class: "<class of future work this helps>"
+  created_surface: "<doc, command, eval, action, diagnostic, tool, or none>"
+  falsifier: "<negative test, failure mode, or drift check>"
+  positive_proof: "<passing command, runtime assertion, or review evidence>"
+  observed_effect: "<observable behavior or repo state, not only a success return code>"
+  held_out_or_future_task: "<how a future agent can verify transfer>"
+  non_claims:
+    - "<what this does not prove>"
+
+promotion:
+  claimed_level: none # none | H2 | H3 | H4 | H5 | S2 | S3 | S4 | S5
+  can_promote_in_this_run: false
+  review_required: true
+  repeated_evidence: []
+  held_out_benchmarks: []
+  broad_evidence: []
+```
+
+## Detour budget
+
+Tool-building is allowed only while it serves the user goal.
+
+- Try to repair, install, or adapt a missing tool at most twice before switching to a portable fallback or type-native command.
+- Record the friction as an observation or unknown case instead of continuing restoration.
+- Return to the original acceptance check.
+- If `attempts >= 2`, set `stop_rule_triggered: true`, use `decision: stop` or another non-promote outcome, and keep `can_promote_in_this_run: false`.
+- Promote only after review evidence proves the resulting surface helps a future task.
+
+## False-green guard
+
+A command returning success is not enough. Record the observed effect that proves the user-visible or repo-visible state changed as intended. If the tool reports success without effect, keep the run below promotion, record the caveat or unknown case, and return to the original acceptance check through a native or portable fallback.
+
+Before claiming success, fill `outcome.product_impact_line` with one sentence
+using one taxonomy prefix: `runtime_behavior:`, `public_api:`,
+`product_native_gate:`, `visual_capture:`, `performance_metric:`,
+`release_path:`, `developer_workflow:`, `command_output:`,
+`plugin_install:`, or `support_only:`. If only Steward artifacts changed,
+write `support_only: ...` and keep `decision` and `promotion` below promote.
+
+## Generational architecture check
+
+Use [Generational architecture ladder](../core/generational-architecture-ladder) to keep growth useful. The check asks whether the run should keep work at the native layer, clarify repo grammar, extract a public surface, generate repeated structure, add harness proof, improve skills/tools, or delete/collapse complexity.
+
+`maintenance_delta` is not a vanity metric. Mark `increased` when a new abstraction or tool adds upkeep, even if it was necessary. Mark `reduced` only when future agents have a shorter or safer path with a falsifier or held-out task.
+
+When this check changes a durable decision, rejects or promotes a new layer, or updates a skill/tooling surface, add a Pattern Promotion Review under `docs/evidence/pattern-promotion-review-YYYY-MM-DD-topic.mdx` and link it from `outcome.docs_or_adr_destination`.
+
+## Classification rules
+
+Use `scope: adoption_run` for a single attempt, `scope: capability_level` for one named capability with full matching proof, and `scope: repo_maturity` only when the repo's broad S/H claim is actually proven.
+
+Use `decision: stop` when the proposed tool path is not worth more time in the current run. Use `decision: abandon` when the capability idea is wrong for the repo or would distract from the original problem. Both are successful stewardship outcomes when they preserve evidence and prevent false work.
+
+Use `claimed_level: H5` or `S5` only when `repeated_evidence` names at least two independent proofs and `held_out_benchmarks` names the held-out benchmark, repeat run, or future-agent artifact. Use `scope: repo_maturity` only with explicit `broad_evidence`; otherwise keep the claim at `capability_level`.

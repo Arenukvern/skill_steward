@@ -1,0 +1,46 @@
+# Concept: evidence ladder
+
+A stewardship claim needs evidence appropriate to the claim.
+
+Use this page to decide the weakest proof level that supports a claim. Use [Evidence artifacts](evidence-artifacts) to decide whether a proof note should be current, historical, superseded, a template, or removed. ADRs record durable decisions; evidence artifacts record what happened and what can honestly be claimed from it.
+
+| Exact claim | Minimum evidence | Does not prove |
+|-------------|------------------|----------------|
+| Skill is structurally valid | `pnpm run validate` | Runtime behavior |
+| T1 behavior-critical skill routing is covered | `pnpm run eval` plus `evals/cases/*.yaml` | Production agent behavior |
+| Docs site is wired | `pnpm run docs:check` or documented blocked state | Repo correctness |
+| Repo quality contract is proven | Type-native validation command passes, or blocked evidence explains why it cannot | Harness readiness |
+| Cleanup turn is useful evidence | Scope, commands run, commands skipped, skip reason, and non-claims are stated | Merge readiness or maturity proof |
+| Generated or registry-like surface is fresh | Owning generator/check runs cleanly, or freshness is otherwise reproducible | Runtime correctness |
+| Stewardship protocol is declared | Protocol artifacts, mode rules, memory boundaries, and validation path exist | Proven repo steward or production agent behavior |
+| Steward presence trial is warranted | Readiness note names the problem class, at least three signs across at least two repo surfaces, owner, acceptance check, evidence bar, non-claims, and falsifier | Steward presence was used, continuity improved work, or proven repo steward status |
+| Steward presence was used in one task | Handoff or mode event records threshold, intent, evidence bar, delegated surface, and non-claims | Durable repo steward status |
+| Proven repo steward improves work | Repeated or held-out tasks compare with/without continuity and show improved decisions, handoffs, boundary detection, or evidence precision | Consciousness, final authority, or product-wide maturity |
+| Steward claim is rejected or not rejected by a negative gate | `steward claim check` runs against the evidence artifact | Acceptance proof, evidence reasoning, a maturity score, final authority, H4/H5 proof, or consciousness |
+| H2 smoke loop is proven | `doctor`, `actions list`, `action inspect`, `probe`, and benchmark summary with `result: "pass"` | H4 fresh-agent workflow |
+| H2 smoke loop is blocked | Benchmark summary with `result: "blocked"` and `blocked_by: "durability_blocked"` | H2 proof |
+| H4 agent workflow is proven | Fresh-agent run artifact or transcript completes one repo-specific workflow without hidden local context | Product-wide correctness |
+
+Rule-based evals are useful but narrow. They prevent obvious drift; they do not prove production agent behavior. Harness benchmarks are stronger, but only for repos with declared action contracts.
+
+Skipped validation, manually synced generated files, blocked generators, and blocked benchmarks are useful work notes only when disclosed. They cannot upgrade a readiness claim. If generated assets, registry tables, docs indexes, manifests, or skill bundles change, run the owning generator/freshness check or label the result as unvalidated cleanup evidence.
+
+For cleanup or cross-repo alignment turns, record at least:
+
+- `status`: current, historical, superseded, template, or retired.
+- `evidence_type`: benchmark, adoption_run, pdsa, pattern_review, postmortem, unknown_case, ledger, or reference.
+- `claim`: exact claim being made.
+- `scope`: files, repos, or surfaces touched.
+- `commands_run`: validation, generator, link, or freshness checks executed.
+- `commands_skipped`: relevant checks not run.
+- `skip_reason`: why a check was not run.
+- `proof_level`: weakest true evidence level reached.
+- `non_claims`: claims explicitly not proven.
+- `next_disposition`: keep, update, supersede, move to check, move to ADR/FAQ/skill, or remove after extraction.
+- `current_status_pointer`: current ledger or rerun route when this artifact is historical.
+
+## Adoption check
+
+Use this concept before making a readiness claim. Minimum artifact: pair the exact claim with the weakest evidence that truthfully proves it.
+
+Do not use a green skill eval, docs check, or smoke benchmark to claim product runtime correctness or H4 fresh-agent workflow proof.

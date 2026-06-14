@@ -1,0 +1,49 @@
+# Stewardship Protocol Smoke Packet — 2026-06-12
+
+## Claim
+
+Skill Steward has a structurally valid `stewardship_protocol` smoke path for protocol artifacts.
+
+## Commands Run
+
+| Command | Result | Evidence |
+|---------|--------|----------|
+| `cd packages/steward_cli && dart run :steward doctor --json` | Pass | `schema_version: steward.doctor.v1`; config valid; `steward.protocol.validate-example` listed as `auto_eligible: true`, `quick_eligible: true`. |
+| `cd packages/steward_cli && dart run :steward actions list --json` | Pass | `steward.protocol.validate-example` present with `fs_write: []`, no network, no secrets, no destructive effects. |
+| `cd packages/steward_cli && dart run :steward action inspect steward.protocol.validate-example --json` | Pass | Action invokes `dart --packages=packages/steward_cli/.dart_tool/package_config.json packages/steward_cli/bin/steward.dart protocol validate ...`; package config is declared as `fs_read`. |
+| `cd packages/steward_cli && dart run :steward protocol validate --mode-events .steward/events.example.jsonl --self-model .steward/self-model.example.json --json` | Pass | `valid: true`; one mode event; self-model file exists. |
+| `cd packages/steward_cli && dart run :steward probe --profile quick --json` | Pass | Both quick actions selected; `steward.protocol.validate-example` execution returned `valid: true`. |
+| `cd packages/steward_cli && dart run :steward benchmark --scenario skill_steward.protocol-smoke --strict --output .steward/benchmark-summaries/skill-steward-protocol-smoke.json --json` | Blocked | `result: blocked`; `blocked_by: durability_blocked`; blocking inputs are `steward.yaml`, `steward/scenarios/skill_steward.protocol-smoke.yaml`, `.steward/events.example.jsonl`, `.steward/self-model.example.json`. |
+
+## Action Contract Note
+
+The protocol smoke action does not use `dart run`. It invokes the script with an explicit package config:
+
+```bash
+dart --packages=packages/steward_cli/.dart_tool/package_config.json \
+  packages/steward_cli/bin/steward.dart protocol validate \
+  --mode-events .steward/events.example.jsonl \
+  --self-model .steward/self-model.example.json \
+  --json
+```
+
+This keeps the action contract read-only for quick probe use. `packages/steward_cli/.dart_tool/package_config.json` is declared as an input. Dependency resolution remains outside this action and belongs to maintainer setup or validation commands that already declare Dart cache writes.
+
+## Boundary Check
+
+The example mode event uses `mode: "tool-execution"` and `status: "stewardship_protocol"`. Routine schema validation does not enter `steward_presence`.
+
+`steward claim check` is treated as a negative gate. It can reject obvious overclaims; it does not accept claims, reason over evidence quality, award status, prove consciousness, or prove H4/H5 behavior.
+
+## Current Proof Status
+
+The protocol path is structurally valid and quick-probe runnable in this checkout.
+
+The strict benchmark is not proof yet because the protocol scenario inputs are dirty or untracked. After these files are staged and committed, rerun the benchmark to test whether durability becomes `ready` and `result: pass`.
+
+## Non-claims
+
+- This does not prove `proven_repo_steward`.
+- This does not prove steward personality, consciousness, final authority, or product-wide maturity.
+- This does not prove H4/H5 fresh-agent behavior.
+- This does not prove adopter repo behavior.

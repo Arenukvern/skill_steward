@@ -1,0 +1,33 @@
+# Concept: stewardship loop
+
+Engineering Stewardship is the loop that keeps a repository understandable and improvable for humans and agents.
+
+```text
+Observe friction
+  -> classify repo/archetype
+  -> decide or clarify intent
+  -> update docs/spec/code/eval/harness
+  -> run or record proof
+  -> preserve learning
+```
+
+The loop is intentionally broader than feature delivery. It includes the product, but also the software ecology around it: tools, languages, docs, decisions, tests, release mechanics, debugging surfaces, and agent operating rules.
+
+## Durable outputs
+
+| Friction | Durable output |
+|----------|----------------|
+| Ambiguous direction | North Star update, ADR, DESIGN FAQ |
+| Repeated command failure | DX FAQ, validation script, typed action candidate |
+| Hidden repo knowledge | AGENTS map, docs map, concept doc |
+| Skill routing drift | Eval case, skill description update |
+| Runtime diagnostic gap | Harness action, benchmark scenario, unknown case |
+| Release confusion | Changeset, changelog, artifact provenance |
+
+A plan is not durable by itself. When work is done, extract the learning and remove stale plan files.
+
+## Adoption check
+
+Use this concept when friction repeats or survives one session. Minimum artifact: convert the learning into exactly one durable owner: ADR, FAQ, code, eval, action candidate, benchmark, or unknown case.
+
+Do not promote a permanent diagnostic or action from the same single run that discovered the issue.

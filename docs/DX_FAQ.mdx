@@ -4,8 +4,39 @@ _How to work in this repo and install Skill Steward meta-skills elsewhere. Walk 
 
 ## 🧭 Router
 
+### Ecology disposition fast path
+
+For ordinary repo work, do not start with a maturity ladder or an evidence packet. Start with the repository ecology surface that owns the friction.
+
+1. Name the original user goal and acceptance check.
+2. Identify the repo's primary artifact and native validation gate.
+3. Choose one disposition: `orient`, `compress`, `validate`, `tutor_pain`, `promote_tool`, `leave_native`, or `stop`.
+4. Make the smallest safe change only when that disposition calls for it, including in another allowed repo when that owner is the right place.
+5. Rerun the same native gate or blocked Steward route.
+6. For product repos, name the product impact check: source-owned behavior/API/UI/visual/performance/release/workflow delta, or explicit product-native proof. Green Steward artifacts alone are stewardship support, not product acceleration.
+7. Leave the smallest hot path: better map, shorter doc, native check, schema, test, FAQ row, action candidate, or current-ledger update.
+8. Create evidence only for a claim, blocker, real run, or durable behavior change. Repeated deterministic drift should become a check/tool.
+
+ADR 0024 keeps loop-pain extraction in these existing surfaces: owner, native gate, disposition, rerun route, hot path, and non-claims.
+
+### North Star impact check
+
+Use this when a durable change might move the repo's center, not for every patch. Mechanisms may evolve quickly; mission changes must leave an explicit trail.
+
+| `north_star_impact` | Meaning | Route |
+|---------------------|---------|-------|
+| `none` | Local change; no charter or stewardship meaning. | Use native gate. |
+| `applies` | Uses the current North Star value paths. | Proceed through the smallest disposition. |
+| `clarifies` | Explains an existing boundary without changing it. | Update FAQ, skill wording, docs map, or check. |
+| `sub_star` | Adds a local sub-North Star for a product, repo, or subdomain. | Declare parent/child boundary and what it cannot override. |
+| `amends` | Changes what Skill Steward owns, refuses, or optimizes for. | Stop and write an ADR plus a North Star diff. |
+| `conflicts` | Pulls work toward a different center, such as repair-first or evidence-first. | Stop, reject, or intentionally propose an ADR. |
+
+Before a structural update, answer: what user/product pain triggered this; which North Star value path it serves; whether it is a mechanism or a new center; whether it changes ownership or refusal boundaries; where the ADR is if it does; and what check prevents the mechanism becoming the mission if it does not.
+
 ```text
 CHARTER / scope        → NORTH_STAR.mdx
+REPO QUALITY CONTRACT → repo-quality-contracts.mdx
 WHY / ADRs             → DESIGN_FAQ.mdx, decisions/
 HOW contribute         → this file, ../AGENTS.md, ../CONTRIBUTING.md
 PLAN HYGIENE (any format) → start_here/executable-plans.mdx
@@ -14,46 +45,219 @@ DOCS CI                → pnpm run docs:check  (@docs.page/cli)
 INSTALL for users      → npx skills add arenukvern/skill_steward
 UPDATE installed       → this file (Updating installed skills)
 ANALYZE steward_cli    → pnpm run steward:analyze  (xsoulspace_lints; CI on PR)
-VALIDATE before PR     → pnpm run steward:validate  (validate + eval; same as CI)
+VALIDATE before PR     → pnpm run validate  (skill structure; CI also runs analyze/test/eval/list)
 CITE / EVAL SKILLS     → skill-source-citations, skill-eval-improve
-EVAL CI (Tier 1)       → pnpm run eval · evals/cases/*.yaml · ADR 0011
+EVAL CI (T1 behavior-critical)       → pnpm run eval · evals/cases/*.yaml · ADR 0011
 STEWARD CLI              → ../packages/steward_cli/README.md  (ADR 0007)
+HONEST CLAIM ROUTING    → this file (Honest claim routing) · evidence/current-dogfood-status · evidence/first-adopter-golden-path (reference)
+EVIDENCE ROUTING       → core/evidence-artifacts.mdx · core/evidence-ladder.mdx · ADR 0023
 RELEASE / CHANGELOG    → this file (Release desk) · ADR 0009 · ADR 0010 · skill release-changelog-harness
 PLUGINS (hooks)        → ../plugins/README.md  (not via npx skills)
 ```
 
+## 📦 Distribution stack
+
+Use the smallest distribution surface that matches the job.
+
+| Need | Use | Boundary |
+|------|-----|----------|
+| Install/update portable skills for a human or agent | `npx skills add/update` | Public skill distribution and local/global agent paths |
+| Discover public skills | skills.sh | Catalog only; not a repo harness contract |
+| Give a repo deterministic agent structure | `steward install/update` with `skills.json` | Repo-local registration, copy/symlink layout, commit pinning; not a public package manager |
+| Validate stewardship protocol artifacts | `steward protocol validate` | Shape check only; status vocabulary lives in ADR 0021 |
+| Check an over-strong stewardship or adoption claim | `steward claim check` | Negative gate only: `not_rejected` means not rejected by the gate, not accepted |
+| Validate a JSON artifact against a Steward schema | `steward schema validate` | Portable shape check; not semantic proof beyond the schema |
+| Keep dogfood JSON routes aligned | `steward schema check-outputs`, `steward schema drift` | Part of the machine-readable contract path; not maturity proof by itself |
+| Gather repo ecology inventory | `steward ecology snapshot --json` | Read-only facts for a Repository Ecology Review; not an adoption or maturity verdict |
+| Route repo ecology dispositions | `steward ecology route --json` | Composes snapshot facts into orient/compress/validate/tutor/promote/leave/stop suggestions; not repair automation |
+| Compose current dogfood route | `steward dogfood status --json` | Current ledger plus ecology facts; not maturity, H2/H5, or steward status |
+| Start a minimal current-status ledger | `steward evidence init --minimal` | Creates one claim/status ledger; not an evidence archive, benchmark, or readiness claim |
+| Turn blocked JSON into next actions | `steward blocked explain` | Artifact routing for blocked evidence; does not repair or prove |
+| Validate Skill Steward skills | `pnpm run validate`, `pnpm run eval` | Skill structure and T1 behavior-critical routing cases |
+| Adopt general repo stewardship | `repo-quality-system-lifecycle` + repo-quality-contracts.mdx | Charter, docs lattice, type-native gates, evidence, safety, maturity proof |
+| Prove a repo-local harness contract | `steward doctor/actions/probe/benchmark` | Runtime dogfood evidence; separate from skill evals |
+| Generate plugin/rule descriptors | `steward bundle` | Validated wiring artifacts; host install remains explicit |
+
+## 🧱 Stewardship pillars
+
+Harness work is one part of engineering stewardship. Use the narrowest pillar that matches the job.
+
+| Pillar | Use | Skill / surface |
+|--------|-----|-----------------|
+| Repo quality contracts | Type-native gates, evidence, action safety, maturity proof | `repo-quality-system-lifecycle`, repo-quality-contracts.mdx |
+| Governance | Charter, ADRs, FAQs, ethics, plan hygiene | `repository-governance-lifecycle` |
+| Knowledge | Source provenance and docs traceability | `skill-source-citations` |
+| Skill lifecycle | Authoring and auditing installable skills | `skill-authoring-lifecycle` |
+| Quality gates | T1 behavior-critical static skill evals and bounded improvement loops | `skill-eval-improve`, `pnpm run eval` |
+| Local harness adoption | `steward.yaml`, typed actions, quick probes, benchmark smoke loops | `mcp-harness-repo-maintainer` |
+| Cross-repo harness engineering | Producer/consumer generalization and sibling dogfood | `harness-engineering-lifecycle` |
+| Release legibility | Changelog, versioning, release artifacts | `release-changelog-harness` |
+| Review and handoff | MoE critique and agent handoff | `mixture-of-experts`, `multi-agent-handoff` |
+| Strategic alignment | Vision vs implementation fit, usage evidence, future-fit analysis | `vision-alignment-foresight` |
+| Packaging | Agent-specific plugin and skill distribution | `plugin-marketplace-setup`, `steward bundle` |
+
 ## 📦 Repo setup (maintainers)
 
-GitHub product name: **Skill Steward** (`Arenukvern/skill_steward`). Many workspaces clone it as **`agent_guild/`** beside harness repos (e.g. in `~/mcp/` or any sibling directory).
+GitHub product name: **Skill Steward** (`Arenukvern/skill_steward`). Clone it anywhere. Docs use `<skill-steward-checkout>` for a maintainer-local clone; public consumer commands should use `arenukvern/skill_steward`, not a private workspace path.
 
 ```bash
-# Clone wherever you keep your workspace (e.g. ~/mcp/, ~/dev/, etc.)
-cd <workspace>/agent_guild
+cd <skill-steward-checkout>
 pnpm install          # packageManager: pnpm@9 (see package.json)
 pnpm run steward:analyze
-pnpm run steward:validate
+pnpm run validate
 ```
 
-### Consumer install from a local clone (sibling repo)
+### Maintainer local override from a clone
 
 ```bash
-# Project scope (example: <cli_harness>)
-cd <workspace>/<cli_harness>
+# Project scope (example: <cli_tool_repo>)
+cd <workspace>/<cli_tool_repo>
 make agent-skills
-# or install from the cloned local copy:
-npx skills add <workspace>/agent_guild --skill mcp-harness-repo-maintainer -a cursor -y
+# or install from the cloned local copy while iterating before release:
+npx skills add <skill-steward-checkout> --skill mcp-harness-repo-maintainer -a cursor -y
 ```
+
+### Honest claim routing
+
+Start with the reader question: what can I honestly claim right now? Use this route for a repo that does not yet know whether it needs a harness. It proves the stewardship baseline first and reserves typed actions for a separate decision.
+
+Expected first result:
+
+| Step | Proof |
+|------|-------|
+| `steward adopt` | `skills.json`, `steward.yaml`, and `AGENTS.md` exist. `stewardship.harness.enabled` is `false` by default, with valid empty `actions: {}` and `probes: {}`. The generated `AGENTS.md` includes the `north_star_impact` habit so structural drift is explicit in adopter repos too. |
+| `steward map` | The repo archetype, task runner, docs pointers, and recommended skills are visible. |
+| `repo-quality-system-lifecycle` | Agents get the broad S0/S1 baseline workflow before action-contract work. |
+
+Use the harness flag only when the repo is ready to declare typed actions, probes, and benchmark evidence from the start. The smoke scenario is generated only when the repo has a durable git remote and resolved HEAD commit; otherwise add the scenario after those facts exist.
+
+Canonical commands and interpretation: [First adopter golden path](evidence/first-adopter-golden-path). It is a reference fixture, not current adopter proof; current dogfood/adopter truth lives in [Current dogfood status](evidence/current-dogfood-status). A passing smoke benchmark proves only H2 contract discovery and safe first observation. A `durability_blocked` result is useful blocked evidence when it points to dirty or untracked contract inputs, but it is not H2 proof and not H4 fresh-agent workflow proof. Steward status vocabulary is intentionally centralized in [ADR 0021](decisions/0021-protocol-first-steward-status-gates); adoption and maturity vocabulary lives in [NORTH_STAR](NORTH_STAR#adoption-claim-vocabulary).
+
+### Dogfood state routing
+
+When working inside an adopter repo, classify the current claim before adding new doctrine:
+
+| State | Signal | Next artifact |
+|-------|--------|---------------|
+| `fresh_baseline` | `steward doctor --json` shows valid config with no typed action proof yet | Run `steward actions list --json`; add harness only if typed actions are needed. |
+| `harness_proof` | `doctor`, `actions list`, `action inspect`, `probe`, and strict `benchmark` return `result: "pass"` | Record compact evidence and avoid broader maturity claims. |
+| `protocol_artifact_only` | `steward protocol validate` returns `valid: true` | Keep status at `stewardship_protocol`; do not claim repo steward proof. |
+| `blocked_invalid_config` | `doctor` or `probe` reports invalid config | Repair `steward.yaml` schema/archetype or create an unknown-case artifact if the schema is missing a real repo shape. |
+| `durability_blocked` | Strict benchmark blocks on dirty or untracked contract inputs | Pipe the fresh benchmark JSON to `steward blocked explain --stdin --json`, track or commit the contract inputs, then rerun the same benchmark before claiming proof. |
+| `runtime_proof_blocked` | CLI/runtime setup cannot produce the target app, VM URI, semantic node, or redacted assertion | Pipe the fresh runtime block to `steward blocked explain --stdin --json`, then repair the launch path or capture an unknown-case artifact with commands, logs excerpt, redaction policy, and the exact rerun target. |
+| `machine_contract_drift` | `schema check-outputs` or `schema drift` fails on a JSON route used by the dogfood path | Fix the schema/model/output mismatch before relying on that JSON for benchmark or claim evidence. |
+
+Ecology disposition rule: if the blocker is invalid config, dirty declared inputs, schema/output drift, blocked payload routing, stale navigation, or a broken native launch path, choose the smallest useful disposition before adding another artifact. Often that means updating the owner and rerunning the same gate; sometimes it means leaving the work native, converting deterministic drift to a check, or stopping a tool path that has become the work. After two learning loops on the same friction, extract the lesson into ADR/FAQ/skill/check/current ledger or stop; do not create a third loop just to feel surer.
+
+### Repository ecology review
+
+Use a Repository Ecology Review when the question is what should be compressed, changed, merged, removed, updated, created, retired, or moved into checks. This is broader than dogfood: it may inspect plans, specs, docs, skills, schemas, tools, evidence, and validation surfaces without running a benchmark.
+
+Use `repo-quality-system-lifecycle` for judgment and disposition. Use `steward ecology snapshot --json` only to reduce tedious inventory gathering:
+
+```bash
+steward ecology snapshot --json
+steward ecology route --json
+```
+
+The snapshot is read-only. It can report observed config, action/probe declarations, benchmark summaries, git dirty state, active plan candidates, and evidence pointers, but it does not execute actions, repair drift, or award maturity. The route command composes those facts into the North Star value paths: orient, compress, validate, tutor pain, promote tools, leave native, or stop.
+
+Benchmark summaries in the snapshot are persisted history from `.steward/benchmark-summaries/`. The snapshot labels them as `persisted_history` and includes commit/freshness hints; `may_be_stale: true` means the summary is a routing clue, not current proof. Pipe fresh blocked JSON to `steward blocked explain --stdin --json`; use `--output .steward/benchmark-summaries/<scenario>.json` only when a fresh benchmark result should replace persisted history or feed a future snapshot.
+
+### Evidence artifact desk
+
+Use evidence only when it protects a claim, preserves a blocked state, records a real run, or changes future behavior. Use [Evidence ladder](core/evidence-ladder) for the proof level and [Evidence artifacts](core/evidence-artifacts) for artifact status, type, and retention.
+
+| Question | Route |
+|----------|-------|
+| Did we choose a durable policy or trade-off? | Write or update an ADR. |
+| Did a real run prove or block an exact claim? | Create or update an evidence artifact with status/type metadata. |
+| Is this the current weakest true status? | Update a current ledger and link historical evidence as provenance. |
+| Is this a reusable prompt, fixture, or shape? | Move it to a skill/reference/template; mark evidence `template` only while transitional. |
+| Is this repeated deterministic drift? | Move it to a check, schema, validator, test, CLI diagnostic, or harness probe. |
+| Is this only an implemented checklist or stale plan? | Extract useful truth, then remove it. |
+
+New durable evidence should include the lightweight envelope from [ADR 0023](decisions/0023-evidence-artifacts-as-claim-proof-records): `status`, `evidence_type`, `date`, `scope`, `claim_tested`, `proof_level`, `result`, `limitations`, `non_claims`, `next_disposition`, and `current_status_pointer`.
+
+For a new or unique repo, start with the manual habit before adding machinery:
+
+1. Put the claim/evidence router in `AGENTS.md`.
+2. Name the native validation command or truthful blocked state.
+3. Create `docs/evidence/current-status.mdx` only when a current readiness, adoption, or blocker claim needs a durable pointer.
+4. Add `steward.yaml`, probes, or benchmarks only when typed actions and machine-readable proof reduce repeated work.
+
+The CLI helper for step 3 is intentionally small:
+
+```bash
+steward evidence init --minimal
+```
+
+It creates one current ledger and no evidence archive.
+
+### Schema and output drift checks
+
+Use schema checks when a JSON artifact or CLI payload becomes part of the dogfood path:
+
+```bash
+steward schema validate --schema self-model --file .steward/self-model.json --json
+steward schema validate --schema mode-event --file .steward/events.jsonl --json
+steward schema check-outputs --json
+steward schema emit --schema self-model --source checked-in --json
+steward schema drift --json
+```
+
+`schema validate` is a portable shape check for repo artifacts. `schema check-outputs` runs core read-only payload builders and validates their JSON against repo schemas. `schema emit` exposes checked-in or generated typed-model schemas for inspection. `schema drift` fails when generated contract model fields, required fields, or mutually declared enums drift from checked-in schemas. These checks keep the cold-start/dogfood route honest when it depends on machine-readable fields; passing them is not proof of maturity by itself.
+
+### Stewardship protocol validation
+
+Use the protocol validator when a repo records steward mode events or self-model artifacts:
+
+```bash
+steward protocol validate --mode-events .steward/events.jsonl --self-model .steward/self-model.json --json
+```
+
+This proves protocol artifact shape only. It rejects unknown schema fields, invalid mode/status combinations, and forbidden private-material markers. It does not prove repo steward status, H4/H5 behavior, consciousness, final authority, or production agent behavior.
+
+### Stewardship claim negative gates
+
+Use the claim gate before writing a status claim stronger than the available evidence:
+
+```bash
+steward claim check --claim proven_repo_steward --evidence docs/evidence/<file>.mdx --json
+```
+
+Claim checks are negative gates. They do not award a score, accept a claim, or prove steward status; they only report whether the claim was rejected by the gate. Machine-readable output uses `result: "rejected"` or `result: "not_rejected"`; `not_rejected` means not rejected by the negative gate, and `accepted` remains `false`.
 
 ### Harness bundle (recommended for product repos)
 
 | Skill | Role |
 |-------|------|
-| `north-star-governance` | Charter, AGENTS map, plan hygiene |
-| `harness-engineering-culture` | CLI/MCP harness culture |
-| `mcp-harness-repo-maintainer` | Archetype checklists, sibling layout |
-| `adr-records` | ADRs in `decisions/` |
-| `faq-driven-docs` | DESIGN_FAQ + DX_FAQ |
-| `create-skill` / `skill-spec-review` | Author and audit `plugin/skills/` |
+| `repository-governance-lifecycle` | Charter, AGENTS map, ADRs, FAQs, plan hygiene |
+| `repo-quality-system-lifecycle` | General stewardship baseline, repo archetype, native gates, evidence path |
+| `mcp-harness-repo-maintainer` | Local harness contract adoption and first proof loop |
+| `harness-engineering-lifecycle` | Cross-repo generalization after the local contract exists |
+| `skill-authoring-lifecycle` | Author and audit `skills/` |
+| `plugin-marketplace-setup` | Skill/plugin distribution across Cursor, Claude Code, Codex, Zed, and Open Plugin |
+
+### Local harness naming
+
+Do not collapse repo folder, public product name, CLI command, MCP prefix, and package prefix into one field. Product repos may use product branding; orchestration-heavy apps may use a local steward name.
+
+| Repo | Local harness name | First proof intent |
+|------|--------------------|--------------------|
+| `ecsly` | `ecsly` | Product-branded powerhouse; first proof is a bounded observe/preflight action. |
+| `mcp_flutter` | `flutter-mcp-toolkit` | Toolkit-branded contract surface; first proof is tool-prefix or expected-surface verification. |
+| `agentkit` / IntentCall | `intentcall` | Adapter contract; first proof is dependency/version/plan-hygiene validation. |
+| `flutter_harness` | `flutter-harness` | CLI-only visual harness; first proof is local agent doctor/preflight. |
+| `vitamins_quiz_bot` | `shippic-steward` | Local steward control plane; first proof is redacted inspect output before deeper citation judging. |
+
+### Maintainer-local integration roadmap desk
+
+This is maintainer-local context, not general consumer adoption guidance. When a roadmap crosses sibling repositories, record dependency order before claiming a repo is green. A local contract can pass while a downstream consumer is still blocked by an unpublished package or stale override.
+
+Current status: [Current dogfood status](evidence/current-dogfood-status).
+
+Historical dated note: [Maintainer-local integration roadmap — 2026-06-08](evidence/maintainer-local-integration-roadmap-2026-06-08). Keep it for provenance only; do not use it as an active current-note link.
 
 ## 📦 Install Skill Steward (consumers)
 
@@ -62,10 +266,10 @@ npx skills add <workspace>/agent_guild --skill mcp-harness-repo-maintainer -a cu
 npx skills add arenukvern/skill_steward
 
 # One skill
-npx skills add arenukvern/skill_steward --skill adr-records
+npx skills add arenukvern/skill_steward --skill repository-governance-lifecycle
 
-# Cursor + Claude, project scope, non-interactive
-npx skills add arenukvern/skill_steward -a cursor -a claude-code -y
+# Cursor + Claude + Codex + Zed, project scope, non-interactive
+npx skills add arenukvern/skill_steward -a cursor -a claude-code -a codex -a zed -y
 
 # Global (every project)
 npx skills add arenukvern/skill_steward -g
@@ -74,9 +278,16 @@ npx skills add arenukvern/skill_steward -g
 npx skills add . --list
 ```
 
+Maintainer local override while iterating before publishing:
+
+```bash
+npx skills add <skill-steward-checkout> -a cursor -a claude-code -a codex -a zed -y
+npx skills add <skill-steward-checkout> -g -y
+```
+
 ### Install steward CLI (Global Binary)
 
-For zero-dependency installation of the `steward` CLI tool (which manages skill installation and checks locally without requiring a clone or Dart SDK):
+For zero-dependency installation of the `steward` CLI tool without requiring a clone or Dart SDK:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash
@@ -84,11 +295,13 @@ curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/insta
 curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash -s -- --version v0.1.0
 ```
 
+`steward install/update` intentionally manages repo-local `skills.json` registration, agent folder layout, and commit pinning. Use `npx skills` for broad public skill install/update and skills.sh discovery.
+
 **Note:** Hooks/plugins are **not** installed by `npx skills` on Cursor—see `../plugins/README.md` and [ADR 0004](decisions/0004-plugin-packaging-and-install-path).
 
 ## 🔄 Updating installed skills
 
-After Skill Steward merges to `main`, consumers refresh installed `SKILL.md` files with [vercel-labs/skills](https://github.com/vercel-labs/skills) (`npx skills`). Installed paths depend on agent (e.g. `.cursor/skills/`, `.agents/skills/`); see [AGENTS.md](https://github.com/arenukvern/skill_steward/blob/main/AGENTS.md).
+After Skill Steward merges to `main`, consumers refresh installed `SKILL.md` files with [vercel-labs/skills](https://github.com/vercel-labs/skills) (`npx skills`). While iterating locally, reinstall from `<skill-steward-checkout>` so project/global skills reflect the local checkout. Installed paths depend on agent (e.g. `.agents/skills/`, `.cursor/skills/`, `~/.codex/skills/`); see [AGENTS.md](https://github.com/arenukvern/skill_steward/blob/main/AGENTS.md).
 
 ```bash
 # List what is installed (project)
@@ -107,8 +320,8 @@ npx skills update -g -y
 npx skills update -p -y
 
 # Update one skill by directory name (from `skills list`)
-npx skills update north-star-governance -y
-npx skills update create-skill -y
+npx skills update repository-governance-lifecycle -y
+npx skills update skill-authoring-lifecycle -y
 ```
 
 **Re-add from GitHub** (same as install; overwrites/refreshes from `arenukvern/skill_steward`):
@@ -118,13 +331,19 @@ npx skills update create-skill -y
 npx skills add arenukvern/skill_steward -y
 
 # One skill
-npx skills add arenukvern/skill_steward --skill adr-records -y
+npx skills add arenukvern/skill_steward --skill repository-governance-lifecycle -y
 
 # Target agents, project scope
-npx skills add arenukvern/skill_steward -a cursor -a claude-code -y
+npx skills add arenukvern/skill_steward -a cursor -a claude-code -a codex -a zed -y
+
+# Same from a maintainer local clone
+npx skills add <skill-steward-checkout> -a cursor -a claude-code -a codex -a zed -y
 
 # Global reinstall
 npx skills add arenukvern/skill_steward -g -y
+
+# Global reinstall from maintainer local clone
+npx skills add <skill-steward-checkout> -g -y
 ```
 
 **When to use which**
@@ -136,6 +355,7 @@ npx skills add arenukvern/skill_steward -g -y
 | One skill you use heavily | `npx skills update <skill-name> -y` |
 | Force full marketplace refresh | `npx skills add arenukvern/skill_steward -y` |
 | Pin to a branch or local clone | `npx skills add <path-or-url> --skill <name> -y` |
+| Refresh global skills from local clone | `npx skills add <skill-steward-checkout> -g -y` |
 
 **Not covered by `npx skills`:** Cursor hook plugins — `../plugins/README.md`.
 
@@ -147,23 +367,23 @@ cp -r templates/skill skills/my-skill-name
 
 # 2. Edit skills/my-skill-name/SKILL.md (name == directory name)
 
-# 3. Validate
-dart run :steward validate   # or pnpm run validate (now delegates to Dart)
+# 3. Validate from the repo root
+pnpm run validate
 
 # 4. Register
-#    - skills.sh.json groupings
+#    - skills.sh.json (current repo schema)
 #    - README.md skill table
 #    - optional DESIGN_FAQ Q&A if repo-level why changed
 ```
 
-**Authoring skill:** use installed `create-skill` or read `../skills/create-skill/SKILL.md`.
+**Authoring skill:** use installed `skill-authoring-lifecycle` or read `../skills/skill-authoring-lifecycle/SKILL.md`.
 
 ## ✅ Validate desk
 
 ```bash
-dart run :steward validate          # canonical (pure Dart implementation)
-dart run :steward validate --json   # machine-readable report
-pnpm run eval                       # Tier 1 rule-based cases (ADR 0011) — still Node for now
+pnpm run validate                   # canonical repo-root validation
+pnpm run validate:json              # machine-readable report
+pnpm run eval                       # T1 behavior-critical rule-based skill cases (ADR 0011)
 pnpm run list                       # skill names + descriptions
 
 # Dart meta CLI (primary)
@@ -177,6 +397,41 @@ Optional Cursor hook: `../plugins/steward-validate-on-save/README.md`.
 
 Fix all `error:` lines before merge. Warnings (long SKILL.md, missing skills.sh entry) should be addressed or justified in PR.
 
+`pnpm run eval` is for T1 behavior-critical skill routing and docs-SSOT quality. Runtime dogfood and local harness benchmarks use `steward benchmark --scenario <id> --json`; do not put product runtime scenarios under skill evals. Benchmark execution is durability-gated: `source.steward_contract` and any file-backed scenario manifest must be clean and tracked before actions run.
+
+### Validation matrix
+
+| Change | Required validation | Notes |
+|--------|---------------------|-------|
+| Skill text/frontmatter | `pnpm run validate` + `pnpm run eval` when T1 behavior-critical | Update `evals/cases/*.yaml` when routing changed. |
+| Docs only | `pnpm run docs:check` + targeted link/readthrough | Keep docs as pointers to behavior SSOT. |
+| Steward CLI code | `pnpm run steward:analyze` + relevant Dart tests + `pnpm run validate` | Use GitNexus impact before symbol edits. |
+| Local harness contract | `steward doctor/actions/probe/benchmark` in the target repo | Record `durability_blocked` honestly when inputs are dirty. |
+| Release/distribution | Changesets check + README/DX install/update commands | Keep `npx skills` and `steward install/update` boundaries explicit. |
+
+Cold-start proof loop for a local Steward contract:
+
+```bash
+cd packages/steward_cli
+dart run :steward doctor --json
+dart run :steward schema check-outputs --json
+dart run :steward schema drift --json
+dart run :steward actions list --json
+dart run :steward action inspect steward.contract.status.quick --json
+dart run :steward probe --profile quick --json
+dart run :steward benchmark \
+  --scenario skill_steward.contract-status-smoke \
+  --output .steward/benchmark-summaries/skill-steward-contract-status-smoke.json \
+  --strict \
+  --json
+```
+
+Interpretation: `schema check-outputs` / `schema drift` keep the machine-readable route aligned when the dogfood path depends on JSON, `doctor` and `actions list` prove contract discovery, `action inspect` proves the exact executable boundary, `probe` proves the safe first observation, and `benchmark` proves durable execution only when it returns `result: "pass"`. A `durability_blocked` benchmark is truthful blocked evidence when `steward.yaml` or the scenario manifest is modified/untracked; track or commit those inputs, then rerun the same command. The built-in `contract-status-smoke` scenario is first contract evidence, not a claim that full agent navigation, diagnosis, or repair is proven.
+
+Harness/action-contract maturity is staged in [North Star](NORTH_STAR#harnessaction-contract-maturity-ladder). Operational shorthand: H0/H1 means installed and declared, H2 means the cold-start loop above runs or truthfully blocks, H3-H5 require real feedback, fresh-agent workflow proof, and promoted reusable capability.
+
+Daily skill validation (`validate`/`eval`) and runtime dogfood (`benchmark`) are intentionally separate. A repo can pass skill validation while still being only H0/H1 for local harness adoption.
+
 ## 📋 Registry shelf
 
 | File | Update when |
@@ -189,15 +444,7 @@ Fix all `error:` lines before merge. Warnings (long SKILL.md, missing skills.sh 
 
 ## 📜 ADR desk
 
-```bash
-# Next ADR number
-bash skills/adr-records/scripts/next-adr-number.sh docs/decisions
-
-# Authoring
-# Use skill adr-records or references in skills/adr-records/
-```
-
-Index: `decisions/README.mdx`.
+Use `repository-governance-lifecycle` for ADRs and governance decisions. ADRs live in `docs/decisions/`; keep durable "why" there and update `DESIGN_FAQ.mdx` only when the answer becomes standing guidance.
 
 ## 🧭 North Star desk
 
@@ -205,8 +452,8 @@ Index: `decisions/README.mdx`.
 Edit charter           → NORTH_STAR.mdx
 Wire agent map         → ../AGENTS.md (~100 lines max)
 docs.page sidebar      → ../docs.json + docs_map.mdx
-Close a plan           → merge to ADR/FAQ/code/skill → delete docs/exec-plans/active/*
-Skill                  → north-star-governance
+Close a plan           → merge to ADR/FAQ/code/skill → delete docs/exec-plans/active/* (if used)
+Skill                  → repository-governance-lifecycle
 ```
 
 ## 🚀 Release desk (Changesets)
@@ -223,9 +470,11 @@ pnpm changeset:status
 pnpm changeset:version    # updates CHANGELOG.md + package.json
 git add -A && git commit -m "chore: version packages"
 
-# Tag release (example)
-git tag "v$(node -p "require('./package.json').version")"
-git push origin main --tags
+# Tag release from package.json as vX.Y.Z
+pnpm run release:tag
+
+# Check the tag without mutating git
+bash scripts/tag_release.sh --dry-run
 
 # Compile and package binaries locally:
 ./scripts/build_release_artifacts.sh
@@ -234,6 +483,7 @@ git push origin main --tags
 ```text
 CI on PR               → .github/workflows/changesets.yml
 Local gate             → bash scripts/changeset-check.sh origin/main
+Release tag contract   → scripts/tag_release.sh creates/pushes vX.Y.Z only
 Skip (maintainer only) → PR title contains [skip changeset]
 ```
 
@@ -244,43 +494,50 @@ Skip (maintainer only) → PR title contains [skip changeset]
 ## 🏗️ Harness workshop
 
 ```text
-Agent-first culture     → skill harness-engineering-culture
-OpenAI principles       → ../skills/harness-engineering-culture/references/harness-principles.md
-CLI+MCP dual surface    → ../skills/harness-engineering-culture/references/cli-mcp-pattern.md (product MCP / platform libs)
-Compose Skill Steward skills    → ../skills/harness-engineering-culture/references/steward-composition.md
+Repo stewardship        → skill repo-quality-system-lifecycle
+Agent-first harness culture → skill mcp-harness-repo-maintainer
+OpenAI principles       → ../skills/mcp-harness-repo-maintainer/references/harness-principles.md
+CLI+MCP dual surface    → ../skills/mcp-harness-repo-maintainer/references/cli-mcp-pattern.md (product MCP / platform libs)
+Compose Skill Steward skills    → ../skills/mcp-harness-repo-maintainer/references/steward-composition.md
 ```
 
-Product example: `<cli_harness> doctor`, `make check-contracts` — not shipped from Skill Steward.
+Product example: `<cli_tool_repo> doctor`, `make check-contracts` — not shipped from Skill Steward.
+
+`steward mcp` is experimental until it uses production MCP transport and typed action policy. Prefer CLI/validator paths for deterministic gates.
 
 ## 📚 Doc styles desk
 
 | Need | Skill / doc |
 |------|-------------|
-| Harness / CLI / MCP culture | `harness-engineering-culture` |
+| Repo quality contract | `repo-quality-system-lifecycle` |
+| Harness / CLI / MCP culture | `mcp-harness-repo-maintainer` |
 | Release / changelog tooling | `release-changelog-harness` |
-| Package DESIGN + DX FAQ | `faq-driven-docs` |
-| Repo lattice (router, SSOT) | `concept-doc-store` |
-| ADR format | `adr-records` |
-| Spec compliance | `skill-spec-review` |
+| DESIGN + DX FAQ | `repository-governance-lifecycle` |
+| Repo lattice (router, SSOT) | `repository-governance-lifecycle` |
+| ADR format | `repository-governance-lifecycle` |
+| Spec compliance | `skill-authoring-lifecycle` |
 | Agent handoffs | `multi-agent-handoff` |
 
 Article: [FAQ-driven development](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl).
 
-## 🔌 Plugins corner (future)
+## 🔌 Plugins corner
 
 ```text
-plugins/{id}/plugin.yaml   → references skill ids in skills/
+plugins/{id}/plugin.yaml   → schema: steward/plugin-manifest/v1; references skill ids in skills/
 CURSOR HOOKS           → ../.cursor/hooks.json (steward-validate-on-save; committed)
 install hooks elsewhere  → ../plugins/steward-validate-on-save/README.md
 template                   → ../templates/plugin/
 ```
+
+`pnpm run validate` checks plugin manifests for schema, referenced skill ids, target surfaces, lifecycle actions, and shipped wiring artifact hashes. `steward bundle` compiles those manifests into deterministic descriptors under `.steward/bundles/`; it does not install skills, merge hooks, or mutate agent configuration. Skills remain separately installable with `npx skills add ... --skill <id>`.
 
 ## 🤖 Agent ops
 
 ```text
 Read first:  AGENTS.md, DESIGN_FAQ.mdx (why), DX_FAQ.mdx (how)
 Rules:       ../.cursor/rules/faq_usage.mdc
-After edit:  dart run :steward validate + update correct FAQ layer
+After edit:  pnpm run validate + update correct FAQ layer
+Schemas:     schemas/README.mdx
 ```
 
 Do not duplicate SKILL.md bodies in ADRs or FAQs—link to `../skills/{name}/`.

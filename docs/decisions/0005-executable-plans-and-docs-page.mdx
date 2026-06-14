@@ -22,13 +22,13 @@ Skill Steward needs a published documentation site (like other open docs.page si
 * **North Star** — single charter file agents and humans read first.
 * **docs.page** — standard publishing via root `docs.json` + `docs/` MDX/Markdown.
 * **Harness alignment** — [OpenAI harness engineering](https://openai.com/index/harness-engineering/) treats plans as versioned artifacts but expects hygiene; we go further: **completed plans must merge into ADR/docs/code/harness and leave the tree**.
-* **Format-agnostic** — document extract-and-remove hygiene only; optional `docs/superpowers/` in *product* repos via `concept-doc-store`, not required in Guild.
+* **Format-agnostic** — document extract-and-remove hygiene only; optional `docs/superpowers/` in *product* repos via `repository-governance-lifecycle`, not required in Guild.
 
 ## Considered Options
 
 * **Git-only docs** — No docs.page; README + root FAQs only.
 * **docs.page + eternal roadmaps** — Published site but plans never deleted.
-* **docs.page + ephemeral plans doctrine** — `docs/NORTH_STAR.mdx`, `docs.json`, executable-plans page, skill `north-star-governance`.
+* **docs.page + ephemeral plans doctrine** — `docs/NORTH_STAR.mdx`, `docs.json`, executable-plans page, skill `repository-governance-lifecycle`.
 * **Monolithic AGENTS.md** — Rejected per harness article.
 
 ## Decision Outcome
@@ -46,7 +46,7 @@ Chosen option: **"docs.page + ephemeral plans doctrine"**.
 
 * **Any** plan tooling is allowed (Superpowers, session plans, `docs/exec-plans/`, Issues, etc.).
 * On completion → extract to **ADR | FAQ | code | harness (skills/plugins/CLI)**; then **remove** (or archive with “do not execute”) plan files.
-* Explained in `docs/start_here/executable-plans.mdx` (title: plan hygiene); skill **`north-star-governance`** applies on charter/navigation work, not on mandating a template.
+* Explained in `docs/start_here/executable-plans.mdx` (title: plan hygiene); skill **`repository-governance-lifecycle`** applies on charter/navigation work, not on mandating a template.
 
 ### Consequences
 
@@ -59,10 +59,10 @@ Chosen option: **"docs.page + ephemeral plans doctrine"**.
 
 * `docs.json` committed.
 * `docs/NORTH_STAR.mdx`, `docs/index.mdx`, `docs/start_here/docs_map.mdx`, `docs/start_here/executable-plans.mdx` exist.
-* Skill `north-star-governance` shipped.
+* Skill `repository-governance-lifecycle` shipped.
 * `AGENTS.md` trimmed to map role.
 
 ## More Information
 
-* [ADR 0003 — concept doc store](0003-concept-doc-store-lattice)
+* [ADR 0003 — concept doc store](0003-north-star-governance-lattice)
 * Reference product docs.json configurations

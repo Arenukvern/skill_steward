@@ -2,6 +2,7 @@
 name: skill-source-citations
 description: Requires durable citations when authoring or researching Agent Skills—maintain references/sources.md per skill, link external research, and record provenance in PRs. Use when creating skills, updating SKILL.md, doing web research for skills, or auditing missing sources.
 license: MIT
+type: governance
 metadata:
   author: skill-steward
   version: "1.0.0"
@@ -64,9 +65,9 @@ Guild-wide references: [docs/STANDARDS.mdx](../../docs/STANDARDS.mdx), [DESIGN_F
 
 | Task | Skill |
 |------|-------|
-| Scaffold skill | `create-skill` |
+| Scaffold skill | `skill-authoring-lifecycle` |
 | Evaluate / improve | `skill-eval-improve` |
-| Spec audit | `skill-spec-review` |
+| Spec audit | `skill-authoring-lifecycle` |
 
 ## Sources discipline (this skill)
 

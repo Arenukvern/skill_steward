@@ -1,0 +1,97 @@
+# mcp_flutter runtime text-input capability packet - 2026-06-10
+
+**Status:** historical consumer-routed proof packet, not current proof · **Audience:** maintainers and agents
+
+This page is preserved for link stability and for the historical runtime proof recipe. It is not the current `mcp_flutter` runtime text-input claim. Use [Current dogfood status](current-dogfood-status) for the current weakest true claim, source-checkout blocker, and rerun route. New consumer implementation or proof work belongs in the `mcp_flutter` checkout.
+
+## Historical claim this packet tried to prove
+
+A fresh agent can use the Flutter MCP toolkit against the running `flutter_test_app` to discover the greeting text field, enter text through the MCP interaction tool, and prove app state changed.
+
+This is a harder second adoption slice because it exercises a live MCP/runtime path:
+
+```text
+launch app -> discover VM service -> semantic_snapshot -> enter_text -> evaluate_dart_expression
+```
+
+It is not a claim about all UI automation, all platforms, WebMCP runtime dogfood, production app correctness, or broad `mcp_flutter` H5 maturity.
+
+## Adoption-run/v2 classification
+
+| Field | Value |
+|-------|-------|
+| Repo | `mcp_flutter` |
+| Capability id | `mcp_flutter.runtime.enter-text-greeting` |
+| Capability class | `mcp_tool_runtime` |
+| Scope | Historical `adoption_run` recipe; the current ledger owns whether a candidate repeat or source-checkout rerun has passed |
+| User goal | Prove a real MCP toolkit interaction can fill a Flutter text input and verify state |
+| Acceptance check | `AgentState.instance.greeting` equals the submitted text after `enter_text` |
+| Native owner | `flutter_test_app`, `flutter-mcp-toolkit`, interaction command catalog, and MCP toolkit control skill |
+| Review outcome options | continue, refactor, stop, abandon, or promote |
+
+## Target surface
+
+Known target in `flutter_test_app/lib/showcase_screen.dart`:
+
+- Semantics identifier: `greeting_input_field`
+- Tool path: `semantic_snapshot` returns a ref for the field; `enter_text` mutates it
+- Assertion path: `evaluate_dart_expression("AgentState.instance.greeting")`
+- State owner: `flutter_test_app/lib/agent_state.dart`
+
+Use `enter_text` for this one-field proof. Reserve `fill_form` for a later batch-form capability proof.
+
+## Acceptance sequence
+
+Run from the `mcp_flutter` checkout or equivalent clean target clone:
+
+```bash
+cd flutter_test_app
+flutter run --debug --machine --host-vmservice-port=8181 -d macos
+```
+
+Use the emitted `app.debugPort.wsUri` as `$WS`.
+
+```bash
+flutter-mcp-toolkit doctor --vm-service-uri "$WS" --json
+flutter-mcp-toolkit exec --name semantic_snapshot \
+  --args "{\"connection\":{\"targetId\":\"$WS\"}}"
+```
+
+Find the node with semantics identifier `greeting_input_field`, capture its `ref` and `snapshotId`, then run:
+
+```bash
+flutter-mcp-toolkit exec --name enter_text \
+  --args "{\"ref\":\"<ref>\",\"snapshotId\":<snapshotId>,\"text\":\"steward runtime proof\",\"connection\":{\"targetId\":\"$WS\"}}"
+
+flutter-mcp-toolkit exec --name evaluate_dart_expression \
+  --args "{\"expression\":\"AgentState.instance.greeting\",\"connection\":{\"targetId\":\"$WS\"}}"
+```
+
+The proof passes only when the final expression returns exactly `steward runtime proof`.
+
+## Detour and stop rules
+
+- If the field ref is stale, call `semantic_snapshot` again and retry once.
+- If the runtime cannot launch or the VM service cannot connect after two setup attempts, stop restoration and record an unknown case.
+- Do not add a new MCP tool during this adoption run unless the existing toolkit path is proven unable to satisfy the original acceptance check.
+- If `enter_text` fails but a direct Dart expression can set the state, record that as fallback evidence only; it does not prove text-input interaction.
+
+## Historical promotion requirements
+
+Promote to capability-level H5 only after:
+
+- A clean runtime run proves `doctor`, `semantic_snapshot`, `enter_text`, and `evaluate_dart_expression`.
+- The evidence records app platform, VM service URI provenance, subject commit, and dirty state.
+- The proof uses a field selected by semantics identifier, not by whichever ref appears first.
+- A falsifier exists, such as asserting the expression is not the target value before entry or proving a wrong ref does not satisfy the acceptance check.
+- A future-agent or held-out run repeats the path without hidden local context.
+
+## Non-claims
+
+- Does not supersede [Current dogfood status](current-dogfood-status).
+- Does not prove the current `mcp_flutter` source checkout has landed or rerun this capability.
+- Does not prove every interaction tool.
+- Does not prove `fill_form`.
+- Does not prove web or mobile platform parity.
+- Does not prove production app behavior.
+- Does not make `mcp_flutter` broadly H5.
