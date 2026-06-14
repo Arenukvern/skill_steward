@@ -1,5 +1,18 @@
 # skill-steward
 
+## 0.4.0
+
+### Minor Changes
+
+- 91138f4: Massive skill consolidation based on MoE audit (ADR 0016). Consolidated 7 skills into 2 holistic lifecycle workflows to reduce fragmentation:
+  - Merged `harness-generalization` and `cross-repo-remediation` into `harness-engineering-lifecycle`.
+  - Merged `north-star-governance`, `adr-records`, `faq-driven-docs`, `ethical-stewardship`, and `repo-brand-identity` into `repository-governance-lifecycle`.
+- 91138f4: Replaced tombstoned skills with a formal Changeset. The following skills were deprecated and consolidated during the initial Mixture of Experts audit to reduce intent overlap and enforce Skill Cohesion (ADR 0016):
+  - `create-skill` merged into `skill-authoring-lifecycle`.
+  - `skill-spec-review` merged into `skill-authoring-lifecycle`.
+  - `concept-doc-store` merged into `north-star-governance`.
+  - `harness-engineering-culture` merged into `mcp-harness-repo-maintainer`.
+
 ## 0.3.4
 
 ### Patch Changes
