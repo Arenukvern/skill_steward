@@ -203,7 +203,7 @@ return $default(_that.blockedBy,_that.artifactRoute,_that.nextActions);case _:
 
 class _BlockedRouteDecision implements BlockedRouteDecision {
   const _BlockedRouteDecision({required this.blockedBy, required this.artifactRoute, required final  List<String> nextActions}): _nextActions = nextActions;
-  
+
 
 @override final  String blockedBy;
 @override final  String artifactRoute;

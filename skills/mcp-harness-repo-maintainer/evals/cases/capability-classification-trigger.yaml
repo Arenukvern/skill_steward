@@ -17,4 +17,3 @@ rules:
   - kind: body_includes_any
     path: ../../docs/evidence/adoption-run-v2-template.mdx
     terms: ["capability", "scope", "continue | refactor | stop | abandon | promote"]
-
