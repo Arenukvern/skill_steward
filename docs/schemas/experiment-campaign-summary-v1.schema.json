@@ -121,5 +121,43 @@
     "support_only": {
       "type": "boolean"
     }
-  }
+  },
+  "allOf": [
+    {
+      "not": {
+        "properties": {
+          "product_acceleration": { "const": true },
+          "support_only": { "const": true }
+        },
+        "required": ["product_acceleration", "support_only"]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "product_acceleration": { "const": true }
+        },
+        "required": ["product_acceleration"]
+      },
+      "then": {
+        "type": "object",
+        "properties": {
+          "support_only": { "const": false },
+          "screenshot_video_paths": { "minItems": 1 },
+          "product_surface_changed_or_directly_proven": {
+            "type": "string",
+            "minLength": 1,
+            "not": {
+              "pattern": "^\\s*No product surface was changed or directly proven"
+            }
+          }
+        },
+        "required": [
+          "support_only",
+          "screenshot_video_paths",
+          "product_surface_changed_or_directly_proven"
+        ]
+      }
+    }
+  ]
 }

@@ -83,6 +83,65 @@ void main() {
     expect(exitCode, 1);
   });
 
+  test(
+    'schema validate accepts product experiment acceleration evidence',
+    () async {
+      final file = File(
+        p.join(tempDir.path, 'experiment-campaign-summary.json'),
+      )..writeAsStringSync(jsonEncode(validExperimentCampaignSummary()));
+      final buffer = StringBuffer();
+      final runner = CommandRunner<void>('steward', 'test')
+        ..addCommand(SchemaCommand(buffer, tempDir));
+
+      await runner.run([
+        'schema',
+        'validate',
+        '--schema',
+        'experiment-campaign-summary',
+        '--file',
+        p.relative(file.path, from: tempDir.path),
+        '--json',
+      ]);
+
+      final payload = jsonDecode(buffer.toString()) as Map<String, dynamic>;
+      expect(payload['schema_version'], 'steward.schema.validate.v1');
+      expect(payload['schema'], 'experiment-campaign-summary');
+      expect(payload['valid'], isTrue);
+      expect(payload['diagnostics'], isEmpty);
+      expect(exitCode, 0);
+    },
+  );
+
+  test(
+    'schema validate rejects product acceleration marked support only',
+    () async {
+      final invalid = validExperimentCampaignSummary()
+        ..['support_only'] = true
+        ..['screenshot_video_paths'] = const [];
+      final file = File(
+        p.join(tempDir.path, 'experiment-campaign-summary.json'),
+      )..writeAsStringSync(jsonEncode(invalid));
+      final buffer = StringBuffer();
+      final runner = CommandRunner<void>('steward', 'test')
+        ..addCommand(SchemaCommand(buffer, tempDir));
+
+      await runner.run([
+        'schema',
+        'validate',
+        '--schema',
+        'experiment-campaign-summary',
+        '--file',
+        p.relative(file.path, from: tempDir.path),
+        '--json',
+      ]);
+
+      final payload = jsonDecode(buffer.toString()) as Map<String, dynamic>;
+      expect(payload['valid'], isFalse);
+      expect((payload['diagnostics'] as List), isNotEmpty);
+      expect(exitCode, 1);
+    },
+  );
+
   test('schema check-outputs validates current output shapes', () async {
     final buffer = StringBuffer();
     final runner = CommandRunner<void>('steward', 'test')
@@ -255,6 +314,41 @@ Map<String, dynamic> validSelfModel() => {
   'retention': 'until superseded by later governance artifact',
   'redaction_policy': 'no raw chats, secrets, credentials, or private memory',
   'non_claims': ['Does not prove consciousness or repo steward status.'],
+};
+
+Map<String, dynamic> validExperimentCampaignSummary() => {
+  'schema': 'steward/experiment-campaign-summary/v1',
+  'original_goal': 'Improve spark_physics_ecs splat rendering.',
+  'product_repo': '/tmp/ecsly',
+  'baseline_metrics': {'oracle_score': 0.4, 'confetti_artifact_score': 0.8},
+  'variant_count': 2,
+  'winning_variant': {
+    'id': 'v001',
+    'label': 'strict parity candidate',
+    'controls': {'strict_enabled': true},
+    'metrics': {
+      'oracle_score': 0.7,
+      'nonblank': true,
+      'confetti_artifact_score': 0.2,
+    },
+    'screenshot_path': 'build/experiment-runs/run/screenshots/v001.png',
+  },
+  'before_after_metrics': {
+    'before': {'oracle_score': 0.4, 'confetti_artifact_score': 0.8},
+    'after': {'oracle_score': 0.7, 'confetti_artifact_score': 0.2},
+    'deltas': {'oracle_score': 0.3, 'confetti_artifact_score': -0.6},
+  },
+  'screenshot_video_paths': [
+    {
+      'variant_id': 'v001',
+      'screenshot_path': 'build/experiment-runs/run/screenshots/v001.png',
+    },
+  ],
+  'product_surface_changed_or_directly_proven':
+      'spark_physics_ecs runtime capture directly proved a product-owned visual improvement.',
+  'non_claims': ['Not release readiness.'],
+  'product_acceleration': true,
+  'support_only': false,
 };
 
 Map<String, dynamic> validDispatchLaneCandidate() => {
