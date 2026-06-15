@@ -27,5 +27,5 @@ jobs:
 
       - name: Require changeset on consumer-facing diffs
         env:
-          SKIP_CHANGESET_CHECK: ${{ contains(github.event.pull_request.title, '[skip changeset]') && '1' || '' }}
+          SKIP_CHANGESET_CHECK: ${{ (contains(github.event.pull_request.title, '[skip changeset]') || startsWith(github.head_ref, 'changeset-release/')) && '1' || '' }}
         run: bash scripts/changeset-check.sh "origin/${{ github.base_ref }}"
