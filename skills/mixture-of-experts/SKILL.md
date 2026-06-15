@@ -60,7 +60,7 @@ It can be applied to literally anything: a codebase, a feature plan, a deploymen
    | Skeptic | timed_out | no stronger claim based on this lens |
    ```
 
-   When the Skeptic lens is active, name the smallest useful layer and any deletion/collapse option before recommending new tools. When the Evidence / Retention QA lens is active, name the artifact status, claim protected, and retention/disposition route before recommending new evidence. If the critique would change durable docs, skills, contracts, or tooling, create or recommend a Pattern Promotion Review under `docs/evidence/` instead of creating a new doctrine.
+   When the Skeptic lens is active, name the smallest useful layer and any deletion/collapse option before recommending new tools; for broad surface-shape questions, also name whether the useful move is split, compress, promote, demote, delete, or stay native. When the Evidence / Retention QA lens is active, name the artifact status, claim protected, and retention/disposition route before recommending new evidence. If the critique would change durable docs, skills, contracts, or tooling, create or recommend a Pattern Promotion Review under `docs/evidence/` instead of creating a new doctrine.
    For broad repo pain, MoE may discover possible lane candidates and contradictions between lanes. These findings are advisory critique inputs only: they do not authorize writes, assign workers, accept results, or replace parent synthesis. Parent lane contracts and direct-fix authority belong to `multi-agent-handoff`.
 5. **Choose output mode**
    - **Read-only critique mode:** If the user asks to analyze, discuss, criticize, or validate only, summarize findings in chat. Do not create files or plans.
@@ -71,6 +71,9 @@ It can be applied to literally anything: a codebase, a feature plan, a deploymen
    - `chat_only`: useful critique, no durable change.
    - `promote_to_artifact`: update an ADR, FAQ, evidence note, skill, docs map, or Pattern Promotion Review.
    - `convert_to_check`: repeated deterministic truth should become a test, validator, generator freshness check, or harness probe.
+   - `compress_existing`: merge overlapping guidance or navigation while preserving child truths.
+   - `delete_or_retire`: remove stale guidance, evidence, or scaffolding after useful truth lands elsewhere.
+   - `leave_native`: keep the work in the repo's existing command, framework, or owner surface.
 
    If implementation follows from the MoE, hand off the execution through
    `multi-agent-handoff` or keep it in the parent with an explicit claim

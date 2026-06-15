@@ -13,6 +13,7 @@
 | T7 | One proved workflow is being called a fully adopted repo | Classifies the capability with adoption-run/v2 and uses capability-level proof language |
 | T8 | Tool restoration is taking over the original user task | Applies the detour budget, stops after two repair/setup attempts, records friction, and returns to the acceptance check |
 | T9 | Steward adoption keeps adding tools without a pattern-layer decision | Runs the Skeptic/generational check, names the smallest useful layer, and records maintenance delta plus held-out proof requirement |
+| T10 | A harness command mixes unrelated effects/proof while adopters need one CI route | Applies evolutionary simplicity for interfaces: split internals by owner/proof/effects and keep compressed CLI/MCP/help wrappers only when structured child outcomes remain inspectable |
 
 ## Should not trigger
 
@@ -36,3 +37,4 @@
 | 2026-06-10 | Added native deterministic gate promotion case after bounded `mcp_flutter` hosted-dependency adoption | Yes |
 | 2026-06-10 | Added goal-first detour and capability-classification cases after adoption-drift review | Yes |
 | 2026-06-10 | Added generational architecture skeptic case after tool-loop drift review | Yes |
+| 2026-06-15 | Added interface split/compress case so validation lanes and CLI/MCP wrappers preserve child truths | Yes |

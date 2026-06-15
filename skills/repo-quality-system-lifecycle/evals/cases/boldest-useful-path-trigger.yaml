@@ -1,0 +1,36 @@
+id: repo-quality-boldest-useful-path-trigger
+skill: repo-quality-system-lifecycle
+routing: should_trigger
+input: "This repo keeps adding small stewardship artifacts, but no future-agent capability improves. Choose the boldest useful path, name what should be deleted or compressed, what proof is needed, the maintenance delta, and whether another evidence packet is justified."
+rules:
+  - kind: file_exists
+    path: references/evals.md
+  - kind: description_includes_any
+    terms: ["repo ecology pass", "compressed", "retired", "moved to checks"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["boldest useful outcome"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["least machinery needed to prove it"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["anti-bureaucracy gate"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["reduce future uncertainty", "automate repeated judgment", "prevent a demonstrated failure"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["enable an honest claim", "delete/compress an older surface"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["Boldest useful next improvement"]
+  - kind: body_includes_any
+    path: references/evals.md
+    terms: ["Choose the boldest useful path"]
+  - kind: body_includes_any
+    path: ../../docs/NORTH_STAR.mdx
+    terms: ["boldest useful path"]
+  - kind: body_includes_any
+    path: ../../docs/repo-quality-contracts.mdx
+    terms: ["Anti-bureaucracy gate"]

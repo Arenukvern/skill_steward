@@ -222,71 +222,106 @@ void main() {
         'steward_validate_all_contract_',
       );
       try {
-        await File(p.join(tempDir.path, 'skills.sh.json')).writeAsString('''
-{
-  "skills": ["contract-check"]
-}
-''');
-        final skillDir = Directory(
-          p.join(tempDir.path, 'skills', 'contract-check'),
-        )..createSync(recursive: true);
-        await File(p.join(skillDir.path, 'SKILL.md')).writeAsString('''
----
-name: contract-check
-description: Checks that validateAllSkills includes Steward contract diagnostics.
-license: MIT
-type: governance
----
-
-Use this fixture to prove central steward.yaml diagnostics are part of normal validation.
-''');
-        Directory(p.join(skillDir.path, 'references')).createSync();
-        await File(
-          p.join(skillDir.path, 'references', 'sources.md'),
-        ).writeAsString('- local fixture\n');
-        await File(p.join(tempDir.path, 'steward.yaml')).writeAsString('''
-schema: steward/v1
-repo: {id: contract_fixture}
-stewardship:
-  governance: {north_star: AGENTS.md}
-  knowledge: {docs_map: AGENTS.md}
-  skill_lifecycle: {installable_skills: true}
-  quality: {validate: steward validate}
-  harness: {enabled: true}
-  release: {changelog: CHANGELOG.md}
-  review_handoff: {moe_required_for_architecture: true}
-  strategic_alignment: {vision_source: AGENTS.md}
-  security: {action_effects: required}
-  org: {owners: AGENTS.md}
-actions:
-  invalid.local:
-    kind: command
-    desc: Invalid action with explicit empty outputs.
-    command: {argv: [steward, doctor, --json], shell: false}
-    effects:
-      fs_read: ["."]
-      fs_write: []
-      git: false
-      network: false
-      secrets: false
-      destructive: false
-    safety:
-      class: observe
-      default_policy: auto
-      requires_confirmation: false
-    outputs: []
-probes:
-  quick: {actions: [invalid.local]}
-''');
+        _writeValidSkillStewardFixture(tempDir.path, 'contract-check');
+        await _writeInvalidStewardConfig(tempDir.path);
 
         final report = await validateAllSkills(p.join(tempDir.path, 'skills'));
 
         expect(report.ok, isFalse);
         expect(
-          report.registryWarnings,
+          report.groups['repoContract']?.warnings,
           contains(
             'actions.invalid.local.outputs: outputs must contain at least one output record.',
           ),
+        );
+        expect(
+          report.groups['registry']?.warnings,
+          isNot(
+            contains(
+              'actions.invalid.local.outputs: outputs must contain at least one output record.',
+            ),
+          ),
+        );
+        final groupsJson = report.toJson()['groups'] as Map<String, dynamic>;
+        expect(
+          (groupsJson['repoContract'] as Map<String, dynamic>)['warnings'],
+          contains(
+            'actions.invalid.local.outputs: outputs must contain at least one output record.',
+          ),
+        );
+      } finally {
+        tempDir.deleteSync(recursive: true);
+      }
+    });
+
+    test('split validation lanes isolate failure ownership', () async {
+      final tempDir = Directory.systemTemp.createTempSync(
+        'steward_validate_split_lanes_',
+      );
+      try {
+        _writeValidSkillStewardFixture(tempDir.path, 'lane-check');
+        await File(p.join(tempDir.path, 'skills.sh.json')).writeAsString('''
+{
+  "skills": ["lane-check", "missing-registry-skill"]
+}
+''');
+        await _writeInvalidStewardConfig(tempDir.path);
+        _writeAdoptionRunRecord(
+          tempDir.path,
+          attempts: 2,
+          returnToGoalStep: '',
+          outcomeDecision: 'promote',
+          claimedLevel: 'H2',
+          canPromoteInThisRun: true,
+        );
+
+        final skillsDir = p.join(tempDir.path, 'skills');
+        final skills = await validateSkillsDirectory(skillsDir);
+        final registry = await validateSkillRegistry(skillsDir);
+        final repoContract = await validateRepoContract(tempDir.path);
+        final evidence = await validateEvidence(tempDir.path);
+        final all = await validateAllSkills(skillsDir);
+
+        expect(skills.ok, isTrue);
+        expect(skills.groups.keys, contains('skills'));
+        expect(skills.groups.keys, isNot(contains('registry')));
+
+        expect(
+          registry.groups['registry']?.warnings,
+          contains(
+            'skills.sh.json references "missing-registry-skill" but no matching skill directory found',
+          ),
+        );
+        expect(
+          registry.groups['registry']?.warnings,
+          everyElement(isNot(contains('outputs must contain'))),
+        );
+
+        expect(
+          repoContract.groups['repoContract']?.warnings,
+          contains(
+            'actions.invalid.local.outputs: outputs must contain at least one output record.',
+          ),
+        );
+        expect(
+          evidence.groups['evidence']?.warnings,
+          contains(contains('tool_detour.attempts >= 2')),
+        );
+
+        expect(
+          all.groups.keys,
+          containsAll(['skills', 'registry', 'repoContract', 'evidence']),
+        );
+        expect(all.ok, isFalse);
+        expect(
+          all.groups['repoContract']?.warnings,
+          contains(
+            'actions.invalid.local.outputs: outputs must contain at least one output record.',
+          ),
+        );
+        expect(
+          all.groups['evidence']?.warnings,
+          contains(contains('tool_detour.attempts >= 2')),
         );
       } finally {
         tempDir.deleteSync(recursive: true);
@@ -583,6 +618,67 @@ probes:
       });
     });
   });
+}
+
+void _writeValidSkillStewardFixture(final String rootPath, final String name) {
+  File(p.join(rootPath, 'skills.sh.json')).writeAsStringSync('''
+{
+  "skills": ["$name"]
+}
+''');
+  final skillDir = Directory(p.join(rootPath, 'skills', name))
+    ..createSync(recursive: true);
+  File(p.join(skillDir.path, 'SKILL.md')).writeAsStringSync('''
+---
+name: $name
+description: Checks split validation ownership.
+license: MIT
+type: governance
+---
+
+Use this fixture to prove validation lanes report their own diagnostics.
+''');
+  Directory(p.join(skillDir.path, 'references')).createSync();
+  File(
+    p.join(skillDir.path, 'references', 'sources.md'),
+  ).writeAsStringSync('- local fixture\n');
+}
+
+Future<void> _writeInvalidStewardConfig(final String rootPath) async {
+  await File(p.join(rootPath, 'steward.yaml')).writeAsString('''
+schema: steward/v1
+repo: {id: contract_fixture}
+stewardship:
+  governance: {north_star: AGENTS.md}
+  knowledge: {docs_map: AGENTS.md}
+  skill_lifecycle: {installable_skills: true}
+  quality: {validate: steward validate}
+  harness: {enabled: true}
+  release: {changelog: CHANGELOG.md}
+  review_handoff: {moe_required_for_architecture: true}
+  strategic_alignment: {vision_source: AGENTS.md}
+  security: {action_effects: required}
+  org: {owners: AGENTS.md}
+actions:
+  invalid.local:
+    kind: command
+    desc: Invalid action with explicit empty outputs.
+    command: {argv: [steward, doctor, --json], shell: false}
+    effects:
+      fs_read: ["."]
+      fs_write: []
+      git: false
+      network: false
+      secrets: false
+      destructive: false
+    safety:
+      class: observe
+      default_policy: auto
+      requires_confirmation: false
+    outputs: []
+probes:
+  quick: {actions: [invalid.local]}
+''');
 }
 
 void _writeAdoptionRunRecord(

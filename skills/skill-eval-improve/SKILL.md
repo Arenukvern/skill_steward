@@ -167,15 +167,17 @@ The current `steward eval --name` registered-eval path is legacy/experimental. S
 
 1. `name` / `description` (routing)—must include **what + when**
 2. Broken links / missing `references/sources.md`
-3. Move bulk to `references/` (SKILL.md &lt; 500 lines)
-4. Add error-handling / validation steps agents skip
-5. Token cost (description length, always-loaded content)
+3. Delete or replace duplicated rules before adding a new section or eval case
+4. Move bulk to `references/` (SKILL.md &lt; 500 lines)
+5. Add error-handling / validation steps agents skip
+6. Token cost (description length, always-loaded content)
 
 ## Anti-patterns
 
 - Rewriting entire SKILL.md from one failure (destroy working rules)
 - Self-editing without held-out prompts (overfit)
 - Adding skill rules, evals, or tools from one observed run when a smaller FAQ, error message, native command, observed-effect check, or deletion would solve the problem
+- Adding a new eval for duplicated guidance before trying to compress, delete, or replace the overlapping rule
 - Claims without `references/sources.md` rows
 - Evaluating only with static analyze—never running real prompts
 - LLM judge in CI (flake, cost) — offline only per [ADR 0011](../../docs/decisions/0011-tiered-skill-evals-and-rule-based-ci.mdx)

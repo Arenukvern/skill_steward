@@ -10,6 +10,7 @@ Prompt suite and results. **Do not** paste full transcripts into SKILL.md.
 | T2 | Run plugin-eval analyze on skills/my-skill and suggest one small fix | Agent runs analyze path; suggests ≤10% churn; points to evals.md for gate |
 | T3 | How do I apply SkillOpt-style gates to our guild skills? | Explains manual Guild loop (not GPU cluster); cites held-out validation |
 | T4 | Improve a skill after adoption drifted into repairing tools | Adds bounded, held-out checks for tool-loop drift instead of overfitting one transcript |
+| T5 | Improve a skill after reviewers found overlapping rules and duplicate evals | Baselines the failure, chooses delete/replace/compress before adding new rules, and adds a held-out prompt only when repeated routing drift needs it |
 
 ## Should not trigger
 
@@ -32,3 +33,4 @@ Prompt suite and results. **Do not** paste full transcripts into SKILL.md.
 |------|----------------|-------------------|-------|
 | 2026-05-29 | Add `## When not to use` (routing vs layer 0 / SkillOpt) | H1, H2 | yes — addresses held-out conflation |
 | 2026-06-10 | Add tool-loop drift assertions to runtime dogfood and held-out skill improvement cases | H3 | yes |
+| 2026-06-15 | Add duplicated-guidance compression case so eval improvement can delete or compress before adding more cases | H3 | yes |

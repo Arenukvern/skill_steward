@@ -1,6 +1,6 @@
 ---
 name: repo-quality-system-lifecycle
-description: Establish or audit a structural quality contract for any agent-operated engineering repository: app, library, CLI/tool, plugin, harness, or meta repo. Use when a repo needs charter clarity, docs/decision ownership, type-native validation gates, evidence paths, safe action policy, cold-start legibility, maturity proof, repair-loop routing, consumer/producer owner-boundary routing, or a repo ecology pass to decide what should be compressed, merged, removed, updated, created, retired, or moved to checks.
+description: Establish or audit a structural quality contract for any agent-operated engineering repository: app, library, CLI/tool, plugin, harness, or meta repo. Use when a repo needs charter clarity, docs/decision ownership, type-native validation gates, evidence paths, safe action policy, cold-start legibility, maturity proof, repair-loop routing, consumer/producer owner-boundary routing, command surface evolution, evolutionary simplicity, or a repo ecology pass to decide what should be compressed, merged, removed, updated, created, retired, or moved to checks.
 license: MIT
 type: governance
 metadata:
@@ -104,16 +104,20 @@ paperwork.
 
 ### 4. Run the generational architecture check
 
-Before adding automation or a new abstraction, ask the Skeptic questions:
+Before adding automation, splitting a surface, compressing navigation, or creating a new abstraction, apply evolutionary simplicity. Decide whether this surface should split, compress, promote, demote, delete, or stay native.
+
+Then ask the Skeptic questions:
 
 - Is the friction repeated across agents or workflows, or only from this run?
 - Can a language/framework feature, native command, FAQ, validation message, or docs-map row solve it?
 - Would deleting, merging, or demoting a layer reduce maintenance without losing proof?
+- Did ownership, proof, effects, cadence, or audience diverge enough to split the surface?
+- Did user intent, CI flow, or navigation converge enough to compress the surface while keeping child truths inspectable?
 - If codegen is proposed, is the schema smaller and more stable than the generated code?
 - If a harness action is proposed, does it help the original task or a named future problem class?
 - What falsifier or held-out task will show the promoted layer is stale, wrong, or not useful?
 
-Use [docs/core/generational-architecture-ladder.mdx](../../docs/core/generational-architecture-ladder.mdx) for the stage model. Higher layers are not automatically better; mature stewardship can move down the ladder.
+Use [docs/core/evolutionary-simplicity.mdx](../../docs/core/evolutionary-simplicity.mdx) for the parent movement rule and [docs/core/generational-architecture-ladder.mdx](../../docs/core/generational-architecture-ladder.mdx) for the architecture stage model. Higher layers are not automatically better; mature stewardship can move down the ladder.
 
 If the check rejects a proposed abstraction, promotes a new layer, updates an existing skill/tool, or changes durable repo policy, record a Pattern Promotion Review under `docs/evidence/pattern-promotion-review-YYYY-MM-DD-topic.mdx`. Keep it as evidence for a real run, not as a new skill or scorecard.
 
@@ -208,12 +212,25 @@ For evidence surfaces, apply the envelope in [docs/core/evidence-artifacts.mdx](
 
 When proof includes maintainer-local paths, temp replays, or one workstation's setup, keep that context in the current ledger or historical evidence and label it as maintainer-local. Create or update a public reproducibility card only when a public reader needs to audit the claim from durable anchors: public repo URL, fetchable commit SHA, portable command, and artifact hash or CI artifact name.
 
-Run ecology as a disposition loop, not an evidence treadmill or a tool tunnel:
+Run ecology as a disposition loop, not an evidence treadmill or a tool tunnel. Ask: what is the boldest useful outcome, and what is the least machinery needed to prove it?
+
+Keep the two vocabularies distinct:
+
+| Parent move | Local disposition examples |
+|-------------|----------------------------|
+| `stay native` | `leave_native`, native gate, docs-map pointer |
+| `split` | owner-specific command, schema, skill section, evidence route, or repo surface |
+| `compress` | `compress`, merge stale navigation, one current ledger, one CI wrapper with grouped child outcomes |
+| `promote` | move repeated deterministic truth to check/tool/skill/action/evidence only with proof and falsifier |
+| `demote` | retire overgrown tool/skill/evidence to docs, native command, historical note, or current ledger |
+| `delete` | `remove`, `deleted`, stale plan/artifact/surface removed after useful truth lands elsewhere |
 
 - Prefer `orient`, `compress`, `validate`, `tutor_pain`, `promote_tool`, `leave_native`, or `stop` before creating any new artifact.
 - When a proposed mechanism starts acting like the umbrella, classify `north_star_impact`. `sub_star` needs a parent/child boundary; `amends` or `conflicts` needs governance and an ADR before product direction changes.
 - When the review finds invalid config, dirty declared inputs, schema/output drift, blocked payload routing, stale navigation, or a broken native gate, update the owning surface and rerun the same gate when that is the smallest safe disposition.
+- For command, tool, docs, evidence, and skill surfaces, ask whether the boldest useful move is to split, compress, promote, demote, delete, or stay native.
 - For `tutor_pain`, name the pain signal, owner, native gate, smallest disposition, rerun route, hot-path residue, and non-claim.
+- Before adding a new doc, check, schema, skill, evidence artifact, command, or tool, apply the anti-bureaucracy gate: it must reduce future uncertainty, automate repeated judgment, prevent a demonstrated failure, enable an honest claim, or delete/compress an older surface.
 - For product repos, name the product impact check before adding or trusting
   Steward proof. If no product-native behavior, API, UI/visual, performance,
   release, or workflow surface changed or was directly proven, downgrade the
@@ -233,14 +250,14 @@ When reporting an audit or adoption pass, include:
 - Missing contract areas when they block the requested work or a claim.
 - Pattern layer chosen, smaller layer considered, and expected maintenance delta.
 - `north_star_impact` when the work could alter the repo center, ownership, or refusal boundaries.
-- Smallest next improvement.
+- Boldest useful next improvement.
 - Product impact check and product delta, or the explicit reason the work is
   stewardship support only.
 - Ecology dispositions when the request is about compression, cleanup, or surface changes.
 - What was not validated.
 - Any skipped generators, blocked checks, or non-claims behind broad product language.
 
-For normal implementation tasks, the shorter output is enough: original goal, chosen disposition, native gate, smallest change or reason to leave native/stop, validation result, and the hot-path residue left for future agents.
+For normal implementation tasks, the shorter output is enough: original goal, chosen disposition, native gate, boldest useful change or reason to leave native/stop, validation result, and the hot-path residue left for future agents.
 
 ## Install
 

@@ -1,8 +1,27 @@
 # steward_cli
 
-Meta stewardship CLI for [Skill Steward](https://github.com/arenukvern/skill_steward). Product CLIs live in their own repos — see [ADR 0006](../../docs/decisions/0006-guild-harness-meta-vs-product-clis.md).
+Bounded stewardship CLI for [Skill Steward](https://github.com/arenukvern/skill_steward). Product CLIs live in their own repos — see [ADR 0006](../../docs/decisions/0006-guild-harness-meta-vs-product-clis.md).
 
 ## Commands
+
+The CLI is bounded by stewardship ownership, not by command count. Use these public jobs as the mental model; they are not aliases unless a command is shown below.
+
+| Job | Commands | Boundary |
+|-----|----------|----------|
+| Adopt | `adopt`, `install`, `update`, `uninstall`, `map` | Create or refresh repo-local Steward surfaces |
+| Inspect | `doctor`, `list`, `schema`, `actions`, `action`, `probe` | Read facts and declared contracts |
+| Prove | `validate`, `eval`, `evidence`, `benchmark`, `claim`, `blocked` | Check exact claims without flattening proof levels |
+| Repair | `action-candidate`, `unknown-case`, `diagnose` | Reviewable routing toward future fixes; no unreviewed mutation |
+| Compress | `ecology`, `dogfood`, `protocol`, `bundle`, `brand-check`, `mcp` | Read-only routing, descriptor checks, or experimental harness support |
+
+Command stability tiers:
+
+| Tier | Commands | Meaning |
+|------|----------|---------|
+| Core | `validate`, `list`, `doctor`, `schema`, `actions`, `action`, `probe` | Stable reader/checker surface for adopters and CI |
+| Adoption | `adopt`, `evidence`, `benchmark`, `claim`, `blocked` | Claim and adoption workflow surface; proof ceilings stay explicit |
+| Experimental | `ecology`, `protocol`, `dogfood`, `diagnose`, `mcp`, `bundle`, `brand-check`, `action-candidate`, `unknown-case`, `observe` | Useful but still learning from dogfood and repeated cases |
+| Maintainer/distribution | `eval`, `install`, `update`, `uninstall`, `map` | Stable for Skill Steward maintenance and pinned skill layers; not a product proof surface |
 
 | Command | Purpose |
 |---------|---------|
@@ -25,7 +44,11 @@ Meta stewardship CLI for [Skill Steward](https://github.com/arenukvern/skill_ste
 | `steward action-candidate inspect <path> --json` | Inspect a proposed action candidate before review |
 | `steward action-candidate review --from <candidate> --json` | Validate an action candidate without promoting it |
 | `steward benchmark --scenario <id> --json --output <path>` | Run or block a durability-gated dogfood scenario and persist a compact summary |
-| `steward validate` | Validate installable skills and generated registry/index consistency |
+| `steward validate` / `steward validate all` | Run every validation lane; bare `validate` remains the CI-friendly alias for `validate all` |
+| `steward validate skills` | Validate installable skill directory structure |
+| `steward validate registry` | Validate `skills.sh.json` against skill directories |
+| `steward validate repo-contract` | Validate `steward.yaml`, plan hygiene, custom validators, and plugin manifests |
+| `steward validate evidence` | Validate committed adoption-run evidence |
 | `steward eval --json` | Run T1 behavior-critical rule-based skill routing evals; runtime dogfood belongs to `benchmark` |
 | `steward list` | List installable skills |
 | `steward adopt` | Create the baseline `skills.json`, `steward.yaml`, and `AGENTS.md` without typed actions |
