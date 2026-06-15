@@ -1,5 +1,11 @@
 # skill-steward
 
+## 0.4.1
+
+### Patch Changes
+
+- 85eb427: Create GitHub Releases directly in the release workflow after Changesets publishes, including changelog notes and binary artifacts, instead of relying on a tag-triggered workflow suppressed by `GITHUB_TOKEN`.
+
 ## 0.4.0
 
 ### Minor Changes
