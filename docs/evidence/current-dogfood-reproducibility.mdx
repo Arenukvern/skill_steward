@@ -1,0 +1,51 @@
+---
+status: current
+evidence_type: ledger
+date: 2026-06-15
+scope: Public reproducibility status for Skill Steward dogfood and adopter proof.
+claim_tested: Which current dogfood/adopter claims have durable public anchors.
+proof_level: public reproducibility card with durable-anchor requirements and explicit gaps
+commands_or_sources: checked-in scenario manifests, current dogfood ledger, and public repository URLs
+result: no broad public reproducibility claim; current local and maintainer-local evidence remains routed through the current ledger
+limitations: This card records the public/auditable subset only; it does not replay commands or replace the current ledger.
+non_claims:
+  - proven_repo_steward
+  - steward_presence by default
+  - broad H5 or product runtime correctness
+  - remote reproducibility for maintainer-local replays
+next_disposition: update only when a current ledger row gains durable public anchors or loses them
+current_status_pointer: docs/evidence/current-dogfood-status.mdx
+---
+
+# Current dogfood reproducibility
+
+This card is the public/auditable subset of dogfood evidence. It does not replace [Current dogfood status](current-dogfood-status), which remains the current source for weakest true claims, blockers, rerun routes, and maintainer-local diary context.
+
+Use this card to decide whether a claim can be checked without one maintainer's workstation. A public proof row needs durable repo URLs, fetchable commit SHAs, repo-relative or placeholder-based commands, artifact names or hashes, limitations, and non-claims.
+
+## Public proof bar
+
+| Field | Requirement |
+|-------|-------------|
+| Durable source | Public repository URL plus fetchable commit SHA for the subject under test. |
+| Reproducible command | Repo-relative command or placeholder-based command such as `cd <skill-steward-checkout> && steward ...`. |
+| Proof artifact | Checked-in artifact path, CI artifact name, or artifact hash. |
+| Claim boundary | Exact claim, limitations, and non-claims. |
+| Current status pointer | Link back to [Current dogfood status](current-dogfood-status). |
+
+## Public reproducibility rows
+
+| Surface | Public anchors | Public status | Current gap |
+|---------|----------------|---------------|-------------|
+| Skill Steward protocol smoke | Repository: `https://github.com/Arenukvern/skill_steward.git`; scenario manifest: `steward/scenarios/skill_steward.protocol-smoke.yaml`; scenario source commit: `325d73d3a9d505e9523cc37c830fc30e4e6e4444`; portable command: `cd <skill-steward-checkout> && steward benchmark --scenario skill_steward.protocol-smoke --strict --output .steward/benchmark-summaries/skill-steward-protocol-smoke.json --json`. | not public-reproducible yet | The current ledger records a local strict pass, but the public card has no CI artifact name or artifact hash for that run and no remote replay result. |
+| IntentCall producer Steward H2 | Candidate source is described in the current ledger as maintainer-local replay evidence. | not public-reproducible yet | The current evidence lacks a public repo URL plus fetchable subject commit for the candidate repair, a durable artifact hash, and a repo-owned persisted pass. |
+| `mcp_flutter` runtime text-input repeat | Candidate commit recorded in the current ledger: `a7537b7254565c5ec0e8903740bb0525841d4082`. | not public-reproducible yet | The current evidence lacks a public artifact hash or CI artifact name for the runtime proof and still needs repo-owned current evidence after the minimal candidate lands. |
+| `ecsly` root steward loop | Product-owned status pointer is represented as `<ecsly-checkout>/docs/evidence/current-status.mdx` in the current ledger. | not public-reproducible yet | The current evidence lacks durable public repository URL, fetchable subject commit, CI artifact name or artifact hash, and remote replay result for the bounded observe smoke and product-native T1 smoke. |
+
+## Non-claims
+
+- This card does not prove `proven_repo_steward`.
+- This card does not prove `steward_presence` as a default mode.
+- This card does not prove broad H5, S5, repo maturity, product runtime correctness, release readiness, or graphics parity.
+- This card does not turn maintainer-local clean replays into public proof.
+- This card does not replace [Current dogfood status](current-dogfood-status).

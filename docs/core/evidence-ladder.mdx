@@ -20,6 +20,7 @@ Use this page to decide the weakest proof level that supports a claim. Use [Evid
 | H2 smoke loop is proven | `doctor`, `actions list`, `action inspect`, `probe`, and benchmark summary with `result: "pass"` | H4 fresh-agent workflow |
 | H2 smoke loop is blocked | Benchmark summary with `result: "blocked"` and `blocked_by: "durability_blocked"` | H2 proof |
 | H4 agent workflow is proven | Fresh-agent run artifact or transcript completes one repo-specific workflow without hidden local context | Product-wide correctness |
+| Public reproducibility is claimed | Durable repo URL, fetchable commit SHA, exact portable command, and artifact hash or CI artifact name | Current status, H4/H5, or product correctness |
 
 Rule-based evals are useful but narrow. They prevent obvious drift; they do not prove production agent behavior. Harness benchmarks are stronger, but only for repos with declared action contracts.
 
