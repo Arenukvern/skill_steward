@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:path/path.dart' as p;
 import 'package:yaml/yaml.dart';
 
+import '../yaml_utils.dart';
+
 /// Glob-to-RegExp translation utility to avoid external package dependencies.
 RegExp globToRegex(final String pattern) {
   var escaped = pattern
@@ -112,6 +114,9 @@ class CustomValidator {
       // Scan file content
       try {
         final content = await file.readAsString();
+        // Fast path: skip file if it doesn't contain any of the substrings
+        if (!substrings.any(content.contains)) continue;
+
         final lines = content.split('\n');
         for (var i = 0; i < lines.length; i++) {
           for (final sub in substrings) {
@@ -261,7 +266,7 @@ class StewardConfig {
     try {
       final content = await file.readAsString();
       final yaml = loadYaml(content);
-      final data = _yamlToDart(yaml);
+      final data = yamlToDart(yaml);
 
       if (data is! Map) {
         return StewardConfigLoadResult(
@@ -1004,7 +1009,7 @@ void _validateBenchmarkManifests(
         continue;
       }
       try {
-        final parsed = _yamlToDart(loadYaml(manifestFile.readAsStringSync()));
+        final parsed = yamlToDart(loadYaml(manifestFile.readAsStringSync()));
         if (parsed is! Map) {
           diagnostics.add(
             ConfigDiagnostic.error(
@@ -1376,15 +1381,4 @@ bool _isDurableGitSource(final String value) {
       trimmed.startsWith('http://') ||
       trimmed.startsWith('ssh://') ||
       RegExp(r'^[^@\s]+@[^:\s]+:[^\s]+$').hasMatch(trimmed);
-}
-
-Object? _yamlToDart(final Object? node) {
-  if (node is YamlMap) {
-    return node.map(
-      (final key, final value) => MapEntry(key.toString(), _yamlToDart(value)),
-    );
-  } else if (node is YamlList) {
-    return node.map(_yamlToDart).toList();
-  }
-  return node;
 }

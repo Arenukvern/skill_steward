@@ -159,8 +159,9 @@ List<String> validateType(final String? type) {
 /// too-long-body, missing-frontmatter, etc.).
 Future<({List<String> errors, List<String> warnings})> validateSkillStructure(
   final String skillPath,
-  final String dirName,
-) async {
+  final String dirName, {
+  final ParsedFrontmatter? preParsed,
+}) async {
   final warnings = <String>[];
   final errors = <String>[];
 
@@ -178,7 +179,7 @@ Future<({List<String> errors, List<String> warnings})> validateSkillStructure(
   }
 
   // Frontmatter (name + description validation only on success path)
-  final parsed = await readAndParseSkill(skillPath);
+  final parsed = preParsed ?? await readAndParseSkill(skillPath);
   if (parsed.error != null) {
     errors.add(parsed.error!);
     return (errors: errors, warnings: warnings);

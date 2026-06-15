@@ -43,17 +43,24 @@ bool _excludesAll(final String haystack, final List<String> terms) {
 /// files on demand for body_* rules.  Mirrors [runCaseRules] in Node.
 Future<List<String>> _runCaseRules(
   final String skillPath,
-  final EvalCase evalCase,
-) async {
+  final EvalCase evalCase, {
+  final ParsedFrontmatter? preParsedSkill,
+}) async {
   final errors = <String>[];
 
   // Read SKILL.md — required for all rule kinds.
-  final skillMdFile = File(p.join(skillPath, 'SKILL.md'));
-  if (!skillMdFile.existsSync()) {
-    return ['SKILL.md not found in $skillPath'];
+  final ParsedFrontmatter parsed;
+  if (preParsedSkill != null) {
+    parsed = preParsedSkill;
+  } else {
+    final skillMdFile = File(p.join(skillPath, 'SKILL.md'));
+    if (!skillMdFile.existsSync()) {
+      return ['SKILL.md not found in $skillPath'];
+    }
+    final skillMdContent = await skillMdFile.readAsString();
+    parsed = parseFrontmatter(skillMdContent);
   }
-  final skillMdContent = await skillMdFile.readAsString();
-  final parsed = parseFrontmatter(skillMdContent);
+
   if (parsed.error != null) {
     return [parsed.error!];
   }
@@ -225,6 +232,15 @@ Future<EvalSkillResult> evalSkill(
     );
   }
 
+  final skillMdFile = File(p.join(skillPath, 'SKILL.md'));
+  ParsedFrontmatter? preParsedSkill;
+  if (skillMdFile.existsSync()) {
+    try {
+      final skillMdContent = await skillMdFile.readAsString();
+      preParsedSkill = parseFrontmatter(skillMdContent);
+    } on Object catch (_) {}
+  }
+
   var passed = 0;
   var total = 0;
 
@@ -259,7 +275,11 @@ Future<EvalSkillResult> evalSkill(
     }
 
     total++;
-    final ruleErrors = await _runCaseRules(skillPath, evalCase);
+    final ruleErrors = await _runCaseRules(
+      skillPath,
+      evalCase,
+      preParsedSkill: preParsedSkill,
+    );
     if (ruleErrors.isNotEmpty) {
       errors.add('${evalCase.id}: ${ruleErrors.join('; ')}');
     } else {

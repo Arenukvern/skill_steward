@@ -86,7 +86,7 @@ class BrandCheckCommand extends Command {
       stdout
         ..writeln('Validation failed: Brand identity banned words used.')
         ..writeln(
-          r'Please remove the following jargon: ${violations.join(", ")}',
+          'Please remove the following jargon: ${violations.join(", ")}',
         );
       exitCode = 1;
       return;

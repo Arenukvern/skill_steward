@@ -102,6 +102,38 @@ non_claims:
       ),
     );
   });
+
+  test('dogfood status preserves nested ledger frontmatter', () async {
+    File(
+      p.join(tempDir.path, 'docs', 'evidence', 'current-dogfood-status.mdx'),
+    ).writeAsStringSync('''
+---
+status: current
+claim_tested: Current narrow dogfood status.
+proof_level: current ledger
+result: stewardship_protocol only
+limitations:
+  reason: local proof only
+non_claims:
+  - H5
+  - proven_repo_steward
+---
+
+# Current dogfood status
+''');
+
+    final payload = await dogfoodStatusPayload(tempDir.path);
+    final frontmatter =
+        ((payload['current_ledger'] as Map)['frontmatter'] as Map)
+            .cast<String, dynamic>();
+
+    expect(frontmatter['limitations'], {'reason': 'local proof only'});
+    expect(frontmatter['non_claims'], ['H5', 'proven_repo_steward']);
+    expect((payload['weakest_current_claim'] as Map)['non_claims'], [
+      'H5',
+      'proven_repo_steward',
+    ]);
+  });
 }
 
 String _validStewardV1() => '''
