@@ -1,6 +1,6 @@
 name: steward_cli
 description: Meta harness CLI for Skill Steward — validate and list skills.
-version: 0.4.1
+version: 0.4.2
 repository: https://github.com/arenukvern/skill_steward
 
 environment:
