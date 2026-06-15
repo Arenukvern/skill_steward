@@ -261,6 +261,12 @@ Historical dated note: [Maintainer-local integration roadmap — 2026-06-08](evi
 
 ## 📦 Install Skill Steward (consumers)
 
+| Actor | Command surface | Use when |
+|-------|-----------------|----------|
+| Agent skill consumer | `npx skills add arenukvern/skill_steward` | Installing portable stewardship skills. |
+| Repo adopter or CI runner | `install.sh`, then `steward <command>` | Installing the optional `steward` CLI for repo validation/adoption without Dart. |
+| Maintainer changing this checkout | `pnpm run validate` or `cd packages/steward_cli && dart run :steward validate` | Proving source changes against the current checkout. |
+
 ```bash
 # All meta-skills
 npx skills add arenukvern/skill_steward
@@ -289,13 +295,15 @@ npx skills add <skill-steward-checkout> -g -y
 
 For zero-dependency installation of the `steward` CLI tool without requiring a clone or Dart SDK:
 
+The CLI installer is a trust boundary: it downloads a released binary, verifies that binary against the release `checksums.txt`, installs schemas beside it, and can put `steward` in `~/.local/bin` by default. It does not prove third-party skill sources are safe. By default it prints PATH setup instructions; pass `--update-path` only when you want it to edit your shell startup file.
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash
 # Pinned version, when a rollout needs an exact release:
-curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash -s -- --version vX.Y.Z
+curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/vX.Y.Z/install.sh | bash -s -- --version vX.Y.Z
 ```
 
-`steward install/update` intentionally manages repo-local `skills.json` registration, agent folder layout, and commit pinning. Use `npx skills` for broad public skill install/update and skills.sh discovery.
+`steward install/update` intentionally manages repo-local `skills.json` registration, agent folder layout, and commit pinning. It copies selected skill directories into agent-readable folders, skips dotfiles, may translate `SKILL.md` frontmatter for target agents, and advances `skills.json` commit pins only after a successful copy. Local path and `file://` sources require `--allow-local-source` because they are maintainer-only development paths. Use `npx skills` for broad public skill install/update and skills.sh discovery.
 
 **Note:** Hooks/plugins are **not** installed by `npx skills` on Cursor—see `../plugins/README.md` and [ADR 0004](decisions/0004-plugin-packaging-and-install-path).
 
@@ -485,7 +493,7 @@ CI on PR               → .github/workflows/changesets.yml
 Local gate             → bash scripts/changeset-check.sh origin/main
 Release owner          → .github/workflows/release.yml
 Release tag contract   → scripts/tag_release.sh validates versions/changelog, then creates/pushes vX.Y.Z only
-Release postflight     → scripts/verify_release.sh verifies latest release, assets, and install-doc pins
+Release postflight     → scripts/verify_release.sh verifies latest release, required assets, checksums, and install-doc pins
 Skip (maintainer only) → PR title contains [skip changeset]
 ```
 

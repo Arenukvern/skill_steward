@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:args/command_runner.dart';
 import 'package:path/path.dart' as p;
 
+import '../path_safety.dart';
 import '../repo_root.dart';
+import '../skill_source.dart';
 import '../validation/skill_frontmatter.dart';
 import 'install_command.dart';
 
@@ -28,6 +30,11 @@ class UpdateCommand extends Command<void> {
         help: 'Filter skill updates by type (governance | developer).',
         allowed: ['governance', 'developer'],
       )
+      ..addFlag(
+        'allow-local-source',
+        help:
+            'Allow maintainer-only local path or file:// skill sources from skills.json. Disabled by default for consumer updates.',
+      )
       ..addFlag('force', abbr: 'f', help: 'Force overwrite local changes.')
       ..addFlag(
         'json',
@@ -49,6 +56,7 @@ class UpdateCommand extends Command<void> {
     final target = argResults!['target'] as String;
     final typeFilter = argResults!['type'] as String?;
     final force = argResults!['force'] as bool;
+    final allowLocalSource = argResults!['allow-local-source'] as bool;
 
     final root = findRepoRoot(Directory.current);
     final skillsJsonFile = File(p.join(root, 'skills.json'));
@@ -80,14 +88,16 @@ class UpdateCommand extends Command<void> {
 
         if (source == null || source.isEmpty) continue;
 
-        final repoUrl = source.startsWith('http')
-            ? source
-            : 'https://github.com/$source.git';
+        final skillSource = resolveSkillSource(
+          source,
+          root,
+          allowLocalSource: allowLocalSource,
+        );
 
         // Use git ls-remote to query the latest commit hash of the remote branch/ref
         final lsRes = await Process.run('git', [
           'ls-remote',
-          repoUrl,
+          skillSource.cloneTarget,
           'refs/heads/$ref',
         ]);
         if (lsRes.exitCode != 0) {
@@ -117,7 +127,7 @@ class UpdateCommand extends Command<void> {
         } else {
           stdout.writeln('Updating $source: $shortLocked -> $shortLatest...');
           // Run the git clone and installation routine for the new commit
-          await _installFromSource(
+          final updated = await _installFromSource(
             source,
             latestCommit,
             skills,
@@ -126,10 +136,17 @@ class UpdateCommand extends Command<void> {
             target,
             typeFilter,
             force,
+            allowLocalSource,
           );
 
           // Write updated commit back to skills.json
-          item['commit'] = latestCommit;
+          if (updated) {
+            item['commit'] = latestCommit;
+          } else {
+            stdout.writeln(
+              'Skipped updating skills.json for $source because no skill files were updated.',
+            );
+          }
         }
       }
     }
@@ -141,7 +158,7 @@ class UpdateCommand extends Command<void> {
     stdout.writeln('Update complete.');
   }
 
-  Future<void> _installFromSource(
+  Future<bool> _installFromSource(
     final String source,
     final String commitSha,
     final List<String> skillNames,
@@ -150,17 +167,25 @@ class UpdateCommand extends Command<void> {
     final String target,
     final String? typeFilter,
     final bool force,
+    final bool allowLocalSource,
   ) async {
-    final repoUrl = source.startsWith('http')
-        ? source
-        : 'https://github.com/$source.git';
+    validateSkillNames(skillNames);
+    final skillSource = resolveSkillSource(
+      source,
+      root,
+      allowLocalSource: allowLocalSource,
+    );
     final tempDir = Directory(p.join(root, '.steward_temp'));
 
     if (tempDir.existsSync()) {
       await tempDir.delete(recursive: true);
     }
 
-    final cloneRes = await Process.run('git', ['clone', repoUrl, tempDir.path]);
+    final cloneRes = await Process.run('git', [
+      'clone',
+      skillSource.cloneTarget,
+      tempDir.path,
+    ]);
     if (cloneRes.exitCode != 0) {
       throw Exception(
         'Failed to clone repository during update: ${cloneRes.stderr}',
@@ -199,7 +224,13 @@ class UpdateCommand extends Command<void> {
       } else {
         targetsToInstall.addAll(skillNames);
       }
+      validateSkillNames(targetsToInstall);
 
+      if (targetsToInstall.isEmpty) {
+        return false;
+      }
+
+      final results = <bool>[];
       for (final skillName in targetsToInstall) {
         Directory? srcDir;
         for (final loc in [
@@ -220,8 +251,16 @@ class UpdateCommand extends Command<void> {
         }
 
         final destDir = _getDestDir(root, isLocal, skillName);
-        await _copySkillDirectory(srcDir, destDir, target, typeFilter, force);
+        final updated = await _copySkillDirectory(
+          srcDir,
+          destDir,
+          target,
+          typeFilter,
+          force,
+        );
+        results.add(updated);
       }
+      return results.every((final updated) => updated);
     } finally {
       if (tempDir.existsSync()) {
         await tempDir.delete(recursive: true);
@@ -234,10 +273,13 @@ class UpdateCommand extends Command<void> {
     final bool isLocal,
     final String skillName,
   ) {
+    validateSkillName(skillName);
     if (isLocal) {
-      return Directory(p.join(root, '.agents', 'skills', skillName));
+      return Directory(
+        resolveUnderRoot(root, p.join('.agents', 'skills', skillName)),
+      );
     }
-    return Directory(p.join(root, 'skills', skillName));
+    return Directory(resolveUnderRoot(root, p.join('skills', skillName)));
   }
 
   Future<bool> _copySkillDirectory(

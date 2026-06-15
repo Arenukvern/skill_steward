@@ -11,7 +11,8 @@ Usage: scripts/verify_release.sh [--repo owner/name] [--version semver]
 Verifies the public release/install trust contract:
 - GitHub latest release is v<version>
 - Required binary assets and checksums exist
-- README/DX install examples do not pin concrete stale versions
+- Release assets match checksums.txt
+- Install docs do not pin concrete stale versions
 USAGE
 }
 
@@ -90,8 +91,8 @@ for required in "${required_assets[@]}"; do
 done
 
 docs_with_concrete_pins=()
-for doc in README.md docs/DX_FAQ.mdx; do
-  if grep -Eq -- '--version[[:space:]]+v[0-9]+\.[0-9]+\.[0-9]+' "$doc"; then
+for doc in README.md docs/DX_FAQ.mdx docs/core/portable-steward-invocation.mdx; do
+  if grep -Eq -- '(@|--version[[:space:]]+)v[0-9]+\.[0-9]+\.[0-9]+' "$doc"; then
     docs_with_concrete_pins+=("$doc")
   fi
 done
@@ -101,5 +102,44 @@ if [[ ${#docs_with_concrete_pins[@]} -gt 0 ]]; then
   printf '  %s\n' "${docs_with_concrete_pins[@]}" >&2
   exit 1
 fi
+
+work_dir="$(mktemp -d)"
+trap 'rm -rf "$work_dir"' EXIT
+
+gh release download "$tag" \
+  --repo "$REPO" \
+  --dir "$work_dir" \
+  --pattern "steward_${version_no_prefix}_*.tar.gz" \
+  --pattern "checksums.txt" >/dev/null
+
+sha256_file() {
+  local file="$1"
+  if command -v sha256sum >/dev/null 2>&1; then
+    sha256sum "$file" | awk '{print $1}'
+    return
+  fi
+  if command -v shasum >/dev/null 2>&1; then
+    shasum -a 256 "$file" | awk '{print $1}'
+    return
+  fi
+  echo "No SHA-256 tool available (sha256sum or shasum)." >&2
+  exit 1
+}
+
+for archive in "steward_${version_no_prefix}_darwin-arm64.tar.gz" "steward_${version_no_prefix}_linux-x64.tar.gz"; do
+  checksum_line="$(grep " ${archive}$" "$work_dir/checksums.txt" || true)"
+  if [[ -z "$checksum_line" ]]; then
+    echo "Missing checksum entry for $archive" >&2
+    exit 1
+  fi
+  expected_checksum="$(awk '{print $1}' <<<"$checksum_line")"
+  actual_checksum="$(sha256_file "$work_dir/$archive")"
+  if [[ "$expected_checksum" != "$actual_checksum" ]]; then
+    echo "Checksum verification failed for $archive" >&2
+    echo "expected: $expected_checksum" >&2
+    echo "actual:   $actual_checksum" >&2
+    exit 1
+  fi
+done
 
 echo "release verified: $tag is latest and has required assets"

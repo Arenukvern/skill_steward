@@ -38,7 +38,7 @@ MODE B — Version PR merged (no pending changesets remain)
 
 Version PR commits are pushed via the GitHub Commits API instead of the git CLI:
 
-- **GPG-signed** — verified badge on all version bump commits and tags.
+- **Verified version commits** — GitHub marks version bump commits from `github-actions[bot]` as verified; release tags are plain `vX.Y.Z` tags created by `scripts/tag_release.sh`.
 - **No SSH / git config** — works with the built-in `GITHUB_TOKEN` alone.
 - **Attributed** to `github-actions[bot]` with full verification.
 
@@ -54,7 +54,7 @@ Version PR commits are pushed via the GitHub Commits API instead of the git CLI:
 
 - Full release loop is automated: changeset → Version PR → tag → GitHub Release.
 - CHANGELOG.md is written from structured `.changeset/*.md` descriptions — no manual editing.
-- GPG-signed tags provide tamper-evident provenance for every release.
+- Plain `vX.Y.Z` tags, GitHub Release assets, and `checksums.txt` provide the current release lookup and integrity contract. This is not a signed-tag or attestation claim.
 - No new secrets required — `GITHUB_TOKEN` with `contents: write` + `pull-requests: write` is sufficient.
 - `concurrency: cancel-in-progress` prevents duplicate release jobs on rapid pushes.
 
