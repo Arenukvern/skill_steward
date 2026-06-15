@@ -231,6 +231,79 @@ void main() {
     expect(durability['blocking_paths'], contains('tool/agent.dart'));
   });
 
+  test(
+    'benchmark blocks untracked input artifacts in untracked dirs',
+    () async {
+      await File(
+        p.join(tempDir.path, 'steward.yaml'),
+      ).writeAsString(validStewardV1(artifactPath: 'tool/agent.dart'));
+      await _initGitRepo(tempDir);
+      await _commitAll(tempDir, 'clean benchmark contract');
+      final toolFile = File(p.join(tempDir.path, 'tool', 'agent.dart'))
+        ..createSync(recursive: true);
+      await toolFile.writeAsString('void main() {}\n');
+
+      final buffer = StringBuffer();
+      final runner = CommandRunner<void>('steward', 'test')
+        ..addCommand(BenchmarkCommand(buffer, tempDir));
+
+      await runner.run([
+        'benchmark',
+        '--scenario',
+        'sample_repo.pwd-selection',
+        '--json',
+      ]);
+
+      final payload = jsonDecode(buffer.toString()) as Map<String, dynamic>;
+      expect(payload['result'], 'blocked');
+      expect(payload['blocked_by'], 'durability_blocked');
+      expect(payload['actions_run'], isEmpty);
+      final durability = payload['durability'] as Map<String, dynamic>;
+      expect(durability['blocking_paths'], contains('tool/agent.dart'));
+      final checkedPaths = durability['checked_paths'] as List;
+      expect(
+        checkedPaths,
+        contains(
+          allOf([
+            containsPair('path', 'tool/agent.dart'),
+            containsPair('git_status', '??'),
+            containsPair('clean', false),
+          ]),
+        ),
+      );
+    },
+  );
+
+  test('benchmark blocks dirty input artifacts with spaces in path', () async {
+    const artifactPath = 'tool dir/agent file.dart';
+    await File(
+      p.join(tempDir.path, 'steward.yaml'),
+    ).writeAsString(validStewardV1(artifactPath: artifactPath));
+    final toolFile = File(p.join(tempDir.path, artifactPath))
+      ..createSync(recursive: true);
+    await toolFile.writeAsString('void main() {}\n');
+    await _initGitRepo(tempDir);
+    await _commitAll(tempDir, 'clean benchmark inputs');
+    await toolFile.writeAsString('void main() { print("dirty"); }\n');
+
+    final buffer = StringBuffer();
+    final runner = CommandRunner<void>('steward', 'test')
+      ..addCommand(BenchmarkCommand(buffer, tempDir));
+
+    await runner.run([
+      'benchmark',
+      '--scenario',
+      'sample_repo.pwd-selection',
+      '--json',
+    ]);
+
+    final payload = jsonDecode(buffer.toString()) as Map<String, dynamic>;
+    expect(payload['result'], 'blocked');
+    expect(payload['blocked_by'], 'durability_blocked');
+    final durability = payload['durability'] as Map<String, dynamic>;
+    expect(durability['blocking_paths'], contains(artifactPath));
+  });
+
   test('benchmark blocks planned scenarios without execution', () async {
     await File(
       p.join(tempDir.path, 'steward.yaml'),

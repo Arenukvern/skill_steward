@@ -3,8 +3,10 @@ import 'dart:io';
 
 import 'package:args/command_runner.dart';
 import 'package:path/path.dart' as p;
+import 'package:yaml/yaml.dart';
 
 import '../repo_root.dart';
+import '../yaml_utils.dart';
 import 'ecology_command.dart';
 
 class DogfoodCommand extends Command<void> {
@@ -126,35 +128,17 @@ Map<String, dynamic> _currentLedger(final String root) {
 }
 
 Map<String, dynamic> _frontmatter(final String content) {
-  final lines = const LineSplitter().convert(content);
-  if (lines.isEmpty || lines.first.trim() != '---') return {};
+  final match = RegExp(r'^---\r?\n([\s\S]*?)\r?\n---').firstMatch(content);
+  if (match == null) return {};
 
-  final map = <String, dynamic>{};
-  String? currentListKey;
-  for (final line in lines.skip(1)) {
-    if (line.trim() == '---') break;
-    if (line.startsWith('  - ') && currentListKey != null) {
-      (map[currentListKey] as List<String>).add(line.substring(4).trim());
-      continue;
+  final raw = match.group(1)!;
+  try {
+    final doc = yamlToDart(loadYaml(raw));
+    if (doc is Map) {
+      return Map<String, dynamic>.from(doc);
     }
-
-    final separator = line.indexOf(':');
-    if (separator <= 0) {
-      currentListKey = null;
-      continue;
-    }
-
-    final key = line.substring(0, separator).trim();
-    final value = line.substring(separator + 1).trim();
-    if (value.isEmpty) {
-      map[key] = <String>[];
-      currentListKey = key;
-    } else {
-      map[key] = value;
-      currentListKey = null;
-    }
-  }
-  return map;
+  } on Object catch (_) {}
+  return {};
 }
 
 List<String> _nextActions(

@@ -6,9 +6,11 @@ import 'package:crypto/crypto.dart';
 import 'package:yaml/yaml.dart';
 
 import '../bounded_process.dart';
+import '../git_status.dart';
 import '../path_safety.dart';
 import '../repo_root.dart';
 import '../validation/steward_config.dart';
+import '../yaml_utils.dart';
 
 // ignore: do_not_use_environment
 const _compiledStewardVersion = String.fromEnvironment('STEWARD_VERSION');
@@ -358,7 +360,7 @@ Future<_Durability> _durability({
     try {
       final resolved = resolveUnderRoot(root, normalized);
       final relPath = repoRelativePath(root, resolved);
-      final status = await _gitPathStatus(root, relPath);
+      final status = await gitPathStatus(root, relPath);
       checkedPaths.add({
         'kind': kind,
         'path': relPath,
@@ -439,26 +441,6 @@ Future<String?> _scenarioManifestSha256(
   }
 }
 
-Future<_GitPathStatus> _gitPathStatus(
-  final String root,
-  final String path,
-) async {
-  final result = await Process.run('git', [
-    'status',
-    '--porcelain',
-    '--',
-    path,
-  ], workingDirectory: root);
-  if (result.exitCode != 0) {
-    return const _GitPathStatus(code: 'git_error', clean: false);
-  }
-  final output = result.stdout.toString().trim();
-  if (output.isEmpty) {
-    return const _GitPathStatus(code: 'clean', clean: true);
-  }
-  return _GitPathStatus(code: output.split(RegExp(r'\s+')).first, clean: false);
-}
-
 Future<Map<String, dynamic>?> _readScenarioManifest(
   final String root,
   final String manifestPath,
@@ -467,7 +449,7 @@ Future<Map<String, dynamic>?> _readScenarioManifest(
 ) async {
   try {
     final resolved = resolveUnderRoot(root, manifestPath);
-    final data = _yamlToDart(loadYaml(await File(resolved).readAsString()));
+    final data = yamlToDart(loadYaml(await File(resolved).readAsString()));
     if (data is! Map) {
       diagnostics.add({
         'severity': 'error',
@@ -848,40 +830,15 @@ _CappedOutput _capOutput(final String output, final int limit) {
 
 Future<_GitFacts> _gitFacts(final String root) async {
   try {
-    final commitResult = await Process.run('git', [
-      'rev-parse',
-      'HEAD',
-    ], workingDirectory: root);
-    final statusResult = await Process.run('git', [
-      'status',
-      '--porcelain',
-    ], workingDirectory: root);
-    final dirtyPaths = statusResult.exitCode == 0
-        ? _dirtyPaths(statusResult.stdout.toString())
-        : const <String>[];
+    final snapshot = await gitStatusSnapshot(root);
     return _GitFacts(
-      commit: commitResult.exitCode == 0
-          ? commitResult.stdout.toString().trim()
-          : null,
-      dirty: dirtyPaths.isNotEmpty,
-      dirtyPaths: dirtyPaths,
+      commit: snapshot.commit,
+      dirty: snapshot.dirty,
+      dirtyPaths: snapshot.dirtyPaths,
     );
   } on Object catch (_) {
     return const _GitFacts(commit: null, dirty: null, dirtyPaths: []);
   }
-}
-
-List<String> _dirtyPaths(final String porcelain) {
-  final paths = <String>[];
-  for (final line in porcelain.split('\n')) {
-    if (line.trim().isEmpty) continue;
-    final payload = line.length > 3 ? line.substring(3).trim() : line.trim();
-    final path = payload.contains(' -> ')
-        ? payload.split(' -> ').last.trim()
-        : payload;
-    if (path.isNotEmpty) paths.add(path);
-  }
-  return paths;
 }
 
 Future<String> _runnerVersion(final String root) async {
@@ -902,7 +859,7 @@ Future<String> _runnerVersion(final String root) async {
     return 'steward@unknown';
   }
   try {
-    final data = _yamlToDart(loadYaml(await pubspec.readAsString()));
+    final data = yamlToDart(loadYaml(await pubspec.readAsString()));
     if (data is Map && '${data['version'] ?? ''}'.trim().isNotEmpty) {
       return 'steward@${data['version']}';
     }
@@ -910,21 +867,6 @@ Future<String> _runnerVersion(final String root) async {
     // Keep benchmark summaries available even when package metadata is absent.
   }
   return 'steward@unknown';
-}
-
-Object? _yamlToDart(final Object? node) {
-  if (node is YamlMap) {
-    return Map<String, dynamic>.fromEntries(
-      node.entries.map(
-        (final entry) =>
-            MapEntry(entry.key.toString(), _yamlToDart(entry.value)),
-      ),
-    );
-  }
-  if (node is YamlList) {
-    return node.map(_yamlToDart).toList();
-  }
-  return node;
 }
 
 class _ScenarioManifest {
@@ -1007,13 +949,6 @@ class _Durability {
     'blocking_paths': blockingPaths,
     'warnings': warnings,
   };
-}
-
-class _GitPathStatus {
-  const _GitPathStatus({required this.code, required this.clean});
-
-  final String code;
-  final bool clean;
 }
 
 class _CappedOutput {

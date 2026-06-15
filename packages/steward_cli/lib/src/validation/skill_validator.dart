@@ -21,12 +21,12 @@ Future<SkillValidationResult> validateSingleSkill(
   final String skillPath,
   final String dirName,
 ) async {
-  final structure = await validateSkillStructure(skillPath, dirName);
-
-  // (Minor duplication of read for name/desc attachment even on error paths.
-  //  Acceptable until the full CLI wiring refactor; keeps public surface stable
-  //  so existing tests continue to compile without modification.)
   final parsed = await readAndParseSkill(skillPath);
+  final structure = await validateSkillStructure(
+    skillPath,
+    dirName,
+    preParsed: parsed,
+  );
 
   return SkillValidationResult(
     dirName: dirName,

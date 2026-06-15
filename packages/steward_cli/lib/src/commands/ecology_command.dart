@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:args/command_runner.dart';
 import 'package:path/path.dart' as p;
 
+import '../git_status.dart';
 import '../repo_root.dart';
 import '../validation/steward_config.dart';
 import 'doctor_command.dart';
@@ -428,40 +429,21 @@ Future<Map<String, dynamic>> _schemaOutputsSnapshot(final String root) async {
 }
 
 Future<Map<String, dynamic>> _gitSnapshot(final String root) async {
-  final inside = await Process.run('git', [
-    'rev-parse',
-    '--is-inside-work-tree',
-  ], workingDirectory: root);
-  if (inside.exitCode != 0) {
+  final snapshot = await gitStatusSnapshot(root);
+  if (!snapshot.available) {
     return {
       'available': false,
       'status': 'not_checked',
-      'diagnostics': ['Not inside a git worktree.'],
+      'diagnostics': snapshot.diagnostics,
     };
   }
 
-  final head = await Process.run('git', [
-    'rev-parse',
-    'HEAD',
-  ], workingDirectory: root);
-  final status = await Process.run('git', [
-    '--no-optional-locks',
-    'status',
-    '--short',
-    '--untracked-files=normal',
-  ], workingDirectory: root);
-  final entries = status.stdout
-      .toString()
-      .split('\n')
-      .where((final line) => line.trim().isNotEmpty)
-      .toList();
-
   return {
     'available': true,
-    'status': entries.isEmpty ? 'clean' : 'dirty',
-    'commit': head.exitCode == 0 ? head.stdout.toString().trim() : null,
-    'dirty': entries.isNotEmpty,
-    'entries': entries,
+    'status': snapshot.dirty == true ? 'dirty' : 'clean',
+    'commit': snapshot.commit,
+    'dirty': snapshot.dirty == true,
+    'entries': snapshot.entries,
   };
 }
 

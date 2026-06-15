@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:path/path.dart' as p;
 import 'package:yaml/yaml.dart';
 
+import '../yaml_utils.dart';
+
 /// Validates committed adoption-run/v2 evidence records.
 ///
 /// JSON Schema owns portable shape. This validator owns cross-field governance
@@ -32,7 +34,7 @@ Future<List<String>> validateAdoptionRunEvidence(final String rootPath) async {
 
     for (final document in _extractAdoptionRunDocuments(raw, relPath)) {
       try {
-        final parsed = _yamlToDart(loadYaml(document.yaml));
+        final parsed = yamlToDart(loadYaml(document.yaml));
         if (parsed is! Map<String, dynamic>) {
           diagnostics.add(
             '${document.label}: adoption-run record must be a map.',
@@ -326,18 +328,4 @@ List<String> _stringListValue(
       .map((final item) => '$item'.trim())
       .where((final item) => item.isNotEmpty)
       .toList(growable: false);
-}
-
-Object? _yamlToDart(final Object? node) {
-  if (node is YamlMap) {
-    return Map<String, dynamic>.fromEntries(
-      node.entries.map(
-        (final entry) => MapEntry('${entry.key}', _yamlToDart(entry.value)),
-      ),
-    );
-  }
-  if (node is YamlList) {
-    return node.map(_yamlToDart).toList(growable: false);
-  }
-  return node;
 }

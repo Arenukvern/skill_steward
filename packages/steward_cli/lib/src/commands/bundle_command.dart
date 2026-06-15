@@ -10,6 +10,7 @@ import '../path_safety.dart';
 import '../repo_root.dart';
 import '../validation/plugin_manifest_validator.dart';
 import '../validation/steward_config.dart';
+import '../yaml_utils.dart';
 
 /// Compiles local Skill Steward distribution manifests.
 class BundleCommand extends Command<void> {
@@ -322,25 +323,11 @@ class BundleCommand extends Command<void> {
   }
 
   Map<String, dynamic> _yamlMapToDart(final Object? value) {
-    final converted = _yamlToDart(value);
+    final converted = yamlToDart(value);
     if (converted is Map<String, dynamic>) {
       return converted;
     }
     throw UsageException('plugin.yaml must contain a YAML map.', usage);
-  }
-
-  Object? _yamlToDart(final Object? value) {
-    if (value is YamlMap) {
-      final map = <String, dynamic>{};
-      for (final entry in value.entries) {
-        map[entry.key.toString()] = _yamlToDart(entry.value);
-      }
-      return map;
-    }
-    if (value is YamlList) {
-      return value.map(_yamlToDart).toList();
-    }
-    return value;
   }
 
   Future<String> _fileSha256(final File file) async =>
