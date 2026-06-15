@@ -1,5 +1,11 @@
 # skill-steward
 
+## 0.4.2
+
+### Patch Changes
+
+- 92f7c46: Gate direct GitHub Release asset jobs on the resolved release tag instead of the Changesets `published` output, which stays false for the repo's custom tag-only publish script.
+
 ## 0.4.1
 
 ### Patch Changes
