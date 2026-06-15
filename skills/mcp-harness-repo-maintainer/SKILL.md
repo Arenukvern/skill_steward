@@ -59,6 +59,8 @@ changed or was directly proven.
 
 **Skeptic before promotion:** A missing capability is a harness gap only after smaller layers fail. First ask whether the fix belongs in a native command, error message, FAQ, docs map, public API, schema/codegen, or deletion/collapse. Promote a Steward action, MCP tool, or benchmark only when it improves a real proof path and carries a falsifier.
 
+**Evolutionary simplicity for interfaces:** Split core entrypoints when ownership, proof, effects, cadence, or audience diverge. Compress CLI/MCP/help surfaces when one user or CI intent remains, but preserve structured child outcomes so wrappers do not flatten proof, effects, or non-claims.
+
 ## Core Beliefs & Culture
 
 1. **Missing capability → possible harness gap** — When an agent fails, ask what is not *legible* or *enforceable*, then choose the smallest useful layer: native command, error message, docs/FAQ, schema, linter, skill, action, or deletion.

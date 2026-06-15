@@ -10,7 +10,7 @@ Engineering Stewardship is an old-new idea: step back from only managing an AI a
 
 Skill Steward gives teams a shared structure for understanding, developing, and improving that ecology. It ships through portable Agent Skills plus a bounded `steward` CLI for repo-local registration, validation, and contract proof. The object of stewardship is the **repository as a whole**.
 
-Usefulness is measured by how well cold exploration becomes durable hot paths for future agents: smaller, safer, inspectable routes through real repo work. A useful adoption reduces future time, uncertainty, and risk without lowering the correctness or evidence bar. It may add a tool, but it may also delete code, collapse a layer, improve an error message, or return to a native command when that better serves the product. See [ADR 0018](decisions/0018-cold-to-hot-path-usefulness) and [Generational architecture ladder](core/generational-architecture-ladder).
+Usefulness is measured by how well cold exploration becomes durable hot paths for future agents: smaller, safer, inspectable routes through real repo work. A useful adoption reduces future time, uncertainty, and risk without lowering the correctness or evidence bar. It may add a tool, but it may also delete code, collapse a layer, improve an error message, or return to a native command when that better serves the product. See [ADR 0018](decisions/0018-cold-to-hot-path-usefulness), [Evolutionary simplicity](core/evolutionary-simplicity), and [Generational architecture ladder](core/generational-architecture-ladder).
 
 Default Steward work is ecology-first: preserve the original user goal, identify which part of the repository ecology owns the friction, then choose the **boldest useful path**. The boldest useful path is the strongest repo capability that can truthfully improve now, using only the controls needed to keep the change safe, reversible, and provable. The answer may be to orient, compress, validate, tutor pain, promote a tool, leave work native, or stop. Repair and evidence are supporting moves inside that frame: repair when an owner can be safely improved now, and create evidence only when a claim, blocker, real run, durable behavior change, or concrete decision needs proof.
 
@@ -63,7 +63,7 @@ Harness engineering is one pillar, not the umbrella. The umbrella is structural 
 | Review and handoff | MoE critique, multi-agent handoff, PR review patterns | Active: `mixture-of-experts`, `multi-agent-handoff` |
 | Strategic alignment | Vision vs implementation fit, usage evidence, future-fit analysis, falsifiers | Active: `vision-alignment-foresight` |
 | Usefulness learning | Cold exploration records, future-agent hot paths, transfer evidence, anti-metrics | Active: ADR 0018 + H3/H5 adoption evidence |
-| Pattern stewardship | Stage-aware pattern discovery, deletion/collapse checks, codegen/harness promotion guards | Active: [Generational architecture ladder](core/generational-architecture-ladder) |
+| Pattern stewardship | Stage-aware pattern discovery, split/compress checks, deletion/collapse checks, codegen/harness promotion guards | Active: [Evolutionary simplicity](core/evolutionary-simplicity) + [Generational architecture ladder](core/generational-architecture-ladder) |
 | Evidence stewardship | Claim-proof records, current ledgers, blocked-state preservation, historical provenance, and retention discipline | Active: [Evidence ladder](core/evidence-ladder) + [Evidence artifacts](core/evidence-artifacts) |
 | Security posture | Secret hygiene, action risk classes, provenance, supply-chain review | Developing: encoded in repo-quality contracts; standalone skill deferred |
 | Org patterns | Repo archetypes, ownership, operating model, agent routing | Developing: encoded in repo taxonomy; standalone skill deferred |
@@ -187,6 +187,7 @@ Adoption evidence should also record the pattern layer being changed and the mai
 - [Repo quality contracts](repo-quality-contracts)
 - [Concept: stewardship loop](core/stewardship-loop)
 - [Concept: distribution boundaries](core/distribution-boundaries)
+- [Concept: evolutionary simplicity](core/evolutionary-simplicity)
 - [Concept: evidence ladder](core/evidence-ladder)
 - [Concept: docs lattice](core/doc-lattice)
 - [Concept: generational architecture ladder](core/generational-architecture-ladder)

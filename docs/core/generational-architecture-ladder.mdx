@@ -2,9 +2,11 @@
 
 **Status:** concept · **Audience:** maintainers and agents
 
-Engineering Stewardship should help a repo grow the next useful layer only when the product has earned it. Early projects need simple language and framework abstractions. Growing products reveal repeated patterns, hidden knowledge, duplicated actions, slow feedback loops, and maintenance drag. The steward's job is to notice those signals, choose the smallest useful layer, and keep the original product goal ahead of tool-building.
+Engineering Stewardship should help a repo grow, split, compress, demote, or delete the next useful layer only when the product has earned it. Early projects need simple language and framework abstractions. Growing products reveal repeated patterns, hidden knowledge, duplicated actions, slow feedback loops, and maintenance drag. The steward's job is to notice those signals, choose the smallest useful layer, and keep the original product goal ahead of tool-building.
 
-This ladder is a Skeptic lens for deciding whether to add code, extract a pattern, generate artifacts, improve a harness, or delete complexity.
+This ladder is the architecture-layer application of [Evolutionary simplicity](evolutionary-simplicity). Use it as a Skeptic lens for deciding whether to stay native, split a surface, compress navigation, add code, extract a pattern, generate artifacts, improve a harness, demote a layer, or delete complexity.
+
+Smallest useful layer does not mean the smallest diff or most timid action. It means the lowest-maintenance layer that can truthfully carry the owner, proof, and future workflow.
 
 ## Ladder
 
@@ -18,6 +20,17 @@ This ladder is a Skeptic lens for deciding whether to add code, extract a patter
 | **G5** | Ecology improvement | A proven local lesson should improve future tools or skills. | Skill update, eval case, action candidate, diagnostic, release rule, deletion of stale layers. |
 
 Higher is not better by default. A mature repo may intentionally move down the ladder by deleting a generator, collapsing packages, or replacing a tool path with one native command.
+
+## Evolution Moves
+
+| Move | Use when | Guard |
+|------|----------|-------|
+| Stay native | Existing language, framework, or command already carries the truth. | Do not add Steward machinery. |
+| Split | One layer hides different owners, proof levels, effects, cadences, or audiences. | Keep a compressed reader path when one intent remains. |
+| Compress | Many surfaces serve one user action, CI gate, or navigation path. | Preserve child results, owners, and non-claims. |
+| Promote | Repeated friction needs a stronger layer. | Prove lower layers failed or cost more. |
+| Demote | A stronger layer no longer earns maintenance. | The simpler path still passes the native gate. |
+| Delete | A surface is stale, duplicated, misleading, or already extracted. | Durable truth lives in the owner surface. |
 
 ## Skeptic Checks
 
@@ -42,6 +55,7 @@ If the answer is unclear, capture an observation or unknown case. Do not promote
 | Repeated boilerplate | Add a template, schema, or generator candidate | The generated surface is tested and easier to maintain than hand code. |
 | Repeated manual inspection | Add a probe or read-only action candidate | Effects, limits, redaction, owner, and benchmark proof exist. |
 | Repeated skill drift | Add or tighten eval cases | Held-out prompts show the edit improves behavior without overfitting. |
+| CLI command mixes unrelated owners, proof levels, effects, or audiences | Split internal lanes while preserving a compressed default when user intent is one action | Help, JSON, tests, or schemas preserve grouped child outcomes. |
 | Shrinking or overgrown surface | Delete, merge, or demote a layer | The smaller shape still passes the repo's native gate. |
 
 ## Evidence Fields
@@ -67,7 +81,7 @@ Minimum shape:
 - Original user or maintainer goal.
 - Observed repeated pattern or growth pressure.
 - Current layer and proposed next layer.
-- Smallest useful move.
+- Boldest useful outcome and smallest sufficient layer.
 - Deletion or collapse option.
 - Maintenance delta.
 - Evidence needed before promotion.
@@ -79,6 +93,7 @@ Do not create a standalone skill from one review. Promote the workflow only afte
 ## Related
 
 - [North Star](../NORTH_STAR)
+- [Evolutionary simplicity](evolutionary-simplicity)
 - [Repo quality contracts](../repo-quality-contracts)
 - [Evidence ladder](evidence-ladder)
 - [Stewardship loop](stewardship-loop)

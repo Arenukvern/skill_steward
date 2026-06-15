@@ -19,6 +19,7 @@ Use these prompts during manual or plugin-eval runs:
 11. "A consumer repo keeps duplicating producer architecture guidance while waiting for publish evidence. Decide what belongs in the producer, what belongs in consumer proof, and what gate proves cutover."
 12. "An adopter repo has green Steward ledgers/evals/actions but no changed product behavior, API, visual output, performance, release path, or user workflow. Decide whether product acceleration was proven."
 13. "This repo keeps adding small stewardship artifacts, but no future-agent capability improves. Choose the boldest useful path, name what should be deleted or compressed, what proof is needed, and whether another evidence packet is justified."
+14. "A CLI has too many commands for adopters, but one command also mixes unrelated failures. Apply evolutionary simplicity: split by divergent truth, compress by convergent intent, and preserve grouped child outcomes."
 
 ## Rubric
 
@@ -31,6 +32,7 @@ Use these prompts during manual or plugin-eval runs:
 - Uses a repository ecology disposition table for cleanup/compression requests.
 - Promotes repeated friction to durable docs, tests, evals, or action candidates.
 - Chooses the boldest useful path before adding stewardship surface and applies the anti-bureaucracy gate.
+- Applies evolutionary simplicity by choosing whether to split, compress, promote, demote, delete, or stay native, and preserves child truths when compressing.
 - Routes repeated PDSA/evidence loops to North Star dispositions instead of creating another artifact by default.
 - Tutors pain with pain signal, owner, native gate, smallest disposition, rerun route, hot-path residue, and non-claim.
 - Keeps producer architecture and release truth separate from consumer adoption proof and cutover gates.

@@ -1,0 +1,58 @@
+# Evolutionary simplicity
+
+**Status:** concept · **Audience:** maintainers and agents
+
+Simplicity is not a shape; it is a direction of evolution.
+
+Evolutionary simplicity means the system evolves toward lower future confusion, not always fewer parts. Split when ownership, proof, effects, cadence, or audience diverge. Compress when user intent, CI flow, or navigation converges and the child truths remain inspectable.
+
+This is the parent pattern behind generational architecture, evidence compression, command-surface design, skill eval promotion, and repo ecology dispositions. It combines YAGNI, KISS, and stewardship proof discipline: do not add a layer before pressure earns it, but do not preserve a falsely simple surface after truth has diverged.
+
+## Moves
+
+| Move | Use when | Guard |
+|------|----------|-------|
+| Stay native | The repo's language, framework, or existing command already carries the truth. | Do not add Steward machinery. |
+| Split | Ownership, proof, effects, cadence, or audience diverge. | Keep child truths inspectable. |
+| Compress | User intent, CI flow, or navigation converges. | Do not flatten proof, owner, or non-claims. |
+| Promote | Repeated pain needs a stronger layer. | Show that lower layers failed or would cost more. |
+| Demote | A stronger layer no longer earns maintenance. | The simpler path still preserves proof. |
+| Delete | A surface is stale, duplicate, misleading, or extracted. | Durable truth already lives in the owner surface. |
+
+Most useful changes combine moves. A CLI command can split internally by failure owner while preserving one compressed CI command. An evidence archive can compress to one current ledger while keeping historical packets as provenance. A generated layer can demote to a native API when the schema no longer reduces work.
+
+## Application Checks
+
+Before adding, splitting, merging, or deleting a surface, answer:
+
+- What future confusion will this reduce?
+- Which truth diverged: owner, proof, effects, cadence, audience, or none?
+- Which intent converged: user action, CI gate, navigation path, or none?
+- What child result, non-claim, or owner boundary must remain inspectable?
+- What lower layer was considered first?
+- What can shrink or disappear because this change exists?
+- What native gate, schema, test, eval, benchmark, or blocked state proves the move?
+
+If the answers are unclear, capture an observation or unknown case. Do not promote. If the same uncertainty repeats, move it to a check, FAQ, skill eval, CLI diagnostic, or Pattern Promotion Review.
+
+## Applications
+
+| Surface | How this pattern appears |
+|---------|--------------------------|
+| Architecture | Generational architecture asks whether to stay native, extract, generate, harness, demote, or delete. |
+| Evidence | Evidence compression keeps one current truth path while preserving proof levels, limitations, and non-claims. |
+| CLI/tooling | Command surfaces split by owner/proof/effect and compress by user or CI intent. |
+| Skills | Repeated routing drift promotes to evals; one-off advice stays in docs or native workflow. |
+| Repo ecology | Disposition tables choose keep, compress, merge, update, remove, create, defer, move to check, move to evidence, or leave native. |
+
+## Non-Goals
+
+Evolutionary simplicity is not a maturity score, architecture framework, or permission to rename every existing rule. It should reduce how much a future agent needs to remember. If explaining this concept adds more ceremony than it removes, use the local application rule instead.
+
+## Related
+
+- [Generational architecture ladder](generational-architecture-ladder)
+- [Repo quality contracts](../repo-quality-contracts)
+- [Evidence artifacts](evidence-artifacts)
+- [Evidence ladder](evidence-ladder)
+- [DX FAQ](../DX_FAQ)

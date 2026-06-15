@@ -91,6 +91,12 @@ Validation is split by failure owner:
 | `steward validate evidence` | Are committed adoption-run records valid? |
 | `steward validate` / `steward validate all` | Run every lane for CI and release confidence. |
 
+#### Command surface evolution
+
+Use [Evolutionary simplicity](core/evolutionary-simplicity) for CLI growth. Split commands when ownership, proof, effects, cadence, or audience diverge. Compress commands when user intent, CI flow, or navigation converges and grouped child truths stay inspectable.
+
+For `steward validate`, the correct shape is both: split `skills`, `registry`, `repo-contract`, and `evidence` by failure owner; keep bare `steward validate` as the compressed `all` route for CI and ordinary adopters.
+
 | Need | Use | Boundary |
 |------|-----|----------|
 | Install/update portable skills for a human or agent | `npx skills add/update` | Public skill distribution and local/global agent paths |
