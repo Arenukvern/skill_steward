@@ -206,6 +206,8 @@ When `steward ecology route --json` emits `dispatch_lane_candidates`, treat them
 
 For evidence surfaces, apply the envelope in [docs/core/evidence-artifacts.mdx](../../docs/core/evidence-artifacts.mdx). Prefer `move to check` over `move to evidence` when the same deterministic drift will recur; prefer a current ledger over many historical notes when the reader only needs the present weakest true claim.
 
+When proof includes maintainer-local paths, temp replays, or one workstation's setup, keep that context in the current ledger or historical evidence and label it as maintainer-local. Create or update a public reproducibility card only when a public reader needs to audit the claim from durable anchors: public repo URL, fetchable commit SHA, portable command, and artifact hash or CI artifact name.
+
 Run ecology as a disposition loop, not an evidence treadmill or a tool tunnel:
 
 - Prefer `orient`, `compress`, `validate`, `tutor_pain`, `promote_tool`, `leave_native`, or `stop` before creating any new artifact.
