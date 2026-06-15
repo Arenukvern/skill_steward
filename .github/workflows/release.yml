@@ -16,7 +16,7 @@ jobs:
       contents: write      # push tags, create GitHub Releases
       pull-requests: write # create / update the Version PR
     outputs:
-      published: ${{ steps.changesets.outputs.published }}
+      release_ready: ${{ steps.release-info.outputs.release_ready }}
       release_tag: ${{ steps.release-info.outputs.release_tag }}
       release_version: ${{ steps.release-info.outputs.release_version }}
     steps:
@@ -72,13 +72,14 @@ jobs:
 
       - name: Resolve release tag
         id: release-info
-        if: steps.changesets.outputs.published == 'true'
+        if: steps.changesets.outputs.hasChangesets == 'false'
         run: |
           set -euo pipefail
           version="$(node -p "require('./package.json').version")"
           tag="v${version#v}"
           git rev-parse -q --verify "refs/tags/$tag" >/dev/null
           {
+            echo "release_ready=true"
             echo "release_version=$version"
             echo "release_tag=$tag"
           } >> "$GITHUB_OUTPUT"
@@ -86,7 +87,7 @@ jobs:
   build-release-assets:
     name: Build release assets (${{ matrix.triple }})
     needs: release
-    if: needs.release.outputs.published == 'true'
+    if: needs.release.outputs.release_ready == 'true'
     strategy:
       fail-fast: false
       matrix:
@@ -127,7 +128,7 @@ jobs:
   github-release:
     name: Create GitHub Release
     needs: [release, build-release-assets]
-    if: needs.release.outputs.published == 'true'
+    if: needs.release.outputs.release_ready == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
