@@ -212,6 +212,17 @@ For evidence surfaces, apply the envelope in [docs/core/evidence-artifacts.mdx](
 
 Run ecology as a disposition loop, not an evidence treadmill or a tool tunnel. Ask: what is the boldest useful outcome, and what is the least machinery needed to prove it?
 
+Keep the two vocabularies distinct:
+
+| Parent move | Local disposition examples |
+|-------------|----------------------------|
+| `stay native` | `leave_native`, native gate, docs-map pointer |
+| `split` | owner-specific command, schema, skill section, evidence route, or repo surface |
+| `compress` | `compress`, merge stale navigation, one current ledger, one CI wrapper with grouped child outcomes |
+| `promote` | move repeated deterministic truth to check/tool/skill/action/evidence only with proof and falsifier |
+| `demote` | retire overgrown tool/skill/evidence to docs, native command, historical note, or current ledger |
+| `delete` | `remove`, `deleted`, stale plan/artifact/surface removed after useful truth lands elsewhere |
+
 - Prefer `orient`, `compress`, `validate`, `tutor_pain`, `promote_tool`, `leave_native`, or `stop` before creating any new artifact.
 - When a proposed mechanism starts acting like the umbrella, classify `north_star_impact`. `sub_star` needs a parent/child boundary; `amends` or `conflicts` needs governance and an ADR before product direction changes.
 - When the review finds invalid config, dirty declared inputs, schema/output drift, blocked payload routing, stale navigation, or a broken native gate, update the owning surface and rerun the same gate when that is the smallest safe disposition.

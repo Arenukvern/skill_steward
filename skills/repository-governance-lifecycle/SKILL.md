@@ -46,6 +46,7 @@ Never leave stale planning artifacts (`task.md`, `implementation_plan.md`) as pe
 - For stale or overlapping non-plan docs, choose one disposition before editing: keep, merge, move to ADR, move to FAQ, move to skill, move to check, move to evidence, move to consumer proof, or delete.
 - Ask what existing doc can shrink or disappear because of this change.
 - Keep canonical architecture in the owning repo; consumer repos should carry adoption proof, local deltas, blocked state, and links to the owner.
+- For broader surface-shape decisions such as split, compress, promote, demote, delete, or stay native, route through [repo-quality-system-lifecycle](../repo-quality-system-lifecycle/SKILL.md) and [Evolutionary simplicity](../../docs/core/evolutionary-simplicity.mdx) instead of inventing a governance-only doctrine.
 - Before upgrading steward, adoption, harness-ready, or maturity language in an ADR/evidence note, run `steward claim check --claim <claim> --evidence <path> --json`. Treat `not_rejected` as a negative-gate result, not acceptance.
 
 ### 6. Route Evidence Deliberately
@@ -59,7 +60,7 @@ Do not turn every run, plan, or discussion into evidence. Use [Evidence artifact
 - Evidence artifact: real run proof, blocked state, pattern review, PDSA loop, postmortem, unknown case, or reference that protects a claim or changes future behavior.
 - Delete/remove: completed checklist, stale plan, or template once useful truth has been extracted.
 
-When you create or materially update an evidence artifact, add the lightweight envelope from [ADR 0023](../../docs/decisions/0023-evidence-artifacts-as-claim-proof-records.mdx): `status`, `evidence_type`, `scope`, `claim_tested`, `proof_level`, `result`, `limitations`, `non_claims`, `next_disposition`, and `current_status_pointer`.
+When you create or materially update an evidence artifact, use the canonical envelope in [Evidence artifacts](../../docs/core/evidence-artifacts.mdx). ADR 0023 explains why that envelope exists.
 
 ## Install
 

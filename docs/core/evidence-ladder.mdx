@@ -4,6 +4,8 @@ A stewardship claim needs evidence appropriate to the claim.
 
 Use this page to decide the weakest proof level that supports a claim. Use [Evidence artifacts](evidence-artifacts) to decide whether a proof note should be current, historical, superseded, a template, or removed. ADRs record durable decisions; evidence artifacts record what happened and what can honestly be claimed from it.
 
+The ladder is the proof-level application of [Evolutionary simplicity](evolutionary-simplicity): choose the weakest evidence that supports the exact claim, then compress current navigation without flattening proof levels, blockers, limitations, or non-claims.
+
 | Exact claim | Minimum evidence | Does not prove |
 |-------------|------------------|----------------|
 | Skill is structurally valid | `pnpm run validate` | Runtime behavior |
@@ -25,19 +27,7 @@ Rule-based evals are useful but narrow. They prevent obvious drift; they do not 
 
 Skipped validation, manually synced generated files, blocked generators, and blocked benchmarks are useful work notes only when disclosed. They cannot upgrade a readiness claim. If generated assets, registry tables, docs indexes, manifests, or skill bundles change, run the owning generator/freshness check or label the result as unvalidated cleanup evidence.
 
-For cleanup or cross-repo alignment turns, record at least:
-
-- `status`: current, historical, superseded, template, or retired.
-- `evidence_type`: benchmark, adoption_run, pdsa, pattern_review, postmortem, unknown_case, ledger, or reference.
-- `claim`: exact claim being made.
-- `scope`: files, repos, or surfaces touched.
-- `commands_run`: validation, generator, link, or freshness checks executed.
-- `commands_skipped`: relevant checks not run.
-- `skip_reason`: why a check was not run.
-- `proof_level`: weakest true evidence level reached.
-- `non_claims`: claims explicitly not proven.
-- `next_disposition`: keep, update, supersede, move to check, move to ADR/FAQ/skill, or remove after extraction.
-- `current_status_pointer`: current ledger or rerun route when this artifact is historical.
+For cleanup or cross-repo alignment turns, use the canonical envelope in [Evidence artifacts](evidence-artifacts). If relevant checks were skipped, add `commands_skipped` and `skip_reason` as cleanup fields without changing the shared envelope.
 
 ## Adoption check
 

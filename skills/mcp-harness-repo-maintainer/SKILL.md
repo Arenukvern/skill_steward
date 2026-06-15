@@ -63,7 +63,7 @@ changed or was directly proven.
 
 ## Core Beliefs & Culture
 
-1. **Missing capability → possible harness gap** — When an agent fails, ask what is not *legible* or *enforceable*, then choose the smallest useful layer: native command, error message, docs/FAQ, schema, linter, skill, action, or deletion.
+1. **Missing capability → possible harness gap** — When an agent fails, ask what is not *legible* or *enforceable*, then choose the smallest useful layer: native command, error message, docs/FAQ, schema, linter, skill, action, or deletion. For interface shape, apply evolutionary simplicity: split internals when proof, effects, or owners diverge; compress CLI/MCP/help wrappers when user intent remains one thing and child outcomes stay structured.
 2. **Ambiguous design → decision checkpoint** — Before coding a fork, use `repository-governance-lifecycle`; record an accepted ADR after agreement.
 3. **Mechanical enforcement** — Linters, validate commands, schema validation at boundaries—error messages teach the agent how to fix. Use structured parsing (YAML, JSON, or AST).
 4. **Progressive disclosure** — Router → ADR / DESIGN_FAQ (why) → DX_FAQ (how) → skills (procedures) → code (behavior SSOT).
