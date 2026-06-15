@@ -22,15 +22,16 @@ Binary trains still obey the **release legibility contract** from `SKILL.md`:
 2. Tag `vX.Y.Z` is the publish event.
 3. CI attaches **artifacts that match** the tagged version (no “latest main” ambiguity).
 4. `install.sh` (or equivalent) defaults to **same version** as plugin manifest / expected server version when applicable.
+5. Postflight verifies GitHub latest release, required assets, checksums, and install docs before declaring the release healthy.
 
 ## Minimal layout (AOT example)
 
 ```text
-tool/release/build_release_artifacts.sh   # compile executable per triple
-dist/release/*.tar.gz                     # bin/* + LICENSE
-dist/release/checksums.txt              # sha256 of tarballs
-install.sh                                # curl-friendly; no clone
-.github/workflows/release.yml             # on push tag v*
+tool/release/build_release_artifacts.sh    # compile executable per triple
+dist/release/*.tar.gz                      # bin/* + LICENSE
+dist/release/checksums.txt                 # sha256 of tarballs
+install.sh                                 # curl-friendly; no clone
+.github/workflows/release.yml              # single owner, or tag workflow with explicit token/handoff
 ```
 
 **CI matrix (typical):** `darwin-arm64`, `linux-x64` — add triples only when you will test them.
@@ -87,9 +88,10 @@ Pick one SSOT; sync everything else in the release PR:
 ### GitHub Actions Trigger Limitations (GITHUB_TOKEN vs. PAT)
 * **Problem:** When a release workflow (such as `changesets/action` or a version bump commit step) pushes a Git tag using the default GitHub `GITHUB_TOKEN` credentials, GitHub will **not** trigger subsequent workflows (like a binary compilation workflow) configured to run on tag push (`on: push: tags`). This is a security feature to prevent recursive actions.
 * **Solutions:**
-  1. **Configure a PAT/App Token:** Authenticate the checkout and release steps in the tagging workflow using a Personal Access Token (PAT) or GitHub App installation token. Pushes made using custom tokens will correctly trigger tag-based workflows.
-  2. **Trigger on Workflow Run:** Alternatively, configure the binary release workflow to trigger upon the successful completion of the release/tagging workflow using `on: workflow_run`.
-  3. **Provide Manual Fallbacks:** Support a manual trigger (`on: workflow_dispatch`) or a manual tag re-push step (deleting and pushing the tag from a developer machine) to trigger compilation if automatic triggers fail.
+  1. **Prefer a single release owner:** Keep tag creation, artifact build, GitHub Release creation/update, asset upload, and postflight verification in the same workflow run. This works with `GITHUB_TOKEN` when workflow write permissions are enabled.
+  2. **Configure a PAT/App Token:** Authenticate the checkout and release steps in the tagging workflow using a Personal Access Token (PAT) or GitHub App installation token. Pushes made using custom tokens will correctly trigger tag-based workflows.
+  3. **Trigger on Workflow Run:** Alternatively, configure the binary release workflow to trigger upon the successful completion of the release/tagging workflow using `on: workflow_run`.
+  4. **Provide Manual Fallbacks:** Support a manual trigger (`on: workflow_dispatch`) or a manual tag re-push step (deleting and pushing the tag from a developer machine) to trigger compilation if automatic triggers fail.
 
 ## MoE — is “don’t clone” always best?
 
@@ -108,6 +110,8 @@ Pick one SSOT; sync everything else in the release PR:
 | “Download repo zip” as install docs for a server product | Slow, wrong branch, no checksums |
 | Binaries on Releases without changelog in git | Agents cannot read “what shipped” |
 | Second version source (hand bump + bot) | install.sh fetches wrong tarball |
+| Tag workflow that depends on a `GITHUB_TOKEN`-pushed tag | Asset workflow may never run |
+| README pinned install command with a concrete stale version | Trust collapse: docs, package version, and GitHub latest disagree |
 | Shipping skills only as release assets | Breaks `npx skills` discovery |
 | Changesets on a binary-only Rust CLI with no JS packages | Wrong generator — use release-plz / git-cliff |
 
@@ -115,7 +119,8 @@ Pick one SSOT; sync everything else in the release PR:
 
 - [ ] `build_release_artifacts.sh` (or Makefile `release-artifacts`) documented in DX_FAQ
 - [ ] `install.sh` supports `--version`, env override, checksum verify
-- [ ] Workflow on `v*` tag uploads tarballs + `checksums.txt`
+- [ ] One release owner uploads tarballs + `checksums.txt` after version/changelog/tag truth is established
+- [ ] Postflight checks latest release tag, required assets, checksums, and stale install pins
 - [ ] Plugin / MCP config docs point to **binary path**, not `git clone && make`
 - [ ] Maintainer checklist includes binary attach step (archetype A maintainer checklist)
 
