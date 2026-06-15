@@ -1,5 +1,11 @@
 # skill-steward
 
+## 0.4.4
+
+### Patch Changes
+
+- afc7d58: Update GitHub Actions workflow dependencies to Node 24-ready majors to remove Node 20 deprecation warnings.
+
 ## 0.4.3
 
 ### Patch Changes
