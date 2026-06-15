@@ -78,6 +78,12 @@ jobs:
           version="$(node -p "require('./package.json').version")"
           tag="v${version#v}"
           git rev-parse -q --verify "refs/tags/$tag" >/dev/null
+          tag_sha="$(git rev-list -n 1 "$tag")"
+          head_sha="$(git rev-parse HEAD)"
+          if [[ "$tag_sha" != "$head_sha" ]]; then
+            echo "Release tag $tag points to $tag_sha, not HEAD $head_sha." >&2
+            exit 1
+          fi
           {
             echo "release_ready=true"
             echo "release_version=$version"
@@ -190,3 +196,11 @@ jobs:
               --latest
           fi
           gh release upload "$RELEASE_TAG" dist/release/*.tar.gz dist/release/checksums.txt --clobber
+
+      - name: Verify release trust contract
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          bash scripts/verify_release.sh \
+            --repo "${{ github.repository }}" \
+            --version "${{ needs.release.outputs.release_version }}"

@@ -65,8 +65,8 @@ npx skills find steward
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash
-# Pinned:
-curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash -s -- --version v0.3.4
+# Pinned, when a rollout needs an exact release:
+curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash -s -- --version vX.Y.Z
 ```
 
 The CLI validates Skill Steward skills and can apply repo-local `skills.json` installs/updates with pinned refs. Use `npx skills` for normal public skill installation and updates. See [portable Steward invocation](docs/core/portable-steward-invocation.mdx) before copying command blocks into adoption evidence.

@@ -291,8 +291,8 @@ For zero-dependency installation of the `steward` CLI tool without requiring a c
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash
-# Pinned version:
-curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash -s -- --version v0.1.0
+# Pinned version, when a rollout needs an exact release:
+curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash -s -- --version vX.Y.Z
 ```
 
 `steward install/update` intentionally manages repo-local `skills.json` registration, agent folder layout, and commit pinning. Use `npx skills` for broad public skill install/update and skills.sh discovery.
@@ -458,23 +458,23 @@ Skill                  → repository-governance-lifecycle
 
 ## 🚀 Release desk (Changesets)
 
-Skill Steward uses [Changesets](https://github.com/changesets/changesets) for **repo** semver + `CHANGELOG.md` (skills are not individually versioned). **Binary release train enabled** — compiled AOT binaries (darwin-arm64, linux-x64) and `install.sh` bootstrapper attached to GitHub Releases via changesets-triggered tag workflows. See [ADR 0014](decisions/0014-distribute-steward-cli-as-binary) and [binary-release-contract.md](https://github.com/arenukvern/skill_steward/blob/main/skills/release-changelog-harness/references/binary-release-contract.md).
+Skill Steward uses [Changesets](https://github.com/changesets/changesets) for **repo** semver + `CHANGELOG.md` (skills are not individually versioned). **Binary release train enabled** — compiled AOT binaries (darwin-arm64, linux-x64) and `install.sh` bootstrapper attached to GitHub Releases by the single Release workflow after the Changesets Version PR merges. See [ADR 0014](decisions/0014-distribute-steward-cli-as-binary) and [binary-release-contract.md](https://github.com/arenukvern/skill_steward/blob/main/skills/release-changelog-harness/references/binary-release-contract.md).
 
 ```bash
 # PR: describe consumer impact (required when skills/docs/plugins/registry change)
 pnpm changeset
 # Pick patch | minor | major for "skill-steward", write one imperative sentence
 
-# Maintainer: consume changesets on main before tag
+# Maintainer: inspect pending release notes locally
 pnpm changeset:status
-pnpm changeset:version    # updates CHANGELOG.md + package.json
-git add -A && git commit -m "chore: version packages"
 
-# Tag release from package.json as vX.Y.Z
-pnpm run release:tag
+# CI: Release workflow creates/updates "chore: version packages".
+# After that PR merges, the same workflow tags vX.Y.Z, builds assets,
+# creates/updates the GitHub Release, uploads checksums, and verifies latest.
 
-# Check the tag without mutating git
+# Local preflight checks without mutating git:
 bash scripts/tag_release.sh --dry-run
+pnpm run release:verify -- --version vX.Y.Z
 
 # Compile and package binaries locally:
 ./scripts/build_release_artifacts.sh
@@ -483,7 +483,9 @@ bash scripts/tag_release.sh --dry-run
 ```text
 CI on PR               → .github/workflows/changesets.yml
 Local gate             → bash scripts/changeset-check.sh origin/main
-Release tag contract   → scripts/tag_release.sh creates/pushes vX.Y.Z only
+Release owner          → .github/workflows/release.yml
+Release tag contract   → scripts/tag_release.sh validates versions/changelog, then creates/pushes vX.Y.Z only
+Release postflight     → scripts/verify_release.sh verifies latest release, assets, and install-doc pins
 Skip (maintainer only) → PR title contains [skip changeset]
 ```
 
