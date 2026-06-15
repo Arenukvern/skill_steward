@@ -1,5 +1,21 @@
 # skill-steward
 
+## 0.4.5
+
+### Patch Changes
+
+- d928c26: Clarify the steward CLI as a bounded stewardship surface, split validation into skills, registry, repo-contract, evidence, and all lanes while preserving bare `steward validate` as the CI-friendly alias, document evolutionary simplicity as the parent split/compress/promote/demote/delete pattern, and add eval guardrails for compression/deletion/native ownership across MoE, handoff, harness, and skill-eval workflows.
+- bba4808: Tighten install/update trust boundaries by validating skill sources more strictly, requiring explicit local-source allow-listing, tightening path handling, and updating installer docs/runbook defaults and release checks.
+
+  This includes:
+
+  - adding a shared source classifier for install/update with explicit local/file source opt-in
+  - requiring successful copy before updating `skills.json` commit pins
+  - making `install.sh` path update behavior opt-in and documented around pinned installer usage
+  - extending release verification to validate release assets against `checksums.txt` and to detect stale install/doc pins
+
+- 487d744: Clarify public dogfood reproducibility evidence boundaries in docs and governance skills.
+
 ## 0.4.4
 
 ### Patch Changes
