@@ -8,13 +8,13 @@
 
 Engineering Stewardship is an old-new idea: step back from only managing an AI agent as a program, or only developing product features, and tend the **software ecology** around the work. That ecology includes charter, decisions, docs, skills, specs, scripts, programming languages, existing tools, debugging loops, validation gates, release processes, handoffs, and the harnesses that make a repository legible to humans and agents.
 
-Skill Steward gives teams a shared structure for understanding, developing, and improving that ecology. It ships through portable Agent Skills plus a narrow `steward` CLI for repo-local registration, validation, and contract proof. The object of stewardship is the **repository as a whole**.
+Skill Steward gives teams a shared structure for understanding, developing, and improving that ecology. It ships through portable Agent Skills plus a bounded `steward` CLI for repo-local registration, validation, and contract proof. The object of stewardship is the **repository as a whole**.
 
 Usefulness is measured by how well cold exploration becomes durable hot paths for future agents: smaller, safer, inspectable routes through real repo work. A useful adoption reduces future time, uncertainty, and risk without lowering the correctness or evidence bar. It may add a tool, but it may also delete code, collapse a layer, improve an error message, or return to a native command when that better serves the product. See [ADR 0018](decisions/0018-cold-to-hot-path-usefulness) and [Generational architecture ladder](core/generational-architecture-ladder).
 
-Default Steward work is ecology-first: preserve the original user goal, identify which part of the repository ecology owns the friction, then choose the smallest useful disposition. The answer may be to orient, compress, validate, tutor pain, promote a tool, leave work native, or stop. Repair and evidence are supporting moves inside that frame: repair when an owner can be safely improved now, and create evidence only when a claim, blocker, real run, or durable behavior change needs proof.
+Default Steward work is ecology-first: preserve the original user goal, identify which part of the repository ecology owns the friction, then choose the **boldest useful path**. The boldest useful path is the strongest repo capability that can truthfully improve now, using only the controls needed to keep the change safe, reversible, and provable. The answer may be to orient, compress, validate, tutor pain, promote a tool, leave work native, or stop. Repair and evidence are supporting moves inside that frame: repair when an owner can be safely improved now, and create evidence only when a claim, blocker, real run, durable behavior change, or concrete decision needs proof.
 
-Smallest useful disposition means the smallest truthful coordination unit, not always the smallest action. When repo-wide pain is safely decomposable, governance should let many agents move faster without losing truth, ownership, parent synthesis, native gates, or proof. Parallel lane hints are advisory scaffolding, not write authorization, scheduler state, maturity evidence, or a new repository center. See [ADR 0026](decisions/0026-parallel-acceleration-governance).
+Boldest useful path uses the smallest sufficient controls, not always the smallest action. When repo-wide pain is safely decomposable, governance should let many agents move faster without losing truth, ownership, parent synthesis, native gates, or proof. Parallel lane hints are advisory scaffolding, not write authorization, scheduler state, maturity evidence, or a new repository center. See [ADR 0026](decisions/0026-parallel-acceleration-governance).
 
 We are **not** a domain tutorial catalog (React, Flutter, cloud recipes live in their own product/domain repos). We are **not** a public skill package manager ([Skillkit](https://github.com/rohitg00/skillkit), `npx skills`, and [skills.sh](https://skills.sh) cover public discovery and install/update distribution). We are **not** the product runtime for apps, libraries, or tools.
 
@@ -84,7 +84,7 @@ Harness engineering is one pillar, not the umbrella. The umbrella is structural 
 | `npx skills` | Public skill install/update across supported agents | Steward contract validation or repo harness behavior |
 | skills.sh | Public discovery and catalog indexing | Team-specific pinned manifests |
 | `steward install/update` | Repo-local skill registration from `skills.json`, agent folder layout, commit/ref pinning | Public marketplace discovery or replacing `npx skills` |
-| `steward validate/eval/list` | Skill structure, routing cases, registry checks | Product runtime correctness |
+| `steward validate/eval/list` | Split validation lanes, skill routing cases, registry checks | Product runtime correctness |
 | `steward doctor/actions/probe/benchmark` | Evidence-gated local contract discovery, safe action proof, dogfood summaries | Unreviewed permanent shell automation or product diagnosis |
 | `steward bundle` | Validated wiring descriptors for plugins/rules | Mutating host configuration without explicit install steps |
 

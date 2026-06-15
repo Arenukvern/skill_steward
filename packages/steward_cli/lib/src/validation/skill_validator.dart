@@ -136,25 +136,17 @@ augmentWithRegistryWarnings(
   return (augmentedResults: augmented, registryWarnings: registryWarnings);
 }
 
-/// Validates all skills under the given `skillsDir` (normally the repo `skills/` folder).
-///
-/// After collecting individual results it also runs the registry cross-checks
-/// (skills.sh.json vs on-disk directories) when a root containing skills.sh.json
-/// can be located. This fully prepares the Dart port for the registry warnings
-/// that the Node validator emits.
-///
-/// The [ValidationReport] already had the `registryWarnings` field; it is now populated.
-///
-/// Graceful degradation: if we are not inside a Skill Steward checkout (or the
-/// json is absent/broken) we simply omit registry warnings (mirrors Node catch).
-///
-/// References:
-/// - original Node validator main (registry block after per-skill results)
-/// - packages/steward_cli/lib/src/repo_root.dart (findRepoRoot)
-Future<ValidationReport> validateAllSkills(final String skillsDir) async {
+const skillsValidationGroup = 'skills';
+const registryValidationGroup = 'registry';
+const repoContractValidationGroup = 'repoContract';
+const evidenceValidationGroup = 'evidence';
+
+Future<List<SkillValidationResult>> _collectSkillResults(
+  final String skillsDir,
+) async {
   final dir = Directory(skillsDir);
   if (!dir.existsSync()) {
-    return const ValidationReport(skills: [], ok: false);
+    return const [];
   }
 
   final entries = await dir.list().toList();
@@ -167,58 +159,123 @@ Future<ValidationReport> validateAllSkills(final String skillsDir) async {
         ..sort();
 
   final results = <SkillValidationResult>[];
-
   for (final path in skillDirs) {
     final dirName = p.basename(path);
     final result = await validateSingleSkill(path, dirName);
     results.add(result);
   }
+  return results;
+}
 
-  // --- Registry warnings preparation (the main addition in this iteration) ---
-  List<SkillValidationResult> finalSkills = results;
-  List<String> registryWarnings = const [];
+ValidationGroupResult _skillsGroup(final List<SkillValidationResult> skills) {
+  final failed = skills.where((final r) => !r.isValid).length;
+  return ValidationGroupResult(
+    ok: failed == 0,
+    checked: skills.length,
+    failed: failed,
+  );
+}
+
+/// Validates only the installable skill directories.
+Future<ValidationReport> validateSkillsDirectory(final String skillsDir) async {
+  final dir = Directory(skillsDir);
+  if (!dir.existsSync()) {
+    return const ValidationReport(
+      skills: [],
+      ok: false,
+      groups: {
+        skillsValidationGroup: ValidationGroupResult(
+          ok: false,
+          errors: ['skills directory not found'],
+        ),
+      },
+    );
+  }
+
+  final skills = await _collectSkillResults(skillsDir);
+  final group = _skillsGroup(skills);
+  return ValidationReport(
+    skills: skills,
+    ok: group.ok,
+    groups: {skillsValidationGroup: group},
+  );
+}
+
+/// Validates the central skills.sh.json registry against skill directories.
+Future<ValidationReport> validateSkillRegistry(final String skillsDir) async {
+  final skills = await _collectSkillResults(skillsDir);
+  final skillsGroup = _skillsGroup(skills);
 
   try {
-    // findRepoRoot walks upward from skillsDir until it sees skills.sh.json.
-    // It throws only if we truly cannot find a Skill Steward root at all.
     final root = findRepoRoot(Directory(skillsDir));
     final registryIds = await loadRegistrySkillIds(root);
-
-    final aug = augmentWithRegistryWarnings(results, registryIds);
-    finalSkills = aug.augmentedResults;
-
-    final warnings = List<String>.from(aug.registryWarnings);
-
-    // Plan hygiene scan
-    final activePlans = <String>[];
-    for (final planName in ['task.md', 'implementation_plan.md']) {
-      final file = File(p.join(root, planName));
-      if (file.existsSync()) {
-        activePlans.add(planName);
-      }
-    }
-    final activePlansDir = Directory(
-      p.join(root, 'docs', 'exec-plans', 'active'),
+    final aug = augmentWithRegistryWarnings(skills, registryIds);
+    final registryWarnings = aug.registryWarnings;
+    final registryGroup = ValidationGroupResult(
+      ok: registryWarnings.isEmpty,
+      checked: registryIds.length,
+      failed: registryWarnings.length,
+      warnings: registryWarnings,
     );
-    if (activePlansDir.existsSync()) {
-      try {
-        final files = activePlansDir.listSync().whereType<File>();
-        for (final f in files) {
-          final name = p.basename(f.path);
-          if (!name.startsWith('.')) {
-            activePlans.add('docs/exec-plans/active/$name');
-          }
-        }
-      } on Object catch (_) {}
-    }
+    return ValidationReport(
+      skills: aug.augmentedResults,
+      registryWarnings: registryWarnings,
+      ok: skillsGroup.ok && registryGroup.ok,
+      groups: {
+        skillsValidationGroup: _skillsGroup(aug.augmentedResults),
+        registryValidationGroup: registryGroup,
+      },
+    );
+  } on Object catch (error) {
+    final registryGroup = ValidationGroupResult(
+      ok: false,
+      failed: 1,
+      errors: ['Registry validation failed: $error'],
+    );
+    return ValidationReport(
+      skills: skills,
+      registryWarnings: registryGroup.errors,
+      ok: false,
+      groups: {
+        skillsValidationGroup: skillsGroup,
+        registryValidationGroup: registryGroup,
+      },
+    );
+  }
+}
 
-    for (final plan in activePlans) {
+/// Validates repo-level Steward contract surfaces.
+Future<ValidationReport> validateRepoContract(final String root) async {
+  final warnings = <String>[];
+
+  for (final planName in ['task.md', 'implementation_plan.md']) {
+    final file = File(p.join(root, planName));
+    if (file.existsSync()) {
       warnings.add(
-        'Stale/active plan file found: $plan. Extract durable findings to ADR/FAQ/Code, then delete the plan file to maintain hygiene.',
+        'Stale/active plan file found: $planName. Extract durable findings to ADR/FAQ/Code, then delete the plan file to maintain hygiene.',
       );
     }
+  }
+  final activePlansDir = Directory(
+    p.join(root, 'docs', 'exec-plans', 'active'),
+  );
+  if (activePlansDir.existsSync()) {
+    try {
+      final files = activePlansDir.listSync().whereType<File>();
+      for (final f in files) {
+        final name = p.basename(f.path);
+        if (!name.startsWith('.')) {
+          warnings.add(
+            'Stale/active plan file found: docs/exec-plans/active/$name. Extract durable findings to ADR/FAQ/Code, then delete the plan file to maintain hygiene.',
+          );
+        }
+      }
+    } on Object catch (error) {
+      warnings.add('Plan hygiene scan failed: $error');
+    }
+  }
 
-    // Run Steward contract checks and custom validators from steward.yaml.
+  try {
     final configResult = await StewardConfig.loadChecked(root);
     final config = configResult.config;
     if (config.configPath != null) {
@@ -231,27 +288,97 @@ Future<ValidationReport> validateAllSkills(final String skillsDir) async {
       );
     }
     for (final validator in config.validators) {
-      final customErrors = await validator.validate(root);
-      warnings.addAll(customErrors);
+      try {
+        warnings.addAll(await validator.validate(root));
+      } on Object catch (error) {
+        warnings.add('Custom validator ${validator.type} failed: $error');
+      }
     }
-
-    warnings
-      ..addAll(await validatePluginManifests(root))
-      ..addAll(await validateAdoptionRunEvidence(root));
-
-    registryWarnings = warnings;
-  } on Object catch (_) {
-    // Not a full checkout or missing/broken skills.sh.json — registry checks skipped.
-    // This is the intended graceful behavior (see Node catch in loadSkillsShIds).
+  } on Object catch (error) {
+    warnings.add('Steward contract validation failed: $error');
   }
 
-  final failed = finalSkills.where((final r) => !r.isValid).length;
-  final ok = failed == 0 && registryWarnings.isEmpty;
+  try {
+    warnings.addAll(await validatePluginManifests(root));
+  } on Object catch (error) {
+    warnings.add('Plugin manifest validation failed: $error');
+  }
+
+  final group = ValidationGroupResult(
+    ok: warnings.isEmpty,
+    failed: warnings.length,
+    warnings: warnings,
+  );
+  return ValidationReport(
+    skills: const [],
+    registryWarnings: warnings,
+    ok: group.ok,
+    groups: {repoContractValidationGroup: group},
+  );
+}
+
+/// Validates committed adoption-run evidence records.
+Future<ValidationReport> validateEvidence(final String root) async {
+  final warnings = <String>[];
+  try {
+    warnings.addAll(await validateAdoptionRunEvidence(root));
+  } on Object catch (error) {
+    warnings.add('Evidence validation failed: $error');
+  }
+
+  final group = ValidationGroupResult(
+    ok: warnings.isEmpty,
+    failed: warnings.length,
+    warnings: warnings,
+  );
+  return ValidationReport(
+    skills: const [],
+    registryWarnings: warnings,
+    ok: group.ok,
+    groups: {evidenceValidationGroup: group},
+  );
+}
+
+/// Validates all skills under the given `skillsDir` (normally the repo `skills/` folder).
+///
+/// This is the CI-friendly umbrella over the split ownership lanes:
+/// skill structure, registry, repo contract, and evidence.
+///
+/// References:
+/// - original Node validator main (registry block after per-skill results)
+/// - packages/steward_cli/lib/src/repo_root.dart (findRepoRoot)
+Future<ValidationReport> validateAllSkills(final String skillsDir) async {
+  final registry = await validateSkillRegistry(skillsDir);
+  final groups = Map<String, ValidationGroupResult>.from(registry.groups);
+  final warnings = <String>[...registry.registryWarnings];
+
+  try {
+    final root = findRepoRoot(Directory(skillsDir));
+    final repoContract = await validateRepoContract(root);
+    final evidence = await validateEvidence(root);
+    groups
+      ..addAll(repoContract.groups)
+      ..addAll(evidence.groups);
+    warnings
+      ..addAll(repoContract.registryWarnings)
+      ..addAll(evidence.registryWarnings);
+  } on Object catch (error) {
+    final group = ValidationGroupResult(
+      ok: false,
+      failed: 1,
+      errors: ['Repo validation root lookup failed: $error'],
+    );
+    groups[repoContractValidationGroup] = group;
+    warnings.addAll(group.errors);
+  }
+
+  final ok = groups.values.every((final group) => group.ok);
 
   return ValidationReport(
-    skills: finalSkills,
-    registryWarnings: registryWarnings,
+    skills: registry.skills,
+    registryWarnings: warnings,
     ok: ok,
+    groups: groups,
   );
 }
 

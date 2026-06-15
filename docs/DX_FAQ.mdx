@@ -10,12 +10,13 @@ For ordinary repo work, do not start with a maturity ladder or an evidence packe
 
 1. Name the original user goal and acceptance check.
 2. Identify the repo's primary artifact and native validation gate.
-3. Choose one disposition: `orient`, `compress`, `validate`, `tutor_pain`, `promote_tool`, `leave_native`, or `stop`.
-4. Make the smallest safe change only when that disposition calls for it, including in another allowed repo when that owner is the right place.
-5. Rerun the same native gate or blocked Steward route.
-6. For product repos, name the product impact check: source-owned behavior/API/UI/visual/performance/release/workflow delta, or explicit product-native proof. Green Steward artifacts alone are stewardship support, not product acceleration.
-7. Leave the smallest hot path: better map, shorter doc, native check, schema, test, FAQ row, action candidate, or current-ledger update.
-8. Create evidence only for a claim, blocker, real run, or durable behavior change. Repeated deterministic drift should become a check/tool.
+3. Name the bold outcome, proof, minimal controls, deleted or compressed surface, and hot-path residue.
+4. Choose one disposition: `orient`, `compress`, `validate`, `tutor_pain`, `promote_tool`, `leave_native`, or `stop`.
+5. Make the smallest safe change only when that disposition calls for it, including in another allowed repo when that owner is the right place.
+6. Rerun the same native gate or blocked Steward route.
+7. For product repos, name the product impact check: source-owned behavior/API/UI/visual/performance/release/workflow delta, or explicit product-native proof. Green Steward artifacts alone are stewardship support, not product acceleration.
+8. Leave the hot path: better map, shorter doc, native check, schema, test, FAQ row, action candidate, deleted stale surface, or current-ledger update.
+9. Create evidence only for a claim, blocker, real run, durable behavior change, or concrete decision. Repeated deterministic drift should become a check/tool.
 
 ADR 0024 keeps loop-pain extraction in these existing surfaces: owner, native gate, disposition, rerun route, hot path, and non-claims.
 
@@ -26,7 +27,7 @@ Use this when a durable change might move the repo's center, not for every patch
 | `north_star_impact` | Meaning | Route |
 |---------------------|---------|-------|
 | `none` | Local change; no charter or stewardship meaning. | Use native gate. |
-| `applies` | Uses the current North Star value paths. | Proceed through the smallest disposition. |
+| `applies` | Uses the current North Star value paths. | Proceed through the boldest useful path. |
 | `clarifies` | Explains an existing boundary without changing it. | Update FAQ, skill wording, docs map, or check. |
 | `sub_star` | Adds a local sub-North Star for a product, repo, or subdomain. | Declare parent/child boundary and what it cannot override. |
 | `amends` | Changes what Skill Steward owns, refuses, or optimizes for. | Stop and write an ADR plus a North Star diff. |
@@ -59,6 +60,37 @@ PLUGINS (hooks)        → ../plugins/README.md  (not via npx skills)
 
 Use the smallest distribution surface that matches the job.
 
+### Steward CLI jobs and stability tiers
+
+The `steward` CLI is bounded by stewardship ownership, not by pretending the command surface is tiny. Use the jobs below as the reader model; individual commands stay callable for CI, maintainers, and backward-compatible scripts.
+
+| Job | Commands | Boundary |
+|-----|----------|----------|
+| Adopt | `adopt`, `install`, `update`, `uninstall`, `map` | Create or refresh repo-local Steward surfaces |
+| Inspect | `doctor`, `list`, `schema`, `actions`, `action`, `probe` | Read facts and declared contracts |
+| Prove | `validate`, `eval`, `evidence`, `benchmark`, `claim`, `blocked` | Check exact claims without flattening proof levels |
+| Repair | `action-candidate`, `unknown-case`, `diagnose` | Reviewable routing toward future fixes; no unreviewed mutation |
+| Compress | `ecology`, `dogfood`, `protocol`, `bundle`, `brand-check`, `mcp` | Read-only routing, descriptor checks, or experimental harness support |
+
+Command stability tiers:
+
+| Tier | Commands | Meaning |
+|------|----------|---------|
+| Core | `validate`, `list`, `doctor`, `schema`, `actions`, `action`, `probe` | Stable reader/checker surface for adopters and CI |
+| Adoption | `adopt`, `evidence`, `benchmark`, `claim`, `blocked` | Claim and adoption workflow surface; proof ceilings stay explicit |
+| Experimental | `ecology`, `protocol`, `dogfood`, `diagnose`, `mcp`, `bundle`, `brand-check`, `action-candidate`, `unknown-case`, `observe` | Useful but still learning from dogfood and repeated cases |
+| Maintainer/distribution | `eval`, `install`, `update`, `uninstall`, `map` | Stable for Skill Steward maintenance and pinned skill layers; not a product proof surface |
+
+Validation is split by failure owner:
+
+| Command | Owner question |
+|---------|----------------|
+| `steward validate skills` | Are installable skill directories structurally valid? |
+| `steward validate registry` | Does `skills.sh.json` match the skill directories? |
+| `steward validate repo-contract` | Are `steward.yaml`, plan hygiene, custom validators, and plugin manifests valid? |
+| `steward validate evidence` | Are committed adoption-run records valid? |
+| `steward validate` / `steward validate all` | Run every lane for CI and release confidence. |
+
 | Need | Use | Boundary |
 |------|-----|----------|
 | Install/update portable skills for a human or agent | `npx skills add/update` | Public skill distribution and local/global agent paths |
@@ -73,7 +105,7 @@ Use the smallest distribution surface that matches the job.
 | Compose current dogfood route | `steward dogfood status --json` | Current ledger plus ecology facts; not maturity, H2/H5, or steward status |
 | Start a minimal current-status ledger | `steward evidence init --minimal` | Creates one claim/status ledger; not an evidence archive, benchmark, or readiness claim |
 | Turn blocked JSON into next actions | `steward blocked explain` | Artifact routing for blocked evidence; does not repair or prove |
-| Validate Skill Steward skills | `pnpm run validate`, `pnpm run eval` | Skill structure and T1 behavior-critical routing cases |
+| Validate Skill Steward skills | `pnpm run validate`, `steward validate skills`, `steward validate all`, `pnpm run eval` | Split validation ownership and T1 behavior-critical routing cases |
 | Adopt general repo stewardship | `repo-quality-system-lifecycle` + repo-quality-contracts.mdx | Charter, docs lattice, type-native gates, evidence, safety, maturity proof |
 | Prove a repo-local harness contract | `steward doctor/actions/probe/benchmark` | Runtime dogfood evidence; separate from skill evals |
 | Generate plugin/rule descriptors | `steward bundle` | Validated wiring artifacts; host install remains explicit |
@@ -147,7 +179,7 @@ When working inside an adopter repo, classify the current claim before adding ne
 | `runtime_proof_blocked` | CLI/runtime setup cannot produce the target app, VM URI, semantic node, or redacted assertion | Pipe the fresh runtime block to `steward blocked explain --stdin --json`, then repair the launch path or capture an unknown-case artifact with commands, logs excerpt, redaction policy, and the exact rerun target. |
 | `machine_contract_drift` | `schema check-outputs` or `schema drift` fails on a JSON route used by the dogfood path | Fix the schema/model/output mismatch before relying on that JSON for benchmark or claim evidence. |
 
-Ecology disposition rule: if the blocker is invalid config, dirty declared inputs, schema/output drift, blocked payload routing, stale navigation, or a broken native launch path, choose the smallest useful disposition before adding another artifact. Often that means updating the owner and rerunning the same gate; sometimes it means leaving the work native, converting deterministic drift to a check, or stopping a tool path that has become the work. After two learning loops on the same friction, extract the lesson into ADR/FAQ/skill/check/current ledger or stop; do not create a third loop just to feel surer.
+Ecology disposition rule: if the blocker is invalid config, dirty declared inputs, schema/output drift, blocked payload routing, stale navigation, or a broken native launch path, choose the boldest useful path before adding another artifact. Often that means updating the owner and rerunning the same gate; sometimes it means leaving the work native, converting deterministic drift to a check, deleting stale navigation, or stopping a tool path that has become the work. After two learning loops on the same friction, extract the lesson into ADR/FAQ/skill/check/current ledger or stop; do not create a third loop just to feel surer.
 
 ### Repository ecology review
 
@@ -171,13 +203,15 @@ Use evidence only when it protects a claim, preserves a blocked state, records a
 | Question | Route |
 |----------|-------|
 | Did we choose a durable policy or trade-off? | Write or update an ADR. |
-| Did a real run prove or block an exact claim? | Create or update an evidence artifact with status/type metadata. |
+| Did a real run prove or block an exact claim or guide a concrete decision? | Create or update an evidence artifact with status/type metadata. |
 | Is this the current weakest true status? | Update a current ledger and link historical evidence as provenance. |
 | Is this a reusable prompt, fixture, or shape? | Move it to a skill/reference/template; mark evidence `template` only while transitional. |
 | Is this repeated deterministic drift? | Move it to a check, schema, validator, test, CLI diagnostic, or harness probe. |
 | Is this only an implemented checklist or stale plan? | Extract useful truth, then remove it. |
 
 New durable evidence should include the lightweight envelope from [ADR 0023](decisions/0023-evidence-artifacts-as-claim-proof-records): `status`, `evidence_type`, `date`, `scope`, `claim_tested`, `proof_level`, `result`, `limitations`, `non_claims`, `next_disposition`, and `current_status_pointer`.
+
+New stewardship surface must pass the anti-bureaucracy gate: it should reduce future uncertainty, automate repeated judgment, prevent a demonstrated failure, enable an honest claim, or delete/compress an older surface. If it mainly adds another thing to maintain, route to `compress`, `leave_native`, or `stop`.
 
 For a new or unique repo, start with the manual habit before adding machinery:
 

@@ -21,6 +21,7 @@ import 'package:steward_cli/src/commands/uninstall_command.dart';
 import 'package:steward_cli/src/commands/unknown_case_command.dart';
 import 'package:steward_cli/src/commands/update_command.dart';
 import 'package:steward_cli/src/commands/validate_command.dart';
+import 'package:steward_cli/src/steward_cli.dart';
 
 import 'package:steward_cli/src/validation/validation.dart';
 
@@ -200,6 +201,54 @@ Body steps.
     test('ValidateCommand supports --local option', () {
       final cmd = ValidateCommand();
       expect(cmd.argParser.options.containsKey('local'), isTrue);
+    });
+
+    test('ValidateCommand exposes validation ownership lanes', () {
+      final cmd = ValidateCommand();
+
+      expect(
+        cmd.subcommands.keys,
+        containsAll(['skills', 'registry', 'repo-contract', 'evidence', 'all']),
+      );
+      expect(
+        cmd.subcommands['all']!.description,
+        contains('all validation lanes'),
+      );
+    });
+
+    test('bare steward validate aliases to all lanes', () async {
+      final originalCwd = Directory.current;
+      exitCode = 0;
+      try {
+        Directory.current = tempDir;
+        await File(p.join(tempDir.path, 'skills.sh.json')).writeAsString('''
+{
+  "skills": ["alias-check"]
+}
+''');
+        final skillDir = Directory(
+          p.join(tempDir.path, 'skills', 'alias-check'),
+        )..createSync(recursive: true);
+        await File(p.join(skillDir.path, 'SKILL.md')).writeAsString('''
+---
+name: alias-check
+description: Validates the bare validate alias.
+license: MIT
+---
+
+Use this fixture to prove bare validate still routes to all lanes.
+''');
+        Directory(p.join(skillDir.path, 'references')).createSync();
+        await File(
+          p.join(skillDir.path, 'references', 'sources.md'),
+        ).writeAsString('- local fixture\n');
+
+        await StewardCli().run(['validate']);
+
+        expect(exitCode, 0);
+      } finally {
+        Directory.current = originalCwd;
+      }
     });
 
     test('InstallCommand is registered with correct options', () {

@@ -17,6 +17,13 @@ export 'plugin_manifest_validator.dart' show validatePluginManifests;
 export 'skill_frontmatter.dart';
 export 'skill_rules.dart';
 export 'skill_validator.dart'
-    show validateAllSkills, validateAllSkillsToJson, validateSingleSkill;
+    show
+        validateAllSkills,
+        validateAllSkillsToJson,
+        validateEvidence,
+        validateRepoContract,
+        validateSingleSkill,
+        validateSkillRegistry,
+        validateSkillsDirectory;
 export 'steward_config.dart';
 export 'validation_result.dart';
