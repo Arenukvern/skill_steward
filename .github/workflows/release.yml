@@ -15,6 +15,10 @@ jobs:
     permissions:
       contents: write      # push tags, create GitHub Releases
       pull-requests: write # create / update the Version PR
+    outputs:
+      published: ${{ steps.changesets.outputs.published }}
+      release_tag: ${{ steps.release-info.outputs.release_tag }}
+      release_version: ${{ steps.release-info.outputs.release_version }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -45,8 +49,9 @@ jobs:
       #     → that PR bumps package.json, writes CHANGELOG.md, removes .changeset/*.md
       #   MODE B — Version PR just merged (no pending changesets):
       #     → runs `publish` script (tags the release)
-      #     → creates a GitHub Release with CHANGELOG content
+      #     → downstream jobs in this workflow build assets and create the GitHub Release
       - name: Create Version PR or tag & GitHub Release
+        id: changesets
         uses: changesets/action@v1
         with:
           # Custom version script to sync pubspec.yaml version
@@ -56,10 +61,131 @@ jobs:
           # PR title & commit message used in MODE A
           title: "chore: version packages"
           commit: "chore: version packages"
-          # Auto-create GitHub Releases from tags in MODE B
-          createGithubReleases: true
+          # This repo releases a private package plus binary assets, so GitHub
+          # Releases are created below after the release artifacts are built.
+          createGithubReleases: false
           # GPG-signed commits attributed to GITHUB_TOKEN owner;
           # no git CLI config needed, works without a PAT.
           commitMode: github-api
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Resolve release tag
+        id: release-info
+        if: steps.changesets.outputs.published == 'true'
+        run: |
+          set -euo pipefail
+          version="$(node -p "require('./package.json').version")"
+          tag="v${version#v}"
+          git rev-parse -q --verify "refs/tags/$tag" >/dev/null
+          {
+            echo "release_version=$version"
+            echo "release_tag=$tag"
+          } >> "$GITHUB_OUTPUT"
+
+  build-release-assets:
+    name: Build release assets (${{ matrix.triple }})
+    needs: release
+    if: needs.release.outputs.published == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - triple: darwin-arm64
+            runner: macos-14
+          - triple: linux-x64
+            runner: ubuntu-latest
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.release.outputs.release_tag }}
+
+      - name: Setup Dart SDK
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+
+      - name: Install steward_cli dependencies
+        working-directory: packages/steward_cli
+        run: dart pub get
+
+      - name: Build release artifact
+        run: |
+          bash scripts/build_release_artifacts.sh \
+            --version "${{ needs.release.outputs.release_version }}" \
+            --triple "${{ matrix.triple }}"
+
+      - name: Upload release tarball
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ matrix.triple }}
+          path: dist/release/steward_*_${{ matrix.triple }}.tar.gz
+          if-no-files-found: error
+
+  github-release:
+    name: Create GitHub Release
+    needs: [release, build-release-assets]
+    if: needs.release.outputs.published == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.release.outputs.release_tag }}
+
+      - name: Download release tarballs
+        uses: actions/download-artifact@v4
+        with:
+          path: dist/release
+          merge-multiple: true
+
+      - name: Generate checksums
+        run: |
+          cd dist/release
+          sha256sum *.tar.gz > checksums.txt
+
+      - name: Extract release notes
+        env:
+          RELEASE_VERSION: ${{ needs.release.outputs.release_version }}
+        run: |
+          python3 - <<'PY'
+          import os
+          import pathlib
+          import re
+          import sys
+
+          version = os.environ["RELEASE_VERSION"]
+          changelog = pathlib.Path("CHANGELOG.md").read_text()
+          match = re.search(
+              rf"^## {re.escape(version)}\n(?P<body>.*?)(?=^## |\Z)",
+              changelog,
+              flags=re.M | re.S,
+          )
+          if not match:
+              sys.exit(f"Could not find CHANGELOG.md section for {version}")
+          pathlib.Path("release-notes.md").write_text(match.group("body").strip() + "\n")
+          PY
+
+      - name: Create or update GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ needs.release.outputs.release_tag }}
+        run: |
+          set -euo pipefail
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release edit "$RELEASE_TAG" \
+              --title "$RELEASE_TAG" \
+              --notes-file release-notes.md \
+              --latest
+          else
+            gh release create "$RELEASE_TAG" \
+              --title "$RELEASE_TAG" \
+              --notes-file release-notes.md \
+              --verify-tag \
+              --latest
+          fi
+          gh release upload "$RELEASE_TAG" dist/release/*.tar.gz dist/release/checksums.txt --clobber
