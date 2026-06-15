@@ -37,7 +37,7 @@ class SkillSource {
 
 final _githubShorthandPattern = RegExp(r'^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$');
 
-final _skillNamePattern = RegExp(r'^[a-z0-9][a-z0-9_-]*$');
+final _skillNamePattern = RegExp(r'^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$');
 
 SkillSource resolveSkillSource(
   final String source,
@@ -119,6 +119,12 @@ SkillSource resolveSkillSource(
 }
 
 void validateSkillName(final String skillName) {
+  if (skillName.length > 64) {
+    throw ArgumentError(
+      'Invalid skill name "$skillName". Maximum length is 64 characters.',
+    );
+  }
+
   if (!_skillNamePattern.hasMatch(skillName)) {
     throw ArgumentError(
       'Invalid skill name "$skillName". Skill names must match ${_skillNamePattern.pattern}.',

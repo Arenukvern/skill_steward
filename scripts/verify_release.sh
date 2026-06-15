@@ -92,7 +92,7 @@ done
 
 docs_with_concrete_pins=()
 for doc in README.md docs/DX_FAQ.mdx docs/core/portable-steward-invocation.mdx; do
-  if grep -Eq -- '(@|--version[[:space:]]+)v[0-9]+\.[0-9]+\.[0-9]+' "$doc"; then
+  if grep -Eq -- '(@|--version[[:space:]]+|/)v[0-9]+\.[0-9]+\.[0-9]+' "$doc"; then
     docs_with_concrete_pins+=("$doc")
   fi
 done

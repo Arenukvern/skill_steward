@@ -104,6 +104,8 @@ void main() {
   test('rejects path-shaped skill names', () {
     expect(() => validateSkillName('../escape'), throwsArgumentError);
     expect(() => validateSkillName('nested/skill'), throwsArgumentError);
-    expect(() => validateSkillName('valid-skill_1'), returnsNormally);
+    expect(() => validateSkillName('valid-skill'), returnsNormally);
+    expect(() => validateSkillName('valid-skill-1'), returnsNormally);
+    expect(() => validateSkillName('valid-skill_1'), throwsArgumentError);
   });
 }

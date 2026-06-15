@@ -58,6 +58,14 @@ Version PR commits are pushed via the GitHub Commits API instead of the git CLI:
 - No new secrets required — `GITHUB_TOKEN` with `contents: write` + `pull-requests: write` is sufficient.
 - `concurrency: cancel-in-progress` prevents duplicate release jobs on rapid pushes.
 
+### Charter-and-ethics audit
+
+- **Anti-Bloat:** Keeps provenance claims limited to plain tag/release contracts already implemented in CI and avoids introducing non-shipped trust signals.
+- **Reversibility:** Uses standard `changesets` PRs plus tag-based release artifacts that can be corrected with the same existing maintenance workflow.
+- **Legibility:** Separates verified-commit automation (`github-actions[bot]` version commits), plain `vX.Y.Z` tags, and integrity checks (`checksums.txt`) in explicit text.
+- **Behavior-as-Truth:** Assertions in this ADR match executable checks: latest-release matching in `scripts/verify_release.sh`, required asset presence, and checksum verification.
+- **Artisan Restraint:** Does not claim attestations beyond what is actually verified by release scripts and existing GitHub release metadata.
+
 ### Neutral
 
 - The Version PR commit is made by `github-actions[bot]`, so it does **not** re-trigger `validate` CI automatically (GitHub security restriction). The Version PR is low-risk (only version + CHANGELOG edits) and can be merged after a quick review. A PAT stored as `secrets.RELEASE_TOKEN` could enable CI re-triggering if needed later.

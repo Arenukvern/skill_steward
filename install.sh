@@ -299,7 +299,8 @@ if [[ "${STEWARD_NO_PATH_UPDATE:-0}" != "1" && ":$PATH:" != *":$INSTALL_DIR:"* ]
 
   if [[ "$UPDATE_PATH" == "1" ]]; then
     if [[ -f "$rc_file" ]]; then
-      if grep -F -q "$INSTALL_DIR" "$rc_file"; then
+      if grep -F -q "export PATH=\"$INSTALL_DIR:\$PATH\"" "$rc_file" \
+        || grep -F -q "export PATH='$INSTALL_DIR:\$PATH'" "$rc_file"; then
         echo ""
         echo "PATH configuration already exists in $rc_file."
         echo "Restart your shell or run: source $rc_file"
