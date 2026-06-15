@@ -18,10 +18,11 @@ REPO="${STEWARD_REPO:-Arenukvern/skill_steward}"
 VERSION="${STEWARD_VERSION:-$DEFAULT_VERSION}"
 INSTALL_DIR="${STEWARD_INSTALL_DIR:-$HOME/.local/bin}"
 BASE_URL="${STEWARD_BASE_URL:-}"
+UPDATE_PATH="${STEWARD_UPDATE_PATH:-0}"
 
 usage() {
   cat <<USAGE
-Usage: ./install.sh [--version <semver|vSemver>] [--install-dir <path>] [--repo <owner/name>] [--base-url <url>]
+Usage: ./install.sh [--version <semver|vSemver>] [--install-dir <path>] [--repo <owner/name>] [--base-url <url>] [--update-path]
        curl -fsSL https://raw.githubusercontent.com/${REPO}/main/install.sh | bash -s -- [--version <semver>]
 
 Installs steward CLI. Falls back to compiling from source if run from a git clone with Dart SDK.
@@ -29,7 +30,9 @@ Installs steward CLI. Falls back to compiling from source if run from a git clon
 When run from a git clone, version defaults to the packages/steward_cli pubspec.yaml.
 When piped from curl without --version, the latest GitHub release is used if available.
 Override with STEWARD_VERSION or --version.
-Set STEWARD_NO_PATH_UPDATE=1 for CI/action installs that manage PATH themselves.
+By default, the installer prints PATH setup instructions instead of editing shell RC files.
+Pass --update-path or set STEWARD_UPDATE_PATH=1 to append PATH setup when needed.
+STEWARD_NO_PATH_UPDATE=1 remains supported for CI/action installs that manage PATH themselves.
 USAGE
 }
 
@@ -85,6 +88,10 @@ while [[ $# -gt 0 ]]; do
       BASE_URL="$2"
       shift 2
       ;;
+    --update-path)
+      UPDATE_PATH=1
+      shift
+      ;;
     -h|--help)
       usage
       exit 0
@@ -106,7 +113,7 @@ if [[ -z "$VERSION" ]]; then
 Unable to resolve install version.
 
 Specify a version explicitly, for example:
-  curl -fsSL https://raw.githubusercontent.com/${REPO}/main/install.sh | bash -s -- --version v0.1.0
+  curl -fsSL https://raw.githubusercontent.com/${REPO}/vX.Y.Z/install.sh | bash -s -- --version vX.Y.Z
 
 Or from a git clone:
   ./install.sh
@@ -290,21 +297,30 @@ if [[ "${STEWARD_NO_PATH_UPDATE:-0}" != "1" && ":$PATH:" != *":$INSTALL_DIR:"* ]
       ;;
   esac
 
-  if [[ -f "$rc_file" ]]; then
-    if grep -F -q "$INSTALL_DIR" "$rc_file"; then
-      echo ""
-      echo "PATH configuration already exists in $rc_file."
-      echo "Restart your shell or run: source $rc_file"
+  if [[ "$UPDATE_PATH" == "1" ]]; then
+    if [[ -f "$rc_file" ]]; then
+      if grep -F -q "export PATH=\"$INSTALL_DIR:\$PATH\"" "$rc_file" \
+        || grep -F -q "export PATH='$INSTALL_DIR:\$PATH'" "$rc_file"; then
+        echo ""
+        echo "PATH configuration already exists in $rc_file."
+        echo "Restart your shell or run: source $rc_file"
+      else
+        echo "" >> "$rc_file"
+        echo "export PATH=\"$INSTALL_DIR:\$PATH\"" >> "$rc_file"
+        echo ""
+        echo "Added $INSTALL_DIR to PATH in $rc_file (restart your shell or run: source $rc_file)"
+      fi
     else
-      echo "" >> "$rc_file"
-      echo "export PATH=\"$INSTALL_DIR:\$PATH\"" >> "$rc_file"
       echo ""
-      echo "Added $INSTALL_DIR to PATH in $rc_file (restart your shell or run: source $rc_file)"
+      echo "PATH update required. Run this command:"
+      echo "echo 'export PATH=\"$INSTALL_DIR:\$PATH\"' >> $rc_file && export PATH=\"$INSTALL_DIR:\$PATH\""
     fi
   else
     echo ""
-    echo "PATH update required. Run this command:"
-    echo "echo 'export PATH=\"$INSTALL_DIR:\$PATH\"' >> \$rc_file && export PATH=\"$INSTALL_DIR:\$PATH\""
+    echo "$INSTALL_DIR is not on PATH."
+    echo "For this shell, run: export PATH=\"$INSTALL_DIR:\$PATH\""
+    echo "To persist it, run: echo 'export PATH=\"$INSTALL_DIR:\$PATH\"' >> $rc_file"
+    echo "Or rerun the installer with --update-path to update $rc_file automatically."
   fi
 fi
 

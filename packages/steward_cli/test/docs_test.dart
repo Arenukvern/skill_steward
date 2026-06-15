@@ -186,6 +186,7 @@ void main() {
         evidenceHrefs,
         unorderedEquals([
           '/evidence/current-dogfood-status',
+          '/evidence/current-dogfood-reproducibility',
           '/evidence/first-adopter-golden-path',
         ]),
         reason:
@@ -234,6 +235,82 @@ void main() {
           contains('Adoption run v2 template](adoption-run-v2-template)'),
           contains('template/reference, not evidence of an adoption run'),
         ),
+      );
+    });
+
+    test('public dogfood reproducibility card stays portable', () {
+      final ledger = File(
+        p.join(docsDir, 'evidence', 'current-dogfood-status.mdx'),
+      );
+      final publicCard = File(
+        p.join(docsDir, 'evidence', 'current-dogfood-reproducibility.mdx'),
+      );
+      expect(ledger.existsSync(), isTrue);
+      expect(publicCard.existsSync(), isTrue);
+
+      final ledgerContent = ledger.readAsStringSync();
+      final publicContent = publicCard.readAsStringSync();
+      expect(
+        ledgerContent,
+        contains(
+          '[Public dogfood reproducibility](current-dogfood-reproducibility)',
+        ),
+      );
+      expect(
+        publicContent,
+        contains('does not replace [Current dogfood status]'),
+      );
+      expect(
+        publicContent,
+        contains(
+          'current_status_pointer: docs/evidence/current-dogfood-status.mdx',
+        ),
+      );
+      expect(publicContent, contains('not public-reproducible yet'));
+      expect(publicContent, contains('## Non-claims'));
+      for (final localMarker in ['/tmp/', '/Users/', '.local/bin']) {
+        expect(
+          publicContent,
+          isNot(contains(localMarker)),
+          reason:
+              'Public reproducibility evidence must not depend on maintainer-local path marker $localMarker.',
+        );
+      }
+
+      final content = docsJsonFile.readAsStringSync();
+      final data = jsonDecode(content) as Map<String, dynamic>;
+      final sidebar = data['sidebar'] as List?;
+      expect(sidebar, isNotNull);
+      final pages = sidebar!
+          .whereType<Map<String, dynamic>>()
+          .expand((final group) => (group['pages'] as List?) ?? const [])
+          .whereType<Map<String, dynamic>>();
+      expect(
+        pages.any(
+          (final page) =>
+              page['href'] == '/evidence/current-dogfood-reproducibility',
+        ),
+        isTrue,
+      );
+    });
+
+    test('evidence ladder names public reproducibility proof bar', () {
+      final ladder = File(p.join(docsDir, 'core', 'evidence-ladder.mdx'));
+      expect(ladder.existsSync(), isTrue);
+
+      final content = ladder.readAsStringSync();
+      expect(content, contains('Public reproducibility is claimed'));
+      for (final requiredAnchor in [
+        'Durable repo URL',
+        'fetchable commit SHA',
+        'exact portable command',
+        'artifact hash or CI artifact name',
+      ]) {
+        expect(content, contains(requiredAnchor));
+      }
+      expect(
+        content,
+        contains('Current status, H4/H5, or product correctness'),
       );
     });
 

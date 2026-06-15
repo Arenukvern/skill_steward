@@ -111,6 +111,7 @@ Treat split/compress/promote/demote/delete/stay-native as movement rules for the
 | Gather repo ecology inventory | `steward ecology snapshot --json` | Read-only facts for a Repository Ecology Review; not an adoption or maturity verdict |
 | Route repo ecology dispositions | `steward ecology route --json` | Composes snapshot facts into orient/compress/validate/tutor/promote/leave/stop suggestions; not repair automation |
 | Compose current dogfood route | `steward dogfood status --json` | Current ledger plus ecology facts; not maturity, H2/H5, or steward status |
+| Audit public dogfood proof | `docs/evidence/current-dogfood-reproducibility.mdx` | Public/auditable subset with durable anchors; not the current-status source |
 | Start a minimal current-status ledger | `steward evidence init --minimal` | Creates one claim/status ledger; not an evidence archive, benchmark, or readiness claim |
 | Turn blocked JSON into next actions | `steward blocked explain` | Artifact routing for blocked evidence; does not repair or prove |
 | Validate Skill Steward skills | `pnpm run validate`, `steward validate skills`, `steward validate all`, `pnpm run eval` | Split validation ownership and T1 behavior-critical routing cases |
@@ -303,6 +304,12 @@ Historical dated note: [Maintainer-local integration roadmap — 2026-06-08](evi
 
 ## 📦 Install Skill Steward (consumers)
 
+| Actor | Command surface | Use when |
+|-------|-----------------|----------|
+| Agent skill consumer | `npx skills add arenukvern/skill_steward` | Installing portable stewardship skills. |
+| Repo adopter or CI runner | `install.sh`, then `steward <command>` | Installing the optional `steward` CLI for repo validation/adoption without Dart. |
+| Maintainer changing this checkout | `pnpm run validate` or `cd packages/steward_cli && dart run :steward validate` | Proving source changes against the current checkout. |
+
 ```bash
 # All meta-skills
 npx skills add arenukvern/skill_steward
@@ -331,13 +338,15 @@ npx skills add <skill-steward-checkout> -g -y
 
 For zero-dependency installation of the `steward` CLI tool without requiring a clone or Dart SDK:
 
+The CLI installer is a trust boundary: it downloads a released binary, verifies that binary against the release `checksums.txt`, installs schemas beside it, and can put `steward` in `~/.local/bin` by default. It does not prove third-party skill sources are safe. By default it prints PATH setup instructions; pass `--update-path` only when you want it to edit your shell startup file.
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash
-# Pinned version:
-curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash -s -- --version v0.1.0
+# Pinned version, when a rollout needs an exact release:
+curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/vX.Y.Z/install.sh | bash -s -- --version vX.Y.Z
 ```
 
-`steward install/update` intentionally manages repo-local `skills.json` registration, agent folder layout, and commit pinning. Use `npx skills` for broad public skill install/update and skills.sh discovery.
+`steward install/update` intentionally manages repo-local `skills.json` registration and agent folder layout; trust-boundary behavior is documented in [portable Steward invocation](core/portable-steward-invocation#trust-boundary). Local path and `file://` sources require `--allow-local-source` because they are maintainer-only development paths. Use `npx skills` for broad public skill install/update and skills.sh discovery.
 
 **Note:** Hooks/plugins are **not** installed by `npx skills` on Cursor—see `../plugins/README.md` and [ADR 0004](decisions/0004-plugin-packaging-and-install-path).
 
@@ -500,23 +509,23 @@ Skill                  → repository-governance-lifecycle
 
 ## 🚀 Release desk (Changesets)
 
-Skill Steward uses [Changesets](https://github.com/changesets/changesets) for **repo** semver + `CHANGELOG.md` (skills are not individually versioned). **Binary release train enabled** — compiled AOT binaries (darwin-arm64, linux-x64) and `install.sh` bootstrapper attached to GitHub Releases via changesets-triggered tag workflows. See [ADR 0014](decisions/0014-distribute-steward-cli-as-binary) and [binary-release-contract.md](https://github.com/arenukvern/skill_steward/blob/main/skills/release-changelog-harness/references/binary-release-contract.md).
+Skill Steward uses [Changesets](https://github.com/changesets/changesets) for **repo** semver + `CHANGELOG.md` (skills are not individually versioned). **Binary release train enabled** — compiled AOT binaries (darwin-arm64, linux-x64) and `install.sh` bootstrapper attached to GitHub Releases by the single Release workflow after the Changesets Version PR merges. See [ADR 0014](decisions/0014-distribute-steward-cli-as-binary) and [binary-release-contract.md](https://github.com/arenukvern/skill_steward/blob/main/skills/release-changelog-harness/references/binary-release-contract.md).
 
 ```bash
 # PR: describe consumer impact (required when skills/docs/plugins/registry change)
 pnpm changeset
 # Pick patch | minor | major for "skill-steward", write one imperative sentence
 
-# Maintainer: consume changesets on main before tag
+# Maintainer: inspect pending release notes locally
 pnpm changeset:status
-pnpm changeset:version    # updates CHANGELOG.md + package.json
-git add -A && git commit -m "chore: version packages"
 
-# Tag release from package.json as vX.Y.Z
-pnpm run release:tag
+# CI: Release workflow creates/updates "chore: version packages".
+# After that PR merges, the same workflow tags vX.Y.Z, builds assets,
+# creates/updates the GitHub Release, uploads checksums, and verifies latest.
 
-# Check the tag without mutating git
+# Local preflight checks without mutating git:
 bash scripts/tag_release.sh --dry-run
+pnpm run release:verify -- --version vX.Y.Z
 
 # Compile and package binaries locally:
 ./scripts/build_release_artifacts.sh
@@ -525,7 +534,9 @@ bash scripts/tag_release.sh --dry-run
 ```text
 CI on PR               → .github/workflows/changesets.yml
 Local gate             → bash scripts/changeset-check.sh origin/main
-Release tag contract   → scripts/tag_release.sh creates/pushes vX.Y.Z only
+Release owner          → .github/workflows/release.yml
+Release tag contract   → scripts/tag_release.sh validates versions/changelog, then creates/pushes vX.Y.Z only
+Release postflight     → scripts/verify_release.sh verifies latest release, required assets, checksums, and install-doc pins
 Skip (maintainer only) → PR title contains [skip changeset]
 ```
 

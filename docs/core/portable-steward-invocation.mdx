@@ -8,7 +8,7 @@ Do not ask every adopter repo to vendor a `tool/steward/run.sh` shim. That is a 
 
 Reusable adoption should converge on a normal `steward` executable plus one of these setup channels:
 
-1. **Released binary install** — `install.sh` downloads the GitHub Release artifact, verifies checksums, and puts `steward` on `PATH`.
+1. **Released binary install** — `install.sh` downloads the GitHub Release artifact, verifies checksums, installs `steward`, and prints PATH setup unless `--update-path` is explicitly requested.
 2. **CI setup action** — GitHub Actions use `Arenukvern/skill_steward/.github/actions/setup-steward@vX.Y.Z`, then run `steward <command>`.
 3. **Declarative tool manager** — teams that standardize on aqua or mise pin `steward` in their project tool manifest instead of committing shell glue.
 4. **Package-manager channel** — Homebrew tap / pub activation can be added when that audience is real.
@@ -23,7 +23,7 @@ Use the first option that matches the actor.
 | Actor | Preferred command surface | Use when |
 |-------|---------------------------|----------|
 | Skill consumer | `npx skills add arenukvern/skill_steward` | Installing portable skills for an agent. |
-| Repo adopter or CI runner | `curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh \| bash`, then `steward <command>` | Running Steward without cloning Skill Steward or requiring Dart. Pin with `--version vX.Y.Z` when reproducibility matters. |
+| Repo adopter or CI runner | `curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh \| bash`, then `steward <command>` | Running Steward without cloning Skill Steward or requiring Dart. Fetch the installer from tag `vX.Y.Z` and pass `--version vX.Y.Z` when reproducibility matters. |
 | GitHub Actions runner | `Arenukvern/skill_steward/.github/actions/setup-steward@vX.Y.Z`, then `steward <command>` | Avoiding repeated curl/setup snippets across CI workflows. |
 | Dart maintainer from a Skill Steward clone | `cd packages/steward_cli && dart run :steward <command>` | Developing the CLI from source. |
 | Maintainer who wants a global command from a local clone | `dart pub global activate --source path packages/steward_cli`, then `steward <command>` | Testing a checkout as a global binary while keeping the command portable to other local clone paths. |
@@ -41,7 +41,7 @@ steward doctor --json
 Pinned consumer binary install:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash -s -- --version v0.3.4
+curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/vX.Y.Z/install.sh | bash -s -- --version vX.Y.Z
 steward doctor --json
 ```
 
@@ -49,10 +49,14 @@ GitHub Actions:
 
 ```yaml
 steps:
-  - uses: actions/checkout@v4
-  - uses: Arenukvern/skill_steward/.github/actions/setup-steward@v0.3.4
+  - uses: actions/checkout@v5
+  - uses: Arenukvern/skill_steward/.github/actions/setup-steward@vX.Y.Z
   - run: steward doctor --json
 ```
+
+## Trust boundary
+
+Installing or updating skills changes agent-readable instructions. `steward install/update` copies selected skill directories, skips dotfiles, may translate `SKILL.md` frontmatter for target agents, and advances `skills.json` commit pins only after a successful copy. Local path and `file://` sources require `--allow-local-source`; they are maintainer-only development paths, not consumer defaults. Release checksums verify the downloaded binary against the release checksum file, but they do not prove third-party skill sources are safe.
 
 Dart maintainer source run:
 

@@ -257,6 +257,7 @@ Use this fixture to prove bare validate still routes to all lanes.
       expect(cmd.argParser.options.containsKey('target'), isTrue);
       expect(cmd.argParser.options.containsKey('lock'), isTrue);
       expect(cmd.argParser.options.containsKey('force'), isTrue);
+      expect(cmd.argParser.options.containsKey('allow-local-source'), isTrue);
     });
 
     test('UpdateCommand is registered with correct options', () {
@@ -264,6 +265,7 @@ Use this fixture to prove bare validate still routes to all lanes.
       expect(cmd.argParser.options.containsKey('local'), isTrue);
       expect(cmd.argParser.options.containsKey('target'), isTrue);
       expect(cmd.argParser.options.containsKey('force'), isTrue);
+      expect(cmd.argParser.options.containsKey('allow-local-source'), isTrue);
     });
 
     test('adoption discovery commands are registered with JSON options', () {
@@ -398,6 +400,7 @@ Instruction body.
           '--target',
           'cursor',
           '--force',
+          '--allow-local-source',
         ]);
 
         // Verify copy exists under .agents/skills/dummy-skill
@@ -477,7 +480,12 @@ Second version.
 
         final runner = CommandRunner<void>('steward', 'test')
           ..addCommand(InstallCommand());
-        await runner.run(['install', '--local', '--force']);
+        await runner.run([
+          'install',
+          '--local',
+          '--force',
+          '--allow-local-source',
+        ]);
 
         final installedSkill = File(
           p.join(
@@ -491,6 +499,102 @@ Second version.
         expect(installedSkill.existsSync(), isTrue);
         final installed = await installedSkill.readAsString();
         expect(installed, contains('First version.'));
+        expect(installed, isNot(contains('Second version.')));
+      } finally {
+        Directory.current = originalCwd;
+      }
+    });
+
+    test('update does not advance commit when copy is skipped', () async {
+      final originalCwd = Directory.current;
+      try {
+        final workspaceDir = tempDir;
+        Directory.current = workspaceDir;
+        await File(
+          p.join(workspaceDir.path, 'skills.sh.json'),
+        ).writeAsString('{}');
+
+        final sourceRepo = Directory(p.join(workspaceDir.path, 'source-repo'))
+          ..createSync(recursive: true);
+        await _runGitAt(sourceRepo, ['init']);
+        await _runGitAt(sourceRepo, ['branch', '-M', 'main']);
+        await _runGitAt(sourceRepo, [
+          'config',
+          'user.email',
+          'test@example.invalid',
+        ]);
+        await _runGitAt(sourceRepo, ['config', 'user.name', 'Skill Test']);
+
+        final skillDir = Directory(
+          p.join(sourceRepo.path, 'skills', 'update-skill'),
+        )..createSync(recursive: true);
+        final skillFile = File(p.join(skillDir.path, 'SKILL.md'));
+        await skillFile.writeAsString('''
+---
+name: update-skill
+description: First committed version.
+license: MIT
+---
+First version.
+''');
+        await _runGitAt(sourceRepo, ['add', '.']);
+        await _runGitAt(sourceRepo, ['commit', '-m', 'first skill']);
+        final firstCommit = await _runGitAt(sourceRepo, ['rev-parse', 'HEAD']);
+
+        await skillFile.writeAsString('''
+---
+name: update-skill
+description: Second committed version.
+license: MIT
+---
+Second version.
+''');
+        await _runGitAt(sourceRepo, ['add', '.']);
+        await _runGitAt(sourceRepo, ['commit', '-m', 'second skill']);
+
+        await File(p.join(workspaceDir.path, 'skills.json')).writeAsString(
+          jsonEncode({
+            'skills': [
+              {
+                'source': sourceRepo.uri.toString(),
+                'ref': 'main',
+                'commit': firstCommit,
+                'skills': ['update-skill'],
+              },
+            ],
+          }),
+        );
+
+        final installedDir = Directory(
+          p.join(workspaceDir.path, '.agents', 'skills', 'update-skill'),
+        )..createSync(recursive: true);
+        await File(p.join(installedDir.path, 'SKILL.md')).writeAsString('''
+---
+name: update-skill
+description: Locally modified version.
+license: MIT
+---
+Local version.
+''');
+
+        final runner = CommandRunner<void>('steward', 'test')
+          ..addCommand(UpdateCommand());
+        await runner.run(['update', '--local', '--allow-local-source']);
+
+        final data =
+            jsonDecode(
+                  await File(
+                    p.join(workspaceDir.path, 'skills.json'),
+                  ).readAsString(),
+                )
+                as Map<String, dynamic>;
+        final sourceBlock = (data['skills'] as List).first as Map;
+        expect(sourceBlock['commit'], firstCommit);
+
+        final installed = await File(
+          p.join(installedDir.path, 'SKILL.md'),
+        ).readAsString();
+        expect(installed, contains('Local version.'));
         expect(installed, isNot(contains('Second version.')));
       } finally {
         Directory.current = originalCwd;

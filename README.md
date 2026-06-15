@@ -38,6 +38,12 @@ Same thread: useful docs for humans and agents, mechanical gates, and work worth
 
 ## Install
 
+| Actor | Command surface | Use when |
+|-------|-----------------|----------|
+| Agent skill consumer | `npx skills add arenukvern/skill_steward` | Installing portable stewardship skills. |
+| Repo adopter or CI runner | `install.sh`, then `steward <command>` | Installing the optional `steward` CLI for repo validation/adoption without Dart. |
+| Maintainer changing this checkout | `pnpm run validate` or `cd packages/steward_cli && dart run :steward validate` | Proving source changes against the current checkout. |
+
 ### Skills (`npx skills`)
 
 ```bash
@@ -63,13 +69,15 @@ npx skills find steward
 
 ### Steward CLI
 
+The CLI installer is a trust boundary: it downloads a released binary, verifies that binary against the release `checksums.txt`, installs schemas beside it, and can put `steward` in `~/.local/bin` by default. It does not prove third-party skill sources are safe. By default it prints PATH setup instructions; pass `--update-path` only when you want it to edit your shell startup file.
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash
-# Pinned:
-curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/main/install.sh | bash -s -- --version v0.3.4
+# Pinned, when a rollout needs an exact release:
+curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/vX.Y.Z/install.sh | bash -s -- --version vX.Y.Z
 ```
 
-The CLI validates Skill Steward skills and can apply repo-local `skills.json` installs/updates with pinned refs. Use `npx skills` for normal public skill installation and updates. See [portable Steward invocation](docs/core/portable-steward-invocation.mdx) before copying command blocks into adoption evidence.
+The CLI validates Skill Steward skills and can apply repo-local `skills.json` installs/updates with pinned refs. `steward install/update` copies selected skill directories into agent-readable folders, skips dotfiles, may translate `SKILL.md` frontmatter for target agents, and advances `skills.json` commit pins only after a successful copy. Use `npx skills` for normal public skill installation and updates. See [portable Steward invocation](docs/core/portable-steward-invocation.mdx) before copying command blocks into adoption evidence.
 
 For repo ecology passes, `steward ecology snapshot --json` gathers read-only inventory for decisions about what to compress, merge, update, remove, create, or move into checks. It is not a maturity verdict and does not run repo actions.
 

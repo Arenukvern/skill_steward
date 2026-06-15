@@ -1,6 +1,6 @@
 {
   "name": "skill-steward",
-  "version": "0.4.2",
+  "version": "0.4.4",
   "private": true,
   "description": "Engineering Stewardship for agent-operated repositories",
   "license": "MIT",
@@ -19,7 +19,8 @@
     "changeset": "changeset",
     "changeset:version": "changeset version && dart run packages/steward_cli/tool/sync_versions.dart",
     "changeset:status": "changeset status",
-    "release:tag": "bash scripts/tag_release.sh"
+    "release:tag": "bash scripts/tag_release.sh",
+    "release:verify": "bash scripts/verify_release.sh"
   },
   "engines": {
     "node": ">=18",

@@ -43,16 +43,47 @@ if [[ ! "$version" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?(\+[0-9A-Za-z.-
   exit 1
 fi
 
+pubspec_version="$(sed -nE "s/^version:[[:space:]]*([^[:space:]]+).*$/\1/p" packages/steward_cli/pubspec.yaml | head -n1)"
+if [[ "$pubspec_version" != "$version" ]]; then
+  echo "packages/steward_cli/pubspec.yaml version ($pubspec_version) does not match package.json version ($version)." >&2
+  echo "Run: pnpm changeset:version" >&2
+  exit 1
+fi
+
 tag="v${version#v}"
+
+if ! grep -Eq "^##[[:space:]]+$version([[:space:]]|$)" CHANGELOG.md; then
+  echo "CHANGELOG.md does not contain a release section for $version." >&2
+  echo "Run: pnpm changeset:version" >&2
+  exit 1
+fi
+
+head_sha="$(git rev-parse HEAD)"
+if git rev-parse -q --verify "refs/tags/$tag" >/dev/null; then
+  tag_sha="$(git rev-list -n 1 "$tag")"
+  if [[ "$tag_sha" != "$head_sha" ]]; then
+    echo "Local release tag $tag already points to $tag_sha, not HEAD $head_sha." >&2
+    exit 1
+  fi
+fi
+
+remote_tag_sha=""
+if remote_tag_sha="$(git ls-remote --tags origin "refs/tags/$tag" 2>/dev/null | awk '{print $1}' | head -n1)" && [[ -n "$remote_tag_sha" ]]; then
+  if [[ "$remote_tag_sha" != "$head_sha" ]]; then
+    echo "Remote release tag $tag already points to $remote_tag_sha, not HEAD $head_sha." >&2
+    exit 1
+  fi
+fi
 
 if [[ "$DRY_RUN" -eq 1 ]]; then
   echo "release tag: $tag"
+  echo "release version: $version"
   echo "dry run: would create tag if missing and push origin $tag"
   exit 0
 fi
 
 if git rev-parse -q --verify "refs/tags/$tag" >/dev/null; then
-  echo "Release tag already exists: $tag"
+  echo "Release tag already exists at HEAD: $tag"
 else
   git tag "$tag"
   echo "Created release tag: $tag"

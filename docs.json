@@ -65,6 +65,7 @@
         { "title": "DX_FAQ", "href": "/DX_FAQ" },
         { "title": "First adopter reference fixture", "href": "/evidence/first-adopter-golden-path" },
         { "title": "Current dogfood status", "href": "/evidence/current-dogfood-status" },
+        { "title": "Current dogfood reproducibility", "href": "/evidence/current-dogfood-reproducibility" },
         { "title": "Skills Catalog", "href": "/skills-catalog" },
         { "title": "Docs Map", "href": "/start_here/docs_map" },
         { "title": "Plan hygiene (extract & remove)", "href": "/start_here/executable-plans" },
