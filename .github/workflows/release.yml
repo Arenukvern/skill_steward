@@ -20,7 +20,7 @@ jobs:
       release_tag: ${{ steps.release-info.outputs.release_tag }}
       release_version: ${{ steps.release-info.outputs.release_version }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           # Full history so changeset version can diff correctly
           fetch-depth: 0
@@ -28,11 +28,11 @@ jobs:
           # GITHUB_TOKEN is fine for most flows.
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: "20"
+          node-version: "24"
           cache: pnpm
 
       - name: Install dependencies
@@ -105,7 +105,7 @@ jobs:
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: ${{ needs.release.outputs.release_tag }}
 
@@ -125,7 +125,7 @@ jobs:
             --triple "${{ matrix.triple }}"
 
       - name: Upload release tarball
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: release-${{ matrix.triple }}
           path: dist/release/steward_*_${{ matrix.triple }}.tar.gz
@@ -140,12 +140,12 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: ${{ needs.release.outputs.release_tag }}
 
       - name: Download release tarballs
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           path: dist/release
           merge-multiple: true
