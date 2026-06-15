@@ -1,5 +1,14 @@
 # skill-steward
 
+## 0.4.3
+
+### Patch Changes
+
+- 1531835: Update release-changelog-harness guidance for single-owner binary release workflows, release postflight verification, and stale install pin checks.
+- 84bdeec: Fix benchmark durability checks so declared input paths with spaces or untracked parent directories are blocked correctly.
+- 09388fa: Allow generated Changesets Version PRs to pass the changeset gate so automated releases can complete.
+- 1531835: Make the binary release path single-owner and self-verifying so GitHub latest release, assets, versions, and install docs stay aligned.
+
 ## 0.4.2
 
 ### Patch Changes
