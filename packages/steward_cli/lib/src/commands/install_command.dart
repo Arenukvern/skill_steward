@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:args/command_runner.dart';
 import 'package:path/path.dart' as p;
 
+import '../path_safety.dart';
 import '../repo_root.dart';
+import '../skill_source.dart';
 import '../validation/skill_frontmatter.dart';
 
 class InstallCommand extends Command<void> {
@@ -32,6 +34,11 @@ class InstallCommand extends Command<void> {
         help: 'Lock/pin the commit hash in skills.json.',
         defaultsTo: true,
       )
+      ..addFlag(
+        'allow-local-source',
+        help:
+            'Allow maintainer-only local path or file:// skill sources. Disabled by default for consumer installs.',
+      )
       ..addFlag('force', abbr: 'f', help: 'Overwrite existing local skills.')
       ..addFlag(
         'json',
@@ -53,6 +60,7 @@ class InstallCommand extends Command<void> {
     final typeFilter = argResults!['type'] as String?;
     final lock = argResults!['lock'] as bool;
     final force = argResults!['force'] as bool;
+    final allowLocalSource = argResults!['allow-local-source'] as bool;
 
     final root = findRepoRoot(Directory.current);
 
@@ -73,6 +81,7 @@ class InstallCommand extends Command<void> {
         typeFilter,
         lock,
         force,
+        allowLocalSource,
       );
     } else {
       // 2. Install a specific skill
@@ -85,6 +94,7 @@ class InstallCommand extends Command<void> {
         typeFilter,
         lock,
         force,
+        allowLocalSource,
       );
     }
   }
@@ -97,6 +107,7 @@ class InstallCommand extends Command<void> {
     final String? typeFilter,
     final bool lock,
     final bool force,
+    final bool allowLocalSource,
   ) async {
     final raw = await configFile.readAsString();
     final data = jsonDecode(raw) as Map<String, dynamic>;
@@ -135,6 +146,7 @@ class InstallCommand extends Command<void> {
           typeFilter,
           lock,
           force,
+          allowLocalSource,
         );
       }
     }
@@ -148,18 +160,41 @@ class InstallCommand extends Command<void> {
     final String? typeFilter,
     final bool lock,
     final bool force,
+    final bool allowLocalSource,
   ) async {
     // Expected formats:
     // - local path: e.g. "skills/repository-governance-lifecycle"
     // - repo/skill: e.g. "Arenukvern/skill_steward/repository-governance-lifecycle"
     // - repo only (installs all): e.g. "Arenukvern/skill_steward"
 
+    if (_isExplicitSource(arg)) {
+      await _installFromSource(
+        arg,
+        const <String>[],
+        null,
+        root,
+        isLocal,
+        target,
+        typeFilter,
+        lock,
+        force,
+        allowLocalSource,
+      );
+      return;
+    }
+
     if (Directory(arg).existsSync()) {
       // Local directory copy
+      if (!allowLocalSource) {
+        throw ArgumentError(
+          'Local skill source "$arg" requires --allow-local-source. Local sources are maintainer-only development paths, not consumer defaults.',
+        );
+      }
       final skillName = p.basename(arg);
+      validateSkillName(skillName);
       final destDir = _getDestDir(root, isLocal, skillName);
       await _copySkillDirectory(
-        Directory(arg),
+        Directory(Directory(arg).resolveSymbolicLinksSync()),
         destDir,
         target,
         typeFilter,
@@ -176,6 +211,7 @@ class InstallCommand extends Command<void> {
       final skills = parts.length > 2
           ? [parts.sublist(2).join('/')]
           : <String>[];
+      validateSkillNames(skills);
       await _installFromSource(
         source,
         skills,
@@ -186,6 +222,7 @@ class InstallCommand extends Command<void> {
         typeFilter,
         lock,
         force,
+        allowLocalSource,
       );
     } else {
       throw Exception(
@@ -193,6 +230,13 @@ class InstallCommand extends Command<void> {
       );
     }
   }
+
+  bool _isExplicitSource(final String arg) =>
+      arg.startsWith('http://') ||
+      arg.startsWith('https://') ||
+      arg.startsWith('ssh://') ||
+      arg.startsWith('git@') ||
+      arg.startsWith('file://');
 
   Future<void> _installFromSource(
     final String source,
@@ -204,9 +248,15 @@ class InstallCommand extends Command<void> {
     final String? typeFilter,
     final bool lock,
     final bool force,
+    final bool allowLocalSource,
   ) async {
-    final repoUrl = _repoUrlForSource(source, root);
-    stdout.writeln('Cloning $repoUrl...');
+    validateSkillNames(skillNames);
+    final skillSource = resolveSkillSource(
+      source,
+      root,
+      allowLocalSource: allowLocalSource,
+    );
+    stdout.writeln('Cloning ${skillSource.description}...');
 
     final tempDir = Directory(p.join(root, '.steward_temp'));
     if (tempDir.existsSync()) {
@@ -223,7 +273,7 @@ class InstallCommand extends Command<void> {
     } else if (!commitPin) {
       cloneArgs.addAll(['--depth', '1', '--branch', trimmedPin]);
     }
-    cloneArgs.addAll([repoUrl, tempDir.path]);
+    cloneArgs.addAll([skillSource.cloneTarget, tempDir.path]);
 
     final cloneRes = await Process.run('git', cloneArgs);
     if (cloneRes.exitCode != 0) {
@@ -274,11 +324,14 @@ class InstallCommand extends Command<void> {
         }
         if (targetsToInstall.isEmpty &&
             File(p.join(tempDir.path, 'SKILL.md')).existsSync()) {
-          targetsToInstall.add(p.basename(repoUrl).replaceAll('.git', ''));
+          targetsToInstall.add(
+            p.basename(skillSource.cloneTarget).replaceAll('.git', ''),
+          );
         }
       } else {
         targetsToInstall.addAll(skillNames);
       }
+      validateSkillNames(targetsToInstall);
 
       final List<String> successfullyInstalled = [];
       for (final skillName in targetsToInstall) {
@@ -336,30 +389,13 @@ class InstallCommand extends Command<void> {
     final bool isLocal,
     final String skillName,
   ) {
+    validateSkillName(skillName);
     if (isLocal) {
-      return Directory(p.join(root, '.agents', 'skills', skillName));
+      return Directory(
+        resolveUnderRoot(root, p.join('.agents', 'skills', skillName)),
+      );
     }
-    return Directory(p.join(root, 'skills', skillName));
-  }
-
-  String _repoUrlForSource(final String source, final String root) {
-    final trimmed = source.trim();
-    if (trimmed.startsWith('http://') ||
-        trimmed.startsWith('https://') ||
-        trimmed.startsWith('ssh://') ||
-        trimmed.startsWith('git@') ||
-        trimmed.startsWith('file://')) {
-      return trimmed;
-    }
-
-    final localPath = p.isAbsolute(trimmed)
-        ? trimmed
-        : p.normalize(p.join(root, trimmed));
-    if (Directory(localPath).existsSync()) {
-      return localPath;
-    }
-
-    return 'https://github.com/$trimmed.git';
+    return Directory(resolveUnderRoot(root, p.join('skills', skillName)));
   }
 
   Future<bool> _copySkillDirectory(
