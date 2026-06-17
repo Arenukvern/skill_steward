@@ -69,6 +69,50 @@ void main() {
     expect(action['id'], 'doctor.local');
     expect(action['command'], isA<Map>());
   });
+
+  test(
+    'action run --json executes auto action with declared fs_write',
+    () async {
+      final markerPath = p.join(tempDir.path, 'marker.txt');
+      await File(
+        p.join(tempDir.path, 'steward.yaml'),
+      ).writeAsString(writableActionStewardV1(markerPath));
+      final buffer = StringBuffer();
+      final runner = CommandRunner<void>('steward', 'test')
+        ..addCommand(ActionCommand(buffer, tempDir));
+
+      await runner.run(['action', 'run', 'repo.write-marker', '--json']);
+
+      final payload = jsonDecode(buffer.toString()) as Map<String, dynamic>;
+      final execution = payload['execution'] as Map<String, dynamic>;
+      expect(payload['schema_version'], 'steward.action-run.v1');
+      expect(payload['status'], 'passed');
+      expect(payload['rejections'], isEmpty);
+      expect(execution['exit_code'], 0);
+      expect(execution['stdout'], contains('wrote-marker'));
+      expect(await File(markerPath).readAsString(), 'ok\n');
+    },
+  );
+
+  test('action run --json rejects non-auto network actions', () async {
+    await File(
+      p.join(tempDir.path, 'steward.yaml'),
+    ).writeAsString(networkActionStewardV1());
+    final buffer = StringBuffer();
+    final runner = CommandRunner<void>('steward', 'test')
+      ..addCommand(ActionCommand(buffer, tempDir));
+
+    await runner.run(['action', 'run', 'repo.network', '--json']);
+
+    final payload = jsonDecode(buffer.toString()) as Map<String, dynamic>;
+    expect(payload['schema_version'], 'steward.action-run.v1');
+    expect(payload['status'], 'rejected');
+    expect(payload['execution'], isNull);
+    expect(
+      payload['rejections'].toString(),
+      contains('effects.network is true'),
+    );
+  });
 }
 
 String validStewardV1() => '''
@@ -145,6 +189,177 @@ probes:
   quick:
     profile: quick
     actions: [doctor.local]
+diagnostics:
+  cases: {}
+unknown_cases:
+  path: .steward/unknown-cases/
+  retention: local
+provenance:
+  dependencies: []
+  artifacts: []
+  benchmarks: []
+''';
+
+String writableActionStewardV1(final String markerPath) =>
+    '''
+schema: steward/v1
+repo:
+  id: sample_repo
+  archetype: cli_tool
+harness:
+  name: steward
+  mode: cli
+  entrypoints:
+    cli: steward
+adoption:
+  status: adopting
+  owner: sample_repo
+  gate:
+    pillar: quality
+
+stewardship:
+  governance:
+    charter: AGENTS.md
+  knowledge:
+    docs_map: AGENTS.md
+  repo_quality:
+    contract_spec: steward.yaml
+    maturity_model: general_stewardship
+  skill_lifecycle:
+    installable_skills: true
+  quality:
+    validate: steward validate
+  harness:
+    enabled: true
+  release:
+    changelog: CHANGELOG.md
+  review_handoff:
+    moe_required_for_architecture: true
+  strategic_alignment:
+    vision_source: AGENTS.md
+  security:
+    action_effects: required
+  org:
+    owners: AGENTS.md
+actions:
+  repo.write-marker:
+    kind: command
+    desc: Write a marker file through a non-quick local action.
+    command:
+      argv: [/bin/sh, -c, 'printf "ok\\n" > "$markerPath"; printf "wrote-marker\\n"']
+      shell: false
+    cwd: .
+    effects:
+      fs_read: ["."]
+      fs_write: ["marker.txt"]
+      git: false
+      network: false
+      secrets: false
+      destructive: false
+    safety:
+      class: bounded_local
+      default_policy: auto
+      requires_confirmation: false
+    limits:
+      timeout_ms: 15000
+      max_output_bytes: 200000
+    outputs:
+      - id: stdout
+        kind: stream
+        required: true
+        retention: summary
+        format: text
+    evidence:
+      redact: []
+probes:
+  quick:
+    profile: quick
+    actions: []
+diagnostics:
+  cases: {}
+unknown_cases:
+  path: .steward/unknown-cases/
+  retention: local
+provenance:
+  dependencies: []
+  artifacts: []
+  benchmarks: []
+''';
+
+String networkActionStewardV1() => '''
+schema: steward/v1
+repo:
+  id: sample_repo
+  archetype: cli_tool
+harness:
+  name: steward
+  mode: cli
+  entrypoints:
+    cli: steward
+adoption:
+  status: adopting
+  owner: sample_repo
+  gate:
+    pillar: quality
+
+stewardship:
+  governance:
+    charter: AGENTS.md
+  knowledge:
+    docs_map: AGENTS.md
+  repo_quality:
+    contract_spec: steward.yaml
+    maturity_model: general_stewardship
+  skill_lifecycle:
+    installable_skills: true
+  quality:
+    validate: steward validate
+  harness:
+    enabled: true
+  release:
+    changelog: CHANGELOG.md
+  review_handoff:
+    moe_required_for_architecture: true
+  strategic_alignment:
+    vision_source: AGENTS.md
+  security:
+    action_effects: required
+  org:
+    owners: AGENTS.md
+actions:
+  repo.network:
+    kind: command
+    desc: Unsafe network action.
+    command:
+      argv: [/bin/echo, should-not-run]
+      shell: false
+    cwd: .
+    effects:
+      fs_read: ["."]
+      fs_write: []
+      git: false
+      network: true
+      secrets: false
+      destructive: false
+    safety:
+      class: bounded_local
+      default_policy: auto
+      requires_confirmation: false
+    limits:
+      timeout_ms: 10000
+      max_output_bytes: 200000
+    outputs:
+      - id: stdout
+        kind: stream
+        required: true
+        retention: summary
+        format: text
+    evidence:
+      redact: []
+probes:
+  quick:
+    profile: quick
+    actions: []
 diagnostics:
   cases: {}
 unknown_cases:
