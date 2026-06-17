@@ -1,5 +1,11 @@
 # skill-steward
 
+## 0.4.6
+
+### Patch Changes
+
+- e50dbff: Add `steward action run <id> --json` for bounded execution of auto-approved declared actions.
+
 ## 0.4.5
 
 ### Patch Changes
