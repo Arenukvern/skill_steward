@@ -1,5 +1,11 @@
 # skill-steward
 
+## 0.4.7
+
+### Patch Changes
+
+- feded9a: Teach and dogfood a skills-only agent bundle distribution pattern with local Codex, Cursor, Claude, and Open Plugin manifests.
+
 ## 0.4.6
 
 ### Patch Changes
