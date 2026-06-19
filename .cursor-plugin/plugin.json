@@ -1,0 +1,20 @@
+{
+  "name": "skill-steward",
+  "version": "0.4.5",
+  "description": "Engineering stewardship skills for agent-operated repositories.",
+  "author": {
+    "name": "Arenukvern",
+    "url": "https://github.com/Arenukvern/skill_steward"
+  },
+  "homepage": "https://github.com/Arenukvern/skill_steward",
+  "repository": "https://github.com/Arenukvern/skill_steward",
+  "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "stewardship",
+    "repo-quality",
+    "governance",
+    "validation"
+  ],
+  "skills": "./skills"
+}

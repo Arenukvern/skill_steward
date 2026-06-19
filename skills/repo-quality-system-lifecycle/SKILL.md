@@ -157,6 +157,7 @@ If an agent discovers friction, do not immediately create permanent automation. 
 |-------------------|------------|
 | Ambiguous direction | ADR, DESIGN FAQ, North Star clarification |
 | Repeated command confusion | DX FAQ, script, validation error message |
+| Repeated copy/install layout friction | Product-owned docs or local copy/init script first; promote to Steward tooling only after repeated, falsifiable cross-repo evidence |
 | Hidden local context | AGENTS map, docs map, concept doc |
 | Repeated structural duplication | Pattern review, public API boundary, package/module split, or deletion |
 | Repeated boilerplate | Template, schema, generator, lint rule, or test fixture |
@@ -235,6 +236,12 @@ Keep the two vocabularies distinct:
   Steward proof. If no product-native behavior, API, UI/visual, performance,
   release, or workflow surface changed or was directly proven, downgrade the
   outcome to stewardship support and return to the product owner surface.
+- For repeated skills/plugins/hooks/marketplace copy friction, prefer a
+  documented skill pattern or product-owned local copy/init script before adding
+  Steward CLI functionality. The owner repo should generate its host manifests,
+  cache-refresh notes, rollback steps, and install proof. A Steward skill can
+  teach the pattern; it should not turn one repo's installer into a new Steward
+  command without a Pattern Promotion Review and repeated cross-repo evidence.
 - For experiment campaigns, require a product-owned oracle/capture/metric before
   any product-acceleration claim. Summaries with only Steward docs, schemas,
   evals, or harness changes are `support_only: true`.

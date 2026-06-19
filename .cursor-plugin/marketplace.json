@@ -1,0 +1,11 @@
+{
+  "name": "skill-steward",
+  "plugins": [
+    {
+      "name": "skill-steward",
+      "source": ".",
+      "description": "Engineering stewardship skills for agent-operated repositories.",
+      "version": "0.4.5"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+id: plugin-marketplace-skills-only-install-dormant
+skill: plugin-marketplace-setup
+routing: should_not_trigger
+input: "Add one existing instruction package to my machine with the normal installer."
+rules:
+  - kind: file_exists
+    path: references/evals.md
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["npx skills add owner/repo --copy", "Open skills only"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["skills-only distribution"]

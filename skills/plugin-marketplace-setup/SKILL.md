@@ -75,6 +75,38 @@ Discovery also reads `.claude-plugin/plugin.json` and `.claude-plugin/marketplac
 
 Reference product layout: product repository marketplace distribution configs.
 
+## Workflow: repo-local copy/init pattern
+
+Use this when a product repo needs agents to generate a local installer like
+`flutter-mcp-toolkit init`: a repo-owned script that copies canonical skills,
+host plugin manifests, MCP config, hooks, assets, and marketplace catalog files
+into Codex/Cursor/Claude layouts.
+
+1. **Inspect source truth** — find canonical `skills/`, existing `plugins/`,
+   `.mcp.json`/`mcp.json`, hooks, package/version metadata, assets, and current
+   install docs. Do not generate host manifests from memory alone.
+2. **Choose the channel** — use `npx skills add --copy` for skills-only distribution; use a repo-local copy/init script when skills must ship with
+   MCP, hooks, commands, or assets; use host marketplace manifests only when the
+   repo needs Codex/Cursor/Claude plugin install flows.
+3. **Create a product-owned plugin payload** — keep canonical skills in the
+   product repo, then copy or generate the install payload under `plugin/` or
+   `plugins/{id}/` with `.codex-plugin/`, `.cursor-plugin/`,
+   `.claude-plugin/`, optional `.plugin/`, `skills/`, hooks, MCP config, and
+   assets.
+4. **Write explicit local scripts** — generate an idempotent script owned by the
+   product repo (`tool/install_agent_bundle.dart`, `bin/<tool> init`, or
+   equivalent). The script should plan/copy directories, create host manifest
+   directories, write marketplace root files, and report changed paths.
+5. **Document exact install commands** — include separate Codex, Cursor, Claude,
+   and skills-only commands. Name cache refresh/reinstall behavior and rollback
+   steps.
+6. **Keep claims bounded** — "local copy pattern implemented" does not mean
+   public marketplace submission, host review, runtime MCP correctness, or
+   fresh-agent proof.
+
+See [local-copy-pattern.md](references/local-copy-pattern.md) for a reusable
+layout, script skeleton, and validation checklist.
+
 ## Codex plugin notes
 
 - Keep only `plugin.json` in `.codex-plugin/`; put `skills/`, `.mcp.json`, `.app.json`, `hooks/`, and `assets/` at plugin root.
@@ -157,6 +189,7 @@ Canonical skills stay in `skills/`. See [templates/plugin/](../../templates/plug
 | Plugins | Meta hooks (`steward-validate-on-save`) | Full bundle: MCP + skills + init |
 | CLI | `steward validate` | `[toolkit-cli] init <agent>` |
 | Marketplace | Public Git + skills.sh | Claude/Codex git + Cursor submit + Smithery |
+| Copy/init scripts | Skills teach the pattern | Product repo owns generated script, host payloads, and install proof |
 
 Do not put product MCP servers in Skill Steward. Cross-promote: `npx skills add arenukvern/skill_steward --skill mcp-harness-repo-maintainer`.
 
@@ -179,6 +212,10 @@ Do not put product MCP servers in Skill Steward. Cross-promote: `npx skills add 
 
 - Putting hooks only in `skills/` and expecting `npx skills` to wire Cursor
 - Duplicating `SKILL.md` inside every plugin directory
+- Calling a repo-local copy/init script "public marketplace readiness" without
+  host install proof
+- Moving product-specific installer code into `steward_cli` before repeated
+  repo evidence proves a generic Steward module is useful
 - Private marketplace docs that only mention one agent
 - Eternal plan files in marketplace repos (see [plan hygiene](../../docs/start_here/executable-plans.mdx))
 
@@ -186,6 +223,7 @@ Do not put product MCP servers in Skill Steward. Cross-promote: `npx skills add 
 
 - [distribution-matrix.md](references/distribution-matrix.md) — full channel table
 - [manifest-snippets.md](references/manifest-snippets.md) — minimal JSON/YAML examples
+- [local-copy-pattern.md](references/local-copy-pattern.md) — repo-local copy/init script pattern
 - [ADR 0004](../../docs/decisions/0004-plugin-packaging-and-install-path.mdx)
 - [ADR 0006](../../docs/decisions/0006-guild-harness-meta-vs-product-clis.mdx)
 - [skills.sh customization docs](https://www.skills.sh/docs/customize)

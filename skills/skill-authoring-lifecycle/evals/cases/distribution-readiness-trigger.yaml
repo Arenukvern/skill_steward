@@ -1,0 +1,15 @@
+id: skill-authoring-distribution-readiness-trigger
+skill: skill-authoring-lifecycle
+routing: should_trigger
+input: "Review this SKILL.md before it is copied into a Codex/Cursor/Claude plugin bundle and marketplace layout."
+rules:
+  - kind: file_exists
+    path: references/evals.md
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["Distribution Readiness"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["copied directory", "agent-specific assumptions", "host manifests"]
+  - kind: description_includes_any
+    terms: ["marketplace readiness", "SKILL.md"]
