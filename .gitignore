@@ -4,10 +4,14 @@ node_modules/
 .env
 .env.*
 !.env.example
-.agents/
+.agents/*
+!.agents/plugins/
+!.agents/plugins/marketplace.json
 .cursor/skills/
+.cursor/plugins/local/
 .claude/skills/
 .codex/skills/
+.codex/plugins/
 .steward/*
 !.steward/events.example.jsonl
 !.steward/self-model.example.json

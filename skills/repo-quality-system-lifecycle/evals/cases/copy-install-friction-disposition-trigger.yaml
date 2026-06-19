@@ -1,0 +1,16 @@
+id: repo-quality-copy-install-friction-disposition-trigger
+skill: repo-quality-system-lifecycle
+routing: should_trigger
+input: "Three product repos keep repeating the same Codex/Cursor/Claude copy script for skills, hooks, plugin manifests, and marketplace files. Decide whether to document a skill pattern, keep it native, create repo-local scripts, or promote Steward CLI tooling."
+rules:
+  - kind: file_exists
+    path: references/evals.md
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["Repeated copy/install layout friction"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["product-owned local copy/init script", "Pattern Promotion Review"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["repeated cross-repo evidence"]

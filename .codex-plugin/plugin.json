@@ -1,0 +1,38 @@
+{
+  "name": "skill-steward",
+  "version": "0.4.5",
+  "description": "Engineering stewardship skills and repo-quality patterns for agent-operated repositories.",
+  "author": {
+    "name": "Arenukvern",
+    "url": "https://github.com/Arenukvern/skill_steward"
+  },
+  "homepage": "https://github.com/Arenukvern/skill_steward",
+  "repository": "https://github.com/Arenukvern/skill_steward",
+  "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "stewardship",
+    "repo-quality",
+    "governance",
+    "validation"
+  ],
+  "skills": "./skills",
+  "interface": {
+    "displayName": "Skill Steward",
+    "shortDescription": "Stewardship skills for agent-operated repositories.",
+    "longDescription": "Skill Steward provides portable Agent Skills for charter, decisions, docs, quality gates, release legibility, handoff, and evidence-backed contract proof. This plugin exposes the skills only; hooks remain explicit manual opt-in through the repo's plugins directory.",
+    "developerName": "Arenukvern",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/Arenukvern/skill_steward",
+    "privacyPolicyURL": "https://github.com/Arenukvern/skill_steward/blob/main/LICENSE",
+    "termsOfServiceURL": "https://github.com/Arenukvern/skill_steward/blob/main/LICENSE",
+    "defaultPrompt": [
+      "Use Skill Steward to establish the smallest honest repo-quality contract for this repository.",
+      "Use Skill Steward to decide whether repeated repo friction belongs in docs, a check, a skill, a local script, or native tooling."
+    ]
+  }
+}

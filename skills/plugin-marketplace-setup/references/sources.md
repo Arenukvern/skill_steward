@@ -11,8 +11,11 @@
 | Cursor plugins | https://cursor.com/docs/plugins.md | Cursor `.cursor-plugin` layout and team marketplaces |
 | Zed skills | https://zed.dev/docs/ai/skills | Zed skill paths, trust, flat layout, limitations |
 | Vercel skills CLI | https://github.com/vercel-labs/skills | Agent install flags and path matrix |
+| mcp_flutter marketplace distribution | https://github.com/Arenukvern/mcp_flutter/blob/main/docs/ai_agents/marketplace_distribution.mdx | Product-owned init/copy pattern across Codex, Cursor, Claude, and skills-only installs |
+| mcp_flutter marketplace copy | https://github.com/Arenukvern/mcp_flutter/blob/main/docs/ai_agents/marketplace_copy.yaml | Product manifest copy source of truth pattern |
 
 ## Changelog
 
 - 2026-05-29: initial
 - 2026-06-05: refreshed Codex, Cursor, Zed, Open Plugin, and skills CLI marketplace references
+- 2026-06-19: added product-owned local copy/init pattern references from mcp_flutter

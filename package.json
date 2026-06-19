@@ -16,6 +16,7 @@
     "docs:check": "node node_modules/@docs.page/cli/dist/cli.js check",
     "steward:analyze": "cd packages/steward_cli && dart pub get && dart analyze --fatal-infos",
     "steward:test": "cd packages/steward_cli && dart pub get && dart test",
+    "agent:bundle:check": "dart run tool/install_agent_bundle.dart all --check",
     "changeset": "changeset",
     "changeset:version": "changeset version && dart run packages/steward_cli/tool/sync_versions.dart",
     "changeset:status": "changeset status",

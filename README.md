@@ -119,6 +119,40 @@ npx skills add arenukvern/skill_steward -y
 
 Installed paths depend on the agent, for example `.agents/skills/`, `.cursor/skills/`, `.claude/skills/`, or `~/.codex/skills/`. Hooks under `plugins/` are separate; see [plugins/README.md](plugins/README.md). More commands live in [docs/DX_FAQ.mdx](docs/DX_FAQ.mdx).
 
+### Agent plugin bundle
+
+Skill Steward also carries optional Codex, Cursor, Claude Code, and Open Plugin
+manifests for local plugin-style skill installs. This is a repo-local
+distribution helper, not public marketplace approval and not a replacement for
+`npx skills`. Hooks remain explicit manual opt-in through `plugins/`; they are
+not bundled into the agent plugin manifests.
+
+```bash
+# Preview generated local agent payloads
+pnpm run agent:bundle:check
+
+# Materialize local plugin/skill payloads for all supported targets
+dart run tool/install_agent_bundle.dart all
+
+# Or one target at a time
+dart run tool/install_agent_bundle.dart cursor
+dart run tool/install_agent_bundle.dart codex
+dart run tool/install_agent_bundle.dart claude-code
+dart run tool/install_agent_bundle.dart agents-skills
+```
+
+Host catalog manifests live at `.agents/plugins/marketplace.json`,
+`.claude-plugin/marketplace.json`, and `.cursor-plugin/marketplace.json`.
+Plugin manifests live at `.codex-plugin/plugin.json`,
+`.claude-plugin/plugin.json`, `.cursor-plugin/plugin.json`, and
+`.plugin/plugin.json`.
+
+Rollback is intentionally plain: delete the generated local payload directory
+for the target (`.cursor/plugins/local/skill-steward`,
+`.codex/plugins/cache/local/skill-steward/local`,
+`.claude/skills/skill-steward`, or copied `.agents/skills/*`) and reinstall via
+the native command you want to use.
+
 ## What belongs here
 
 Meta, governance, and process capabilities only. Domain content belongs in the governed product/domain repository when it is that repo's product. Skill Steward should not become a React, Flutter, cloud, or vendor API tutorial catalog.
@@ -182,6 +216,8 @@ skill_steward/              # GitHub: Arenukvern/skill_steward
 ├── skills/                 # Installable stewardship skills
 ├── packages/steward_cli/   # Dart `steward` CLI package
 ├── plugins/                # Editor plugins and wiring hooks
+├── tool/install_agent_bundle.dart
+│                            # Repo-local Codex/Cursor/Claude copy helper
 ├── templates/              # Scaffolding templates for skills/plugins
 ├── scripts/                # Utility shell scripts
 ├── install.sh              # Precompiled binary bootstrapper script

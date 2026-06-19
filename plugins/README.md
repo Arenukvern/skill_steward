@@ -11,6 +11,12 @@
 
 **Scaffold:** [`templates/plugin/`](../templates/plugin/)
 
+**Host manifests:** repo-level plugin manifests live in `.codex-plugin/`,
+`.cursor-plugin/`, `.claude-plugin/`, and `.plugin/`. Marketplace catalog roots
+live in `.agents/plugins/marketplace.json`, `.cursor-plugin/marketplace.json`,
+and `.claude-plugin/marketplace.json`. Use `dart run tool/install_agent_bundle.dart --check`
+to preview the local copy layout before materializing generated payloads.
+
 `plugin.yaml` uses `schema: steward/plugin-manifest/v1`: it must reference canonical skill ids, target agent surfaces, lifecycle actions, and any shipped wiring artifacts. `pnpm run validate` fails when plugin manifests drift.
 
 **Shipped:**

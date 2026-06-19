@@ -85,6 +85,20 @@ Review a skill package before merge or publish to skills.sh.
 - [ ] `references/sources.md` with URLs for external claims
 - [ ] Install command documented: `npx skills add arenukvern/skill_steward --skill <name>`
 
+### Distribution Readiness
+- [ ] Skill can run from a copied directory without relying on repo-relative paths
+  outside its own package unless those paths are explicitly documented
+- [ ] Agent-specific assumptions are isolated to optional metadata or references,
+  not baked into the core workflow
+- [ ] If the skill may be bundled inside a product plugin, the product repo owns
+  the copy/init script and host manifests; the skill remains canonical in
+  `skills/{name}/`
+- [ ] Marketplace or plugin-readiness language distinguishes skills-only
+  install, local copy/init scripts, host manifests, and public marketplace
+  submission proof
+- [ ] Vendor-specific claims cite current Codex, Cursor, Claude, Zed, or
+  `npx skills` sources in `references/sources.md`
+
 ### Scripts (if present)
 - [ ] Shebang present (`bash` or `node`)
 - [ ] `set -euo pipefail` for bash
