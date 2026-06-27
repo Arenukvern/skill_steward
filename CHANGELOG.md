@@ -1,5 +1,11 @@
 # skill-steward
 
+## 0.4.8
+
+### Patch Changes
+
+- f368248: Clarify Skill Steward's repository-as-library metaphor in README and docs.
+
 ## 0.4.7
 
 ### Patch Changes
