@@ -6,6 +6,12 @@
 
 **Engineering Stewardship for agent-operated repositories** — apps, libraries, tools, plugins, harnesses, and meta repos. Skill Steward gives humans and agents a shared structural layer for charter, decisions, docs, quality gates, release legibility, safe handoff, and evidence-backed contract proof.
 
+![Watercolor tutorial comic for Skill Steward using a library metaphor: a growing repo starts with a few books, grows into complexity, then gains shelves, signs, catalog cards, local tools when useful, honest proof, and a curated path so future humans and agents can find, prove, and hand off work.](docs/brand/assets/infographics/skill-steward-comic-explainer.jpg)
+
+One simple way to understand Skill Steward: it gives humans and agents a shared stewardship language for repositories as they grow. A small repo can be like a few books on a table; as it grows, it needs shelves, signs, a catalog, local tools when they are useful, and organizing principles so people can find the right thing, keep proof honest, and hand work off without getting lost.
+
+In this repo, start with the map, choose the skill that matches the job, use the repo's native validation, and leave the next person or agent a clear path.
+
 It ships through [Agent Skills](https://agentskills.io/) plus a bounded `steward` CLI for repo-local registration, validation, contract proof, adoption checks, and read-only ecology routing. Agent Skills are the portable delivery surface; the object of stewardship is the repository as a whole.
 
 **Charter:** [docs/NORTH_STAR.mdx](docs/NORTH_STAR.mdx) · **Docs:** [docs.page/arenukvern/skill_steward](https://docs.page/arenukvern/skill_steward) · [docs.json](docs.json)  
