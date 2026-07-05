@@ -261,6 +261,13 @@ Or using the globally installed binary:
 steward validate
 ```
 
+
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Arenukvern/skill_steward&type=Date)](https://www.star-history.com/#Arenukvern/skill_steward&Date)
+
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
