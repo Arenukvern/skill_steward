@@ -1,5 +1,16 @@
 # skill-steward
 
+## 0.5.0
+
+### Minor Changes
+
+- 2fd7186: Add storytelling-ethics-lifecycle for public stories of any work: creation ethics, application ethics, story hygiene, and generated/curated/authored disclosure.
+
+### Patch Changes
+
+- 57200eb: Fail `steward validate` when skill frontmatter is YAML that `npx skills` would skip.
+- 95220a1: Quote repo-quality-system-lifecycle skill description so npx skills can parse it.
+
 ## 0.4.8
 
 ### Patch Changes
