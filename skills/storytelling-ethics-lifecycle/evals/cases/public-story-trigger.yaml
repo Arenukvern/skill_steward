@@ -1,0 +1,19 @@
+id: storytelling-ethics-public-story-trigger
+skill: storytelling-ethics-lifecycle
+routing: should_trigger
+input: "Write a public story of how this repository was created and disclose what was generated vs curated"
+rules:
+  - kind: file_exists
+    path: references/evals.md
+  - kind: file_exists
+    path: references/role-ledger.md
+  - kind: file_exists
+    path: references/disclosure-template.md
+  - kind: description_includes_any
+    terms: ["story", "generated", "curated", "public"]
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["Role ledger", "Creation-ethics", "Application-ethics", "Disclosure"]
+  - kind: body_excludes_all
+    path: SKILL.md
+    terms: ["unlock", "revolutionary", "supercharge", "ultimate"]

@@ -1,0 +1,12 @@
+id: storytelling-ethics-adr-not-story
+skill: storytelling-ethics-lifecycle
+routing: should_not_trigger
+input: "Write an ADR for this accepted architectural decision"
+rules:
+  - kind: file_exists
+    path: references/evals.md
+  - kind: body_includes_any
+    path: SKILL.md
+    terms: ["repository-governance-lifecycle"]
+  - kind: description_includes_any
+    terms: ["Do not use for ADRs"]

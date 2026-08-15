@@ -53,6 +53,7 @@ npx skills add arenukvern/skill_steward --skill repository-governance-lifecycle
 | `multi-agent-handoff` | Spawning and communicating with subagents, handoffs |
 | `plugin-marketplace-setup` | Skill and plugin marketplace distribution setup |
 | `skill-source-citations` | Sourcing, attribution, and managing knowledge provenance |
+| `storytelling-ethics-lifecycle` | Public stories of work: creation/application ethics, story hygiene, generated vs curated disclosure |
 | `vision-alignment-foresight` | Vision vs implementation, intent, evidence, and future-fit analysis |
 
 ## Add or change a skill (checklist)

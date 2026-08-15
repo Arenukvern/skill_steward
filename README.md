@@ -169,7 +169,7 @@ Meta, governance, and process capabilities only. Domain content belongs in the g
 |--------|-----------------|
 | Governance | [repository-governance-lifecycle](skills/repository-governance-lifecycle/) |
 | Steward continuity | [steward-continuity-boundary-lifecycle](skills/steward-continuity-boundary-lifecycle/) |
-| Knowledge | [skill-source-citations](skills/skill-source-citations/), ADR/FAQ/docs lattice |
+| Knowledge | [skill-source-citations](skills/skill-source-citations/), [storytelling-ethics-lifecycle](skills/storytelling-ethics-lifecycle/), ADR/FAQ/docs lattice |
 | Repo quality contracts | [repo-quality-system-lifecycle](skills/repo-quality-system-lifecycle/), [docs/repo-quality-contracts.mdx](docs/repo-quality-contracts.mdx) |
 | Skill lifecycle | [skill-authoring-lifecycle](skills/skill-authoring-lifecycle/), [plugin-marketplace-setup](skills/plugin-marketplace-setup/) |
 | Quality gates | [skill-eval-improve](skills/skill-eval-improve/), `steward validate`, `steward eval` |
@@ -194,6 +194,7 @@ Start with [`repo-quality-system-lifecycle`](skills/repo-quality-system-lifecycl
 | [harness-engineering-lifecycle](skills/harness-engineering-lifecycle/) | Generalize a proven local harness across producer/consumer repos and dogfood it safely. |
 | [skill-authoring-lifecycle](skills/skill-authoring-lifecycle/) | Scaffold and review Agent Skills with valid `SKILL.md`, sources, evals, and registry entries. |
 | [skill-source-citations](skills/skill-source-citations/) | Maintain durable citations in `references/sources.md` when authoring skills. |
+| [storytelling-ethics-lifecycle](skills/storytelling-ethics-lifecycle/) | Steward public stories of any work: creation ethics, application ethics, and generated/curated/authored disclosure. |
 | [skill-eval-improve](skills/skill-eval-improve/) | Improve Agent Skills through validate, rule-based eval cases, plugin-eval, prompt suites, and bounded edits. |
 | [plugin-marketplace-setup](skills/plugin-marketplace-setup/) | Design public/private skill and plugin distribution across supported agents and marketplaces. |
 | [release-changelog-harness](skills/release-changelog-harness/) | Maintain release legibility, changelog intent, versioning, and binary distribution. |

@@ -50,6 +50,9 @@ A: They are **thin interfaces** to the same **core**—CLI for CI and scripts, a
 **Q: Why require `references/sources.md` per skill?**
 A: Research and external knowledge must survive beyond one chat—links are provenance for humans and agents. Skill `skill-source-citations` defines the practice; `skill-eval-improve` adds eval/improve loops (plugin-eval, SkillOpt-style gates). Validator warns if `sources.md` is missing.
 
+**Q: Why is there a storytelling skill in a stewardship repo?**
+A: Public work often publishes not only code but ethics, decisions, and the path that produced them. That narrative is operational knowledge: it needs creation ethics (consent, no invented biography, no stolen voice), application ethics (no hype, no hiding generators, no test-as-triumph), and maintenance (walk claims, update the generated/curated ledger, stop the story becoming a second spec). Skill `storytelling-ethics-lifecycle` is abstract and domain-agnostic. It is not a fiction workshop and not an ADR replacement. [NORTH_STAR](NORTH_STAR) still refuses domain tutorial catalogs.
+
 **Q: Why keep each skill small and focused?**
 A: Agents load name + description first; bloated skills waste context. One outcome per skill; depth in `references/` or separate skills.
 
