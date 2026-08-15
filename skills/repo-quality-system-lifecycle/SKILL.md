@@ -1,6 +1,7 @@
 ---
 name: repo-quality-system-lifecycle
-description: Establish or audit a structural quality contract for any agent-operated engineering repository: app, library, CLI/tool, plugin, harness, or meta repo. Use when a repo needs charter clarity, docs/decision ownership, type-native validation gates, evidence paths, safe action policy, cold-start legibility, maturity proof, repair-loop routing, consumer/producer owner-boundary routing, command surface evolution, evolutionary simplicity, or a repo ecology pass to decide what should be compressed, merged, removed, updated, created, retired, or moved to checks.
+description: >-
+  Establish or audit a structural quality contract for any agent-operated engineering repository: app, library, CLI/tool, plugin, harness, or meta repo. Use when a repo needs charter clarity, docs/decision ownership, type-native validation gates, evidence paths, safe action policy, cold-start legibility, maturity proof, repair-loop routing, consumer/producer owner-boundary routing, command surface evolution, evolutionary simplicity, or a repo ecology pass to decide what should be compressed, merged, removed, updated, created, retired, or moved to checks.
 license: MIT
 type: governance
 metadata:

@@ -1,7 +1,11 @@
 import 'dart:io';
 import 'package:yaml/yaml.dart';
 
-/// Very lightweight YAML-ish frontmatter parser (matches the Node behavior exactly).
+/// Lightweight frontmatter parser for SKILL.md.
+///
+/// Line-oriented `key: value` extraction matches the original Node validator.
+/// The block is also parsed as YAML so `npx skills` (js-yaml) skip-cases fail
+/// `steward validate` instead of being swallowed.
 ///
 /// Only supports simple `key: value` lines inside the first `--- ... ---` block.
 /// Indented continuation lines (e.g. under a `metadata:` map) are ignored because
@@ -52,29 +56,67 @@ ParsedFrontmatter parseFrontmatter(final String content) {
     fields[key] = value;
   }
 
-  // Supplement/override with YAML parser to support block scalars (e.g. >-)
-  try {
-    final doc = loadYaml(raw);
-    if (doc is Map) {
-      doc.forEach((final key, final value) {
-        if (value is! Map && value is! List && value != null) {
-          // Standardize and flatten description fields to single line if multi-line
-          var parsedValue = value.toString();
-          if (key.toString() == 'description') {
-            parsedValue = parsedValue.replaceAll(RegExp(r'\s+'), ' ').trim();
+  // Supplement/override with YAML parser to support block scalars (e.g. >-).
+  // Parse failures must be errors: `npx skills` uses js-yaml and skips the skill.
+  String? yamlError = _compactMappingError(raw);
+  if (yamlError == null) {
+    try {
+      final doc = loadYaml(raw);
+      if (doc is Map) {
+        doc.forEach((final key, final value) {
+          if (value is! Map && value is! List && value != null) {
+            // Standardize and flatten description fields to single line if multi-line
+            var parsedValue = value.toString();
+            if (key.toString() == 'description') {
+              parsedValue = parsedValue.replaceAll(RegExp(r'\s+'), ' ').trim();
+            }
+            fields[key.toString()] = parsedValue;
           }
-          fields[key.toString()] = parsedValue;
-        }
-      });
+        });
+      }
+    } on YamlException catch (e) {
+      yamlError = 'Invalid YAML frontmatter (npx skills would skip this skill): ${e.message}';
+    } on Object catch (e) {
+      yamlError = 'Invalid YAML frontmatter (npx skills would skip this skill): $e';
     }
-  } on Object catch (_) {}
+  }
 
   return ParsedFrontmatter(
     fields: fields,
     body: body,
     raw: raw,
+    error: yamlError,
     lineCount: lineCount,
   );
+}
+
+/// Detects the js-yaml class of bug that skips a skill:
+/// unquoted `key: value` where value itself contains `: `.
+///
+/// Example: `description: ... repository: app, library ...`
+String? _compactMappingError(final String raw) {
+  for (final line in raw.split(RegExp(r'\r?\n'))) {
+    final match = RegExp(r'^([A-Za-z0-9_-]+):\s+(.*)$').firstMatch(line);
+    if (match == null) {
+      continue;
+    }
+    final value = match.group(2)!;
+    if (value.isEmpty) {
+      continue;
+    }
+    final startsSafe = value.startsWith('"') ||
+        value.startsWith("'") ||
+        value.startsWith('>') ||
+        value.startsWith('|') ||
+        value.startsWith('{') ||
+        value.startsWith('[');
+    if (!startsSafe && value.contains(': ')) {
+      return 'Invalid YAML frontmatter (npx skills would skip this skill): '
+          'unquoted "${match.group(1)}" value contains ": ". '
+          'Quote the scalar or use a folded block (`>-`).';
+    }
+  }
+  return null;
 }
 
 /// Reads and parses SKILL.md from the given skill directory.
