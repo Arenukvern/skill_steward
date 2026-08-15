@@ -67,6 +67,10 @@ final Map<String, FixtureExpectation> _expectations = {
     errorContains: [],
     warningContains: ['Missing frontmatter field: license'],
   ),
+  'invalid-yaml-compact-mapping': (
+    errorContains: ['Invalid YAML frontmatter'],
+    warningContains: [],
+  ),
 };
 
 void main() {
@@ -185,6 +189,7 @@ void main() {
             'bad-name-mismatch',
             'invalid-name-format',
             'missing-frontmatter',
+            'invalid-yaml-compact-mapping',
           }),
         );
 

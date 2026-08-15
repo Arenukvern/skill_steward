@@ -25,6 +25,7 @@ Each subdirectory under `evals/fixtures/validate/` represents one test case (a s
 | `missing-skill-md/` | error "Missing required file SKILL.md" | Complete absence of SKILL.md (no file at all) |
 | `registry-drift/` | `errors: []`; registry-level warning "Skill ... not listed in skills.sh.json groupings" (when registry is consulted) | Registry drift: well-formed skill dir whose `name` is absent from skills.sh.json |
 | `missing-description/` | error "Missing required frontmatter field: description" (name check still runs) | Required `description` field missing from frontmatter (parse succeeds) |
+| `invalid-yaml-compact-mapping/` | error containing "Invalid YAML frontmatter" and "npx skills" | Unquoted `description` contains `repository: app` — the js-yaml skip that hid `repo-quality-system-lifecycle` |
 
 ## How to use these evals
 
@@ -50,5 +51,6 @@ Each subdirectory under `evals/fixtures/validate/` represents one test case (a s
 - SKILL.md body very short (<50 chars) → warning (add step-by-step instructions)
 - Missing required file SKILL.md entirely → hard error
 - Registry drift warnings (skill dir not in skills.sh.json groupings, or vice-versa)
+- Frontmatter must be valid YAML (`loadYaml` + no unquoted compact mappings). `npx skills` skips skills js-yaml cannot parse.
 
 These fixtures are **not** Tier-1 skill evals. They are meta-evals for the repository's own validation harness.
