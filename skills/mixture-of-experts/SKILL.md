@@ -23,7 +23,7 @@ Skill Steward procedures assume three portable lenses. If you only have this ski
 
 **Install-world rule:** never rely on `../../docs/core/...` alone — those paths only work inside a skill_steward checkout. Prefer the digests above and absolute docs.page URLs.
 
-These lenses are not a new doctrine skill (see DESIGN_FAQ). This skill *applies* them; the digests *teach* them when the docs tree is not present.
+These lenses are not a new doctrine skill (see [DESIGN_FAQ](https://docs.page/arenukvern/skill_steward/DESIGN_FAQ)). This skill *applies* them; the digests *teach* them when the docs tree is not present.
 
 The Mixture of Experts pattern is a powerful critical-thinking framework. It prevents tunnel vision by forcing multiple independent "expert personas" to analyze a single topic from completely different angles, before cross-referencing their findings.
 
