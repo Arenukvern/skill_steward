@@ -23,7 +23,7 @@ Skill Steward procedures assume three portable lenses. If you only have this ski
 
 **Install-world rule:** never rely on `../../docs/core/...` alone — those paths only work inside a skill_steward checkout. Prefer the digests above and absolute docs.page URLs.
 
-These lenses are not a new doctrine skill (see DESIGN_FAQ). This skill *applies* them; the digests *teach* them when the docs tree is not present.
+These lenses are not a new doctrine skill (see [DESIGN_FAQ](https://docs.page/arenukvern/skill_steward/DESIGN_FAQ)). This skill *applies* them; the digests *teach* them when the docs tree is not present.
 
 This is the central nervous system for governing an agent-operated repository. It applies to apps, libraries, tools, plugins, harnesses, and meta repos; Skill Steward itself remains a structural stewardship repo, not a domain tutorial catalog. It unifies ethics, branding, architectural decision logs (ADRs), and living documentation (FAQs) into a single, cohesive loop: **Decide → Document → Cleanup**.
 
@@ -64,7 +64,7 @@ Never leave stale planning artifacts (`task.md`, `implementation_plan.md`) as pe
 - Before upgrading steward, adoption, harness-ready, or maturity language in an ADR/evidence note, run `steward claim check --claim <claim> --evidence <path> --json`. Treat `not_rejected` as a negative-gate result, not acceptance.
 
 ### 6. Route Evidence Deliberately
-Do not turn every run, plan, or discussion into evidence. Use [Evidence artifacts](../../docs/core/evidence-artifacts.mdx) as the routing rule:
+Do not turn every run, plan, or discussion into evidence. Use [Evidence artifacts](https://docs.page/arenukvern/skill_steward/core/evidence-artifacts) as the routing rule:
 
 - ADR: durable decision, trade-off, status, or consequence.
 - FAQ: standing why/how that humans and agents will ask again.
@@ -74,7 +74,7 @@ Do not turn every run, plan, or discussion into evidence. Use [Evidence artifact
 - Evidence artifact: real run proof, blocked state, pattern review, PDSA loop, postmortem, unknown case, or reference that protects a claim or changes future behavior.
 - Delete/remove: completed checklist, stale plan, or template once useful truth has been extracted.
 
-When you create or materially update an evidence artifact, use the canonical envelope in [Evidence artifacts](../../docs/core/evidence-artifacts.mdx). ADR 0023 explains why that envelope exists.
+When you create or materially update an evidence artifact, use the canonical envelope in [Evidence artifacts](https://docs.page/arenukvern/skill_steward/core/evidence-artifacts). ADR 0023 explains why that envelope exists.
 
 ## Install
 
