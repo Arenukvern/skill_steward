@@ -11,6 +11,20 @@ metadata:
 
 # Repository Governance Lifecycle
 
+## Concept bridge (read before procedural steps)
+
+Skill Steward procedures assume three portable lenses. If you only have this skill installed, load the digests in `references/` (they ship with the skill). Full essays live on docs.page.
+
+| Lens | One-line | When to apply | Digest | Full |
+|------|----------|---------------|--------|------|
+| **Engineering Stewardship** | Keep the repo ecology understandable and improvable via observe → decide → update → prove → preserve | Friction repeats or survives one session | [stewardship-loop.md](references/stewardship-loop.md) | [docs.page](https://docs.page/arenukvern/skill_steward/core/stewardship-loop) · [North Star](https://docs.page/arenukvern/skill_steward/NORTH_STAR) |
+| **Evolutionary simplicity** | Evolve toward lower future confusion (split / compress / promote / demote / delete / stay native) — not always fewer parts | Before adding, splitting, merging, or deleting a surface | [evolutionary-simplicity.md](references/evolutionary-simplicity.md) | [docs.page](https://docs.page/arenukvern/skill_steward/core/evolutionary-simplicity) |
+| **Generational architecture** | Choose the smallest useful layer (G0–G5); higher is not automatically better; mature stewardship can move down | Before promoting codegen, harness actions, or new abstractions | [generational-architecture-ladder.md](references/generational-architecture-ladder.md) | [docs.page](https://docs.page/arenukvern/skill_steward/core/generational-architecture-ladder) |
+
+**Install-world rule:** never rely on `../../docs/core/...` alone — those paths only work inside a skill_steward checkout. Prefer the digests above and absolute docs.page URLs.
+
+These lenses are not a new doctrine skill (see DESIGN_FAQ). This skill *applies* them; the digests *teach* them when the docs tree is not present.
+
 This is the central nervous system for governing an agent-operated repository. It applies to apps, libraries, tools, plugins, harnesses, and meta repos; Skill Steward itself remains a structural stewardship repo, not a domain tutorial catalog. It unifies ethics, branding, architectural decision logs (ADRs), and living documentation (FAQs) into a single, cohesive loop: **Decide → Document → Cleanup**.
 
 Whenever an agent proposes or executes a structural shift, claim change, durable policy change, or docs-lattice change, they must walk this loop. Routine repo repairs should keep the original goal and native gate first; use this governance loop only when the repair changes durable ownership, policy, evidence, ADR/FAQ truth, or plan hygiene.
@@ -46,7 +60,7 @@ Never leave stale planning artifacts (`task.md`, `implementation_plan.md`) as pe
 - For stale or overlapping non-plan docs, choose one disposition before editing: keep, merge, move to ADR, move to FAQ, move to skill, move to check, move to evidence, move to consumer proof, or delete.
 - Ask what existing doc can shrink or disappear because of this change.
 - Keep canonical architecture in the owning repo; consumer repos should carry adoption proof, local deltas, blocked state, and links to the owner.
-- For broader surface-shape decisions such as split, compress, promote, demote, delete, or stay native, route through [repo-quality-system-lifecycle](../repo-quality-system-lifecycle/SKILL.md) and [Evolutionary simplicity](../../docs/core/evolutionary-simplicity.mdx) instead of inventing a governance-only doctrine.
+- For broader surface-shape decisions such as split, compress, promote, demote, delete, or stay native, route through [repo-quality-system-lifecycle](../repo-quality-system-lifecycle/SKILL.md) and [Evolutionary simplicity](references/evolutionary-simplicity.md) ([full](https://docs.page/arenukvern/skill_steward/core/evolutionary-simplicity)) instead of inventing a governance-only doctrine.
 - Before upgrading steward, adoption, harness-ready, or maturity language in an ADR/evidence note, run `steward claim check --claim <claim> --evidence <path> --json`. Treat `not_rejected` as a negative-gate result, not acceptance.
 
 ### 6. Route Evidence Deliberately
