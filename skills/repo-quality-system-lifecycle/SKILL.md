@@ -1,1 +1,1 @@
-SEE_FILE:/tmp/rqs_push.md
+LOAD_FROM:/tmp/rqs_push.md
