@@ -107,7 +107,7 @@ This project is indexed by GitNexus as **skill_steward** (3025 symbols, 5611 rel
 ## Resources
 
 | Resource | Use for |
-|----------|---------||
+|----------|---------|
 | `gitnexus://repo/skill_steward/context` | Codebase overview, check index freshness |
 | `gitnexus://repo/skill_steward/clusters` | All functional areas |
 | `gitnexus://repo/skill_steward/processes` | All execution flows |
