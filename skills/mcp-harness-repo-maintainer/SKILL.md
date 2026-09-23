@@ -1,1 +1,1 @@
-{{file:/tmp/mcp_push.md}}
+SEE_FILE:/tmp/mcp_push.md
