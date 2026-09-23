@@ -1,6 +1,6 @@
 # Evolutionary simplicity (portable digest)
 
-**Canonical:** https://docs.page/arenukvern/skill_steward/core/evolutionary-simplicity  
+**Canonical:** https://docs.page/arenukvern/skill_steward/core/evolutionary-simplicity
 **Status:** concept digest for installed skills · full article stays on docs.page
 
 Simplicity is not a shape; it is a **direction of evolution**. Evolve toward lower future confusion — not always fewer parts.

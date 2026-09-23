@@ -1,7 +1,7 @@
 # Generational architecture ladder (portable digest)
 
-**Canonical:** https://docs.page/arenukvern/skill_steward/core/generational-architecture-ladder  
-**Parent pattern:** [Evolutionary simplicity](evolutionary-simplicity.md)  
+**Canonical:** https://docs.page/arenukvern/skill_steward/core/generational-architecture-ladder
+**Parent pattern:** [Evolutionary simplicity](evolutionary-simplicity.md)
 **Status:** concept digest for installed skills · full article stays on docs.page
 
 Help a repo grow, split, compress, demote, or delete the **next useful layer** only when the product has earned it. Higher is not better by default.
@@ -24,7 +24,6 @@ Help a repo grow, split, compress, demote, or delete the **next useful layer** o
 - Can language feature, native command, FAQ, or error message solve it?
 - Would deleting, collapsing, or moving knowledge closer to behavior cost less?
 - If generating: is the source schema smaller and more stable than the output?
-- If harnessing: does it improve a real proof path, or become a detour?
 - What falsifier shows the new layer is wrong, stale, or not worth keeping?
 
 Unclear → observation / unknown case. Do not promote.
