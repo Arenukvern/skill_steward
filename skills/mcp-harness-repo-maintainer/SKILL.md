@@ -1,1 +1,1 @@
-@file:///tmp/mcp_push.md
+PLACEHOLDER_REPLACE_VIA_NEXT
