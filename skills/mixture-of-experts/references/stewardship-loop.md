@@ -1,7 +1,7 @@
 # Stewardship loop (portable digest)
 
-**Canonical:** https://docs.page/arenukvern/skill_steward/core/stewardship-loop  
-**Charter:** https://docs.page/arenukvern/skill_steward/NORTH_STAR  
+**Canonical:** https://docs.page/arenukvern/skill_steward/core/stewardship-loop
+**Charter:** https://docs.page/arenukvern/skill_steward/NORTH_STAR
 **Status:** concept digest for installed skills · full article stays on docs.page
 
 **Engineering Stewardship** is the loop that keeps a repository understandable and improvable for humans and agents — product plus the ecology around it (tools, docs, decisions, tests, release, debugging, agent rules).

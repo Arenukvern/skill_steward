@@ -24,6 +24,7 @@ Help a repo grow, split, compress, demote, or delete the **next useful layer** o
 - Can language feature, native command, FAQ, or error message solve it?
 - Would deleting, collapsing, or moving knowledge closer to behavior cost less?
 - If generating: is the source schema smaller and more stable than the output?
+- If harnessing: does it improve a real proof path, or become a detour?
 - What falsifier shows the new layer is wrong, stale, or not worth keeping?
 
 Unclear → observation / unknown case. Do not promote.

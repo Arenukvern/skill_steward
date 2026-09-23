@@ -1,7 +1,7 @@
 # Generational architecture ladder (portable digest)
 
-**Canonical:** https://docs.page/arenukvern/skill_steward/core/generational-architecture-ladder  
-**Parent pattern:** [Evolutionary simplicity](evolutionary-simplicity.md)  
+**Canonical:** https://docs.page/arenukvern/skill_steward/core/generational-architecture-ladder
+**Parent pattern:** [Evolutionary simplicity](evolutionary-simplicity.md)
 **Status:** concept digest for installed skills · full article stays on docs.page
 
 Help a repo grow, split, compress, demote, or delete the **next useful layer** only when the product has earned it. Higher is not better by default.
