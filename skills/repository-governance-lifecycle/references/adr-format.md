@@ -166,4 +166,4 @@ npx skills add arenukvern/skill_steward --skill repository-governance-lifecycle
 
 ## Sources
 
-See [references/sources.md](references/sources.md). When researching, follow `skill-source-citations`.
+See [sources.md](sources.md). When researching, follow `skill-source-citations`.
