@@ -1,1 +1,1 @@
-PLACEHOLDER
+{{file:/tmp/mcp_push.md}}

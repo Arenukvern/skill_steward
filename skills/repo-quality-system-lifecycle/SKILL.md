@@ -1,1 +1,1 @@
-LOAD_FROM:/tmp/rqs_push.md
+{{file:/tmp/rqs_push.md}}
