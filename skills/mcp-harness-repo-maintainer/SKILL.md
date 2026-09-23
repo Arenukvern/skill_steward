@@ -1,1 +1,1 @@
-{{file:/tmp/mcp_push.md}}
+LOAD_FROM_/workspace/INVOKE_0.json_CONTENT_FIELD
