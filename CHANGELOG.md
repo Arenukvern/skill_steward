@@ -1,5 +1,11 @@
 # skill-steward
 
+## 0.5.1
+
+### Patch Changes
+
+- c1629bb: Reconnect core concepts into cold-installed skills with portable digests and Concept bridges; harden checkout-only docs links to absolute docs.page URLs and repair governance reference hrefs.
+
 ## 0.5.0
 
 ### Minor Changes
