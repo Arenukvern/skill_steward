@@ -1,7 +1,7 @@
 ---
 name: repo-quality-system-lifecycle
 description: >-
-  Establish or audit a structural quality contract for any agent-operated engineering repository: app, library, CLI/tool, plugin, harness, or meta repo. Use when a repo needs charter clarity, docs/decision ownership, type-native validation gates, evidence paths, safe action policy, cold-start legibility, maturity proof, repair-loop routing, consumer/producer owner-boundary routing, command surface evolution, evolutionary simplicity, or a repo ecology pass to decide what should be compressed, merged, removed, updated, created, retired, or moved to checks.
+  Establish or audit a structural quality contract for any agent-operated engineering repository: app, library, CLI/tool, plugin, harness, or meta repo. Use when a repo needs charter clarity, docs/decision ownership, type-native validation gates, evidence paths, safe action policy, cold-start legibility, maturity proof, repair-loop routing, consumer/producer owner-boundary routing, command surface evolution, evolutionary simplicity (see references/evolutionary-simplicity.md), or a repo ecology pass to decide what should be compressed, merged, removed, updated, created, retired, or moved to checks.
 license: MIT
 type: governance
 metadata:
@@ -11,6 +11,20 @@ metadata:
 ---
 
 # Repo Quality System Lifecycle
+
+## Concept bridge (read before procedural steps)
+
+Skill Steward procedures assume three portable lenses. If you only have this skill installed, load the digests in `references/` (they ship with the skill). Full essays live on docs.page.
+
+| Lens | One-line | When to apply | Digest | Full |
+|------|----------|---------------|--------|------|
+| **Engineering Stewardship** | Keep the repo ecology understandable and improvable via observe → decide → update → prove → preserve | Friction repeats or survives one session | [stewardship-loop.md](references/stewardship-loop.md) | [docs.page](https://docs.page/arenukvern/skill_steward/core/stewardship-loop) · [North Star](https://docs.page/arenukvern/skill_steward/NORTH_STAR) |
+| **Evolutionary simplicity** | Evolve toward lower future confusion (split / compress / promote / demote / delete / stay native) — not always fewer parts | Before adding, splitting, merging, or deleting a surface | [evolutionary-simplicity.md](references/evolutionary-simplicity.md) | [docs.page](https://docs.page/arenukvern/skill_steward/core/evolutionary-simplicity) |
+| **Generational architecture** | Choose the smallest useful layer (G0–G5); higher is not automatically better; mature stewardship can move down | Before promoting codegen, harness actions, or new abstractions | [generational-architecture-ladder.md](references/generational-architecture-ladder.md) | [docs.page](https://docs.page/arenukvern/skill_steward/core/generational-architecture-ladder) |
+
+**Install-world rule:** never rely on `../../docs/core/...` alone — those paths only work inside a skill_steward checkout. Prefer the digests above and absolute docs.page URLs.
+
+These lenses are not a new doctrine skill (see [DESIGN_FAQ](https://docs.page/arenukvern/skill_steward/DESIGN_FAQ)). This skill *applies* them; the digests *teach* them when the docs tree is not present.
 
 Use this skill to make a repository legible, safe, and improvable for humans and agents. It is broader than Agent Skill authoring and narrower than product implementation.
 
@@ -80,7 +94,7 @@ Write the smallest contract that can be checked.
 
 For multi-repo roadmaps, also record dependency order, source-of-truth repo, consumer gate, dirty-state policy, and do-not-touch exceptions. Do not claim a downstream consumer is ready from local path dependency success when the upstream package or binary still lacks publish evidence. The producer repo owns architecture, public contract, release provenance, and compatibility claims; consumer repos own adoption proof, local deltas, blocked state, and cutover commands.
 
-Use [docs/repo-quality-contracts.mdx](../../docs/repo-quality-contracts.mdx) as the normative spec.
+Use [Repo quality contracts](https://docs.page/arenukvern/skill_steward/repo-quality-contracts) as the normative spec.
 
 For product repos, do not count Steward activity as product acceleration unless
 it lands in the owner checkout as either a source-owned product delta or a
@@ -118,7 +132,7 @@ Then ask the Skeptic questions:
 - If a harness action is proposed, does it help the original task or a named future problem class?
 - What falsifier or held-out task will show the promoted layer is stale, wrong, or not useful?
 
-Use [docs/core/evolutionary-simplicity.mdx](../../docs/core/evolutionary-simplicity.mdx) for the parent movement rule and [docs/core/generational-architecture-ladder.mdx](../../docs/core/generational-architecture-ladder.mdx) for the architecture stage model. Higher layers are not automatically better; mature stewardship can move down the ladder.
+Use [evolutionary simplicity](references/evolutionary-simplicity.md) ([full](https://docs.page/arenukvern/skill_steward/core/evolutionary-simplicity)) for the parent movement rule and the [generational architecture ladder](references/generational-architecture-ladder.md) ([full](https://docs.page/arenukvern/skill_steward/core/generational-architecture-ladder)) for the architecture stage model. Higher layers are not automatically better; mature stewardship can move down the ladder.
 
 If the check rejects a proposed abstraction, promotes a new layer, updates an existing skill/tool, or changes durable repo policy, record a Pattern Promotion Review under `docs/evidence/pattern-promotion-review-YYYY-MM-DD-topic.mdx`. Keep it as evidence for a real run, not as a new skill or scorecard.
 
@@ -210,7 +224,7 @@ When `steward ecology snapshot --json` is available, use it as inventory only. T
 
 When `steward ecology route --json` emits `dispatch_lane_candidates`, treat them as disposable advisory hints derived from the same route facts. They are not write authorization, action candidates, backlog items, parent lane contracts, maturity evidence, or scheduler state. Use them only to make repo-wide pain legible for a parent agent, then assign real work through `multi-agent-handoff` or delete the scaffolding after synthesis. Do not generate or trust lane candidates from `leave_native`.
 
-For evidence surfaces, apply the envelope in [docs/core/evidence-artifacts.mdx](../../docs/core/evidence-artifacts.mdx). Prefer `move to check` over `move to evidence` when the same deterministic drift will recur; prefer a current ledger over many historical notes when the reader only needs the present weakest true claim.
+For evidence surfaces, apply the envelope in [Evidence artifacts](https://docs.page/arenukvern/skill_steward/core/evidence-artifacts). Prefer `move to check` over `move to evidence` when the same deterministic drift will recur; prefer a current ledger over many historical notes when the reader only needs the present weakest true claim.
 
 When proof includes maintainer-local paths, temp replays, or one workstation's setup, keep that context in the current ledger or historical evidence and label it as maintainer-local. Create or update a public reproducibility card only when a public reader needs to audit the claim from durable anchors: public repo URL, fetchable commit SHA, portable command, and artifact hash or CI artifact name.
 

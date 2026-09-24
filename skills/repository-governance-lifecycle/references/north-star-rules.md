@@ -46,7 +46,7 @@ If a doc paragraph could be replaced by reading a file or running an example, **
 
 ## Doc lattice (layers)
 
-Build only layers the repo needs. See [references/layer-catalog.md](references/layer-catalog.md).
+Build only layers the repo needs. See the [Doc lattice](https://docs.page/arenukvern/skill_steward/core/doc-lattice) concept (layer catalog).
 
 | Layer | Typical path | Holds |
 |-------|--------------|--------|
@@ -107,7 +107,7 @@ Done?  →  ADR (why) | DESIGN/DX FAQ | code/CI | skill/plugin/harness
 2. **Documentation router** table → North Star, FAQs, decisions, standards, key skills
 3. **Non-negotiables** (3–5 bullets): validate before PR, meta-only scope, plan hygiene (extract & remove), no secrets
 4. **Install paths** table
-5. Link: “Skill authoring detail → [docs/STANDARDS.mdx](../../docs/STANDARDS.mdx)”
+5. Link: “Skill authoring detail → [STANDARDS](https://docs.page/arenukvern/skill_steward/STANDARDS)”
 
 Move long skill-creation prose out of AGENTS—never grow AGENTS into a skill tutorial.
 
@@ -144,11 +144,10 @@ npx skills add arenukvern/skill_steward --skill repository-governance-lifecycle
 
 ## References
 
-- [Product documentation lattice analysis](references/product-doc-lattice.md)
-- [Layer catalog](references/layer-catalog.md)
-- [SSOT anti-duplication rules](references/ssot-rules.md)
+- [Doc lattice](https://docs.page/arenukvern/skill_steward/core/doc-lattice) — product documentation lattice + layer catalog
+- [Repo quality contracts](https://docs.page/arenukvern/skill_steward/repo-quality-contracts) — SSOT / anti-duplication posture
 - [FAQ-driven development article](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl)
 
 ## Sources
 
-See [references/sources.md](references/sources.md). When researching, follow `skill-source-citations`.
+See [sources.md](sources.md). When researching, follow `skill-source-citations`.

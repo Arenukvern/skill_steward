@@ -38,7 +38,7 @@ AI agents and humans should collaboratively guide the repository's ethical lifec
 3.  **Enforce as Practice:** Build custom mechanical gates (linters, pre-save validations, clear error logs) that guide builders to remediate violations.
 4.  **Audit & Refine:** Monitor boundary drift and periodically refine the constraints via architectural decision records (ADRs) as project needs shift.
 
-*For detailed guidance on executing this workflow, see the reference guide: [Ethics as an Applicable Science and Practice](references/applicable-science.md).*
+*For related steward ethical boundaries, see [ADR 0020](https://docs.page/arenukvern/skill_steward/decisions/0020-ethical-boundaries-steward-personalities-and-tool-delegation). The elicitation → constraint → gate workflow above is the in-skill digest; a separate applicable-science sibling was never shipped.*
 
 ---
 
@@ -114,7 +114,8 @@ Implement these four operational rules during the development lifecycle:
 
 ## References
 
-- [Ethics as a Living Science and Stewardship Practice](references/applicable-science.md) — Comprehensive guide on eliciting, translating, and refining codebase constraints.
+- [ADR 0020 — Ethical steward boundaries](https://docs.page/arenukvern/skill_steward/decisions/0020-ethical-boundaries-steward-personalities-and-tool-delegation) — personalities, tool delegation, and ethical edges
+- [North Star](https://docs.page/arenukvern/skill_steward/NORTH_STAR) — charter boundaries and ethical governance model
 
 ---
 
@@ -126,4 +127,4 @@ npx skills add arenukvern/skill_steward --skill repository-governance-lifecycle
 
 ## Sources
 
-See [references/sources.md](references/sources.md). When researching, follow `skill-source-citations`.
+See [sources.md](sources.md). When researching, follow `skill-source-citations`.

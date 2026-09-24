@@ -31,6 +31,20 @@ paths:
 
 # Action Contract & Harness Repo Maintainer
 
+## Concept bridge (read before procedural steps)
+
+Skill Steward procedures assume three portable lenses. If you only have this skill installed, load the digests in `references/` (they ship with the skill). Full essays live on docs.page.
+
+| Lens | One-line | When to apply | Digest | Full |
+|------|----------|---------------|--------|------|
+| **Engineering Stewardship** | Keep the repo ecology understandable and improvable via observe → decide → update → prove → preserve | Friction repeats or survives one session | [stewardship-loop.md](references/stewardship-loop.md) | [docs.page](https://docs.page/arenukvern/skill_steward/core/stewardship-loop) · [North Star](https://docs.page/arenukvern/skill_steward/NORTH_STAR) |
+| **Evolutionary simplicity** | Evolve toward lower future confusion (split / compress / promote / demote / delete / stay native) — not always fewer parts | Before adding, splitting, merging, or deleting a surface | [evolutionary-simplicity.md](references/evolutionary-simplicity.md) | [docs.page](https://docs.page/arenukvern/skill_steward/core/evolutionary-simplicity) |
+| **Generational architecture** | Choose the smallest useful layer (G0–G5); higher is not automatically better; mature stewardship can move down | Before promoting codegen, harness actions, or new abstractions | [generational-architecture-ladder.md](references/generational-architecture-ladder.md) | [docs.page](https://docs.page/arenukvern/skill_steward/core/generational-architecture-ladder) |
+
+**Install-world rule:** never rely on `../../docs/core/...` alone — those paths only work inside a skill_steward checkout. Prefer the digests above and absolute docs.page URLs.
+
+These lenses are not a new doctrine skill (see [DESIGN_FAQ](https://docs.page/arenukvern/skill_steward/DESIGN_FAQ)). This skill *applies* them; the digests *teach* them when the docs tree is not present.
+
 Build and maintain repo-local action contracts and harnesses where agents execute and humans steer. The historical `mcp-` name remains because many adopters arrive through MCP work, but this skill is not MCP-only. For general app, library, tool, plugin, or meta-repo stewardship baselines, use `repo-quality-system-lifecycle` first; use this skill only when typed actions, probes, benchmarks, or CLI/MCP parity are in scope.
 
 ## Core principle (action-contract and harness repos)
@@ -59,7 +73,7 @@ changed or was directly proven.
 
 **Skeptic before promotion:** A missing capability is a harness gap only after smaller layers fail. First ask whether the fix belongs in a native command, error message, FAQ, docs map, public API, schema/codegen, or deletion/collapse. Promote a Steward action, MCP tool, or benchmark only when it improves a real proof path and carries a falsifier.
 
-**Evolutionary simplicity for interfaces:** Split core entrypoints when ownership, proof, effects, cadence, or audience diverge. Compress CLI/MCP/help surfaces when one user or CI intent remains, but preserve structured child outcomes so wrappers do not flatten proof, effects, or non-claims.
+**Evolutionary simplicity for interfaces ([digest](references/evolutionary-simplicity.md)):** Split core entrypoints when ownership, proof, effects, cadence, or audience diverge. Compress CLI/MCP/help surfaces when one user or CI intent remains, but preserve structured child outcomes so wrappers do not flatten proof, effects, or non-claims.
 
 ## Core Beliefs & Culture
 
@@ -74,21 +88,21 @@ changed or was directly proven.
 Human intent (prompt, plan, review)
         │
         ▼
-┌───────────────────┐
+┌────────────────────┐
 │ Skills + AGENTS   │  Map & procedures (when to do what)
-└─────────┬─────────┘
+└────────┬───────────┘
           ▼
-┌───────────────────┐
+┌────────────────────┐
 │ CLI               │  doctor, exec, validate, contracts (deterministic)
-└─────────┬─────────┘
+└────────┬───────────┘
           ▼
-┌───────────────────┐
+┌────────────────────┐
 │ MCP server        │  fmt_* / tools for chat agents (same schemas)
-└─────────┬─────────┘
+└────────┬───────────┘
           ▼
-┌───────────────────┐
+┌────────────────────┐
 │ App / runtime     │  Legible UI, logs, metrics per worktree (optional)
-└───────────────────┘
+└────────────────────┘
 ```
 
 ## Mixture of experts (pick one lead)
@@ -167,7 +181,7 @@ Raw `dart --packages=... bin/steward.dart` commands are local provenance only. I
    - Address invalid `steward.yaml`, dirty declared inputs, schema/output drift, or native launch failures through the owning surface before adding a new action, benchmark scenario, PDSA note, or evidence packet from the same detour.
 6. **Protect local state** — Strict benchmark inputs must be tracked and clean before execution: `steward.yaml`, file-backed scenario manifests, and any declared action inputs the benchmark reads. Local run outputs such as `.steward/benchmark-summaries/*.json`, observations, unknown cases, and action candidates stay local unless a review intentionally promotes a redacted artifact. If the repo has temporary dirty files that must remain in place, write a do-not-touch exception and keep those files out of action inputs. Protected local state is not a benchmark blocker unless it is declared as a contract or scenario input.
 7. **Grow from evidence** — If the probe exposes an unknown failure, capture an unknown case first. Promote a typed action candidate only after owner, effects, limits, redaction, validation command, and benchmark evidence exist. Do not promote diagnostics from the same run that discovered them.
-   - When evidence is promoted into docs, use the `status`, `evidence_type`, `claim_tested`, `proof_level`, `limitations`, `non_claims`, `next_disposition`, and `current_status_pointer` envelope from [docs/core/evidence-artifacts.mdx](../../docs/core/evidence-artifacts.mdx). Do not preserve raw logs, secrets, or private relational memory as evidence.
+   - When evidence is promoted into docs, use the `status`, `evidence_type`, `claim_tested`, `proof_level`, `limitations`, `non_claims`, `next_disposition`, and `current_status_pointer` envelope from [Evidence artifacts](https://docs.page/arenukvern/skill_steward/core/evidence-artifacts). Do not preserve raw logs, secrets, or private relational memory as evidence.
 
 ### Native deterministic gate promotion
 
@@ -196,7 +210,7 @@ Use the adoption-run/v2 evidence shape before making S/H claims. Record:
 - `capability`: id, class, scope, user value, and native owner.
 - `direct_problem_path`: declared surfaces and native gates used before raw shell exploration.
 - `tool_detour`: reason, attempts, artifacts, stop rule, and return-to-goal step.
-- `generational_architecture_check`: repeated pattern, smaller layer considered, deletion/collapse option, selected pattern layer, maintenance delta, and promotion guard.
+- `generational_architecture_check` ([ladder digest](references/generational-architecture-ladder.md)): repeated pattern, smaller layer considered, deletion/collapse option, selected pattern layer, maintenance delta, and promotion guard.
 - `outcome`: continue, refactor, stop, abandon, or promote.
 - `hot_path_claim`: problem class, created surface, falsifier, positive proof, observed effect, held-out or future task, and non-claims.
 

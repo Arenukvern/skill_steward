@@ -12,7 +12,7 @@ You are in **Skill Steward**: an Engineering Stewardship layer for agent-operate
 | **Repo quality + evidence claims** | [docs/repo-quality-contracts.mdx](docs/repo-quality-contracts.mdx) · [docs/core/evidence-ladder.mdx](docs/core/evidence-ladder.mdx) |
 | **Why** (standing decisions) | [docs/DESIGN_FAQ.mdx](docs/DESIGN_FAQ.mdx) · [docs/decisions/](docs/decisions/) |
 | **How** (install, validate, contribute, release) | [docs/DX_FAQ.mdx](docs/DX_FAQ.mdx) |
-| **Concepts** (stewardship loop, evidence, docs lattice) | [docs/core/](docs/core/) |
+| **Concepts** (evolutionary simplicity, generational architecture, stewardship loop, evidence, docs lattice) | [docs/core/](docs/core/) · [evolutionary simplicity](https://docs.page/arenukvern/skill_steward/core/evolutionary-simplicity) · [generational architecture](https://docs.page/arenukvern/skill_steward/core/generational-architecture-ladder) |
 | **Full doc index** | [docs/start_here/docs_map.mdx](docs/start_here/docs_map.mdx) |
 | **Plan hygiene** | [docs/start_here/executable-plans.mdx](docs/start_here/executable-plans.mdx) — any format; extract & remove when done |
 | **Which FAQ to edit** | [.cursor/rules/faq_usage.mdc](.cursor/rules/faq_usage.mdc) |

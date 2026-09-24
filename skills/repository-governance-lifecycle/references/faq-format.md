@@ -43,7 +43,7 @@ Example:
 A: Entities migrate between archetypes when components change. Location lookup (ArchetypeId + Row) stays O(1) after migration. Direct index would point at the wrong archetype.
 ```
 
-See [references/design-faq-format.md](references/design-faq-format.md).
+Canonical why surface: [DESIGN_FAQ](https://docs.page/arenukvern/skill_steward/DESIGN_FAQ) · [ADR 0002](https://docs.page/arenukvern/skill_steward/decisions/0002-adopt-faq-driven-documentation).
 
 ## DX_FAQ rules
 
@@ -53,7 +53,7 @@ See [references/design-faq-format.md](references/design-faq-format.md).
 
 Example locations: 🏠 World Hub, 🏭 Entity Factory, 🔍 Query Station.
 
-See [references/dx-faq-memory-palace.md](references/dx-faq-memory-palace.md).
+Canonical how surface (Memory Palace patterns): [DX_FAQ](https://docs.page/arenukvern/skill_steward/DX_FAQ).
 
 ## Repository layout
 
@@ -86,7 +86,7 @@ Monorepos: **one pair per package** that owns distinct design; **parent FAQs** o
 
 ### Rule: `faq_usage.mdc`
 
-`alwaysApply: true` router—when to open DESIGN vs DX. Copy from [references/faq-usage-rule-template.md](references/faq-usage-rule-template.md).
+`alwaysApply: true` router—when to open DESIGN vs DX. Pattern lives in [DESIGN_FAQ](https://docs.page/arenukvern/skill_steward/DESIGN_FAQ) (why) and [DX_FAQ](https://docs.page/arenukvern/skill_steward/DX_FAQ) (how); no separate template sibling ships with this skill.
 
 ### Commands (user-invoked)
 
@@ -106,7 +106,7 @@ Command bodies should state: *concise docs, why in DESIGN, how in DX, Memory Pal
 4. Add `.cursor/commands/update-faq.md` (copy intent from references).
 5. Link from parent `README` or `AGENTS.md` (router table: why → DESIGN, how → DX).
 
-Checklist: [references/bootstrap-checklist.md](references/bootstrap-checklist.md).
+Checklist: use the numbered steps above (also mirrored in [docs map](https://docs.page/arenukvern/skill_steward/start_here/docs_map) / [DESIGN_FAQ](https://docs.page/arenukvern/skill_steward/DESIGN_FAQ)).
 
 ## Workflow: update after code change
 
@@ -153,9 +153,9 @@ Repo-wide navigation and SSOT rules live in [repository-governance-lifecycle](..
 ## Further reading
 
 - Article: [FAQ-driven development](https://dev.to/arenukvern/faq-driven-development-or-new-old-way-to-write-docs-rules-prompts-25jl)
-- Skill Steward: [ADR 0002](../../docs/decisions/0002-adopt-faq-driven-documentation.mdx)
+- Skill Steward: [ADR 0002](https://docs.page/arenukvern/skill_steward/decisions/0002-adopt-faq-driven-documentation)
 - Reference implementation: ecsly (`DESIGN_FAQ.md` / `DX_FAQ.md` per package)
 
 ## Sources
 
-See [references/sources.md](references/sources.md). When researching, follow `skill-source-citations`.
+See [sources.md](sources.md). When researching, follow `skill-source-citations`.
