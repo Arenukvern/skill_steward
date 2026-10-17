@@ -425,6 +425,27 @@ npx skills add <skill-steward-checkout> -g -y
 | Pin to a branch or local clone | `npx skills add <path-or-url> --skill <name> -y` |
 | Refresh global skills from local clone | `npx skills add <skill-steward-checkout> -g -y` |
 
+### Removing skills that upstream deleted
+
+`npx skills update` refreshes living skills; it never deletes an installed skill that upstream removed (for example the 0.6.0 hard cut that deleted nine superseded directories). Remove those by name:
+
+```bash
+# Works for installs the skills CLI tracks (recent installs)
+npx skills remove <skill-name> -y
+
+# Older copies may be invisible to the CLI manifest; remove them directly.
+# Universal store (and any agent dirs that symlink into it):
+rm -rf ~/.agents/skills/<skill-name>
+rm -f ~/.zcode/skills/<skill-name>   # symlink, if present
+
+# Agent dirs that hold plain copies (no symlink), e.g. Codex:
+rm -rf ~/.codex/skills/<skill-name>
+```
+
+Then re-check for dangling symlinks: `find ~/.zcode/skills -maxdepth 1 -type l ! -exec test -e {} \; -print`.
+
+Current guild surface: `repo-quality-system-lifecycle`, `repository-governance-lifecycle`, `harness-engineering-lifecycle`, `skill-authoring-lifecycle`, `release-changelog-harness`, `multi-agent-handoff`. Anything else from this repo in an install dir is stale.
+
 **Not covered by `npx skills`:** Cursor hook plugins — `../plugins/README.md`.
 
 ## 🏗️ Add a skill (maintainers)
