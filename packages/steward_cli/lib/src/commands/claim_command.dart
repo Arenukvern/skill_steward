@@ -19,7 +19,8 @@ class ClaimCommand extends Command<void> {
   final name = 'claim';
 
   @override
-  final description = 'Run negative gates that reject stewardship overclaims.';
+  final description =
+      'Front door only when a readiness claim is about to be made. Negative gates reject overclaims.';
 }
 
 class ClaimCheckCommand extends Command<void> {

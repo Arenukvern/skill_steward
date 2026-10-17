@@ -16,6 +16,7 @@ BlockedExplanationPayload _$BlockedExplanationPayloadFromJson(
       json,
       allowedKeys: const [
         'schema_version',
+        'guidance',
         'root',
         'input',
         'blocked_by',
@@ -38,6 +39,12 @@ BlockedExplanationPayload _$BlockedExplanationPayloadFromJson(
         'non_claims',
         (v) => (v as List<dynamic>).map((e) => e as String).toList(),
       ),
+      guidance: $checkedConvert(
+        'guidance',
+        (v) => v == null
+            ? null
+            : OutputGuidancePayload.fromJson(v as Map<String, dynamic>),
+      ),
       schemaVersion: $checkedConvert(
         'schema_version',
         (v) => v as String? ?? 'steward.blocked.explain.v1',
@@ -58,6 +65,7 @@ Map<String, dynamic> _$BlockedExplanationPayloadToJson(
   BlockedExplanationPayload instance,
 ) => <String, dynamic>{
   'schema_version': instance.schemaVersion,
+  'guidance': ?instance.guidance?.toJson(),
   'root': instance.root,
   'input': instance.input,
   'blocked_by': instance.blockedBy,
@@ -74,6 +82,7 @@ const _$BlockedExplanationPayloadJsonSchema = {
       'type': 'string',
       'default': 'steward.blocked.explain.v1',
     },
+    'guidance': {r'$ref': r'#/$defs/OutputGuidancePayload'},
     'root': {'type': 'string'},
     'input': {'type': 'string'},
     'blocked_by': {'type': 'string'},
@@ -96,4 +105,53 @@ const _$BlockedExplanationPayloadJsonSchema = {
     'next_actions',
     'non_claims',
   ],
+  r'$defs': {
+    'OutputGuidancePayload': {
+      'type': 'object',
+      'properties': {
+        'schema_version': {
+          'type': 'string',
+          'default': 'steward.output-guidance.v1',
+        },
+        'advisory': {'type': 'boolean', 'default': true},
+        'original_goal': {'type': 'string'},
+        'source_revision': {'type': 'string'},
+        'observation': {'type': 'string'},
+        'basis': {
+          'type': 'array',
+          'items': {'type': 'string'},
+        },
+        'uncertainty': {
+          'type': 'array',
+          'items': {'type': 'string'},
+        },
+        'next_step': {'type': 'string'},
+        'next_argv': {
+          'type': 'array',
+          'items': {'type': 'string'},
+        },
+        'precondition': {'type': 'string'},
+        'verify_argv': {
+          'type': 'array',
+          'items': {'type': 'string'},
+        },
+        'verify_expected': {'type': 'string'},
+        'return_to_goal': {'type': 'string'},
+        'expand': {
+          'type': 'array',
+          'items': {'type': 'string'},
+        },
+      },
+      'required': [
+        'observation',
+        'basis',
+        'uncertainty',
+        'next_step',
+        'precondition',
+        'verify_expected',
+        'return_to_goal',
+        'expand',
+      ],
+    },
+  },
 };

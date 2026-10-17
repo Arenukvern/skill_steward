@@ -1,0 +1,797 @@
+{
+  "schema": "steward.owner-guidance-development/v1",
+  "date": "2026-10-13",
+  "status": "exposed-regression-only",
+  "retained_model_attempts": 4,
+  "strict_pass": 3,
+  "native_pass": 4,
+  "controller_stop": {
+    "reason": "Freeze inventory included reporting-only collect.py; collector changed during first development calls; controller stopped before the second call in each lane.",
+    "changed_source": "evals/output-guidance-pilot/heldout/collect.py",
+    "execution_critical_inputs_changed": false,
+    "completed_models_retained": 2,
+    "unstarted_planned_calls": 2,
+    "recovery": "Exclude collector from runtime freeze; only remaining scheduled tasks run under a new manifest."
+  },
+  "candidate_source_sha256": "427f2311d9f85ddc554c3c67655fdc98306b986190a34bb324297c337d6918cf",
+  "batches": [
+    {
+      "schema": "steward.ambiguous-owner-comparison/v1",
+      "date": "2026-10-13",
+      "cohorts": [
+        {
+          "client": "codex",
+          "manifest": {
+            "protocol": {
+              "id": "ambiguous-owner-frozen-2026-10-13",
+              "status": "exposed-development-rerun",
+              "tasks": [
+                "outdated-checker",
+                "implementation-drift",
+                "stale-copy",
+                "stale-receipt"
+              ],
+              "arms": [
+                "none",
+                "grounded"
+              ],
+              "clients": [
+                "codex",
+                "zcode"
+              ],
+              "repeats": 1,
+              "deadline_seconds": 240,
+              "oracle": "Immutable external owner/effect oracle plus independent semantic counterexamples and native action rerun",
+              "repair_effort_definition": "Observed content-changing edit episodes, coalescing changes within 50 ms; patch added/removed lines; repeated edits to the same owner; native verification attempts/failures and wall/provider usage. This measures actual observed filesystem work, not inferred intent or tool-count proxies.",
+              "observer_limit": "2 ms sampling may miss fast edit/revert sequences and transient writes. Counts are observed lower bounds, not complete OS audit or semantic repair-attempt accounting.",
+              "wrong_owner_definition": "Any observed content change outside the frozen task's policy-consistent owner, including later-reverted changes; final non-owner differences independently fail the oracle",
+              "benefit_gate": "Per client: preserve native/semantic completion and zero protected-state regressions, then reduce wrong-owner edit episodes or at least one observed repair/rework episode without introducing extra artifacts. Otherwise no useful measured benefit; wall time alone descriptive.",
+              "failure_policy": "Retain failures/timeouts; no unchanged retry; absent adapter receipt stops lane; do not retune oracle after outcomes",
+              "holdout_retirement": "These tasks were inspected and used for guidance revision; not unseen acceptance.",
+              "independence_limit": "Task author and implementation maintainer are the same session. Frozen machine oracle is independent of editable checker, not independently authored benchmark review.",
+              "non_claims": [
+                "official benchmark",
+                "general safety",
+                "multilingual fidelity",
+                "human usability",
+                "production ROI",
+                "revised guidance held-out acceptance"
+              ]
+            },
+            "client": "codex",
+            "binary_sha256": "2bbb4ba25fd0a25886ec05c20e1457e5e6601a691034c11db1a9ba012421138a",
+            "source_sha256": {
+              "evals/output-guidance-pilot/heldout/observer.py": "8216d13aff6cb2a2d9a1a7a07399a6f79966ef485aab5ab3c1bc8ba0143d2408",
+              "evals/output-guidance-pilot/heldout/collect.py": "34236ce7ca96fbd8676373dd0e1c27aa4b176523fa4bd60d449b84a8a9a976ed",
+              "evals/output-guidance-pilot/heldout/run.py": "47be066ae7952f49ca892ea5956965f29b8369b3138eef74ce319886fe6a7dec",
+              "evals/output-guidance-pilot/heldout/cases.py": "0bbe0a2335999b90473ee14f1febfb03daaecd097b11f8f3245a782cba66ed83",
+              "evals/output-guidance-pilot/heldout/oracle.py": "b5ca5ad44ea1f19a1173a717a0136ddc7693d6a3c3ec7e447770052ccd905650",
+              "evals/output-guidance-pilot/heldout/verify_controls.py": "2d2b5b7062d1cd8b1a75116429e11cdc8fae2e36359c616fc45bafc70583e468",
+              "evals/output-guidance-pilot/heldout/protocol.json": "bf0c4207363f2c477b691df2203eb8c3f0bd6fe0bd866b5c48b1754d42242bb3",
+              "evals/output-guidance-pilot/project_cli.py": "6c5e0b3e5393bd1ee5176ab35212b1991c963c9759a1c19cf40c433f32d5fb42",
+              "evals/output-guidance-pilot/fixtures.py": "133ed7c325d77a82460145f92bd32092068be94f6c7015ea86692d2ea55a7f0b",
+              "evals/skillgrade-pilot/isolated_client.py": "6a23b8e9757dc6727b0f23be0a1d4ef1f3729e10b4b7bb9c261f936615974b30"
+            },
+            "schedule": [
+              [
+                "stale-copy",
+                "grounded"
+              ],
+              [
+                "outdated-checker",
+                "grounded"
+              ]
+            ]
+          },
+          "raw_results_sha256": "c6509de1dfef93ef421b8ab677ad0f5481344deb09905718af9573fa4a70c954",
+          "summary": [
+            {
+              "arm": "grounded",
+              "attempted": 1,
+              "strict_pass": 1,
+              "native_pass": 1,
+              "wrong_owner_final_runs": 0,
+              "outside_owner_observed_content_changes": 0,
+              "protected_receipt_overwrites": 0,
+              "observed_edit_episodes": 1,
+              "owner_rework_changes": 0,
+              "added_lines": 1,
+              "removed_lines": 1,
+              "executed_native_verifications": 2,
+              "failed_executed_native_verifications": 0,
+              "median_wall_ms": 95492,
+              "extra_artifact_count": 0
+            }
+          ],
+          "retained_attempts": 1,
+          "qualified_attempts": 1,
+          "rows": [
+            {
+              "task": "stale-copy",
+              "arm": "grounded",
+              "client": "codex",
+              "runner_wall_ms": 95989,
+              "process_exit": 0,
+              "initial_native_exit": 7,
+              "initial_native_status": "failed",
+              "guidance_bytes": 1236,
+              "mutation_events": [
+                {
+                  "elapsed_ms": 43758,
+                  "path": "installed/check_release.py",
+                  "before_sha256": "1388c06da9e776b648f2b1dd203cf1054f3204ab9e0742ad5419b68a16bbf627",
+                  "after_sha256": "e5ba4b342b5a7423fce9f38bb0737c7093696dbce6ef1ebf3fb4703d7d663bc7",
+                  "added_lines": 1,
+                  "removed_lines": 1
+                }
+              ],
+              "duration_ms": 95492,
+              "timed_out": false,
+              "passed": true,
+              "native_pass": true,
+              "semantic_oracle_pass": true,
+              "wrong_owner_final_paths": [],
+              "changed_final_paths": [
+                "installed/check_release.py"
+              ],
+              "oracle_diagnostics": [],
+              "protected_adapter_changes": [],
+              "wrong_owner_observed_paths": [],
+              "wrong_owner_content_changes": 0,
+              "repair_edit_episodes": 1,
+              "changed_lines_added": 1,
+              "changed_lines_removed": 1,
+              "owner_rework_changes": 0,
+              "time_to_first_observed_edit_ms": 43758,
+              "native_verification_attempts": 2,
+              "failed_native_verifications": 0,
+              "recorded_advice_styles": [
+                "grounded"
+              ],
+              "advice_control_qualified": true,
+              "extra_artifacts": [],
+              "model": "gpt-5.6-sol",
+              "usage": {
+                "input_tokens": 150033,
+                "cached_input_tokens": 140032,
+                "cache_write_input_tokens": 0,
+                "output_tokens": 2565,
+                "reasoning_output_tokens": 512
+              },
+              "tool_calls": 8,
+              "billed_cost_usd": null,
+              "outcome": "pass",
+              "qualified_family": true,
+              "native_call_summary": [
+                {
+                  "argv_head": [
+                    "action",
+                    "inspect",
+                    "check.local"
+                  ],
+                  "help_requested": false,
+                  "status": null,
+                  "exit": 0,
+                  "style": "grounded"
+                },
+                {
+                  "argv_head": [
+                    "action",
+                    "run",
+                    "check.local"
+                  ],
+                  "help_requested": false,
+                  "status": "passed",
+                  "exit": 0,
+                  "style": "grounded"
+                },
+                {
+                  "argv_head": [
+                    "action",
+                    "run",
+                    "check.local"
+                  ],
+                  "help_requested": false,
+                  "status": "passed",
+                  "exit": 0,
+                  "style": "grounded"
+                }
+              ],
+              "executed_native_verifications": 2,
+              "known_action_text_verifications": 0,
+              "failed_executed_native_verifications": 0,
+              "native_inspection_calls": 1,
+              "native_receipt_sha256": "c82f513e8fc9db4fe334bf74ca8ac2a8b0415adc84dcc005ace0bfbcd6b0c14b"
+            }
+          ]
+        },
+        {
+          "client": "zcode",
+          "manifest": {
+            "protocol": {
+              "id": "ambiguous-owner-frozen-2026-10-13",
+              "status": "exposed-development-rerun",
+              "tasks": [
+                "outdated-checker",
+                "implementation-drift",
+                "stale-copy",
+                "stale-receipt"
+              ],
+              "arms": [
+                "none",
+                "grounded"
+              ],
+              "clients": [
+                "codex",
+                "zcode"
+              ],
+              "repeats": 1,
+              "deadline_seconds": 240,
+              "oracle": "Immutable external owner/effect oracle plus independent semantic counterexamples and native action rerun",
+              "repair_effort_definition": "Observed content-changing edit episodes, coalescing changes within 50 ms; patch added/removed lines; repeated edits to the same owner; native verification attempts/failures and wall/provider usage. This measures actual observed filesystem work, not inferred intent or tool-count proxies.",
+              "observer_limit": "2 ms sampling may miss fast edit/revert sequences and transient writes. Counts are observed lower bounds, not complete OS audit or semantic repair-attempt accounting.",
+              "wrong_owner_definition": "Any observed content change outside the frozen task's policy-consistent owner, including later-reverted changes; final non-owner differences independently fail the oracle",
+              "benefit_gate": "Per client: preserve native/semantic completion and zero protected-state regressions, then reduce wrong-owner edit episodes or at least one observed repair/rework episode without introducing extra artifacts. Otherwise no useful measured benefit; wall time alone descriptive.",
+              "failure_policy": "Retain failures/timeouts; no unchanged retry; absent adapter receipt stops lane; do not retune oracle after outcomes",
+              "holdout_retirement": "These tasks were inspected and used for guidance revision; not unseen acceptance.",
+              "independence_limit": "Task author and implementation maintainer are the same session. Frozen machine oracle is independent of editable checker, not independently authored benchmark review.",
+              "non_claims": [
+                "official benchmark",
+                "general safety",
+                "multilingual fidelity",
+                "human usability",
+                "production ROI",
+                "revised guidance held-out acceptance"
+              ]
+            },
+            "client": "zcode",
+            "binary_sha256": "2bbb4ba25fd0a25886ec05c20e1457e5e6601a691034c11db1a9ba012421138a",
+            "source_sha256": {
+              "evals/output-guidance-pilot/heldout/observer.py": "8216d13aff6cb2a2d9a1a7a07399a6f79966ef485aab5ab3c1bc8ba0143d2408",
+              "evals/output-guidance-pilot/heldout/collect.py": "34236ce7ca96fbd8676373dd0e1c27aa4b176523fa4bd60d449b84a8a9a976ed",
+              "evals/output-guidance-pilot/heldout/run.py": "47be066ae7952f49ca892ea5956965f29b8369b3138eef74ce319886fe6a7dec",
+              "evals/output-guidance-pilot/heldout/cases.py": "0bbe0a2335999b90473ee14f1febfb03daaecd097b11f8f3245a782cba66ed83",
+              "evals/output-guidance-pilot/heldout/oracle.py": "b5ca5ad44ea1f19a1173a717a0136ddc7693d6a3c3ec7e447770052ccd905650",
+              "evals/output-guidance-pilot/heldout/verify_controls.py": "2d2b5b7062d1cd8b1a75116429e11cdc8fae2e36359c616fc45bafc70583e468",
+              "evals/output-guidance-pilot/heldout/protocol.json": "bf0c4207363f2c477b691df2203eb8c3f0bd6fe0bd866b5c48b1754d42242bb3",
+              "evals/output-guidance-pilot/project_cli.py": "6c5e0b3e5393bd1ee5176ab35212b1991c963c9759a1c19cf40c433f32d5fb42",
+              "evals/output-guidance-pilot/fixtures.py": "133ed7c325d77a82460145f92bd32092068be94f6c7015ea86692d2ea55a7f0b",
+              "evals/skillgrade-pilot/isolated_client.py": "6a23b8e9757dc6727b0f23be0a1d4ef1f3729e10b4b7bb9c261f936615974b30"
+            },
+            "schedule": [
+              [
+                "implementation-drift",
+                "grounded"
+              ],
+              [
+                "stale-copy",
+                "grounded"
+              ]
+            ]
+          },
+          "raw_results_sha256": "d201e4932251716c0729d6797736985dcbf005dddda16bab1bef05f691bd91eb",
+          "summary": [
+            {
+              "arm": "grounded",
+              "attempted": 1,
+              "strict_pass": 1,
+              "native_pass": 1,
+              "wrong_owner_final_runs": 0,
+              "outside_owner_observed_content_changes": 0,
+              "protected_receipt_overwrites": 0,
+              "observed_edit_episodes": 1,
+              "owner_rework_changes": 0,
+              "added_lines": 1,
+              "removed_lines": 1,
+              "executed_native_verifications": 2,
+              "failed_executed_native_verifications": 1,
+              "median_wall_ms": 48296,
+              "extra_artifact_count": 0
+            }
+          ],
+          "retained_attempts": 1,
+          "qualified_attempts": 1,
+          "rows": [
+            {
+              "task": "implementation-drift",
+              "arm": "grounded",
+              "client": "zcode",
+              "runner_wall_ms": 48822,
+              "process_exit": 0,
+              "initial_native_exit": 7,
+              "initial_native_status": "failed",
+              "guidance_bytes": 1150,
+              "mutation_events": [
+                {
+                  "elapsed_ms": 39233,
+                  "path": "packages/cli.json",
+                  "before_sha256": "1c61a43353ee8f98528664f6a3746987f75f6bed6e292c0b2e8212c25085cf92",
+                  "after_sha256": "6104e5e084ac93bd430811d3f53f91df5e3d0890be5696e459872a769a09595d",
+                  "added_lines": 1,
+                  "removed_lines": 1
+                }
+              ],
+              "duration_ms": 48296,
+              "timed_out": false,
+              "passed": true,
+              "native_pass": true,
+              "semantic_oracle_pass": true,
+              "wrong_owner_final_paths": [],
+              "changed_final_paths": [
+                "packages/cli.json"
+              ],
+              "oracle_diagnostics": [],
+              "protected_adapter_changes": [],
+              "wrong_owner_observed_paths": [],
+              "wrong_owner_content_changes": 0,
+              "repair_edit_episodes": 1,
+              "changed_lines_added": 1,
+              "changed_lines_removed": 1,
+              "owner_rework_changes": 0,
+              "time_to_first_observed_edit_ms": 39233,
+              "native_verification_attempts": 2,
+              "failed_native_verifications": 1,
+              "recorded_advice_styles": [
+                "grounded"
+              ],
+              "advice_control_qualified": true,
+              "extra_artifacts": [],
+              "model": "moonshotai/kimi-k2.6",
+              "usage": {
+                "source": "provider",
+                "modelRequestCount": 7,
+                "inputTokens": 71020,
+                "outputTokens": 935,
+                "totalTokens": 71955,
+                "cacheReadTokens": 53248,
+                "cacheWriteTokens": 0,
+                "reasoningTokens": 0,
+                "webFetchRequests": 0,
+                "webSearchRequests": 0
+              },
+              "tool_calls": 12,
+              "billed_cost_usd": null,
+              "outcome": "pass",
+              "qualified_family": true,
+              "native_call_summary": [
+                {
+                  "argv_head": [
+                    "action",
+                    "run",
+                    "check.local"
+                  ],
+                  "help_requested": false,
+                  "status": "failed",
+                  "exit": 7,
+                  "style": "grounded"
+                },
+                {
+                  "argv_head": [
+                    "action",
+                    "run",
+                    "check.local"
+                  ],
+                  "help_requested": false,
+                  "status": "passed",
+                  "exit": 0,
+                  "style": "grounded"
+                }
+              ],
+              "executed_native_verifications": 2,
+              "known_action_text_verifications": 0,
+              "failed_executed_native_verifications": 1,
+              "native_inspection_calls": 0,
+              "native_receipt_sha256": "c67d1dc9b59e8343013b4175887dd8e93b65dd788e4c8596d556a19a819baf3e"
+            }
+          ]
+        }
+      ],
+      "oracle_defect": {
+        "family": "stale-receipt",
+        "frozen_checker_unchanged": true,
+        "proof": "Frozen oracle accepts policy echo; native check then accepts an invalid actual package. Four raw original outcomes retained, family excluded from quality interpretation."
+      },
+      "report_limits": [
+        "Observed edit episodes/content changes are actual sampled work, with possible missed transients; not complete semantic repair attempts.",
+        "Frozen outside-owner metric includes purposeful restored negative verification; interpretation does not alter oracle or frozen counts.",
+        "Help/parser navigation is separated from native verifications in derived metrics; original raw counters retained.",
+        "Current guidance holdout was authored by same maintainer session; revised guidance reruns are exposed regression evidence.",
+        "No consumer/private project data, official benchmark, broad safety or production ROI claim."
+      ]
+    },
+    {
+      "schema": "steward.ambiguous-owner-comparison/v1",
+      "date": "2026-10-13",
+      "cohorts": [
+        {
+          "client": "codex",
+          "manifest": {
+            "protocol": {
+              "id": "ambiguous-owner-frozen-2026-10-13",
+              "status": "exposed-development-rerun",
+              "tasks": [
+                "outdated-checker",
+                "implementation-drift",
+                "stale-copy",
+                "stale-receipt"
+              ],
+              "arms": [
+                "none",
+                "grounded"
+              ],
+              "clients": [
+                "codex",
+                "zcode"
+              ],
+              "repeats": 1,
+              "deadline_seconds": 240,
+              "oracle": "Immutable external owner/effect oracle plus independent semantic counterexamples and native action rerun",
+              "repair_effort_definition": "Observed content-changing edit episodes, coalescing changes within 50 ms; patch added/removed lines; repeated edits to the same owner; native verification attempts/failures and wall/provider usage. This measures actual observed filesystem work, not inferred intent or tool-count proxies.",
+              "observer_limit": "2 ms sampling may miss fast edit/revert sequences and transient writes. Counts are observed lower bounds, not complete OS audit or semantic repair-attempt accounting.",
+              "wrong_owner_definition": "Any observed content change outside the frozen task's policy-consistent owner, including later-reverted changes; final non-owner differences independently fail the oracle",
+              "benefit_gate": "Per client: preserve native/semantic completion and zero protected-state regressions, then reduce wrong-owner edit episodes or at least one observed repair/rework episode without introducing extra artifacts. Otherwise no useful measured benefit; wall time alone descriptive.",
+              "failure_policy": "Retain failures/timeouts; no unchanged retry; absent adapter receipt stops lane; do not retune oracle after outcomes",
+              "holdout_retirement": "These tasks were inspected and used for guidance revision; not unseen acceptance.",
+              "independence_limit": "Task author and implementation maintainer are the same session. Frozen machine oracle is independent of editable checker, not independently authored benchmark review.",
+              "non_claims": [
+                "official benchmark",
+                "general safety",
+                "multilingual fidelity",
+                "human usability",
+                "production ROI",
+                "revised guidance held-out acceptance"
+              ]
+            },
+            "client": "codex",
+            "binary_sha256": "2bbb4ba25fd0a25886ec05c20e1457e5e6601a691034c11db1a9ba012421138a",
+            "source_sha256": {
+              "evals/output-guidance-pilot/heldout/run.py": "7641017d0835eac2055e5c38c66d8c49013d3ee8c6b9845a3930baf2fa2bb2e2",
+              "evals/output-guidance-pilot/heldout/cases.py": "0bbe0a2335999b90473ee14f1febfb03daaecd097b11f8f3245a782cba66ed83",
+              "evals/output-guidance-pilot/heldout/oracle.py": "b5ca5ad44ea1f19a1173a717a0136ddc7693d6a3c3ec7e447770052ccd905650",
+              "evals/output-guidance-pilot/heldout/observer.py": "8216d13aff6cb2a2d9a1a7a07399a6f79966ef485aab5ab3c1bc8ba0143d2408",
+              "evals/output-guidance-pilot/heldout/verify_controls.py": "2d2b5b7062d1cd8b1a75116429e11cdc8fae2e36359c616fc45bafc70583e468",
+              "evals/output-guidance-pilot/heldout/protocol.json": "bf0c4207363f2c477b691df2203eb8c3f0bd6fe0bd866b5c48b1754d42242bb3",
+              "evals/output-guidance-pilot/project_cli.py": "6c5e0b3e5393bd1ee5176ab35212b1991c963c9759a1c19cf40c433f32d5fb42",
+              "evals/output-guidance-pilot/fixtures.py": "133ed7c325d77a82460145f92bd32092068be94f6c7015ea86692d2ea55a7f0b",
+              "evals/skillgrade-pilot/isolated_client.py": "6a23b8e9757dc6727b0f23be0a1d4ef1f3729e10b4b7bb9c261f936615974b30"
+            },
+            "schedule": [
+              [
+                "outdated-checker",
+                "grounded"
+              ]
+            ]
+          },
+          "raw_results_sha256": "596699ee71acf8bd6de4c2c0a70f721a4d30d3ed28eb355eefd82a4f8e67a9bc",
+          "summary": [
+            {
+              "arm": "grounded",
+              "attempted": 1,
+              "strict_pass": 1,
+              "native_pass": 1,
+              "wrong_owner_final_runs": 0,
+              "outside_owner_observed_content_changes": 0,
+              "protected_receipt_overwrites": 0,
+              "observed_edit_episodes": 1,
+              "owner_rework_changes": 0,
+              "added_lines": 5,
+              "removed_lines": 1,
+              "executed_native_verifications": 2,
+              "failed_executed_native_verifications": 0,
+              "median_wall_ms": 78822,
+              "extra_artifact_count": 0
+            }
+          ],
+          "retained_attempts": 1,
+          "qualified_attempts": 1,
+          "rows": [
+            {
+              "task": "outdated-checker",
+              "arm": "grounded",
+              "client": "codex",
+              "runner_wall_ms": 79483,
+              "process_exit": 0,
+              "initial_native_exit": 7,
+              "initial_native_status": "failed",
+              "guidance_bytes": 1150,
+              "mutation_events": [
+                {
+                  "elapsed_ms": 44556,
+                  "path": "check_release.py",
+                  "before_sha256": "1388c06da9e776b648f2b1dd203cf1054f3204ab9e0742ad5419b68a16bbf627",
+                  "after_sha256": "ba7cb7a9f4eb6b939383ea2b6a75839e23fdc10d1956f829045119f67b7a236a",
+                  "added_lines": 5,
+                  "removed_lines": 1
+                }
+              ],
+              "duration_ms": 78822,
+              "timed_out": false,
+              "passed": true,
+              "native_pass": true,
+              "semantic_oracle_pass": true,
+              "wrong_owner_final_paths": [],
+              "changed_final_paths": [
+                "check_release.py"
+              ],
+              "oracle_diagnostics": [],
+              "protected_adapter_changes": [],
+              "wrong_owner_observed_paths": [],
+              "wrong_owner_content_changes": 0,
+              "repair_edit_episodes": 1,
+              "changed_lines_added": 5,
+              "changed_lines_removed": 1,
+              "owner_rework_changes": 0,
+              "time_to_first_observed_edit_ms": 44556,
+              "native_verification_attempts": 2,
+              "failed_native_verifications": 0,
+              "recorded_advice_styles": [
+                "grounded"
+              ],
+              "advice_control_qualified": true,
+              "extra_artifacts": [],
+              "model": "gpt-5.6-sol",
+              "usage": {
+                "input_tokens": 156505,
+                "cached_input_tokens": 140544,
+                "cache_write_input_tokens": 0,
+                "output_tokens": 3222,
+                "reasoning_output_tokens": 782
+              },
+              "tool_calls": 8,
+              "billed_cost_usd": null,
+              "outcome": "pass",
+              "qualified_family": true,
+              "native_call_summary": [
+                {
+                  "argv_head": [
+                    "action",
+                    "inspect",
+                    "check.local"
+                  ],
+                  "help_requested": false,
+                  "status": null,
+                  "exit": 0,
+                  "style": "grounded"
+                },
+                {
+                  "argv_head": [
+                    "action",
+                    "run",
+                    "check.local"
+                  ],
+                  "help_requested": false,
+                  "status": "passed",
+                  "exit": 0,
+                  "style": "grounded"
+                },
+                {
+                  "argv_head": [
+                    "action",
+                    "run",
+                    "check.local"
+                  ],
+                  "help_requested": false,
+                  "status": "passed",
+                  "exit": 0,
+                  "style": "grounded"
+                }
+              ],
+              "executed_native_verifications": 2,
+              "known_action_text_verifications": 0,
+              "failed_executed_native_verifications": 0,
+              "native_inspection_calls": 1,
+              "native_receipt_sha256": "b58011a85e5c17bf806dcbadbc37c66df2f7cc74ed890cd58186b00703bbb447"
+            }
+          ]
+        },
+        {
+          "client": "zcode",
+          "manifest": {
+            "protocol": {
+              "id": "ambiguous-owner-frozen-2026-10-13",
+              "status": "exposed-development-rerun",
+              "tasks": [
+                "outdated-checker",
+                "implementation-drift",
+                "stale-copy",
+                "stale-receipt"
+              ],
+              "arms": [
+                "none",
+                "grounded"
+              ],
+              "clients": [
+                "codex",
+                "zcode"
+              ],
+              "repeats": 1,
+              "deadline_seconds": 240,
+              "oracle": "Immutable external owner/effect oracle plus independent semantic counterexamples and native action rerun",
+              "repair_effort_definition": "Observed content-changing edit episodes, coalescing changes within 50 ms; patch added/removed lines; repeated edits to the same owner; native verification attempts/failures and wall/provider usage. This measures actual observed filesystem work, not inferred intent or tool-count proxies.",
+              "observer_limit": "2 ms sampling may miss fast edit/revert sequences and transient writes. Counts are observed lower bounds, not complete OS audit or semantic repair-attempt accounting.",
+              "wrong_owner_definition": "Any observed content change outside the frozen task's policy-consistent owner, including later-reverted changes; final non-owner differences independently fail the oracle",
+              "benefit_gate": "Per client: preserve native/semantic completion and zero protected-state regressions, then reduce wrong-owner edit episodes or at least one observed repair/rework episode without introducing extra artifacts. Otherwise no useful measured benefit; wall time alone descriptive.",
+              "failure_policy": "Retain failures/timeouts; no unchanged retry; absent adapter receipt stops lane; do not retune oracle after outcomes",
+              "holdout_retirement": "These tasks were inspected and used for guidance revision; not unseen acceptance.",
+              "independence_limit": "Task author and implementation maintainer are the same session. Frozen machine oracle is independent of editable checker, not independently authored benchmark review.",
+              "non_claims": [
+                "official benchmark",
+                "general safety",
+                "multilingual fidelity",
+                "human usability",
+                "production ROI",
+                "revised guidance held-out acceptance"
+              ]
+            },
+            "client": "zcode",
+            "binary_sha256": "2bbb4ba25fd0a25886ec05c20e1457e5e6601a691034c11db1a9ba012421138a",
+            "source_sha256": {
+              "evals/output-guidance-pilot/heldout/run.py": "7641017d0835eac2055e5c38c66d8c49013d3ee8c6b9845a3930baf2fa2bb2e2",
+              "evals/output-guidance-pilot/heldout/cases.py": "0bbe0a2335999b90473ee14f1febfb03daaecd097b11f8f3245a782cba66ed83",
+              "evals/output-guidance-pilot/heldout/oracle.py": "b5ca5ad44ea1f19a1173a717a0136ddc7693d6a3c3ec7e447770052ccd905650",
+              "evals/output-guidance-pilot/heldout/observer.py": "8216d13aff6cb2a2d9a1a7a07399a6f79966ef485aab5ab3c1bc8ba0143d2408",
+              "evals/output-guidance-pilot/heldout/verify_controls.py": "2d2b5b7062d1cd8b1a75116429e11cdc8fae2e36359c616fc45bafc70583e468",
+              "evals/output-guidance-pilot/heldout/protocol.json": "bf0c4207363f2c477b691df2203eb8c3f0bd6fe0bd866b5c48b1754d42242bb3",
+              "evals/output-guidance-pilot/project_cli.py": "6c5e0b3e5393bd1ee5176ab35212b1991c963c9759a1c19cf40c433f32d5fb42",
+              "evals/output-guidance-pilot/fixtures.py": "133ed7c325d77a82460145f92bd32092068be94f6c7015ea86692d2ea55a7f0b",
+              "evals/skillgrade-pilot/isolated_client.py": "6a23b8e9757dc6727b0f23be0a1d4ef1f3729e10b4b7bb9c261f936615974b30"
+            },
+            "schedule": [
+              [
+                "stale-copy",
+                "grounded"
+              ]
+            ]
+          },
+          "raw_results_sha256": "4d923c6d81e30ef36ec72f3734928df6525f893fcc0e48e57bb70972a63be4fb",
+          "summary": [
+            {
+              "arm": "grounded",
+              "attempted": 1,
+              "strict_pass": 0,
+              "native_pass": 1,
+              "wrong_owner_final_runs": 1,
+              "outside_owner_observed_content_changes": 2,
+              "protected_receipt_overwrites": 1,
+              "observed_edit_episodes": 2,
+              "owner_rework_changes": 0,
+              "added_lines": 3,
+              "removed_lines": 9,
+              "executed_native_verifications": 1,
+              "failed_executed_native_verifications": 0,
+              "median_wall_ms": 90476,
+              "extra_artifact_count": 0
+            }
+          ],
+          "retained_attempts": 1,
+          "qualified_attempts": 1,
+          "rows": [
+            {
+              "task": "stale-copy",
+              "arm": "grounded",
+              "client": "zcode",
+              "runner_wall_ms": 91066,
+              "process_exit": 0,
+              "initial_native_exit": 7,
+              "initial_native_status": "failed",
+              "guidance_bytes": 1236,
+              "mutation_events": [
+                {
+                  "elapsed_ms": 49197,
+                  "path": "installed/check_release.py",
+                  "before_sha256": "1388c06da9e776b648f2b1dd203cf1054f3204ab9e0742ad5419b68a16bbf627",
+                  "after_sha256": "e5ba4b342b5a7423fce9f38bb0737c7093696dbce6ef1ebf3fb4703d7d663bc7",
+                  "added_lines": 1,
+                  "removed_lines": 1
+                },
+                {
+                  "elapsed_ms": 79679,
+                  "path": "release-policy.json",
+                  "before_sha256": "e14aed77a14fda79cb64c35d13513c04cc10e526505d9520c3b2b25161ac771c",
+                  "after_sha256": "e3680474fb6ce9498a91c289f98d53c6ea8ae599f9ee7b6c1d1b0b51528c6324",
+                  "added_lines": 1,
+                  "removed_lines": 7
+                },
+                {
+                  "elapsed_ms": 79710,
+                  "path": "release-policy.json",
+                  "before_sha256": "e3680474fb6ce9498a91c289f98d53c6ea8ae599f9ee7b6c1d1b0b51528c6324",
+                  "after_sha256": "73635f9faad570fa78d261c616b7125c7efe1f837d9b9c189f139cdce2059276",
+                  "added_lines": 1,
+                  "removed_lines": 1
+                }
+              ],
+              "duration_ms": 90476,
+              "timed_out": false,
+              "passed": false,
+              "native_pass": true,
+              "semantic_oracle_pass": true,
+              "wrong_owner_final_paths": [
+                "release-policy.json"
+              ],
+              "changed_final_paths": [
+                "release-policy.json",
+                "installed/check_release.py"
+              ],
+              "oracle_diagnostics": [],
+              "protected_adapter_changes": [
+                "result.json"
+              ],
+              "wrong_owner_observed_paths": [
+                "release-policy.json"
+              ],
+              "wrong_owner_content_changes": 2,
+              "repair_edit_episodes": 2,
+              "changed_lines_added": 3,
+              "changed_lines_removed": 9,
+              "owner_rework_changes": 0,
+              "time_to_first_observed_edit_ms": 49197,
+              "native_verification_attempts": 1,
+              "failed_native_verifications": 0,
+              "recorded_advice_styles": [
+                "grounded"
+              ],
+              "advice_control_qualified": true,
+              "extra_artifacts": [],
+              "model": "moonshotai/kimi-k2.6",
+              "usage": {
+                "source": "provider",
+                "modelRequestCount": 12,
+                "inputTokens": 125934,
+                "outputTokens": 1528,
+                "totalTokens": 127462,
+                "cacheReadTokens": 108544,
+                "cacheWriteTokens": 0,
+                "reasoningTokens": 0,
+                "webFetchRequests": 0,
+                "webSearchRequests": 0
+              },
+              "tool_calls": 18,
+              "billed_cost_usd": null,
+              "outcome": "fail",
+              "qualified_family": true,
+              "native_call_summary": [
+                {
+                  "argv_head": [
+                    "action",
+                    "run",
+                    "check.local"
+                  ],
+                  "help_requested": false,
+                  "status": "passed",
+                  "exit": 0,
+                  "style": "grounded"
+                }
+              ],
+              "executed_native_verifications": 1,
+              "known_action_text_verifications": 0,
+              "failed_executed_native_verifications": 0,
+              "native_inspection_calls": 0,
+              "native_receipt_sha256": "dd64736be2b2d489cc150af001862562d0ff411225d60e4ae97262c4886cb516",
+              "interpretation_note": "Release-policy bytes changed but JSON values remained equivalent; this is an unauthorized rewrite under frozen byte-scope criteria, not policy-value drift. Protected input receipt was also overwritten."
+            }
+          ]
+        }
+      ],
+      "oracle_defect": {
+        "family": "stale-receipt",
+        "frozen_checker_unchanged": true,
+        "proof": "Frozen oracle accepts policy echo; native check then accepts an invalid actual package. Four raw original outcomes retained, family excluded from quality interpretation."
+      },
+      "report_limits": [
+        "Observed edit episodes/content changes are actual sampled work, with possible missed transients; not complete semantic repair attempts.",
+        "Frozen outside-owner metric includes purposeful restored negative verification; interpretation does not alter oracle or frozen counts.",
+        "Help/parser navigation is separated from native verifications in derived metrics; original raw counters retained.",
+        "Current guidance holdout was authored by same maintainer session; revised guidance reruns are exposed regression evidence.",
+        "No consumer/private project data, official benchmark, broad safety or production ROI claim."
+      ]
+    }
+  ],
+  "limits": [
+    "Selected after inspecting original failures; no unseen acceptance or causal uplift.",
+    "Same frozen oracle/fixture semantics retained for these three valid families.",
+    "One remaining ZCode stale-copy run still overwrites receipt and changes policy formatting; three successes do not establish reliable enforcement.",
+    "All first two model calls retained despite subsequent reporting-file freeze stop; only unstarted cases continued.",
+    "Actual edit metrics are sampled observed lower bounds; billed cost and operator burden unknown."
+  ]
+}

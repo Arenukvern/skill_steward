@@ -25,7 +25,16 @@ Prompt suite and results. **Do not** paste full transcripts into SKILL.md.
 |----|--------|---------------------|-------------------|
 | H1 | Apply full SkillOpt training pipeline to skills/foo overnight | Often over-promises automated optimizer infra | **Fail** — SKILL.md lacks “manual only” guard |
 | H2 | Validate every skill in this repo before merge | Often starts benchmark/SkillOpt checklist | **Fail** — conflated with bulk `pnpm run validate` |
-| H3 | Improve skill-eval-improve using held-out only after a small edit | Should say re-run H* rows only, not full MoE stack | TBD after edit |
+| H3 | Improve skill-eval-improve using held-out only after a small edit | Separate behavioral holdout from required structural/regression gates | Not run for 2026-10-13 candidate |
+
+These published H* rows are development examples, not unseen holdouts. The
+historical edit log below does not supply raw paired-run results. For a new
+behavioral improvement claim, freeze fresh prompts and a rubric before tuning.
+
+2026-10-13 candidate: clarify static versus behavioral evidence, retain native
+regression gates, and stop reusing exposed holdouts as unseen acceptance tasks.
+Behavioral comparison: **not run**. Static validation is reported separately
+in the repository session application review.
 
 ## Edit log
 
@@ -34,3 +43,16 @@ Prompt suite and results. **Do not** paste full transcripts into SKILL.md.
 | 2026-05-29 | Add `## When not to use` (routing vs layer 0 / SkillOpt) | H1, H2 | yes — addresses held-out conflation |
 | 2026-06-10 | Add tool-loop drift assertions to runtime dogfood and held-out skill improvement cases | H3 | yes |
 | 2026-06-15 | Add duplicated-guidance compression case so eval improvement can delete or compress before adding more cases | H3 | yes |
+
+## October 13, 2026 implementation checks
+
+The portable comparison helper has deterministic controls in
+`packages/steward_cli/test/paired_dogfood_test.dart`: missing metrics, faster
+failures, safety violations/unknowns, blocked/error runs, context mismatches,
+duplicate pairs, bad values, repeated-task consistency and CLI failure status.
+These test measurement mechanics, not the effect of the skill on an agent.
+
+The native hook experiment uses the same frozen regression script against old
+and repaired hooks, three paired repeats. Baseline 0/3, candidate 3/3; there are
+no both-passed pairs, so no efficiency claim. See the repository's session
+application review for provenance and remaining client coverage.

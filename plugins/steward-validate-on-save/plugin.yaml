@@ -16,7 +16,7 @@ targets:
         config_snippet: hooks.json.snippet
 wiring_artifacts:
   - path: hooks/validate-on-skill-edit.sh
-    sha256: 55e402ade4daeaaa9914539c2e73a051c1d8b919c9fca492461e4614845aeac5
+    sha256: ab9138fe23f8c9ab98a0cdba76cdfdbdc0c91d780eeb18fa7dacd7ea8a498942
   - path: hooks.json.snippet
     sha256: acbcd5c0fac95c73b41b5d6a9d64bd2513ec56d9f3b68b6e71d805c9d269cbde
 conflict_policy: fail

@@ -1,0 +1,134 @@
+# Bounded Skillgrade pilot — 2026-10-13
+
+```yaml
+status: historical
+evidence_type: benchmark
+date: 2026-10-13
+scope: two real Steward development tasks through native Codex and ZCode clients
+claim_tested: with-skills improves native task completion relative to without-skills
+proof_level: bounded development behavior; no held-out acceptance
+commands_or_sources: skillgrade 0.5.0; Codex 0.149.1; ZCode 0.16.9
+result: no observed Codex quality uplift; final ZCode cohort inconclusive
+limitations: two exposed task families; unequal repeats; different client and skill revisions; local raw artifacts
+non_claims: general skill uplift, speedup, safety robustness, H4 acceptance, official benchmark score
+next_disposition: retain native repair workflow; use untouched cases only for a new concrete claim
+current_status_pointer: this dated pilot only; no change to the maturity ledger
+```
+
+## Scoreboard
+
+| Final cohort | Without skills | With skills | Paired coverage | Candidate minus baseline, both passed | Disposition |
+|---|---|---|---|---|---|
+| Codex, `gpt-5.6-sol` explicitly selected | 6/6 pass | 6/6 pass | 2 tasks × 3 repeats; 6 complete pairs | Median +3.130 s; +13,621 reported tokens; tool-call median unchanged | Descriptive; no quality uplift |
+| ZCode, resolved `moonshotai/kimi-k2.6` | 2/2 pass | 1/2 pass; hook repair timed out | 2 tasks × 1 repeat; 1 complete pair, 1 incomplete | Evidence task only: +35.169 s; +694 reported tokens; tool calls unchanged | Inconclusive; timeout retained |
+
+These are real agent executions, not static trigger tests or scripted agent
+stubs. Both arms received identical task inputs within each cohort; the candidate
+also received frozen `repo-quality-system-lifecycle` and `skill-eval-improve`
+project directories. Codex used the earlier skill revision; final ZCode used the
+narrowed description. Do not pool clients or revisions. Repeats do not create
+more than two independent task families.
+
+Codex target-skill reads were observed in 3/6 candidate trials, all evidence
+assessments. ZCode invocation is unknown: absence of a named Skill tool event
+does not prove absence of file reads. All six Codex candidate token totals were
+higher. Reported tokens include cached inputs and are **not billed cost**.
+Time to first useful action, repair attempts, human intervention counts and
+billed cost were not measured. Runner command counts and token estimates are
+not native agent telemetry.
+
+The final ZCode hook baseline passed in 190.697 seconds. Its candidate reached
+the 240-second client limit (240.957 seconds including cancellation), with an
+incomplete repair and raw grader score zero. The comparator classifies this as
+an incomplete pair, so its zero `quality_regressions` field must not conceal the
+timeout. One observation cannot establish causal harm from skills. Efficiency
+above uses only pairs where both tasks passed.
+
+## Tasks and evidence boundary
+
+1. Repair the actual validate-on-save hook baseline, checked by its native shell
+   regression. Corrected cohorts received a copy of that public development gate.
+2. Assess an actual native-control summary, reject unsupported skill benefit or
+   H4 promotion, and preserve the H2 marker despite an untrusted imported note.
+
+The external grader remained byte-for-byte unchanged. Six controls previously
+checked broken/fixed hook behavior, correct evidence interpretation, overclaim,
+unauthorized maturity modification and empty output. Initial prompts did not
+specify the exact `native_control` enum expected by the frozen grader; this was
+corrected in a new cohort instead of changing the checker or retroactively
+relabeling results. These are exposed development cases, not unseen acceptance.
+
+No scored invariant effect violation was observed in the recorded checks:
+known source/oracle paths were denied and the protected maturity marker stayed
+unchanged. This narrow observation is not a general safety score. The adapter
+uses targeted macOS isolation with shared native authentication/runtime, not a
+hostile-workload container. AgentDojo robustness, MCP conformance and official
+benchmark quality remain unmeasured; no maturity promotion follows.
+
+## Adapter fixes and useful simplifications
+
+- Codex now avoids a nested macOS sandbox while an outer profile enforces the
+  targeted source/skill/oracle denials. Native runtime database access works;
+  known global instructions, memories and installed skill copies are excluded.
+- ZCode uses its bundled CLI and explicit provider configuration paths, isolated
+  storage and per-trial sessions. Credential files were not inspected or copied.
+  Existing provider configuration resolves the model; it is not a per-prompt pin.
+- Native receipts preserve client duration, output, selected telemetry and timeout
+  status. Cancellation covers the process group. Missing usage stays unknown.
+- Redundant ZCode catalog startup is now an optional configuration preflight,
+  rather than a process on every task. Log collection reads only the new tail
+  and filters the returned session. The outer deadline is now 330 seconds to
+  leave room for the 240-second client cancellation and receipt capture.
+- The repo-quality description now says to skip routine repairs with a known
+  owner and native check before loading the full workflow. The evidence does
+  not justify another governance layer or an automatic skill optimizer.
+
+A post-edit Codex candidate-only repair probe passed without observed SKILL.md
+command reads (82.580 seconds). This checks routing behavior; it does not prove
+the shorter description made execution faster. A ZCode routing probe with the
+redundant catalog preflight enabled timed out before model invocation and is
+recorded as not run. The final ZCode cohort then used the simplified adapter.
+
+Skillgrade's local provider did not apply the fixture's YAML `chmod` setting.
+Recorded corrected cohorts invoked the hook through Bash; the source fixture
+has since been made executable for future runs. Do not claim executable-mode
+preservation from those recorded runs.
+
+## Earlier attempts retained separately
+
+| Cohort / local artifact root | Observed status | Treatment |
+|---|---|---|
+| `.dart_tool/skillgrade-pilot-2026-10-13/` | Two Codex baseline attempts blocked by nested sandbox; ZCode launch blocked before model | Historical JSON retained; not a skill failure rate |
+| `.dart_tool/skillgrade-rerun/preflight/` | Setup diagnostics, including an invalid BSD `head` probe replaced with `cat` | No task-quality evidence |
+| `.dart_tool/skillgrade-rerun/qualified/` | Six Codex and four ZCode attempts with missing public gate / ambiguous enum | Flawed fixture cohort, not pooled with corrected tasks |
+| `.dart_tool/skillgrade-rerun/native-gates/zcode/` | Baseline 2/4 pass, one timeout, one pre-model catalog block; candidate 4/4 pass | Repeated schedule stopped; setup-confounded, not uplift evidence |
+| `.dart_tool/skillgrade-rerun/routing-followup/` | Codex candidate-only pass; ZCode pre-model catalog block | Development routing probe, not paired efficiency evidence |
+
+The main Codex results are under `.dart_tool/skillgrade-rerun/native-gates/codex/`;
+the final ZCode results are under `.dart_tool/skillgrade-rerun/zcode-final/`.
+Setup expenditure and earlier failed trials are retained, not silently replaced
+by the final scoreboard. Complete end-to-end setup cost was not measured.
+
+## Reproduction and disposition
+
+The [pilot directory](https://github.com/arenukvern/skill_steward/tree/main/evals/skillgrade-pilot)
+contains fixtures, the adapter, run instructions and compact results:
+`results/2026-10-13.json` preserves the original blocked attempt;
+`results/2026-10-13-rerun.json` records final observations, manifests, report
+hashes and cohort boundaries. Raw traces and frozen adapter/controller copies
+remain local under `.dart_tool/skillgrade-rerun/`; this is not a public immutable
+reproduction claim. Skillgrade is pinned to npm `0.5.0`, with inspected source
+`ab2afd7c13e56c4bf9db173d68752a931cc8a400`.
+
+Stock Skillgrade command runs share a temporary prompt filename. These trials
+used a separate local ZCode runner copy with that filename changed while clients
+ran concurrently; the patch receipt is `zcode-runner-patch.json`. This was not an
+upstream release. The runbook recommends sequential stock runs.
+
+Keep routine repair native. Retain the skill for explicit stewardship/evidence
+questions without claiming measured benefit from this sample. Stop model retries
+on these exposed cases. A future claim needs untouched tasks and a frozen
+reviewed oracle; a ZCode reliability claim also needs a bounded hook-timeout
+investigation. The [benchmark adoption guide](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-eval-improve/references/benchmark-adoption.md)
+keeps SkillsBench, ACES, AgentDojo and optional Terminal-Bench work separate from
+this development scoreboard. No external official suite was run here.

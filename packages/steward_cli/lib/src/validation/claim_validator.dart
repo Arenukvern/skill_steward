@@ -44,6 +44,7 @@ class ClaimValidator {
       'Claim checks are negative gates; they do not accept or award steward status.',
       'A not_rejected result only means this negative gate did not find obvious overclaim terms.',
       'This check does not prove consciousness, final authority, or H4/H5 behavior.',
+      'A green fixture, an unrun suite, or a longer plan does not prove a product use-path.',
     ];
 
     if (!_supportedClaims.contains(normalizedClaim)) {

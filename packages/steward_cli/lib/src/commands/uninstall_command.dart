@@ -12,7 +12,7 @@ class UninstallCommand extends Command<void> {
   final name = 'uninstall';
 
   @override
-  final description = 'Uninstall a local skill from the project and config.';
+  final description = 'Maintainer. Do not start here. Uninstall a local skill from the project and config.';
 
   @override
   Future<void> run() async {

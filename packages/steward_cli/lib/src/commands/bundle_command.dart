@@ -37,7 +37,7 @@ class BundleCommand extends Command<void> {
   final name = 'bundle';
 
   @override
-  final description = 'Compiles local Skill Steward bundle manifests.';
+  final description = 'Maintainer. Do not start here. Compiles local Skill Steward bundle manifests.';
 
   @override
   Future<void> run() async {
@@ -220,18 +220,7 @@ class BundleCommand extends Command<void> {
   Future<List<Map<String, dynamic>>> _compilePluginBundles(
     final String root,
   ) async {
-    final pluginsDir = Directory(p.join(root, 'plugins'));
-    if (!pluginsDir.existsSync()) {
-      return const [];
-    }
-
-    final pluginDirs =
-        pluginsDir
-            .listSync(followLinks: false)
-            .whereType<Directory>()
-            .where((final dir) => !p.basename(dir.path).startsWith('.'))
-            .toList()
-          ..sort((final a, final b) => a.path.compareTo(b.path));
+    final pluginDirs = discoverStewardPluginDirectories(root);
 
     final bundles = <Map<String, dynamic>>[];
     for (final pluginDir in pluginDirs) {

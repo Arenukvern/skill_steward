@@ -51,7 +51,7 @@ class InstallCommand extends Command<void> {
   final name = 'install';
 
   @override
-  final description = 'Install skills into the project workspace.';
+  final description = 'Maintainer. Do not start here. Install skills into the project workspace.';
 
   @override
   Future<void> run() async {

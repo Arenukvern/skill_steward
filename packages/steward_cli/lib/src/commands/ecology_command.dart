@@ -23,7 +23,7 @@ class EcologyCommand extends Command<void> {
   final name = 'ecology';
 
   @override
-  final description = 'Inspect repo ecology inventory without awarding status.';
+  final description = 'Maintainer. Do not start here. Inspect repo ecology inventory without awarding status.';
 }
 
 class EcologySnapshotCommand extends Command<void> {
@@ -327,11 +327,11 @@ List<Map<String, dynamic>> _routeDispositions(
   final activePlans = snapshot['active_plan_candidates'] as List? ?? const [];
   if (activePlans.isNotEmpty) {
     add(
-      disposition: 'compress',
+      disposition: 'orient',
       surface: 'active plan candidates',
       signal: 'Plan-like files are present in the repo ecology.',
       next:
-          'Extract durable truth into ADR, FAQ, code, skill, check, or current ledger, then remove stale plan scaffolding.',
+          'Review remaining work and inbound references first; completion and staleness are unknown. Extract or remove only after those facts are established.',
     );
   }
 
@@ -347,11 +347,11 @@ List<Map<String, dynamic>> _routeDispositions(
       .length;
   if (templateOrPacketCount > 0) {
     add(
-      disposition: 'compress',
+      disposition: 'orient',
       surface: 'docs/evidence',
       signal: 'Evidence contains templates, packets, or PDSA history.',
       next:
-          'Keep current ledgers visible; route templates and historical packets as archive or skill references.',
+          'Review role and freshness; filenames alone do not establish redundancy. Keep current ledgers visible and preserve required historical links.',
     );
   }
 

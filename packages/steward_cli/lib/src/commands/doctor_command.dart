@@ -3,17 +3,23 @@ import 'dart:io';
 
 import 'package:args/command_runner.dart';
 
+import '../output_guidance.dart';
 import '../repo_root.dart';
 import '../validation/steward_config.dart';
 
 /// Prints a deterministic, read-only inventory of the local Steward contract.
 class DoctorCommand extends Command<void> {
   DoctorCommand([this.outputSink, this.startDirectory]) {
-    argParser.addFlag(
-      'json',
-      negatable: false,
-      help: 'Emit machine-readable JSON.',
-    );
+    argParser
+      ..addOption(
+        'goal',
+        help: 'Original task goal; preserved verbatim in advisory guidance.',
+      )
+      ..addFlag(
+        'guidance',
+        help: 'Include optional advice; default output contains facts only.',
+      )
+      ..addFlag('json', negatable: false, help: 'Emit machine-readable JSON.');
   }
 
   final StringSink? outputSink;
@@ -24,15 +30,24 @@ class DoctorCommand extends Command<void> {
 
   @override
   final description =
-      'Inspect Steward adoption state without running repository actions.';
+      'Maintainer. Do not start here. Inspect Steward adoption health. Not the native validation gate and not a preflight before ordinary edits.';
 
   @override
   Future<void> run() async {
     final root = findRepoRoot(startDirectory ?? Directory.current);
     final result = await StewardConfig.loadChecked(root);
-    final payload = stewardDoctorPayload(root, result);
+    final payload = stewardDoctorPayload(
+      root,
+      result,
+      goal: argResults?['goal'] as String?,
+      includeGuidance: argResults?['guidance'] == true,
+    );
 
     final useJson = argResults?['json'] == true;
+    if (argResults?['guidance'] == false) {
+      payload.remove('guidance');
+      payload['next_actions'] = <String>[];
+    }
     final sink = outputSink ?? stdout;
     if (useJson) {
       sink.writeln(const JsonEncoder.withIndent('  ').convert(payload));
@@ -45,6 +60,9 @@ class DoctorCommand extends Command<void> {
       ..writeln('- root: $root')
       ..writeln('- schema: ${config['schema'] ?? 'legacy'}')
       ..writeln('- config valid: ${config['valid']}');
+    if (argResults?['guidance'] != false) {
+      writeOutputGuidance(sink, payload['guidance'] as Map<String, dynamic>);
+    }
     for (final diagnostic in result.diagnostics) {
       sink.writeln(
         '- ${diagnostic.severity}: ${diagnostic.path}: ${diagnostic.message}',
@@ -55,8 +73,10 @@ class DoctorCommand extends Command<void> {
 
 Map<String, dynamic> stewardDoctorPayload(
   final String root,
-  final StewardConfigLoadResult result,
-) {
+  final StewardConfigLoadResult result, {
+  final String? goal,
+  final bool includeGuidance = false,
+}) {
   final config = result.config;
   final actions = config.typedActions;
   final nextActions = actions
@@ -64,7 +84,7 @@ Map<String, dynamic> stewardDoctorPayload(
       .map((final action) => action.summaryJson())
       .toList();
 
-  return {
+  final payload = <String, dynamic>{
     'schema_version': 'steward.doctor.v1',
     'root': root,
     'config': {
@@ -81,6 +101,17 @@ Map<String, dynamic> stewardDoctorPayload(
         .toList(),
     'actions': actions.map((final action) => action.summaryJson()).toList(),
     'probes': config.probes,
-    'next_actions': nextActions,
+    'eligible_actions': nextActions,
+    'next_actions': const [],
   };
+  validateGuidanceGoal(goal);
+  if (includeGuidance) {
+    payload['guidance'] = outputGuidance(
+      root,
+      {'status': result.ok ? 'unknown' : 'blocked_invalid_config', ...payload},
+      goal: goal,
+      rerun: ['steward', 'doctor', '--json'],
+    );
+  }
+  return payload;
 }

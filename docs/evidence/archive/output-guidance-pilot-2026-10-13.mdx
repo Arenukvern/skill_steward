@@ -1,0 +1,122 @@
+# Outcome guidance — implementation and development baseline
+
+```yaml
+status: historical
+evidence_type: benchmark
+date: 2026-10-13
+scope: local CLI/MCP advisory implementation and two exposed native task families
+claim_tested: grounded outcome advice preserves task completion and provides practical benefit
+proof_level: process/interface regressions and bounded native-client development comparison
+commands_or_sources: evals/output-guidance-pilot; output_guidance_test; guidance_mcp_transport_test
+result: implementation verified locally; practical benefit gate not met
+limitations: one repeat per task/arm/client; exposed fixtures; uncontrolled host load and cache state
+non_claims: released feature, held-out acceptance, multilingual fidelity, official ranking, general safety, production ROI
+next_disposition: retain concise optional guidance; require held-out ambiguous-owner tasks before richer prompting
+current_status_pointer: docs/evidence/current-dogfood-status.mdx
+```
+
+## Implemented behavior
+
+One shared advisory core projects facts, original goal, uncertainty, preconditions,
+next option and native verification. The original goal stays verbatim; absent
+intent stays unknown. Success returns to the goal rather than inventing more
+stewardship work. CLI text adds two lines; `--no-guidance` preserves facts and exits.
+JSON uses the generated `steward.output-guidance.v1` optional payload. Explicit
+MCP result explanation, doctor, two prompts and a method resource are read-only.
+Local stdio checks cover those operations; no full protocol certification or
+client prompt-UI support claim follows.
+
+Doctor separates auto eligibility from task relevance. Ecology filenames signal
+review rather than completed work. Imported logs cannot choose a repair route by
+keywords or authorize mutation. Verified originating action IDs and checked
+local scenario membership constrain executable suggestions. A policy failure
+retains both implementation and outdated-checker interpretations.
+
+The core owns decisions in `packages/steward_cli/lib/src/output_guidance.dart`;
+CLI/MCP adapters stay thin. [ADR 0028](../../decisions/0028-grounded-output-guidance)
+and the [method](https://github.com/arenukvern/skill_steward/blob/main/skills/mcp-harness-repo-maintainer/references/output-guidance.md)
+record budgets and semantics. Original goals are limited to 2,048 UTF-8 bytes,
+guidance to 6,000, explicit imported result/prompt evidence to 16,000. Named
+refusals/omissions retain original native results; byte bounds are not tokens.
+
+## Qualified development results
+
+| Client / model | Advice | Native completion | Protected violations | Median client wall time | Failed native check calls |
+|---|---|---|---|---|---|
+| Codex / gpt-5.6-sol | None | 2/2 | 0 | 44.37 s | 0 |
+| Codex / gpt-5.6-sol | Generic | 2/2 | 0 | 50.72 s | 0 |
+| Codex / gpt-5.6-sol | Grounded | 2/2 | 0 | 41.53 s | 0 |
+| ZCode / moonshotai/kimi-k2.6 | None | 2/2 | 0 | 69.37 s | 1 |
+| ZCode / moonshotai/kimi-k2.6 | Generic | 2/2 | 0 | 80.20 s | 1 |
+| ZCode / moonshotai/kimi-k2.6 | Grounded | 2/2 | 0 | 83.10 s | 0 |
+
+All qualified rows preserve the immutable checker, unrelated contract fields and
+fake private note, with no extra artifacts. The two tasks are invalid quick-probe
+configuration and required-input durability for a strict benchmark. These native
+routes came from observed failures; the disposable fixtures are development
+proxies, not adopter project outcomes or human usability tests.
+
+The gate required preserved completion and either fewer actual repair attempts
+or at least 10% lower median time versus both controls. It was **not met**.
+Grounded Codex time is 6.4% below none and 18.1% below generic; grounded ZCode time
+is 19.8% above none and 3.6% above generic. Fewer failed native checks in ZCode
+cannot stand in for all repair attempts, which were not measured. Two observations
+per median, one repeat and uncontrolled model/cache/host load do not establish a
+causal effect or statistical superiority. Models differ; do not compare clients
+as equivalent treatments.
+
+## Control failures and experiment burden
+
+Thirty model attempts completed across five six-trial cohorts. Eighteen are
+excluded from the advice-policy comparison. Initial Codex and ZCode cohorts
+controlled only the opening receipt, leaving later advice unverified. The next
+Codex cohort attempted a PATH wrapper, but its login shell selected an older
+global executable; empty wrapper telemetry means unknown, not zero repair effort.
+ZCode used its wrapper as intended. Codex was rerun only after binding
+`./bin/steward`, with every observed invocation recording the assigned style.
+All cohorts, source/binary digests, provider counters and limitations remain in the
+[portable results](https://github.com/arenukvern/skill_steward/blob/main/evals/output-guidance-pilot/results/2026-10-13.json).
+The qualified Codex prompt includes the binding correction; the ZCode cohort
+already had working wrapper control. Their durations are reported separately.
+
+Every attempt passed its final native fixture check, but uncontrolled cohorts
+cannot prove assigned advice was consumed. No timeout occurred in these 30
+attempts; earlier skill/no-skill timeouts remain in their separate baseline.
+Reported input/output/cache usage is retained without summing cache twice or
+inventing billed costs. First native verification is a proxy for first useful
+action; operator effort, true repair attempts, billed cost and complete maintenance
+burden remain unknown. The control-repair iterations themselves are experiment
+cost, not a productivity success.
+
+## Verification and next threshold
+
+246 Dart tests pass; analysis is clean. Generated schema drift and six emitted
+output schemas pass, including standalone guidance. Process tests preserve
+nonzero native exits in both advice modes. Core tests cover absent/Unicode goals,
+injected/unknown text, nonexistent action IDs, ambiguity, success, bounded
+omission and oversized refusal. Actual stdio tests cover matching core output,
+explicit prompts/resources, optional doctor arguments and oversized imported
+result refusal. Fifteen skills validate and 66 static cases execute/pass.
+These are interface/route checks, not independent meaning or broad safety proof.
+
+Keep the implementation small: originating two-line guidance, facts-only escape,
+explicit deeper prompts, no automatic skill-loading chain or adviser service.
+Hold richer personalized/localized advice until an independent reviewer freezes
+unseen contradictory-owner and stale-installation tasks plus routine negative
+controls. Measure wrong-owner edits, original-task completion, real repair effort,
+operator burden and localization fidelity. Remove or narrow routes that add
+unnecessary work; no-advice/leave-native remains a valid outcome. This is the
+next evidence threshold, not a claim that held-out evaluation has already run.
+
+Private memory/context patterns informed bounded orientation, provenance and
+visible refusal without copying private identity or authority. The earlier
+interlingua/animal discussion is a grounding analogy, not biological evidence.
+Deterministic structure makes advice inspectable; observed task success alone
+does not prove the interpretation faithfully preserves a person's intent.
+
+
+The [subsequent ambiguous-owner comparison](ambiguous-owner-pilot-2026-10-13)
+adds sampled edit effort and policy/evidence effects. It retains this development
+baseline unchanged. Its three qualified task families did not meet the original
+guidance benefit gate; one oracle family was quarantined. Revised-guidance
+follow-ups are exposed regression evidence only.

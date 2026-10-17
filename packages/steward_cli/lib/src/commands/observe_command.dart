@@ -34,7 +34,7 @@ class ObserveCommand extends Command<void> {
   final name = 'observe';
 
   @override
-  final description = 'Write a compact local Steward observation record.';
+  final description = 'Maintainer. Do not start here. Write a compact local Steward observation record.';
 
   @override
   Future<void> run() async {

@@ -91,6 +91,34 @@ provenance:
   });
 
   test(
+    'bundle ignores native packages while retaining Steward wiring',
+    () async {
+      final native = Directory(
+        p.join(tempDir.path, 'plugins', 'native-package'),
+      )..createSync(recursive: true);
+      File(
+        p.join(native.path, 'pubspec.yaml'),
+      ).writeAsStringSync('name: native_package');
+      final buffer = StringBuffer();
+      final runner = CommandRunner<void>('steward', 'test')
+        ..addCommand(BundleCommand(buffer, tempDir));
+      await runner.run(['bundle']);
+      expect(buffer.toString(), contains('Generated 1 plugin bundle(s)'));
+      expect(
+        File(
+          p.join(
+            tempDir.path,
+            '.steward',
+            'bundles',
+            'native-package.bundle.json',
+          ),
+        ).existsSync(),
+        false,
+      );
+    },
+  );
+
+  test(
     'v1 bundle writes deterministic descriptors without installing',
     () async {
       final buffer = StringBuffer();

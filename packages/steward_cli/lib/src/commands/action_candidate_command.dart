@@ -24,7 +24,7 @@ class ActionCandidateCommand extends Command<void> {
   final name = 'action-candidate';
 
   @override
-  final description = 'Create append-only pending action-candidate records.';
+  final description = 'Maintainer. Do not start here. Create append-only pending action-candidate records.';
 }
 
 class ActionCandidateInspectCommand extends Command<void> {

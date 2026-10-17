@@ -67,6 +67,11 @@ On `afterFileEdit`, if the file path matches `skills/**/SKILL.md`:
 
 Non-skill edits are ignored.
 
+Absolute and repo-relative skill paths are accepted. The selected validator's
+diagnostics and exit status are preserved; validation failure does not retry
+through another package manager. Run the isolated regression with
+`bash plugins/steward-validate-on-save/tests/validate-on-skill-edit.sh`.
+
 ## Uninstall
 
 Remove the `afterFileEdit` entry from `.cursor/hooks.json`.

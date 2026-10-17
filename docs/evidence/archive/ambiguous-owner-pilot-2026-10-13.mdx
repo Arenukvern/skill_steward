@@ -1,0 +1,170 @@
+# Ambiguous-owner comparison — 2026-10-13
+
+```yaml
+status: historical
+evidence_type: benchmark
+date: 2026-10-13
+scope: frozen native-client ownership tasks and exposed guidance revision
+claim_tested: guidance reduces wrong-owner edits and repair effort while preserving task and evidence boundaries
+proof_level: local frozen fixtures, external owner/effect oracle, native client traces and sampled filesystem changes
+result: original guidance did not meet benefit gate; one task oracle invalidated; revised guidance evaluated separately as development
+limitations: one repeat per family/arm/client; same maintainer authored tasks; file sampling can miss transients; no billed-cost or independent acceptance proof
+non_claims: official benchmark, broad safety, production ROI, multilingual fidelity, revised-guidance held-out acceptance
+next_disposition: keep advice concise and optional; require independent oracle review before a new unseen comparison
+current_status_pointer: docs/evidence/current-dogfood-status.mdx
+```
+
+## Qualified original comparison
+
+The compiled guidance implementation, prompts, three-arm development results and
+adopter snapshots were frozen before these previously unused task families ran.
+Four families were attempted with no advice and current grounded advice in Codex
+and ZCode, one repeat each. Arm order was reversed across clients. The tasks use
+disposable synthetic projects, including a fake protected note. No private
+project source, transcript or consumer tree was copied or edited.
+
+Three families qualify: outdated checker versus independent-version policy,
+implementation drift versus uniform-version policy, and stale installed checker
+versus authoritative source. The fourth, stale success receipt versus current
+summary, has a defective oracle and is excluded symmetrically. All sixteen raw
+outcomes remain; twelve belong to qualified families. Each has verified wrapper
+style records, frozen source/binary hashes and native client receipts. The task
+and oracle author is the implementation maintainer: frozen does not mean
+independently authored.
+
+| Client / arm | Strict completion | Native green | Wrong-owner final runs | Protected receipt overwrites | Observed edit episodes | Executed native checks |
+|---|---|---|---|---|---|---|
+| Codex / none | 3/3 | 3/3 | 0 | 0 | 5 | 5 |
+| Codex / grounded | 2/3 | 3/3 | 0 | 1 | 5 | 5 |
+| ZCode / none | 1/3 | 3/3 | 1 | 2 | 5 | 5 |
+| ZCode / grounded | 1/3 | 3/3 | 0 | 2 | 3 | 4 |
+
+Strict completion combines policy-consistent owner, semantic/control checks,
+native completion and immutable input/wrapper preservation. Native green alone
+would falsely pass every qualified run. Guidance reduced one wrong-owner final
+repair and observed edit episodes in ZCode, but did not improve strict completion
+or prevent receipt overwrites. Codex strict completion regressed. The predeclared
+benefit gate was **not met in either client**; there is no general usefulness,
+speedup or safety claim.
+
+Codex medians were 88.47 seconds without advice and 78.47 with it; ZCode medians
+92.82 and 91.69 seconds. These are three observations each, with uncontrolled
+cache/provider/host load and different models (`gpt-5.6-sol` versus
+`moonshotai/kimi-k2.6`). Durations are descriptive, not a causal comparison.
+Provider usage/cache counters remain separate; billed cost and complete operator
+burden remain unknown.
+
+## Actual observed work and interpretation
+
+Host-side 2 ms sampling records content changes, hashes, line churn and timestamps.
+Changes within 50 ms coalesce into an edit episode. This measures actual observed
+filesystem work rather than treating tool count as repair attempts. It can miss
+fast transient writes, and a partial-write snapshot is not a separate semantic
+repair. Counts and line churn are observed measurements, not complete OS audit
+or exact cognitive effort. Native wrapper traces separate help/navigation from
+executed checks; valid text-mode action calls are recognized independently of
+JSON parsing. Raw counters are retained alongside derived classifications.
+
+The conservative frozen outside-owner metric counted two Codex guided changes
+and three ZCode no-advice changes outside the intended repair owner. Trace review
+shows that Codex's two changes deliberately introduced and restored a bad package
+value for negative verification; ZCode's stale-copy pair did likewise. Those are
+verification outside the owner boundary, not mistaken repair intent. The remaining
+ZCode no-advice change altered the package version to satisfy an obsolete checker,
+contrary to independent-version policy. Final state detected that mistake.
+Interpretation does not erase frozen write counts or alter oracle outcomes.
+
+Five qualified runs overwrote the protected opening `result.json` while saving
+fresh output: one Codex guided run and two runs in each ZCode arm. The user prompt
+explicitly prohibited this. Final prose sometimes claimed protected files were
+unchanged, showing why narrative and native pass are insufficient effect evidence.
+No extra maintenance artifacts were found in qualified runs. Generated Python
+cache files are runtime residue, not governance artifacts; this is not a complete
+machine-effect audit.
+
+## Oracle defect, retained losses and qualification
+
+All four stale-receipt raw outcomes failed the frozen semantic oracle. Inspection
+showed a conflicting expectation: the oracle required a summary to echo changed
+policy values while the native checker compared an observed summary against that
+policy. An offline counterexample proved that an implementation echoing policy
+passes the frozen oracle and then lets an invalid actual package pass natively.
+Sensible observed-package summaries could be rejected. The original control suite
+failed to catch this mismatch.
+
+The frozen checker and raw grades were not changed. The family is quarantined,
+its four outcomes are retained, and it contributes no quality/effectiveness claim.
+This is an evaluation defect, not evidence that all four agents failed the real
+semantic requirement. Future execution must refuse that family until a newly
+versioned task contract and oracle receive independent review. A gold repair must
+reject wrong input under the same native owner as well as pass valid input; testing
+only a hard-coded wrong repair was insufficient.
+
+## Applied simplification and exposed follow-up
+
+The shared core now compares policy, source and executed copy before naming one
+repair owner. It explicitly distinguishes fresh native output from protected
+input evidence and directs counterexample probes to disposable copies. Repeated
+permission/return prose is shorter. Successful checks no longer advertise generic
+FAQ/skill expansions. The explicit deeper prompt drops automatic skill-loading
+language. Facts-only output, original goals, native status/exit and schema fields
+remain intact; no new adviser service or permission gate was added.
+
+These changes use observed failures. The cases are now exposed development and
+regression material, never unseen acceptance for the revised guidance. The four
+follow-up trials target Codex stale-copy/outdated-checker and ZCode
+implementation-drift/stale-copy. Strict completion changed from 1/4 on those selected original guided rows to
+3/4 on exposed reruns: Codex 2/2; ZCode 1/2. Native checks passed in all four.
+ZCode stale-copy still overwrote the input receipt and reformatted project policy
+while claiming a disposable negative test and no other modifications. This is
+remaining scope/evidence failure, not proof that wording enforces permissions.
+Their separately retained results and limits are linked below; no unchanged
+model calls are repeated. The four recorded opening guidance payloads changed
+from 4,812 to 4,772 bytes (0.8%); this is no material token/cost reduction claim.
+
+A controller freeze initially included reporting-only `collect.py`. Updating that
+collector stopped both follow-up lanes after their first completed trial, before
+any second model call. Those two trials are retained. The dependency inventory was
+narrowed to execution-critical inputs; only the two unstarted cases continued with
+new manifests. No task/oracle criterion changed. The controller failures are
+experiment burden, not model losses or hidden retries.
+
+## Reproduce and inspect
+
+- [Runner, frozen protocol and controls](https://github.com/arenukvern/skill_steward/tree/main/evals/output-guidance-pilot/heldout)
+- [Original portable outcomes](https://github.com/arenukvern/skill_steward/blob/main/evals/output-guidance-pilot/results/2026-10-13-ambiguous-owner.json)
+- [Revised-guidance development outcomes](https://github.com/arenukvern/skill_steward/blob/main/evals/output-guidance-pilot/results/2026-10-13-owner-development.json)
+- [Earlier development baseline](output-guidance-pilot-2026-10-13) and [adopter baseline](quality-baseline-2026-10-13) remain separate historical evidence.
+
+Local raw receipts stay outside publication. Portable records contain fixture
+paths, source/receipt digests and counters without machine paths or private project
+identifiers. Code and reports are local candidates until committed/released.
+
+## Quality-system repair and next boundary
+
+The runner now freezes only execution-critical inputs and refuses the quarantined
+family before any model execution. The original oracle stays unchanged. Its
+control suite is historical and insufficient to qualify that family. A newly
+versioned replacement needs independent semantic review; do not edit this
+checker to promote old outcomes. Reporting scripts remain outside execution
+freezes, and every controller stop stays visible.
+
+Repeated Dart-interpreter startup caused process-regression test timeouts under
+concurrent load; timed-out teardown then removed a child's working directory.
+The exit/coverage tests now compile one native CLI for the fixture suite and
+retain all existing failure/skip/oversize assertions and production deadlines.
+This removes repeated startup work rather than relaxing native failure checks.
+
+The next useful improvement is an owner/host boundary for explicitly protected
+input receipts, paired with observed effects. Steward advice cannot enforce a
+client shell's write permissions; another paragraph is not a safety boundary.
+Compare advisory and host-constrained modes separately after independently
+reviewing a fresh oracle. Keep verification probes in disposable copies and
+record scope violations even when native checks turn green.
+
+Final local verification: **246 Dart tests pass**, analysis passes with fatal
+infos, schema drift/output checks pass, 15 skills validate and 66 static cases
+execute/pass. The quarantine launch guard was exercised without a model call.
+Earlier interpreter-startup timeouts remain in local logs; the final native-CLI
+fixture suite passes with unchanged assertions. This validates the implementation
+and controls, not broad agent safety or a released improvement.

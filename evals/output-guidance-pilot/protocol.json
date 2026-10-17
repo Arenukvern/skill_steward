@@ -1,0 +1,35 @@
+{
+  "id": "output-guidance-qualified-development-2026-10-13",
+  "kind": "agent-development-comparison",
+  "tasks": [
+    "invalid-config",
+    "durability"
+  ],
+  "clients": [
+    "codex",
+    "zcode"
+  ],
+  "arms": [
+    "none",
+    "generic",
+    "grounded"
+  ],
+  "repeats_per_task_arm_client": 1,
+  "client_deadline_seconds": 240,
+  "oracle": "grade.py + frozen native Steward binary",
+  "quality_gate": "Grounded advice must preserve native completion and zero protected-state violations.",
+  "practical_benefit_gate": "Descriptive only: equal completion plus at least one fewer native repair attempt, or at least 10 percent lower both-passed median client wall time versus both controls. No superiority claim from two development task families.",
+  "failure_policy": "Retain all timeouts and setup failures; no retry unchanged. Stop a client lane when isolation/launch fails before model execution.",
+  "missing_metrics": "Keep unobserved first-useful-action timing, billed cost and repair counts unknown; tool counts are not repair attempts.",
+  "non_claims": [
+    "held-out acceptance",
+    "independent linguistic review",
+    "multilingual parity",
+    "official benchmark ranking",
+    "general safety",
+    "production ROI"
+  ],
+  "advice_control": "Immutable local wrapper projects the selected style on every native CLI call; underlying exit and native oracle unchanged.",
+  "metrics_note": "First native verification call is an observed proxy, not time to first useful action; failed native verification calls are not all repair attempts.",
+  "qualification": "Use ./bin/steward; verify selected advice style in native-wrapper records. Earlier cohorts retained separately."
+}

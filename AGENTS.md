@@ -36,25 +36,22 @@ npx skills add arenukvern/skill_steward --skill repository-governance-lifecycle
 6. **AGENTS.md stays a map** — skill authoring: [docs/STANDARDS.mdx](docs/STANDARDS.mdx); do not bloat this file.
 7. **Docs ≠ code** — link to behavior SSOT; do not paraphrase implementations in prose.
 8. **Ethical governance** — all design decisions must be auditable against [`charter-and-ethics`](skills/repository-governance-lifecycle/references/charter-and-ethics.md) principles (Anti-Bloat, Reversibility, Legibility, Behavior-as-Truth, Artisan Restraint).
+9. **Anti-loops** — two attempts then rewrite, delete, or hand off; one obligation per claimant; product use-path before fixtures; native `pnpm run validate` before `steward doctor`; plans stay a spine. This meta repo keeps `moe_required_for_architecture: true` for ADR-level work. `steward adopt` defaults that flag **off** for shipping archetypes.
 
 ## Guild skills (in-repo)
 
+Standing procedure: [docs/core/work-discipline.mdx](docs/core/work-discipline.mdx).
+
 | Skill | Use when |
 |-------|----------|
-| `repository-governance-lifecycle` | Architectural decisions (ADRs), FAQs, ethical auditing, charter, AGENTS map |
-| `steward-continuity-boundary-lifecycle` | Stewardship protocol mode boundaries, self-model decisions, delegation hygiene, and handoff-safe continuity |
-| `repo-quality-system-lifecycle` | General stewardship baseline for apps, libraries, tools, plugins, harnesses, and meta repos |
-| `mcp-harness-repo-maintainer` | Local action-contract/harness adoption: `steward.yaml`, typed actions, quick probes, benchmark smoke loops |
-| `harness-engineering-lifecycle` | Cross-repo harness generalization after a local contract exists |
-| `release-changelog-harness` | Release and changelog tooling per ecosystem (Changesets, Melos, etc.) |
-| `skill-authoring-lifecycle` | Creating, auditing, and maintaining SKILL.md under `skills/` |
-| `skill-eval-improve` | T-named skill quality gates (`evals/cases/*.yaml`) and CI improve loops |
-| `mixture-of-experts` | Parallel agent reasoning, critical evaluation, and self-auditing |
-| `multi-agent-handoff` | Spawning and communicating with subagents, handoffs |
-| `plugin-marketplace-setup` | Skill and plugin marketplace distribution setup |
-| `skill-source-citations` | Sourcing, attribution, and managing knowledge provenance |
-| `storytelling-ethics-lifecycle` | Public stories of work: creation/application ethics, story hygiene, generated vs curated disclosure |
-| `vision-alignment-foresight` | Vision vs implementation, intent, evidence, and future-fit analysis |
+| `repo-quality-system-lifecycle` | Adopt or audit a repo quality contract |
+| `repository-governance-lifecycle` | ADRs, FAQs, charter, plans, MoE, vision, continuity, docs, stories |
+| `multi-agent-handoff` | One obligation moves to another agent. A handoff does not create an owner |
+| `skill-authoring-lifecycle` | Create or change a skill, including evals and citations |
+| `harness-engineering-lifecycle` | Local contract through cross-repo harness proof |
+| `release-changelog-harness` | Release, changelog, and marketplace install |
+
+Other skill directories are superseded redirects. Do not start new work from them.
 
 ## Add or change a skill (checklist)
 

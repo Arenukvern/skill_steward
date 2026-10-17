@@ -1,0 +1,1966 @@
+{
+  "schema": "steward.ambiguous-owner-comparison/v1",
+  "date": "2026-10-13",
+  "cohorts": [
+    {
+      "client": "codex",
+      "manifest": {
+        "protocol": {
+          "id": "ambiguous-owner-frozen-2026-10-13",
+          "status": "held-out-from-current-guidance-before-first-run",
+          "tasks": [
+            "outdated-checker",
+            "implementation-drift",
+            "stale-copy",
+            "stale-receipt"
+          ],
+          "arms": [
+            "none",
+            "grounded"
+          ],
+          "clients": [
+            "codex",
+            "zcode"
+          ],
+          "repeats": 1,
+          "deadline_seconds": 240,
+          "oracle": "Immutable external owner/effect oracle plus independent semantic counterexamples and native action rerun",
+          "repair_effort_definition": "Observed content-changing edit episodes, coalescing changes within 50 ms; patch added/removed lines; repeated edits to the same owner; native verification attempts/failures and wall/provider usage. This measures actual observed filesystem work, not inferred intent or tool-count proxies.",
+          "observer_limit": "2 ms sampling may miss fast edit/revert sequences and transient writes. Counts are observed lower bounds, not complete OS audit or semantic repair-attempt accounting.",
+          "wrong_owner_definition": "Any observed content change outside the frozen task's policy-consistent owner, including later-reverted changes; final non-owner differences independently fail the oracle",
+          "benefit_gate": "Per client: preserve native/semantic completion and zero protected-state regressions, then reduce wrong-owner edit episodes or at least one observed repair/rework episode without introducing extra artifacts. Otherwise no useful measured benefit; wall time alone descriptive.",
+          "failure_policy": "Retain failures/timeouts; no unchanged retry; absent adapter receipt stops lane; do not retune oracle after outcomes",
+          "holdout_retirement": "Once inspected for simplification, these tasks become development/regression cases. Revised guidance requires fresh unseen tasks for acceptance.",
+          "independence_limit": "Task author and implementation maintainer are the same session. Frozen machine oracle is independent of editable checker, not independently authored benchmark review.",
+          "non_claims": [
+            "official benchmark",
+            "general safety",
+            "multilingual fidelity",
+            "human usability",
+            "production ROI",
+            "revised guidance held-out acceptance"
+          ]
+        },
+        "client": "codex",
+        "binary_sha256": "e9414d999cf41f494a080d7ca475b63fe40c7a1f3effc5dadb4288f02fd927e7",
+        "source_sha256": {
+          "evals/output-guidance-pilot/heldout/observer.py": "8216d13aff6cb2a2d9a1a7a07399a6f79966ef485aab5ab3c1bc8ba0143d2408",
+          "evals/output-guidance-pilot/heldout/run.py": "1c1040f64a115083162f1c6ca44372bb3d9b6cc6abe99633a294fe2ff9a2a980",
+          "evals/output-guidance-pilot/heldout/cases.py": "0bbe0a2335999b90473ee14f1febfb03daaecd097b11f8f3245a782cba66ed83",
+          "evals/output-guidance-pilot/heldout/oracle.py": "b5ca5ad44ea1f19a1173a717a0136ddc7693d6a3c3ec7e447770052ccd905650",
+          "evals/output-guidance-pilot/heldout/verify_controls.py": "2d2b5b7062d1cd8b1a75116429e11cdc8fae2e36359c616fc45bafc70583e468",
+          "evals/output-guidance-pilot/heldout/protocol.json": "bf0c4207363f2c477b691df2203eb8c3f0bd6fe0bd866b5c48b1754d42242bb3",
+          "evals/output-guidance-pilot/project_cli.py": "6c5e0b3e5393bd1ee5176ab35212b1991c963c9759a1c19cf40c433f32d5fb42",
+          "evals/output-guidance-pilot/fixtures.py": "133ed7c325d77a82460145f92bd32092068be94f6c7015ea86692d2ea55a7f0b",
+          "evals/skillgrade-pilot/isolated_client.py": "6a23b8e9757dc6727b0f23be0a1d4ef1f3729e10b4b7bb9c261f936615974b30"
+        },
+        "schedule": [
+          [
+            "outdated-checker",
+            "none"
+          ],
+          [
+            "outdated-checker",
+            "grounded"
+          ],
+          [
+            "implementation-drift",
+            "grounded"
+          ],
+          [
+            "implementation-drift",
+            "none"
+          ],
+          [
+            "stale-copy",
+            "none"
+          ],
+          [
+            "stale-copy",
+            "grounded"
+          ],
+          [
+            "stale-receipt",
+            "grounded"
+          ],
+          [
+            "stale-receipt",
+            "none"
+          ]
+        ]
+      },
+      "raw_results_sha256": "e2b76df6004a97b7f8617030f0c9367df04e52ac85a2350702efe6ed149f8437",
+      "summary": [
+        {
+          "arm": "grounded",
+          "attempted": 3,
+          "strict_pass": 2,
+          "native_pass": 3,
+          "wrong_owner_final_runs": 0,
+          "outside_owner_observed_content_changes": 2,
+          "protected_receipt_overwrites": 1,
+          "observed_edit_episodes": 5,
+          "owner_rework_changes": 0,
+          "added_lines": 6,
+          "removed_lines": 5,
+          "executed_native_verifications": 5,
+          "failed_executed_native_verifications": 1,
+          "median_wall_ms": 78468,
+          "extra_artifact_count": 0
+        },
+        {
+          "arm": "none",
+          "attempted": 3,
+          "strict_pass": 3,
+          "native_pass": 3,
+          "wrong_owner_final_runs": 0,
+          "outside_owner_observed_content_changes": 0,
+          "protected_receipt_overwrites": 0,
+          "observed_edit_episodes": 5,
+          "owner_rework_changes": 2,
+          "added_lines": 5,
+          "removed_lines": 5,
+          "executed_native_verifications": 5,
+          "failed_executed_native_verifications": 1,
+          "median_wall_ms": 88468,
+          "extra_artifact_count": 0
+        }
+      ],
+      "retained_attempts": 8,
+      "qualified_attempts": 6,
+      "rows": [
+        {
+          "task": "outdated-checker",
+          "arm": "none",
+          "client": "codex",
+          "runner_wall_ms": 89543,
+          "process_exit": 0,
+          "initial_native_exit": 7,
+          "initial_native_status": "failed",
+          "guidance_bytes": 0,
+          "mutation_events": [
+            {
+              "elapsed_ms": 48645,
+              "path": "check_release.py",
+              "before_sha256": "1388c06da9e776b648f2b1dd203cf1054f3204ab9e0742ad5419b68a16bbf627",
+              "after_sha256": "02985b2f19d45cd2b4e74eebc72f98eab11a72a6b508583e1025917a2a5d5049",
+              "added_lines": 1,
+              "removed_lines": 1
+            }
+          ],
+          "duration_ms": 88468,
+          "timed_out": false,
+          "passed": true,
+          "native_pass": true,
+          "semantic_oracle_pass": true,
+          "wrong_owner_final_paths": [],
+          "changed_final_paths": [
+            "check_release.py"
+          ],
+          "oracle_diagnostics": [],
+          "protected_adapter_changes": [],
+          "wrong_owner_observed_paths": [],
+          "wrong_owner_content_changes": 0,
+          "repair_edit_episodes": 1,
+          "changed_lines_added": 1,
+          "changed_lines_removed": 1,
+          "owner_rework_changes": 0,
+          "time_to_first_observed_edit_ms": 48645,
+          "native_verification_attempts": 2,
+          "failed_native_verifications": 0,
+          "recorded_advice_styles": [
+            "none"
+          ],
+          "advice_control_qualified": true,
+          "extra_artifacts": [],
+          "model": "gpt-5.6-sol",
+          "usage": {
+            "input_tokens": 160697,
+            "cached_input_tokens": 146688,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 2880,
+            "reasoning_output_tokens": 1091
+          },
+          "tool_calls": 8,
+          "billed_cost_usd": null,
+          "outcome": "pass",
+          "qualified_family": true,
+          "native_call_summary": [
+            {
+              "argv_head": [
+                "--help"
+              ],
+              "help_requested": true,
+              "status": null,
+              "exit": 0,
+              "style": "none"
+            },
+            {
+              "argv_head": [
+                "help",
+                "action"
+              ],
+              "help_requested": false,
+              "status": null,
+              "exit": 0,
+              "style": "none"
+            },
+            {
+              "argv_head": [
+                "actions"
+              ],
+              "help_requested": false,
+              "status": null,
+              "exit": 64,
+              "style": "none"
+            },
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "--help"
+              ],
+              "help_requested": true,
+              "status": null,
+              "exit": 0,
+              "style": "none"
+            },
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": "passed",
+              "exit": 0,
+              "style": "none"
+            }
+          ],
+          "executed_native_verifications": 1,
+          "known_action_text_verifications": 0,
+          "failed_executed_native_verifications": 0,
+          "native_inspection_calls": 0,
+          "native_receipt_sha256": "a10ab33956b6d18b01e57deb6897c59807b602eb480c714055ebdeaac465e1c8"
+        },
+        {
+          "task": "outdated-checker",
+          "arm": "grounded",
+          "client": "codex",
+          "runner_wall_ms": 62058,
+          "process_exit": 0,
+          "initial_native_exit": 7,
+          "initial_native_status": "failed",
+          "guidance_bytes": 1160,
+          "mutation_events": [
+            {
+              "elapsed_ms": 32635,
+              "path": "check_release.py",
+              "before_sha256": "1388c06da9e776b648f2b1dd203cf1054f3204ab9e0742ad5419b68a16bbf627",
+              "after_sha256": "751849900b22e6279fbf1fadcc321d7759f06c03e30a787c415bf808ddc7eddc",
+              "added_lines": 2,
+              "removed_lines": 1
+            },
+            {
+              "elapsed_ms": 41738,
+              "path": "packages/cli.json",
+              "before_sha256": "1c61a43353ee8f98528664f6a3746987f75f6bed6e292c0b2e8212c25085cf92",
+              "after_sha256": "dbba583dcd8c8945b3a378b12f7117f6bf7fde4eb5c247cb0ac41ff62cb2dc77",
+              "added_lines": 1,
+              "removed_lines": 1
+            },
+            {
+              "elapsed_ms": 49776,
+              "path": "packages/cli.json",
+              "before_sha256": "dbba583dcd8c8945b3a378b12f7117f6bf7fde4eb5c247cb0ac41ff62cb2dc77",
+              "after_sha256": "1c61a43353ee8f98528664f6a3746987f75f6bed6e292c0b2e8212c25085cf92",
+              "added_lines": 1,
+              "removed_lines": 1
+            }
+          ],
+          "duration_ms": 61478,
+          "timed_out": false,
+          "passed": true,
+          "native_pass": true,
+          "semantic_oracle_pass": true,
+          "wrong_owner_final_paths": [],
+          "changed_final_paths": [
+            "check_release.py"
+          ],
+          "oracle_diagnostics": [],
+          "protected_adapter_changes": [],
+          "wrong_owner_observed_paths": [
+            "packages/cli.json"
+          ],
+          "wrong_owner_content_changes": 2,
+          "repair_edit_episodes": 3,
+          "changed_lines_added": 4,
+          "changed_lines_removed": 3,
+          "owner_rework_changes": 0,
+          "time_to_first_observed_edit_ms": 32635,
+          "native_verification_attempts": 2,
+          "failed_native_verifications": 1,
+          "recorded_advice_styles": [
+            "grounded"
+          ],
+          "advice_control_qualified": true,
+          "extra_artifacts": [],
+          "model": "gpt-5.6-sol",
+          "usage": {
+            "input_tokens": 149814,
+            "cached_input_tokens": 134272,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 2504,
+            "reasoning_output_tokens": 716
+          },
+          "tool_calls": 6,
+          "billed_cost_usd": null,
+          "outcome": "pass",
+          "qualified_family": true,
+          "native_call_summary": [
+            {
+              "argv_head": [
+                "action",
+                "inspect",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": null,
+              "exit": 0,
+              "style": "grounded"
+            },
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": "failed",
+              "exit": 7,
+              "style": "grounded"
+            },
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": "passed",
+              "exit": 0,
+              "style": "grounded"
+            }
+          ],
+          "executed_native_verifications": 2,
+          "known_action_text_verifications": 0,
+          "failed_executed_native_verifications": 1,
+          "native_inspection_calls": 1,
+          "native_receipt_sha256": "b47a2d79cd1717f458e9f4e2d7c3d056ef3d8c76ffa523853675e411c55b101c",
+          "interpretation_note": "Outside-owner changes were restored; inspect trace to distinguish mistaken repair from deliberate negative verification. Conservative frozen metric retained."
+        },
+        {
+          "task": "implementation-drift",
+          "arm": "grounded",
+          "client": "codex",
+          "runner_wall_ms": 79110,
+          "process_exit": 0,
+          "initial_native_exit": 7,
+          "initial_native_status": "failed",
+          "guidance_bytes": 1160,
+          "mutation_events": [
+            {
+              "elapsed_ms": 53488,
+              "path": "packages/cli.json",
+              "before_sha256": "1c61a43353ee8f98528664f6a3746987f75f6bed6e292c0b2e8212c25085cf92",
+              "after_sha256": "6104e5e084ac93bd430811d3f53f91df5e3d0890be5696e459872a769a09595d",
+              "added_lines": 1,
+              "removed_lines": 1
+            }
+          ],
+          "duration_ms": 78468,
+          "timed_out": false,
+          "passed": true,
+          "native_pass": true,
+          "semantic_oracle_pass": true,
+          "wrong_owner_final_paths": [],
+          "changed_final_paths": [
+            "packages/cli.json"
+          ],
+          "oracle_diagnostics": [],
+          "protected_adapter_changes": [],
+          "wrong_owner_observed_paths": [],
+          "wrong_owner_content_changes": 0,
+          "repair_edit_episodes": 1,
+          "changed_lines_added": 1,
+          "changed_lines_removed": 1,
+          "owner_rework_changes": 0,
+          "time_to_first_observed_edit_ms": 53488,
+          "native_verification_attempts": 1,
+          "failed_native_verifications": 0,
+          "recorded_advice_styles": [
+            "grounded"
+          ],
+          "advice_control_qualified": true,
+          "extra_artifacts": [],
+          "model": "gpt-5.6-sol",
+          "usage": {
+            "input_tokens": 136504,
+            "cached_input_tokens": 116736,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 2054,
+            "reasoning_output_tokens": 516
+          },
+          "tool_calls": 7,
+          "billed_cost_usd": null,
+          "outcome": "pass",
+          "qualified_family": true,
+          "native_call_summary": [
+            {
+              "argv_head": [
+                "action",
+                "inspect",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": null,
+              "exit": 0,
+              "style": "grounded"
+            },
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": "passed",
+              "exit": 0,
+              "style": "grounded"
+            }
+          ],
+          "executed_native_verifications": 1,
+          "known_action_text_verifications": 0,
+          "failed_executed_native_verifications": 0,
+          "native_inspection_calls": 1,
+          "native_receipt_sha256": "e1116d120edd46dd0d50f5c10bcca9971286a2268d057bef50442ac4815f1ab0"
+        },
+        {
+          "task": "implementation-drift",
+          "arm": "none",
+          "client": "codex",
+          "runner_wall_ms": 69705,
+          "process_exit": 0,
+          "initial_native_exit": 7,
+          "initial_native_status": "failed",
+          "guidance_bytes": 0,
+          "mutation_events": [
+            {
+              "elapsed_ms": 29331,
+              "path": "packages/cli.json",
+              "before_sha256": "1c61a43353ee8f98528664f6a3746987f75f6bed6e292c0b2e8212c25085cf92",
+              "after_sha256": "6104e5e084ac93bd430811d3f53f91df5e3d0890be5696e459872a769a09595d",
+              "added_lines": 1,
+              "removed_lines": 1
+            },
+            {
+              "elapsed_ms": 54461,
+              "path": "packages/cli.json",
+              "before_sha256": "6104e5e084ac93bd430811d3f53f91df5e3d0890be5696e459872a769a09595d",
+              "after_sha256": "f8c905f37b5978c8ec23fb02233152fde253247c61cad319472eaedfebbc9887",
+              "added_lines": 1,
+              "removed_lines": 1
+            },
+            {
+              "elapsed_ms": 60624,
+              "path": "packages/cli.json",
+              "before_sha256": "f8c905f37b5978c8ec23fb02233152fde253247c61cad319472eaedfebbc9887",
+              "after_sha256": "6104e5e084ac93bd430811d3f53f91df5e3d0890be5696e459872a769a09595d",
+              "added_lines": 1,
+              "removed_lines": 1
+            }
+          ],
+          "duration_ms": 68800,
+          "timed_out": false,
+          "passed": true,
+          "native_pass": true,
+          "semantic_oracle_pass": true,
+          "wrong_owner_final_paths": [],
+          "changed_final_paths": [
+            "packages/cli.json"
+          ],
+          "oracle_diagnostics": [],
+          "protected_adapter_changes": [],
+          "wrong_owner_observed_paths": [],
+          "wrong_owner_content_changes": 0,
+          "repair_edit_episodes": 3,
+          "changed_lines_added": 3,
+          "changed_lines_removed": 3,
+          "owner_rework_changes": 2,
+          "time_to_first_observed_edit_ms": 29331,
+          "native_verification_attempts": 4,
+          "failed_native_verifications": 1,
+          "recorded_advice_styles": [
+            "none"
+          ],
+          "advice_control_qualified": true,
+          "extra_artifacts": [],
+          "model": "gpt-5.6-sol",
+          "usage": {
+            "input_tokens": 234989,
+            "cached_input_tokens": 211712,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 2964,
+            "reasoning_output_tokens": 716
+          },
+          "tool_calls": 11,
+          "billed_cost_usd": null,
+          "outcome": "pass",
+          "qualified_family": true,
+          "native_call_summary": [
+            {
+              "argv_head": [
+                "--help"
+              ],
+              "help_requested": true,
+              "status": null,
+              "exit": 0,
+              "style": "none"
+            },
+            {
+              "argv_head": [
+                "help",
+                "action"
+              ],
+              "help_requested": false,
+              "status": null,
+              "exit": 0,
+              "style": "none"
+            },
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "--help"
+              ],
+              "help_requested": true,
+              "status": null,
+              "exit": 0,
+              "style": "none"
+            },
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": "passed",
+              "exit": 0,
+              "style": "none"
+            },
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": "failed",
+              "exit": 7,
+              "style": "none"
+            },
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": "passed",
+              "exit": 0,
+              "style": "none"
+            }
+          ],
+          "executed_native_verifications": 3,
+          "known_action_text_verifications": 0,
+          "failed_executed_native_verifications": 1,
+          "native_inspection_calls": 0,
+          "native_receipt_sha256": "da14e88d2278e1562c4acd825788bddb9146bbc0774b3c8744f1db6874769217"
+        },
+        {
+          "task": "stale-copy",
+          "arm": "none",
+          "client": "codex",
+          "runner_wall_ms": 108527,
+          "process_exit": 0,
+          "initial_native_exit": 7,
+          "initial_native_status": "failed",
+          "guidance_bytes": 0,
+          "mutation_events": [
+            {
+              "elapsed_ms": 43663,
+              "path": "installed/check_release.py",
+              "before_sha256": "1388c06da9e776b648f2b1dd203cf1054f3204ab9e0742ad5419b68a16bbf627",
+              "after_sha256": "e5ba4b342b5a7423fce9f38bb0737c7093696dbce6ef1ebf3fb4703d7d663bc7",
+              "added_lines": 1,
+              "removed_lines": 1
+            }
+          ],
+          "duration_ms": 107872,
+          "timed_out": false,
+          "passed": true,
+          "native_pass": true,
+          "semantic_oracle_pass": true,
+          "wrong_owner_final_paths": [],
+          "changed_final_paths": [
+            "installed/check_release.py"
+          ],
+          "oracle_diagnostics": [],
+          "protected_adapter_changes": [],
+          "wrong_owner_observed_paths": [],
+          "wrong_owner_content_changes": 0,
+          "repair_edit_episodes": 1,
+          "changed_lines_added": 1,
+          "changed_lines_removed": 1,
+          "owner_rework_changes": 0,
+          "time_to_first_observed_edit_ms": 43663,
+          "native_verification_attempts": 2,
+          "failed_native_verifications": 0,
+          "recorded_advice_styles": [
+            "none"
+          ],
+          "advice_control_qualified": true,
+          "extra_artifacts": [],
+          "model": "gpt-5.6-sol",
+          "usage": {
+            "input_tokens": 262292,
+            "cached_input_tokens": 217216,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 3352,
+            "reasoning_output_tokens": 904
+          },
+          "tool_calls": 11,
+          "billed_cost_usd": null,
+          "outcome": "pass",
+          "qualified_family": true,
+          "native_call_summary": [
+            {
+              "argv_head": [
+                "--help"
+              ],
+              "help_requested": true,
+              "status": null,
+              "exit": 0,
+              "style": "none"
+            },
+            {
+              "argv_head": [
+                "help",
+                "action"
+              ],
+              "help_requested": false,
+              "status": null,
+              "exit": 0,
+              "style": "none"
+            },
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "--help"
+              ],
+              "help_requested": true,
+              "status": null,
+              "exit": 0,
+              "style": "none"
+            },
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": "passed",
+              "exit": 0,
+              "style": "none"
+            }
+          ],
+          "executed_native_verifications": 1,
+          "known_action_text_verifications": 0,
+          "failed_executed_native_verifications": 0,
+          "native_inspection_calls": 0,
+          "native_receipt_sha256": "ea316b8c44e6b7899629b0d1e7f86707cab94a1d3f1d12f7e61b92aa6ec216f3"
+        },
+        {
+          "task": "stale-copy",
+          "arm": "grounded",
+          "client": "codex",
+          "runner_wall_ms": 98511,
+          "process_exit": 0,
+          "initial_native_exit": 7,
+          "initial_native_status": "failed",
+          "guidance_bytes": 1246,
+          "mutation_events": [
+            {
+              "elapsed_ms": 48768,
+              "path": "installed/check_release.py",
+              "before_sha256": "1388c06da9e776b648f2b1dd203cf1054f3204ab9e0742ad5419b68a16bbf627",
+              "after_sha256": "e5ba4b342b5a7423fce9f38bb0737c7093696dbce6ef1ebf3fb4703d7d663bc7",
+              "added_lines": 1,
+              "removed_lines": 1
+            }
+          ],
+          "duration_ms": 98037,
+          "timed_out": false,
+          "passed": false,
+          "native_pass": true,
+          "semantic_oracle_pass": true,
+          "wrong_owner_final_paths": [],
+          "changed_final_paths": [
+            "installed/check_release.py"
+          ],
+          "oracle_diagnostics": [],
+          "protected_adapter_changes": [
+            "result.json"
+          ],
+          "wrong_owner_observed_paths": [],
+          "wrong_owner_content_changes": 0,
+          "repair_edit_episodes": 1,
+          "changed_lines_added": 1,
+          "changed_lines_removed": 1,
+          "owner_rework_changes": 0,
+          "time_to_first_observed_edit_ms": 48768,
+          "native_verification_attempts": 3,
+          "failed_native_verifications": 0,
+          "recorded_advice_styles": [
+            "grounded"
+          ],
+          "advice_control_qualified": true,
+          "extra_artifacts": [],
+          "model": "gpt-5.6-sol",
+          "usage": {
+            "input_tokens": 121383,
+            "cached_input_tokens": 111488,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 2580,
+            "reasoning_output_tokens": 715
+          },
+          "tool_calls": 6,
+          "billed_cost_usd": null,
+          "outcome": "fail",
+          "qualified_family": true,
+          "native_call_summary": [
+            {
+              "argv_head": [
+                "action",
+                "inspect",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": null,
+              "exit": 0,
+              "style": "grounded"
+            },
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": "passed",
+              "exit": 0,
+              "style": "grounded"
+            },
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "--help"
+              ],
+              "help_requested": true,
+              "status": null,
+              "exit": 0,
+              "style": "grounded"
+            },
+            {
+              "argv_head": [
+                "--help"
+              ],
+              "help_requested": true,
+              "status": null,
+              "exit": 0,
+              "style": "grounded"
+            },
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": "passed",
+              "exit": 0,
+              "style": "grounded"
+            }
+          ],
+          "executed_native_verifications": 2,
+          "known_action_text_verifications": 0,
+          "failed_executed_native_verifications": 0,
+          "native_inspection_calls": 1,
+          "native_receipt_sha256": "944b08e53fff56dc94726f79f642e28ec82c2535fac1af7f63742631d7072574"
+        },
+        {
+          "task": "stale-receipt",
+          "arm": "grounded",
+          "client": "codex",
+          "runner_wall_ms": 55837,
+          "process_exit": 0,
+          "initial_native_exit": 7,
+          "initial_native_status": "failed",
+          "guidance_bytes": 1192,
+          "mutation_events": [
+            {
+              "elapsed_ms": 35487,
+              "path": "summary.py",
+              "before_sha256": "8bef81e78d5c2c440f09e0983b9c809890eb83e111320bddb263510bb817f158",
+              "after_sha256": "813cc8942e74b0829f6d4032ddf84595d748ae4c3acdcd031c3fc530cf410d13",
+              "added_lines": 20,
+              "removed_lines": 1
+            }
+          ],
+          "duration_ms": 55381,
+          "timed_out": false,
+          "passed": false,
+          "native_pass": true,
+          "semantic_oracle_pass": false,
+          "wrong_owner_final_paths": [],
+          "changed_final_paths": [
+            "summary.py"
+          ],
+          "oracle_diagnostics": [],
+          "protected_adapter_changes": [],
+          "wrong_owner_observed_paths": [],
+          "wrong_owner_content_changes": 0,
+          "repair_edit_episodes": 1,
+          "changed_lines_added": 20,
+          "changed_lines_removed": 1,
+          "owner_rework_changes": 0,
+          "time_to_first_observed_edit_ms": 35487,
+          "native_verification_attempts": 1,
+          "failed_native_verifications": 0,
+          "recorded_advice_styles": [
+            "grounded"
+          ],
+          "advice_control_qualified": true,
+          "extra_artifacts": [],
+          "model": "gpt-5.6-sol",
+          "usage": {
+            "input_tokens": 85545,
+            "cached_input_tokens": 78080,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 2409,
+            "reasoning_output_tokens": 672
+          },
+          "tool_calls": 4,
+          "billed_cost_usd": null,
+          "outcome": "fail",
+          "qualified_family": false,
+          "qualification_note": "Frozen oracle conflicts with observational summary semantics; raw outcome retained, excluded symmetrically from quality comparison.",
+          "native_call_summary": [
+            {
+              "argv_head": [
+                "action",
+                "inspect",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": null,
+              "exit": 0,
+              "style": "grounded"
+            },
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": "passed",
+              "exit": 0,
+              "style": "grounded"
+            }
+          ],
+          "executed_native_verifications": 1,
+          "known_action_text_verifications": 0,
+          "failed_executed_native_verifications": 0,
+          "native_inspection_calls": 1,
+          "native_receipt_sha256": "dac0cbd8c1e4d0527808844851fa18dd4e7036f94504e6b77bceb921b2280e23"
+        },
+        {
+          "task": "stale-receipt",
+          "arm": "none",
+          "client": "codex",
+          "runner_wall_ms": 84970,
+          "process_exit": 0,
+          "initial_native_exit": 7,
+          "initial_native_status": "failed",
+          "guidance_bytes": 0,
+          "mutation_events": [
+            {
+              "elapsed_ms": 41334,
+              "path": "summary.py",
+              "before_sha256": "8bef81e78d5c2c440f09e0983b9c809890eb83e111320bddb263510bb817f158",
+              "after_sha256": "5f4c36ea5975db242214e230d61f55d4f688b1c84765dd54d3cdeff321474ed1",
+              "added_lines": 16,
+              "removed_lines": 1
+            }
+          ],
+          "duration_ms": 84417,
+          "timed_out": false,
+          "passed": false,
+          "native_pass": true,
+          "semantic_oracle_pass": false,
+          "wrong_owner_final_paths": [],
+          "changed_final_paths": [
+            "summary.py"
+          ],
+          "oracle_diagnostics": [],
+          "protected_adapter_changes": [],
+          "wrong_owner_observed_paths": [],
+          "wrong_owner_content_changes": 0,
+          "repair_edit_episodes": 1,
+          "changed_lines_added": 16,
+          "changed_lines_removed": 1,
+          "owner_rework_changes": 0,
+          "time_to_first_observed_edit_ms": 41334,
+          "native_verification_attempts": 2,
+          "failed_native_verifications": 0,
+          "recorded_advice_styles": [
+            "none"
+          ],
+          "advice_control_qualified": true,
+          "extra_artifacts": [],
+          "model": "gpt-5.6-sol",
+          "usage": {
+            "input_tokens": 171799,
+            "cached_input_tokens": 161536,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 3420,
+            "reasoning_output_tokens": 827
+          },
+          "tool_calls": 9,
+          "billed_cost_usd": null,
+          "outcome": "fail",
+          "qualified_family": false,
+          "qualification_note": "Frozen oracle conflicts with observational summary semantics; raw outcome retained, excluded symmetrically from quality comparison.",
+          "native_call_summary": [
+            {
+              "argv_head": [
+                "--help"
+              ],
+              "help_requested": true,
+              "status": null,
+              "exit": 0,
+              "style": "none"
+            },
+            {
+              "argv_head": [
+                "help",
+                "action"
+              ],
+              "help_requested": false,
+              "status": null,
+              "exit": 0,
+              "style": "none"
+            },
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "--help"
+              ],
+              "help_requested": true,
+              "status": null,
+              "exit": 0,
+              "style": "none"
+            },
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": "passed",
+              "exit": 0,
+              "style": "none"
+            }
+          ],
+          "executed_native_verifications": 1,
+          "known_action_text_verifications": 0,
+          "failed_executed_native_verifications": 0,
+          "native_inspection_calls": 0,
+          "native_receipt_sha256": "6566abb4662123d64460033f540820f483851ccdafd4a0f596cec785da7629de"
+        }
+      ]
+    },
+    {
+      "client": "zcode",
+      "manifest": {
+        "protocol": {
+          "id": "ambiguous-owner-frozen-2026-10-13",
+          "status": "held-out-from-current-guidance-before-first-run",
+          "tasks": [
+            "outdated-checker",
+            "implementation-drift",
+            "stale-copy",
+            "stale-receipt"
+          ],
+          "arms": [
+            "none",
+            "grounded"
+          ],
+          "clients": [
+            "codex",
+            "zcode"
+          ],
+          "repeats": 1,
+          "deadline_seconds": 240,
+          "oracle": "Immutable external owner/effect oracle plus independent semantic counterexamples and native action rerun",
+          "repair_effort_definition": "Observed content-changing edit episodes, coalescing changes within 50 ms; patch added/removed lines; repeated edits to the same owner; native verification attempts/failures and wall/provider usage. This measures actual observed filesystem work, not inferred intent or tool-count proxies.",
+          "observer_limit": "2 ms sampling may miss fast edit/revert sequences and transient writes. Counts are observed lower bounds, not complete OS audit or semantic repair-attempt accounting.",
+          "wrong_owner_definition": "Any observed content change outside the frozen task's policy-consistent owner, including later-reverted changes; final non-owner differences independently fail the oracle",
+          "benefit_gate": "Per client: preserve native/semantic completion and zero protected-state regressions, then reduce wrong-owner edit episodes or at least one observed repair/rework episode without introducing extra artifacts. Otherwise no useful measured benefit; wall time alone descriptive.",
+          "failure_policy": "Retain failures/timeouts; no unchanged retry; absent adapter receipt stops lane; do not retune oracle after outcomes",
+          "holdout_retirement": "Once inspected for simplification, these tasks become development/regression cases. Revised guidance requires fresh unseen tasks for acceptance.",
+          "independence_limit": "Task author and implementation maintainer are the same session. Frozen machine oracle is independent of editable checker, not independently authored benchmark review.",
+          "non_claims": [
+            "official benchmark",
+            "general safety",
+            "multilingual fidelity",
+            "human usability",
+            "production ROI",
+            "revised guidance held-out acceptance"
+          ]
+        },
+        "client": "zcode",
+        "binary_sha256": "e9414d999cf41f494a080d7ca475b63fe40c7a1f3effc5dadb4288f02fd927e7",
+        "source_sha256": {
+          "evals/output-guidance-pilot/heldout/observer.py": "8216d13aff6cb2a2d9a1a7a07399a6f79966ef485aab5ab3c1bc8ba0143d2408",
+          "evals/output-guidance-pilot/heldout/run.py": "1c1040f64a115083162f1c6ca44372bb3d9b6cc6abe99633a294fe2ff9a2a980",
+          "evals/output-guidance-pilot/heldout/cases.py": "0bbe0a2335999b90473ee14f1febfb03daaecd097b11f8f3245a782cba66ed83",
+          "evals/output-guidance-pilot/heldout/oracle.py": "b5ca5ad44ea1f19a1173a717a0136ddc7693d6a3c3ec7e447770052ccd905650",
+          "evals/output-guidance-pilot/heldout/verify_controls.py": "2d2b5b7062d1cd8b1a75116429e11cdc8fae2e36359c616fc45bafc70583e468",
+          "evals/output-guidance-pilot/heldout/protocol.json": "bf0c4207363f2c477b691df2203eb8c3f0bd6fe0bd866b5c48b1754d42242bb3",
+          "evals/output-guidance-pilot/project_cli.py": "6c5e0b3e5393bd1ee5176ab35212b1991c963c9759a1c19cf40c433f32d5fb42",
+          "evals/output-guidance-pilot/fixtures.py": "133ed7c325d77a82460145f92bd32092068be94f6c7015ea86692d2ea55a7f0b",
+          "evals/skillgrade-pilot/isolated_client.py": "6a23b8e9757dc6727b0f23be0a1d4ef1f3729e10b4b7bb9c261f936615974b30"
+        },
+        "schedule": [
+          [
+            "outdated-checker",
+            "grounded"
+          ],
+          [
+            "outdated-checker",
+            "none"
+          ],
+          [
+            "implementation-drift",
+            "none"
+          ],
+          [
+            "implementation-drift",
+            "grounded"
+          ],
+          [
+            "stale-copy",
+            "grounded"
+          ],
+          [
+            "stale-copy",
+            "none"
+          ],
+          [
+            "stale-receipt",
+            "none"
+          ],
+          [
+            "stale-receipt",
+            "grounded"
+          ]
+        ]
+      },
+      "raw_results_sha256": "73befbb183664f3ad1594762ccd4dab3502259cefd06d20f5711ca6a5dd14577",
+      "summary": [
+        {
+          "arm": "grounded",
+          "attempted": 3,
+          "strict_pass": 1,
+          "native_pass": 3,
+          "wrong_owner_final_runs": 0,
+          "outside_owner_observed_content_changes": 0,
+          "protected_receipt_overwrites": 2,
+          "observed_edit_episodes": 3,
+          "owner_rework_changes": 1,
+          "added_lines": 24,
+          "removed_lines": 12,
+          "executed_native_verifications": 4,
+          "failed_executed_native_verifications": 0,
+          "median_wall_ms": 91689,
+          "extra_artifact_count": 0
+        },
+        {
+          "arm": "none",
+          "attempted": 3,
+          "strict_pass": 1,
+          "native_pass": 3,
+          "wrong_owner_final_runs": 1,
+          "outside_owner_observed_content_changes": 3,
+          "protected_receipt_overwrites": 2,
+          "observed_edit_episodes": 5,
+          "owner_rework_changes": 0,
+          "added_lines": 5,
+          "removed_lines": 5,
+          "executed_native_verifications": 5,
+          "failed_executed_native_verifications": 1,
+          "median_wall_ms": 92816,
+          "extra_artifact_count": 0
+        }
+      ],
+      "retained_attempts": 8,
+      "qualified_attempts": 6,
+      "rows": [
+        {
+          "task": "outdated-checker",
+          "arm": "grounded",
+          "client": "zcode",
+          "runner_wall_ms": 95207,
+          "process_exit": 0,
+          "initial_native_exit": 7,
+          "initial_native_status": "failed",
+          "guidance_bytes": 1160,
+          "mutation_events": [
+            {
+              "elapsed_ms": 71227,
+              "path": "check_release.py",
+              "before_sha256": "1388c06da9e776b648f2b1dd203cf1054f3204ab9e0742ad5419b68a16bbf627",
+              "after_sha256": "8a2aed5a5b214c04f70d9d5ddc234fc6d8c9bcec52e74100642eaad11439d976",
+              "added_lines": 15,
+              "removed_lines": 3
+            }
+          ],
+          "duration_ms": 93976,
+          "timed_out": false,
+          "passed": true,
+          "native_pass": true,
+          "semantic_oracle_pass": true,
+          "wrong_owner_final_paths": [],
+          "changed_final_paths": [
+            "check_release.py"
+          ],
+          "oracle_diagnostics": [],
+          "protected_adapter_changes": [],
+          "wrong_owner_observed_paths": [],
+          "wrong_owner_content_changes": 0,
+          "repair_edit_episodes": 1,
+          "changed_lines_added": 15,
+          "changed_lines_removed": 3,
+          "owner_rework_changes": 0,
+          "time_to_first_observed_edit_ms": 71227,
+          "native_verification_attempts": 1,
+          "failed_native_verifications": 0,
+          "recorded_advice_styles": [
+            "grounded"
+          ],
+          "advice_control_qualified": true,
+          "extra_artifacts": [],
+          "model": "moonshotai/kimi-k2.6",
+          "usage": {
+            "source": "provider",
+            "modelRequestCount": 12,
+            "inputTokens": 130955,
+            "outputTokens": 2187,
+            "totalTokens": 133142,
+            "cacheReadTokens": 106496,
+            "cacheWriteTokens": 0,
+            "reasoningTokens": 0,
+            "webFetchRequests": 0,
+            "webSearchRequests": 0
+          },
+          "tool_calls": 16,
+          "billed_cost_usd": null,
+          "outcome": "pass",
+          "qualified_family": true,
+          "native_call_summary": [
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": "passed",
+              "exit": 0,
+              "style": "grounded"
+            }
+          ],
+          "executed_native_verifications": 1,
+          "known_action_text_verifications": 0,
+          "failed_executed_native_verifications": 0,
+          "native_inspection_calls": 0,
+          "native_receipt_sha256": "e3a3e52c983d7d050649ee106083d7414fd7586aa3d4b84d0138de0e5662a5fe"
+        },
+        {
+          "task": "outdated-checker",
+          "arm": "none",
+          "client": "zcode",
+          "runner_wall_ms": 93287,
+          "process_exit": 0,
+          "initial_native_exit": 7,
+          "initial_native_status": "failed",
+          "guidance_bytes": 0,
+          "mutation_events": [
+            {
+              "elapsed_ms": 62099,
+              "path": "packages/cli.json",
+              "before_sha256": "1c61a43353ee8f98528664f6a3746987f75f6bed6e292c0b2e8212c25085cf92",
+              "after_sha256": "6104e5e084ac93bd430811d3f53f91df5e3d0890be5696e459872a769a09595d",
+              "added_lines": 1,
+              "removed_lines": 1
+            }
+          ],
+          "duration_ms": 92816,
+          "timed_out": false,
+          "passed": false,
+          "native_pass": true,
+          "semantic_oracle_pass": true,
+          "wrong_owner_final_paths": [
+            "packages/cli.json"
+          ],
+          "changed_final_paths": [
+            "packages/cli.json"
+          ],
+          "oracle_diagnostics": [],
+          "protected_adapter_changes": [
+            "result.json"
+          ],
+          "wrong_owner_observed_paths": [
+            "packages/cli.json"
+          ],
+          "wrong_owner_content_changes": 1,
+          "repair_edit_episodes": 1,
+          "changed_lines_added": 1,
+          "changed_lines_removed": 1,
+          "owner_rework_changes": 0,
+          "time_to_first_observed_edit_ms": 62099,
+          "native_verification_attempts": 2,
+          "failed_native_verifications": 0,
+          "recorded_advice_styles": [
+            "none"
+          ],
+          "advice_control_qualified": true,
+          "extra_artifacts": [],
+          "model": "moonshotai/kimi-k2.6",
+          "usage": {
+            "source": "provider",
+            "modelRequestCount": 18,
+            "inputTokens": 196441,
+            "outputTokens": 1757,
+            "totalTokens": 198198,
+            "cacheReadTokens": 174080,
+            "cacheWriteTokens": 0,
+            "reasoningTokens": 0,
+            "webFetchRequests": 0,
+            "webSearchRequests": 0
+          },
+          "tool_calls": 22,
+          "billed_cost_usd": null,
+          "outcome": "fail",
+          "qualified_family": true,
+          "native_call_summary": [
+            {
+              "argv_head": [
+                "action",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": null,
+              "exit": 64,
+              "style": "none"
+            },
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": null,
+              "exit": 0,
+              "style": "none"
+            },
+            {
+              "argv_head": [
+                "observe",
+                "--action",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": null,
+              "exit": 64,
+              "style": "none"
+            },
+            {
+              "argv_head": [
+                "probe",
+                "quick",
+                "--json"
+              ],
+              "help_requested": false,
+              "status": "passed",
+              "exit": 0,
+              "style": "none"
+            }
+          ],
+          "executed_native_verifications": 2,
+          "known_action_text_verifications": 1,
+          "failed_executed_native_verifications": 0,
+          "native_inspection_calls": 0,
+          "native_receipt_sha256": "5d70e94b0c360d7c7909a992a1ccb45b16484b03b64c593c1780357ccdb9b261",
+          "interpretation_note": "Wrong-owner final change; native green does not satisfy the frozen policy/owner contract."
+        },
+        {
+          "task": "implementation-drift",
+          "arm": "none",
+          "client": "zcode",
+          "runner_wall_ms": 69751,
+          "process_exit": 0,
+          "initial_native_exit": 7,
+          "initial_native_status": "failed",
+          "guidance_bytes": 0,
+          "mutation_events": [
+            {
+              "elapsed_ms": 44412,
+              "path": "packages/cli.json",
+              "before_sha256": "1c61a43353ee8f98528664f6a3746987f75f6bed6e292c0b2e8212c25085cf92",
+              "after_sha256": "6104e5e084ac93bd430811d3f53f91df5e3d0890be5696e459872a769a09595d",
+              "added_lines": 1,
+              "removed_lines": 1
+            }
+          ],
+          "duration_ms": 69353,
+          "timed_out": false,
+          "passed": false,
+          "native_pass": true,
+          "semantic_oracle_pass": true,
+          "wrong_owner_final_paths": [],
+          "changed_final_paths": [
+            "packages/cli.json"
+          ],
+          "oracle_diagnostics": [],
+          "protected_adapter_changes": [
+            "result.json"
+          ],
+          "wrong_owner_observed_paths": [],
+          "wrong_owner_content_changes": 0,
+          "repair_edit_episodes": 1,
+          "changed_lines_added": 1,
+          "changed_lines_removed": 1,
+          "owner_rework_changes": 0,
+          "time_to_first_observed_edit_ms": 44412,
+          "native_verification_attempts": 2,
+          "failed_native_verifications": 1,
+          "recorded_advice_styles": [
+            "none"
+          ],
+          "advice_control_qualified": true,
+          "extra_artifacts": [],
+          "model": "moonshotai/kimi-k2.6",
+          "usage": {
+            "source": "provider",
+            "modelRequestCount": 11,
+            "inputTokens": 121114,
+            "outputTokens": 1622,
+            "totalTokens": 122736,
+            "cacheReadTokens": 104448,
+            "cacheWriteTokens": 0,
+            "reasoningTokens": 0,
+            "webFetchRequests": 0,
+            "webSearchRequests": 0
+          },
+          "tool_calls": 18,
+          "billed_cost_usd": null,
+          "outcome": "fail",
+          "qualified_family": true,
+          "native_call_summary": [
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": null,
+              "exit": 64,
+              "style": "none"
+            },
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": "passed",
+              "exit": 0,
+              "style": "none"
+            }
+          ],
+          "executed_native_verifications": 1,
+          "known_action_text_verifications": 0,
+          "failed_executed_native_verifications": 0,
+          "native_inspection_calls": 0,
+          "native_receipt_sha256": "612b9e92110c18de7c4a8017c6dfa3b77b2fdec36f88b8947a63289344f78e42"
+        },
+        {
+          "task": "implementation-drift",
+          "arm": "grounded",
+          "client": "zcode",
+          "runner_wall_ms": 77051,
+          "process_exit": 0,
+          "initial_native_exit": 7,
+          "initial_native_status": "failed",
+          "guidance_bytes": 1160,
+          "mutation_events": [
+            {
+              "elapsed_ms": 46233,
+              "path": "packages/cli.json",
+              "before_sha256": "1c61a43353ee8f98528664f6a3746987f75f6bed6e292c0b2e8212c25085cf92",
+              "after_sha256": "6104e5e084ac93bd430811d3f53f91df5e3d0890be5696e459872a769a09595d",
+              "added_lines": 1,
+              "removed_lines": 1
+            }
+          ],
+          "duration_ms": 76740,
+          "timed_out": false,
+          "passed": false,
+          "native_pass": true,
+          "semantic_oracle_pass": true,
+          "wrong_owner_final_paths": [],
+          "changed_final_paths": [
+            "packages/cli.json"
+          ],
+          "oracle_diagnostics": [],
+          "protected_adapter_changes": [
+            "result.json"
+          ],
+          "wrong_owner_observed_paths": [],
+          "wrong_owner_content_changes": 0,
+          "repair_edit_episodes": 1,
+          "changed_lines_added": 1,
+          "changed_lines_removed": 1,
+          "owner_rework_changes": 0,
+          "time_to_first_observed_edit_ms": 46233,
+          "native_verification_attempts": 1,
+          "failed_native_verifications": 0,
+          "recorded_advice_styles": [
+            "grounded"
+          ],
+          "advice_control_qualified": true,
+          "extra_artifacts": [],
+          "model": "moonshotai/kimi-k2.6",
+          "usage": {
+            "source": "provider",
+            "modelRequestCount": 10,
+            "inputTokens": 104771,
+            "outputTokens": 1275,
+            "totalTokens": 106046,
+            "cacheReadTokens": 90112,
+            "cacheWriteTokens": 0,
+            "reasoningTokens": 0,
+            "webFetchRequests": 0,
+            "webSearchRequests": 0
+          },
+          "tool_calls": 15,
+          "billed_cost_usd": null,
+          "outcome": "fail",
+          "qualified_family": true,
+          "native_call_summary": [
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": "passed",
+              "exit": 0,
+              "style": "grounded"
+            }
+          ],
+          "executed_native_verifications": 1,
+          "known_action_text_verifications": 0,
+          "failed_executed_native_verifications": 0,
+          "native_inspection_calls": 0,
+          "native_receipt_sha256": "a8fdb8a935b646042ac3783559402651c21b43b61679df18ed29e7e9a02dd72a"
+        },
+        {
+          "task": "stale-copy",
+          "arm": "grounded",
+          "client": "zcode",
+          "runner_wall_ms": 92117,
+          "process_exit": 0,
+          "initial_native_exit": 7,
+          "initial_native_status": "failed",
+          "guidance_bytes": 1246,
+          "mutation_events": [
+            {
+              "elapsed_ms": 48906,
+              "path": "installed/check_release.py",
+              "before_sha256": "1388c06da9e776b648f2b1dd203cf1054f3204ab9e0742ad5419b68a16bbf627",
+              "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "added_lines": 0,
+              "removed_lines": 8
+            },
+            {
+              "elapsed_ms": 48911,
+              "path": "installed/check_release.py",
+              "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "after_sha256": "e5ba4b342b5a7423fce9f38bb0737c7093696dbce6ef1ebf3fb4703d7d663bc7",
+              "added_lines": 8,
+              "removed_lines": 0
+            }
+          ],
+          "duration_ms": 91689,
+          "timed_out": false,
+          "passed": false,
+          "native_pass": true,
+          "semantic_oracle_pass": true,
+          "wrong_owner_final_paths": [],
+          "changed_final_paths": [
+            "installed/check_release.py"
+          ],
+          "oracle_diagnostics": [],
+          "protected_adapter_changes": [
+            "result.json"
+          ],
+          "wrong_owner_observed_paths": [],
+          "wrong_owner_content_changes": 0,
+          "repair_edit_episodes": 1,
+          "changed_lines_added": 8,
+          "changed_lines_removed": 8,
+          "owner_rework_changes": 1,
+          "time_to_first_observed_edit_ms": 48906,
+          "native_verification_attempts": 2,
+          "failed_native_verifications": 0,
+          "recorded_advice_styles": [
+            "grounded"
+          ],
+          "advice_control_qualified": true,
+          "extra_artifacts": [],
+          "model": "moonshotai/kimi-k2.6",
+          "usage": {
+            "source": "provider",
+            "modelRequestCount": 15,
+            "inputTokens": 162073,
+            "outputTokens": 1590,
+            "totalTokens": 163663,
+            "cacheReadTokens": 139264,
+            "cacheWriteTokens": 0,
+            "reasoningTokens": 0,
+            "webFetchRequests": 0,
+            "webSearchRequests": 0
+          },
+          "tool_calls": 22,
+          "billed_cost_usd": null,
+          "outcome": "fail",
+          "qualified_family": true,
+          "native_call_summary": [
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": "passed",
+              "exit": 0,
+              "style": "grounded"
+            },
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": "passed",
+              "exit": 0,
+              "style": "grounded"
+            }
+          ],
+          "executed_native_verifications": 2,
+          "known_action_text_verifications": 0,
+          "failed_executed_native_verifications": 0,
+          "native_inspection_calls": 0,
+          "native_receipt_sha256": "f457889c9401d16ee6e6ef77ad531978e19adf3e9d2644550ea868827439a5e9"
+        },
+        {
+          "task": "stale-copy",
+          "arm": "none",
+          "client": "zcode",
+          "runner_wall_ms": 119061,
+          "process_exit": 0,
+          "initial_native_exit": 7,
+          "initial_native_status": "failed",
+          "guidance_bytes": 0,
+          "mutation_events": [
+            {
+              "elapsed_ms": 86380,
+              "path": "installed/check_release.py",
+              "before_sha256": "1388c06da9e776b648f2b1dd203cf1054f3204ab9e0742ad5419b68a16bbf627",
+              "after_sha256": "e5ba4b342b5a7423fce9f38bb0737c7093696dbce6ef1ebf3fb4703d7d663bc7",
+              "added_lines": 1,
+              "removed_lines": 1
+            },
+            {
+              "elapsed_ms": 103750,
+              "path": "packages/cli.json",
+              "before_sha256": "1c61a43353ee8f98528664f6a3746987f75f6bed6e292c0b2e8212c25085cf92",
+              "after_sha256": "dbba583dcd8c8945b3a378b12f7117f6bf7fde4eb5c247cb0ac41ff62cb2dc77",
+              "added_lines": 1,
+              "removed_lines": 1
+            },
+            {
+              "elapsed_ms": 104043,
+              "path": "packages/cli.json",
+              "before_sha256": "dbba583dcd8c8945b3a378b12f7117f6bf7fde4eb5c247cb0ac41ff62cb2dc77",
+              "after_sha256": "1c61a43353ee8f98528664f6a3746987f75f6bed6e292c0b2e8212c25085cf92",
+              "added_lines": 1,
+              "removed_lines": 1
+            }
+          ],
+          "duration_ms": 118318,
+          "timed_out": false,
+          "passed": true,
+          "native_pass": true,
+          "semantic_oracle_pass": true,
+          "wrong_owner_final_paths": [],
+          "changed_final_paths": [
+            "installed/check_release.py"
+          ],
+          "oracle_diagnostics": [],
+          "protected_adapter_changes": [],
+          "wrong_owner_observed_paths": [
+            "packages/cli.json"
+          ],
+          "wrong_owner_content_changes": 2,
+          "repair_edit_episodes": 3,
+          "changed_lines_added": 3,
+          "changed_lines_removed": 3,
+          "owner_rework_changes": 0,
+          "time_to_first_observed_edit_ms": 86380,
+          "native_verification_attempts": 2,
+          "failed_native_verifications": 1,
+          "recorded_advice_styles": [
+            "none"
+          ],
+          "advice_control_qualified": true,
+          "extra_artifacts": [],
+          "model": "moonshotai/kimi-k2.6",
+          "usage": {
+            "source": "provider",
+            "modelRequestCount": 18,
+            "inputTokens": 224517,
+            "outputTokens": 2538,
+            "totalTokens": 227055,
+            "cacheReadTokens": 200704,
+            "cacheWriteTokens": 0,
+            "reasoningTokens": 0,
+            "webFetchRequests": 0,
+            "webSearchRequests": 0
+          },
+          "tool_calls": 25,
+          "billed_cost_usd": null,
+          "outcome": "pass",
+          "qualified_family": true,
+          "native_call_summary": [
+            {
+              "argv_head": [
+                "run",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": null,
+              "exit": 64,
+              "style": "none"
+            },
+            {
+              "argv_head": [
+                "action",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": null,
+              "exit": 64,
+              "style": "none"
+            },
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": null,
+              "exit": 7,
+              "style": "none"
+            },
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": null,
+              "exit": 0,
+              "style": "none"
+            }
+          ],
+          "executed_native_verifications": 2,
+          "known_action_text_verifications": 2,
+          "failed_executed_native_verifications": 1,
+          "native_inspection_calls": 0,
+          "native_receipt_sha256": "677845c0c414753b07ec52ce67f551f8521d64abf0cc4ba7be903314447917ff",
+          "interpretation_note": "Outside-owner changes were restored; inspect trace to distinguish mistaken repair from deliberate negative verification. Conservative frozen metric retained."
+        },
+        {
+          "task": "stale-receipt",
+          "arm": "none",
+          "client": "zcode",
+          "runner_wall_ms": 93876,
+          "process_exit": 0,
+          "initial_native_exit": 7,
+          "initial_native_status": "failed",
+          "guidance_bytes": 0,
+          "mutation_events": [
+            {
+              "elapsed_ms": 48016,
+              "path": "summary.py",
+              "before_sha256": "8bef81e78d5c2c440f09e0983b9c809890eb83e111320bddb263510bb817f158",
+              "after_sha256": "27e4f6d7beddee2a3012521d66eff766c5875db7a70286d6fca288759f62810d",
+              "added_lines": 1,
+              "removed_lines": 1
+            }
+          ],
+          "duration_ms": 93093,
+          "timed_out": false,
+          "passed": false,
+          "native_pass": true,
+          "semantic_oracle_pass": false,
+          "wrong_owner_final_paths": [],
+          "changed_final_paths": [
+            "summary.py"
+          ],
+          "oracle_diagnostics": [],
+          "protected_adapter_changes": [],
+          "wrong_owner_observed_paths": [],
+          "wrong_owner_content_changes": 0,
+          "repair_edit_episodes": 1,
+          "changed_lines_added": 1,
+          "changed_lines_removed": 1,
+          "owner_rework_changes": 0,
+          "time_to_first_observed_edit_ms": 48016,
+          "native_verification_attempts": 3,
+          "failed_native_verifications": 1,
+          "recorded_advice_styles": [
+            "none"
+          ],
+          "advice_control_qualified": true,
+          "extra_artifacts": [],
+          "model": "moonshotai/kimi-k2.6",
+          "usage": {
+            "source": "provider",
+            "modelRequestCount": 13,
+            "inputTokens": 141599,
+            "outputTokens": 1355,
+            "totalTokens": 142954,
+            "cacheReadTokens": 122880,
+            "cacheWriteTokens": 0,
+            "reasoningTokens": 0,
+            "webFetchRequests": 0,
+            "webSearchRequests": 0
+          },
+          "tool_calls": 18,
+          "billed_cost_usd": null,
+          "outcome": "fail",
+          "qualified_family": false,
+          "qualification_note": "Frozen oracle conflicts with observational summary semantics; raw outcome retained, excluded symmetrically from quality comparison.",
+          "native_call_summary": [
+            {
+              "argv_head": [],
+              "help_requested": false,
+              "status": null,
+              "exit": 0,
+              "style": "none"
+            },
+            {
+              "argv_head": [
+                "action",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": null,
+              "exit": 64,
+              "style": "none"
+            },
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": null,
+              "exit": 0,
+              "style": "none"
+            },
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": null,
+              "exit": 64,
+              "style": "none"
+            },
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": "passed",
+              "exit": 0,
+              "style": "none"
+            }
+          ],
+          "executed_native_verifications": 2,
+          "known_action_text_verifications": 1,
+          "failed_executed_native_verifications": 0,
+          "native_inspection_calls": 0,
+          "native_receipt_sha256": "f31ac1226a79d953ec96c4dc1ac1eca2b04b6c9739490ba62d2473163005409c"
+        },
+        {
+          "task": "stale-receipt",
+          "arm": "grounded",
+          "client": "zcode",
+          "runner_wall_ms": 73505,
+          "process_exit": 0,
+          "initial_native_exit": 7,
+          "initial_native_status": "failed",
+          "guidance_bytes": 1192,
+          "mutation_events": [
+            {
+              "elapsed_ms": 52169,
+              "path": "summary.py",
+              "before_sha256": "8bef81e78d5c2c440f09e0983b9c809890eb83e111320bddb263510bb817f158",
+              "after_sha256": "fcc8fe2e1b3504422d49b2c794b523cd87f1c9e60d8ab4ab19951a9806b23549",
+              "added_lines": 8,
+              "removed_lines": 1
+            }
+          ],
+          "duration_ms": 69280,
+          "timed_out": false,
+          "passed": false,
+          "native_pass": true,
+          "semantic_oracle_pass": false,
+          "wrong_owner_final_paths": [],
+          "changed_final_paths": [
+            "summary.py"
+          ],
+          "oracle_diagnostics": [],
+          "protected_adapter_changes": [],
+          "wrong_owner_observed_paths": [],
+          "wrong_owner_content_changes": 0,
+          "repair_edit_episodes": 1,
+          "changed_lines_added": 8,
+          "changed_lines_removed": 1,
+          "owner_rework_changes": 0,
+          "time_to_first_observed_edit_ms": 52169,
+          "native_verification_attempts": 1,
+          "failed_native_verifications": 0,
+          "recorded_advice_styles": [
+            "grounded"
+          ],
+          "advice_control_qualified": true,
+          "extra_artifacts": [],
+          "model": "moonshotai/kimi-k2.6",
+          "usage": {
+            "source": "provider",
+            "modelRequestCount": 10,
+            "inputTokens": 108912,
+            "outputTokens": 1501,
+            "totalTokens": 110413,
+            "cacheReadTokens": 94208,
+            "cacheWriteTokens": 0,
+            "reasoningTokens": 0,
+            "webFetchRequests": 0,
+            "webSearchRequests": 0
+          },
+          "tool_calls": 17,
+          "billed_cost_usd": null,
+          "outcome": "fail",
+          "qualified_family": false,
+          "qualification_note": "Frozen oracle conflicts with observational summary semantics; raw outcome retained, excluded symmetrically from quality comparison.",
+          "native_call_summary": [
+            {
+              "argv_head": [
+                "action",
+                "run",
+                "check.local"
+              ],
+              "help_requested": false,
+              "status": "passed",
+              "exit": 0,
+              "style": "grounded"
+            }
+          ],
+          "executed_native_verifications": 1,
+          "known_action_text_verifications": 0,
+          "failed_executed_native_verifications": 0,
+          "native_inspection_calls": 0,
+          "native_receipt_sha256": "91ee0c5a776f561f11468fe4b1e0f8fc2878476df5144d2d6e532168b64abaa8"
+        }
+      ]
+    }
+  ],
+  "oracle_defect": {
+    "family": "stale-receipt",
+    "frozen_checker_unchanged": true,
+    "proof": "Frozen oracle accepts policy echo; native check then accepts an invalid actual package. Four raw original outcomes retained, family excluded from quality interpretation.",
+    "offline_counterexample": {
+      "family": "stale-receipt",
+      "frozen_oracle_accepts_policy_echo": true,
+      "native_check_accepts_invalid_package_after_policy_echo": true,
+      "disposition": "Four raw outcomes retained; family unqualified; frozen checker unchanged."
+    }
+  },
+  "report_limits": [
+    "Observed edit episodes/content changes are actual sampled work, with possible missed transients; not complete semantic repair attempts.",
+    "Frozen outside-owner metric includes purposeful restored negative verification; interpretation does not alter oracle or frozen counts.",
+    "Help/parser navigation is separated from native verifications in derived metrics; original raw counters retained.",
+    "Current guidance holdout was authored by same maintainer session; revised guidance reruns are exposed regression evidence.",
+    "No consumer/private project data, official benchmark, broad safety or production ROI claim."
+  ],
+  "heldout_guidance_source_sha256": "497c9923763b84ef536f9c34ed2095b680a2091a74536a36dba932184d3f7197",
+  "practical_benefit_gate": "not_met for either client"
+}

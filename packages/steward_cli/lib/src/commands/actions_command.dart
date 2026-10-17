@@ -19,7 +19,7 @@ class ActionsCommand extends Command<void> {
   final name = 'actions';
 
   @override
-  final description = 'Discover typed Steward actions without running them.';
+  final description = 'Maintainer. Do not start here. Discover typed Steward actions without running them.';
 }
 
 class ActionsListCommand extends Command<void> {

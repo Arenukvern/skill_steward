@@ -1,0 +1,160 @@
+---
+status: historical
+evidence_type: pattern_review
+date: 2026-10-13
+scope: Local Skill Steward source, installed copies, and bounded Codex/Zcode session evidence
+claim_tested: Which session bottlenecks can be reduced without adding another governance layer
+proof_level: source inspection and isolated hook regression; skill behavior candidates
+commands_or_sources: git inspection, installed SKILL.md hashes, Codex session excerpts, Zcode memory pointer, native validation and static evals
+result: hook defect reproduced and repaired; guidance clarified; no cross-client acceleration measurement
+limitations: Maintainer-local sample; no controlled cross-client comparison or live Cursor event replay
+non_claims: No H4/H5, production adoption, or measured session speedup
+next_disposition: Use the clarified path in ordinary work; promote only after comparable repeats
+current_status_pointer: docs/evidence/current-dogfood-status.mdx
+---
+
+# Session application review
+
+Skill Steward is useful when it shortens the route to an owner, a safe change,
+and a trustworthy native check. Its evolutionary simplicity and evidence
+boundaries fit that purpose. The main risk is delivery and procedure overhead:
+the session can receive overlapping copies, load more governance than the task
+needs, or mistake a static check for observed improvement.
+
+This review applies the existing charter (`north_star_impact: clarifies`); it
+does not introduce a new lifecycle, maturity ladder, telemetry service, or skill.
+
+## Application evidence
+
+| Surface | Observed evidence | Useful application and limit |
+|---------|-------------------|------------------------------|
+| Codex | This session advertises standalone and plugin variants of several Steward skills. Before edits, `skill-eval-improve` differed between the Codex standalone copy and canonical source; global/plugin copies of repo-quality and repository-governance also differed from source. | Source selection and freshness diagnosis matter before evaluating instructions. A content difference is not proof of faulty routing; the actual chosen path must be recorded. |
+| Zcode | A maintainer-local Codemap session note names evolutionary simplicity and the generational ladder as sources for MeaningUnits. Codemap commit `78c11119f22184f41dd498c7ec5bd15e750d5744` independently confirms plan extraction and link cleanup on October 9. | There is concrete use of Steward ideas and a corresponding cleanup artifact. The note is historical self-report; the commit does not prove skill invocation, current Zcode discovery, or time saved. |
+| Cursor | `.cursor/hooks.json` invokes the shipped validation hook. An isolated fixture reproduced validator exit 7 being converted into success after package-manager fallback. | Mechanical feedback has direct value, but the hook concealed failure and repeated work. Fixed and shell-tested; no live Cursor event replay claimed. |
+| Claude Code / Zed / other clients | Repository installer and manifests describe delivery surfaces. No behavioral session sample was verified here. | Portable guidance is applicable; packaging evidence alone cannot establish effective application or parity. |
+| Coordination-heavy work | A bounded excerpt of Codex chat “Improve harness dogfooding scale” shows recovery/ownership work and missing coordination capabilities. | These are relevant friction signals, not evidence that Steward caused them. Keep lifecycle and coordination repair in the harness owner rather than building a second coordinator here. |
+
+The local installation comparison used SHA-256 of `SKILL.md`, not versions
+alone. Installed copies were inspected read-only; caches and global installs
+were not rewritten. Existing docs-refresh work was excluded from this patch.
+
+## Dispositions, in priority order
+
+| Bottleneck | Decision and why | Owner / status |
+|------------|------------------|----------------|
+| Hidden validator failure and duplicate execution | Preserve stderr and terminal status; fallback only when a runner is unavailable. Accept repo-relative paths. This removes work and restores truthful feedback. | Cursor hook: implemented, isolated regression passed. |
+| Full workflow before a routine repair | Put a depth decision before the repo-quality workflow: clear owner + native gate goes directly to repair; recurring friction opens only the owning section. | Existing repo-quality skill: candidate guidance implemented. |
+| Multiple installed skill copies | Diagnose the advertised path and content hash, choose the intended distribution per scope, and verify discovery in a fresh session after updating through its installer. | DX FAQ: clarified. Global installation changes deferred to their owning install/update flow. |
+| Static checks mistaken for behavioral proof | Stop requiring a YAML mirror for every prompt. Keep static regressions for distinct rules; freeze behavioral holdouts before edits and retire exposed cases from unseen acceptance. | Existing eval skill: clarified; existing static oracle unchanged. |
+| Old status presented as current effectiveness | The current dogfood ledger explicitly says last verified June 13. Preserve its dated proof; do not treat it as an October session-quality measurement. | Ledger owner: rerun a relevant workflow before upgrading claims; June results not relabeled as newly verified. |
+| Heavy skill bodies and overlapping routing | Prefer selective loading and deletion/compression within the owner. Do not split every concern into another skill. Refactor references only after traces show which parts agents repeatedly read unnecessarily. | Follow-up conditional on real session reading/repair cost. |
+| Repeated setup and whole-repo checks | Preserve required final gates; reuse dependencies and focused native checks during iteration. Do not add a new validation scheduler from this sample. | Native tooling; hook duplicate execution fixed first. |
+
+## Prediction and observation
+
+Prediction before the hook edit: selecting one available validator would remove
+the duplicate attempt while preserving its failure and diagnostics. The fixture
+failed before the edit (`expected 7, got 0`) and passed afterward for absolute
+and relative paths. Non-skill edits remained ignored. The manifest hash was
+updated after validation correctly reported the changed wiring artifact.
+
+The skill changes are plausible reductions in instruction overhead, not a
+measured speedup. Existing static evals remain the same oracle. No controlled fresh-agent task-execution comparison was run; the follow-up
+guided reasoning check below is weaker evidence. Published H* prompts are
+development cases.
+
+## Smallest next behavioral proof
+
+Use ordinary tasks: a small product repair, an ownership/docs repair, and a
+repeated validation failure. Freeze acceptance before editing instructions;
+compare equivalent clean starting states with native guidance versus one
+explicitly selected Steward skill. Record loaded path/ref, task result, time
+to first useful action, setup/repair attempts, total elapsed time, and rework.
+Keep the model, permissions, available tools, and validation gate comparable.
+
+Start with Codex and Zcode; replay the Cursor hook separately before claiming
+host integration. Expand to other clients only after the first comparison is
+useful. A win requires equal correctness and lower time or rework on a fresh
+repeat. If the entry guidance adds ceremony or suppresses needed ownership
+checks, revise or remove it. Store the result in the existing adoption record,
+not a new measurement platform.
+
+## Validation
+
+- Hook regression: reproduced failure before repair; passed after repair.
+- `pnpm run eval`: 61/61 existing static cases passed; not behavioral proof.
+- `pnpm run validate`: passed after refreshing the hook manifest hash (15 skills, including the pre-existing docs-refresh candidate).
+- `git diff --check`: passed before final review.
+- GitNexus query/impact: mounted server has no `skill_steward` index. No graph-derived blast radius or code-symbol refactor claimed.
+
+The recommendation is to keep the stewardship purpose and compress its entry
+cost. Create stronger automation only when repeated session evidence shows
+the native path or existing guidance cannot remove the bottleneck.
+
+## Research and measurement follow-up
+
+The October 13 follow-up implements the existing eval skill's offline
+measurement path, without a new CLI command, schema registry, telemetry service,
+or model dependency. Research and benchmark choices live in
+[the skill reference](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-eval-improve/references/evaluation-research-2026-10.md);
+the operating procedure and portable input example live beside it. The MCP
+maintainer now routes conformance, parity, effect safety and usefulness to a
+single tool-assurance reference.
+
+### Measured native control
+
+Three paired hook trials alternated baseline/candidate order and used the same
+frozen regression script. The assertions require failure status 7, preserved
+diagnostics, one validator selection, relative-path handling and ignored
+non-skill edits. The first failing assertion terminates each run.
+
+| Item | Observation |
+|---|---|
+| Baseline source | Git HEAD hook; SHA-256 `55e402ade4daeaaa9914539c2e73a051c1d8b919c9fca492461e4614845aeac5` |
+| Candidate source | Working-tree hook; SHA-256 `ab9138fe23f8c9ab98a0cdba76cdfdbdc0c91d780eeb18fa7dacd7ea8a498942` |
+| Frozen checker | SHA-256 `b1e6c3bcda4cd41db6949eff5f3158e2cf485899402f04b132cfd01b192f0846` |
+| Outcomes | Baseline 0/3; candidate 3/3; one native fixture task, not three independent tasks |
+| Efficiency | No both-passed pairs, so no speedup claim; failed-attempt elapsed time is retained separately |
+| Safety scope | Local disposable stub-validator fixture only; no agent, live Cursor host, injection or production authorization claim |
+| Raw input | Maintainer-local `.dart_tool/skill-eval-dogfood/2026-10-13/paired-runs.json` |
+| Summary | Maintainer-local `.dart_tool/skill-eval-dogfood/2026-10-13/summary.json` |
+
+Replay the assertion with `bash plugins/steward-validate-on-save/tests/validate-on-skill-edit.sh <absolute-hook-path>`.
+Compare recorded runs with `dart skills/skill-eval-improve/scripts/compare_dogfood.dart <paired-runs.json>`.
+Raw logs and the collection script are maintainer-local, not public
+reproducibility or agent-effectiveness evidence.
+
+### Guided reasoning check
+
+Two fresh internal subagents received the same three hypothetical questions:
+a routine parser repair, a faster candidate with a correctness regression,
+and a protocol-conformant tool whose write had not been observed. Baseline was
+instructed not to load skills; treatment read the updated eval skill and its
+two references. Both recommended native repair, rejected the quality regression,
+and required effect/safety/usefulness evidence beyond protocol conformance.
+
+The treatment gave more measurement detail. No quality uplift is established:
+this was a single guided response per arm, no executed product task, no enforced
+filesystem isolation, no independently frozen scoring rubric, and no reliable
+per-arm token/time measurement. It is a sanity check, not an unseen holdout,
+natural-discovery test, Codex-vs-Zcode comparison, or promotion gate. Its cases
+are now development examples.
+
+### Follow-up verification and boundaries
+
+- 10 comparator controls passed; combined with existing path, MCP, schema-payload
+  and benchmark tests, 39 focused tests passed.
+- Comparator and its test file: Dart analysis passed.
+- Existing 61 static eval cases passed; acceptance rules were not weakened.
+- Skill validation passed for all 15 skills; docs check passed.
+- The copied skill's helper runs without repository packages or a network call.
+- External benchmark runners/suites were researched, not installed or executed.
+- Zcode, Claude Code and Zed behavioral execution remain unmeasured. The official
+  MCP conformance route must first match Steward's declared version/transport.
+
+Keep ordinary CI deterministic. Pilot one external runner only when a concrete
+agent task suite and isolated client are ready; use local native acceptance as
+the outcome oracle. Prefer skillgrade for that bounded pilot, or reuse an
+adopter's existing runner. SkillEvaluator/Harbor remain options when repeated
+multi-client execution warrants the additional setup. No automatic optimizer,
+new maturity tier, or global skill-cache rewrite was added.

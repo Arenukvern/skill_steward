@@ -1,0 +1,785 @@
+{
+  "date": "2026-10-13",
+  "kind": "native-adopter-refresh",
+  "runner": "local candidate; not released",
+  "runner_sha256": "24c7d07b7e3c79829c9a6e3286e419320304174f7a1a3f1337c199476e72c65c",
+  "runs": [
+    {
+      "project": "oka",
+      "command": [
+        "steward",
+        "benchmark",
+        "--scenario",
+        "oka.contract-status-smoke",
+        "--strict",
+        "--json"
+      ],
+      "process_exit": 0,
+      "duration_ms": 7940,
+      "status": "pass",
+      "source_revision": "8c2b15b5e062c3899441949c4490759d932f7cd9",
+      "dirty_before": true,
+      "working_status_changed": false,
+      "receipt_sha256": "ef50694b0cc8af230a783b3f2c10a5efa0d6d3d6c33107b9420ce562bb655b14",
+      "executions": [
+        {
+          "action_id": "oka.check.version-sync",
+          "status": "passed",
+          "exit_code": 0,
+          "duration_ms": 866
+        },
+        {
+          "action_id": "oka.check.docs-drift",
+          "status": "passed",
+          "exit_code": 0,
+          "duration_ms": 683
+        },
+        {
+          "action_id": "oka.check.changelog-markdown",
+          "status": "passed",
+          "exit_code": 0,
+          "duration_ms": 37
+        },
+        {
+          "action_id": "oka.check.no-personal-paths",
+          "status": "passed",
+          "exit_code": 0,
+          "duration_ms": 5745
+        }
+      ],
+      "public_revision_url": "https://github.com/Arenukvern/oka/commit/8c2b15b5e062c3899441949c4490759d932f7cd9",
+      "exit_matches_outcome": true,
+      "failure_reason": null
+    },
+    {
+      "project": "mcp_flutter",
+      "command": [
+        "steward",
+        "probe",
+        "--profile",
+        "quick",
+        "--json"
+      ],
+      "process_exit": 0,
+      "duration_ms": 2496,
+      "status": "passed",
+      "source_revision": "48f96dfcb95c0e40b4cece734b99fb9e095d2720",
+      "dirty_before": true,
+      "working_status_changed": false,
+      "receipt_sha256": "3a8980b8c3f7d3283aeb8c2f0c0856c7abee3fbdf6acec2be007cfd11e5e0723",
+      "executions": [
+        {
+          "action_id": "fmt.check.tool-prefix",
+          "status": "passed",
+          "exit_code": 0,
+          "duration_ms": 926
+        },
+        {
+          "action_id": "fmt.check.intentcall-hosted-deps",
+          "status": "passed",
+          "exit_code": 0,
+          "duration_ms": 207
+        },
+        {
+          "action_id": "fmt.check.sdk-parity",
+          "status": "passed",
+          "exit_code": 0,
+          "duration_ms": 89
+        },
+        {
+          "action_id": "fmt.check.cli-alias-surface",
+          "status": "passed",
+          "exit_code": 0,
+          "duration_ms": 78
+        },
+        {
+          "action_id": "fmt.check.version-sync",
+          "status": "passed",
+          "exit_code": 0,
+          "duration_ms": 344
+        },
+        {
+          "action_id": "fmt.check.changelog-markdown",
+          "status": "passed",
+          "exit_code": 0,
+          "duration_ms": 105
+        },
+        {
+          "action_id": "fmt.check.repo-split-paths",
+          "status": "passed",
+          "exit_code": 0,
+          "duration_ms": 20
+        },
+        {
+          "action_id": "fmt.check.intentcall-skills-grep",
+          "status": "passed",
+          "exit_code": 0,
+          "duration_ms": 304
+        }
+      ],
+      "public_revision_url": "https://github.com/Arenukvern/mcp_flutter/commit/48f96dfcb95c0e40b4cece734b99fb9e095d2720",
+      "exit_matches_outcome": true,
+      "failure_reason": null
+    },
+    {
+      "project": "intentcall",
+      "command": [
+        "steward",
+        "action",
+        "run",
+        "intentcall.validate",
+        "--json"
+      ],
+      "process_exit": 1,
+      "duration_ms": 3716,
+      "status": "failed",
+      "source_revision": "3419b58a2a8296aa38b8a7f9a1e3ee2911e85e6d",
+      "dirty_before": true,
+      "working_status_changed": false,
+      "receipt_sha256": "473bdbcf20619c8530f2e7183a7426d5f55fb7c8cff644e452b8fb1193e363e9",
+      "executions": [],
+      "execution": {
+        "status": "failed",
+        "exit_code": 1,
+        "duration_ms": 3254
+      },
+      "public_revision_url": "https://github.com/Arenukvern/intentcall/commit/3419b58a2a8296aa38b8a7f9a1e3ee2911e85e6d",
+      "exit_matches_outcome": true,
+      "failure_reason": "Native version-sync check: core package 1.1.0 versus expected 1.0.0."
+    },
+    {
+      "project": "ecsly",
+      "command": [
+        "steward",
+        "validate",
+        "repo-contract",
+        "--json"
+      ],
+      "process_exit": 1,
+      "duration_ms": 38,
+      "status": "failed",
+      "source_revision": "beadec3434eb52603e9fb1ae41cc7d86e860b939",
+      "dirty_before": true,
+      "working_status_changed": false,
+      "receipt_sha256": "584d9d740b7b1fc1733a0aceb0f9793e7cd7d12e950351c90f9703ba3cea1858",
+      "executions": [],
+      "public_revision_url": "https://github.com/Arenukvern/ecsly/commit/beadec3434eb52603e9fb1ae41cc7d86e860b939",
+      "exit_matches_outcome": true,
+      "failure_reason": "Validator requires Steward manifests in eight native Dart plugin directories; compatibility gap, not proven consumer defect."
+    },
+    {
+      "project": "dart_flutter_packages",
+      "command": [
+        "steward",
+        "validate",
+        "repo-contract",
+        "--json"
+      ],
+      "process_exit": 1,
+      "duration_ms": 38,
+      "status": "failed",
+      "source_revision": "b58bbf34282b90e1dfd4592894a947cb01bf7197",
+      "dirty_before": true,
+      "working_status_changed": false,
+      "receipt_sha256": "37de98469bdf46d2f7601a30485707c0785e86db96f2bf2a32851ac4a65b67c1",
+      "executions": [],
+      "public_revision_url": null,
+      "exit_matches_outcome": true,
+      "failure_reason": "Validator requires a Steward manifest in an existing MCP plugin directory; compatibility gap, not proven consumer defect."
+    },
+    {
+      "project": "private-A",
+      "command": [
+        "steward",
+        "action",
+        "run",
+        "<anonymized-drift-check>",
+        "--json"
+      ],
+      "process_exit": 0,
+      "duration_ms": 879,
+      "status": "passed",
+      "source_revision": null,
+      "dirty_before": true,
+      "working_status_changed": false,
+      "receipt_sha256": "0cb90e546006263845c21d2e83db7e8b741fb30a31e213cada7ad1858dbd8f97",
+      "executions": [],
+      "execution": {
+        "status": "passed",
+        "exit_code": 0,
+        "duration_ms": 846
+      },
+      "exit_matches_outcome": true,
+      "failure_reason": null
+    }
+  ],
+  "limitations": [
+    "One fresh run per workflow, no paired speedup claim",
+    "Private raw receipts retained locally only",
+    "No production deployment or whole-project acceptance",
+    "Working-tree status comparison is not a filesystem side-effect audit"
+  ],
+  "baseline_id": "steward-quality-2026-10-13",
+  "measurement_policy": {
+    "adopter_sample": "Six preselected native workflows; one run each; not a portfolio success-rate estimate.",
+    "efficiency": "Wall times are observed single-run costs, not speedups or stable latency estimates.",
+    "comparison": "Compare same task, native checker, source, model/client where applicable; preserve failed/blocked/skipped attempts.",
+    "decision": "Keep improvements only with unchanged correctness/effect boundaries and useful measured benefit; narrow or retire guidance that adds recurring cost without benefit."
+  },
+  "regression_baseline": {
+    "original_cases": 6,
+    "before_passed": 1,
+    "before_failed": 5,
+    "oracle": "packages/steward_cli/test/exit_and_eval_coverage_test.dart",
+    "extended_cases": 9,
+    "scope": "process exits and static eval execution, not model quality",
+    "after_passed": 9
+  },
+  "static_evals": {
+    "status": "passed",
+    "executed_cases": 66,
+    "skipped_skills": 0,
+    "results": [
+      {
+        "skillName": "docs-refresh-lifecycle",
+        "status": "passed",
+        "errors": [],
+        "warnings": [],
+        "passed": 3,
+        "total": 3
+      },
+      {
+        "skillName": "harness-engineering-lifecycle",
+        "status": "passed",
+        "errors": [],
+        "warnings": [],
+        "passed": 2,
+        "total": 2
+      },
+      {
+        "skillName": "mcp-harness-repo-maintainer",
+        "status": "passed",
+        "errors": [],
+        "warnings": [],
+        "passed": 12,
+        "total": 12
+      },
+      {
+        "skillName": "mixture-of-experts",
+        "status": "passed",
+        "errors": [],
+        "warnings": [],
+        "passed": 5,
+        "total": 5
+      },
+      {
+        "skillName": "multi-agent-handoff",
+        "status": "passed",
+        "errors": [],
+        "warnings": [],
+        "passed": 4,
+        "total": 4
+      },
+      {
+        "skillName": "plugin-marketplace-setup",
+        "status": "passed",
+        "errors": [],
+        "warnings": [],
+        "passed": 4,
+        "total": 4
+      },
+      {
+        "skillName": "repo-quality-system-lifecycle",
+        "status": "passed",
+        "errors": [],
+        "warnings": [],
+        "passed": 14,
+        "total": 14
+      },
+      {
+        "skillName": "repository-governance-lifecycle",
+        "status": "passed",
+        "errors": [],
+        "warnings": [],
+        "passed": 5,
+        "total": 5
+      },
+      {
+        "skillName": "skill-authoring-lifecycle",
+        "status": "passed",
+        "errors": [],
+        "warnings": [],
+        "passed": 4,
+        "total": 4
+      },
+      {
+        "skillName": "skill-eval-improve",
+        "status": "passed",
+        "errors": [],
+        "warnings": [],
+        "passed": 4,
+        "total": 4
+      },
+      {
+        "skillName": "steward-continuity-boundary-lifecycle",
+        "status": "passed",
+        "errors": [],
+        "warnings": [],
+        "passed": 5,
+        "total": 5
+      },
+      {
+        "skillName": "storytelling-ethics-lifecycle",
+        "status": "passed",
+        "errors": [],
+        "warnings": [],
+        "passed": 2,
+        "total": 2
+      },
+      {
+        "skillName": "vision-alignment-foresight",
+        "status": "passed",
+        "errors": [],
+        "warnings": [],
+        "passed": 2,
+        "total": 2
+      }
+    ],
+    "exitCode": 0
+  },
+  "prior_agent_baseline": "evals/skillgrade-pilot/results/2026-10-13-rerun.json",
+  "future_metrics": [
+    "native task success",
+    "unauthorized state effects",
+    "executed/failed/skipped case coverage",
+    "setup and repair time",
+    "operator interventions",
+    "skill invocation",
+    "reported tokens including cache",
+    "billed cost when known",
+    "receipt age and source revision"
+  ],
+  "verification": {
+    "dart_tests_passed": 224,
+    "dart_analyze": "passed",
+    "static_cases_executed": 66,
+    "static_cases_passed": 66,
+    "skills_validated": 15,
+    "latest_guidance_candidate": {
+      "dart_tests_passed": 246,
+      "dart_analyze": "passed",
+      "schema_drift": "passed",
+      "schema_outputs": "passed",
+      "static_cases_passed": 66,
+      "skills_validated": 15
+    },
+    "ambiguous_owner_candidate": {
+      "dart_tests_passed": 246,
+      "dart_analyze": "passed --fatal-infos",
+      "schema_drift": "passed",
+      "schema_outputs": "passed",
+      "skills_validated": 15,
+      "static_cases_executed_and_passed": 66,
+      "process_regression_startup": "one compiled native CLI per suite; previous repeated-JIT timeouts retained in local logs",
+      "heldout_binary_sha256": "e9414d999cf41f494a080d7ca475b63fe40c7a1f3effc5dadb4288f02fd927e7",
+      "candidate_binary_sha256": "2bbb4ba25fd0a25886ec05c20e1457e5e6601a691034c11db1a9ba012421138a",
+      "oracle_source_sha256": "b5ca5ad44ea1f19a1173a717a0136ddc7693d6a3c3ec7e447770052ccd905650"
+    }
+  },
+  "candidate_source_sha256": {
+    "packages/steward_cli/test/exit_and_eval_coverage_test.dart": "1929620a6c35e1e478c1e107b3101d8d199291a5ec3c7f6fee12dfc1bf1205ad",
+    "packages/steward_cli/lib/src/commands/action_command.dart": "0570596d329d8168a271414943c5b068b553380bf92f37d92bb4ade61bbfc9e8",
+    "packages/steward_cli/lib/src/commands/probe_command.dart": "fa521e567a3b0524423e866df84f2ca975129940012967ba12469d0add1206a4",
+    "packages/steward_cli/lib/src/commands/benchmark_command.dart": "5c0018b27b8e26eac4c78840cb7b4e7b1ed90e2c378a2df9dca021306f6b9796",
+    "packages/steward_cli/lib/src/commands/eval_command.dart": "4f38c536dfbe1856c2d3e3667a4f4b0bb9c8c6e9266b3c0f972d4fdaebf9a21f",
+    "packages/steward_cli/lib/src/eval/eval_result.dart": "98ef861117c9d086fe93b93ff9a27ae21f8635388d4703ab0cd5d1f8ef3e94cc",
+    "packages/steward_cli/lib/src/eval/eval_runner.dart": "0c4608c055cadd143db34ee77243e94e671c3277ebf703a38bf9b5609dc782a0"
+  },
+  "runner_version_note": "Compiled candidate smoke receipt reports steward@unknown; binary digest, not version label, identifies the adopter runner. Source hashes describe final files; later eval help/copy changes were not in the adopter binary.",
+  "followups": [
+    {
+      "id": "plugin-discovery-first-rerun",
+      "date": "2026-10-13",
+      "runner": "local candidate; not released",
+      "runner_sha256": "f6e39a49c3d7e7de58176e3761ed8e80c357b48c6e8a422a964b1d7bd7b9fcd7",
+      "runs": [
+        {
+          "project": "ecsly",
+          "command": [
+            "steward",
+            "validate",
+            "repo-contract",
+            "--json"
+          ],
+          "status": "failed",
+          "process_exit": 1,
+          "duration_ms": 284,
+          "source_revision": "beadec3434eb52603e9fb1ae41cc7d86e860b939",
+          "public_revision_url": "https://github.com/Arenukvern/ecsly/commit/beadec3434eb52603e9fb1ae41cc7d86e860b939",
+          "dirty_before": true,
+          "working_status_changed": false,
+          "receipt_sha256": "9d04bb40d6ca9680a1ba7bdf1e74535860f4345c08886c084a36612923567db6",
+          "diagnostics": [
+            "plugins/ecsly_context/plugin.yaml is required."
+          ],
+          "exit_matches_outcome": true
+        },
+        {
+          "project": "dart_flutter_packages",
+          "command": [
+            "steward",
+            "validate",
+            "repo-contract",
+            "--json"
+          ],
+          "status": "passed",
+          "process_exit": 0,
+          "duration_ms": 17,
+          "source_revision": "b58bbf34282b90e1dfd4592894a947cb01bf7197",
+          "public_revision_url": null,
+          "dirty_before": true,
+          "working_status_changed": false,
+          "receipt_sha256": "07fa71024e4138d05988466ecf79fba599791dbad89096a50e9e6150aecdb19d",
+          "diagnostics": [],
+          "exit_matches_outcome": true
+        }
+      ],
+      "limitations": [
+        "One local run per affected route; no runtime/product readiness proof",
+        "Consumer trees are dirty; Git status comparison is not full effect audit",
+        "Earlier other-adopter rows were not rerun in this follow-up"
+      ]
+    },
+    {
+      "id": "plugin-discovery-followup",
+      "date": "2026-10-13",
+      "runner": "local candidate; not released",
+      "runner_sha256": "4676a61c34c8c73c40a2b73e04311248b07a17ed9bbdf97b40a7c1350cdc5303",
+      "runs": [
+        {
+          "project": "ecsly",
+          "command": [
+            "steward",
+            "validate",
+            "repo-contract",
+            "--json"
+          ],
+          "status": "passed",
+          "process_exit": 0,
+          "duration_ms": 314,
+          "source_revision": "beadec3434eb52603e9fb1ae41cc7d86e860b939",
+          "public_revision_url": "https://github.com/Arenukvern/ecsly/commit/beadec3434eb52603e9fb1ae41cc7d86e860b939",
+          "dirty_before": true,
+          "working_status_changed": false,
+          "receipt_sha256": "07fa71024e4138d05988466ecf79fba599791dbad89096a50e9e6150aecdb19d",
+          "diagnostics": [],
+          "exit_matches_outcome": true
+        },
+        {
+          "project": "dart_flutter_packages",
+          "command": [
+            "steward",
+            "validate",
+            "repo-contract",
+            "--json"
+          ],
+          "status": "passed",
+          "process_exit": 0,
+          "duration_ms": 27,
+          "source_revision": "b58bbf34282b90e1dfd4592894a947cb01bf7197",
+          "public_revision_url": null,
+          "dirty_before": true,
+          "working_status_changed": false,
+          "receipt_sha256": "07fa71024e4138d05988466ecf79fba599791dbad89096a50e9e6150aecdb19d",
+          "diagnostics": [],
+          "exit_matches_outcome": true
+        }
+      ],
+      "limitations": [
+        "One local run per affected route; no runtime/product readiness proof",
+        "Consumer trees are dirty; Git status comparison is not full effect audit",
+        "Earlier other-adopter rows were not rerun in this follow-up"
+      ],
+      "source_sha256": {
+        "packages/steward_cli/lib/src/validation/plugin_manifest_validator.dart": "27d421baf2efa1a998a2c57700131134aa7e015462a61d6aa9f50a33cfb857ff",
+        "packages/steward_cli/lib/src/commands/bundle_command.dart": "63ba8d4c52a2410cc9a14e7e1625f559d15f289ed19c63892e70e80d6ef24ddd",
+        "packages/steward_cli/test/plugin_manifest_validator_test.dart": "28ec6e762ff4fa381974db7f13a46fdf73b2789ad9517d3c27b4333bbecef4bd",
+        "packages/steward_cli/test/bundle_command_test.dart": "94df403103340af8c9f529bbed93b23d428e54493a7c1ddd2b9f6ae022e97527"
+      },
+      "verification": {
+        "dart_tests_passed": 232,
+        "dart_analyze": "passed",
+        "static_cases_passed": 66,
+        "skills_validated": 15,
+        "new_discovery_regressions": 8
+      }
+    }
+  ],
+  "latest_snapshot": [
+    {
+      "project": "oka",
+      "command": [
+        "steward",
+        "benchmark",
+        "--scenario",
+        "oka.contract-status-smoke",
+        "--strict",
+        "--json"
+      ],
+      "process_exit": 0,
+      "duration_ms": 7940,
+      "status": "pass",
+      "source_revision": "8c2b15b5e062c3899441949c4490759d932f7cd9",
+      "dirty_before": true,
+      "working_status_changed": false,
+      "receipt_sha256": "ef50694b0cc8af230a783b3f2c10a5efa0d6d3d6c33107b9420ce562bb655b14",
+      "executions": [
+        {
+          "action_id": "oka.check.version-sync",
+          "status": "passed",
+          "exit_code": 0,
+          "duration_ms": 866
+        },
+        {
+          "action_id": "oka.check.docs-drift",
+          "status": "passed",
+          "exit_code": 0,
+          "duration_ms": 683
+        },
+        {
+          "action_id": "oka.check.changelog-markdown",
+          "status": "passed",
+          "exit_code": 0,
+          "duration_ms": 37
+        },
+        {
+          "action_id": "oka.check.no-personal-paths",
+          "status": "passed",
+          "exit_code": 0,
+          "duration_ms": 5745
+        }
+      ],
+      "public_revision_url": "https://github.com/Arenukvern/oka/commit/8c2b15b5e062c3899441949c4490759d932f7cd9",
+      "exit_matches_outcome": true,
+      "failure_reason": null,
+      "run_group": "initial-adopter-refresh",
+      "rerun_in_followup": false
+    },
+    {
+      "project": "mcp_flutter",
+      "command": [
+        "steward",
+        "probe",
+        "--profile",
+        "quick",
+        "--json"
+      ],
+      "process_exit": 0,
+      "duration_ms": 2496,
+      "status": "passed",
+      "source_revision": "48f96dfcb95c0e40b4cece734b99fb9e095d2720",
+      "dirty_before": true,
+      "working_status_changed": false,
+      "receipt_sha256": "3a8980b8c3f7d3283aeb8c2f0c0856c7abee3fbdf6acec2be007cfd11e5e0723",
+      "executions": [
+        {
+          "action_id": "fmt.check.tool-prefix",
+          "status": "passed",
+          "exit_code": 0,
+          "duration_ms": 926
+        },
+        {
+          "action_id": "fmt.check.intentcall-hosted-deps",
+          "status": "passed",
+          "exit_code": 0,
+          "duration_ms": 207
+        },
+        {
+          "action_id": "fmt.check.sdk-parity",
+          "status": "passed",
+          "exit_code": 0,
+          "duration_ms": 89
+        },
+        {
+          "action_id": "fmt.check.cli-alias-surface",
+          "status": "passed",
+          "exit_code": 0,
+          "duration_ms": 78
+        },
+        {
+          "action_id": "fmt.check.version-sync",
+          "status": "passed",
+          "exit_code": 0,
+          "duration_ms": 344
+        },
+        {
+          "action_id": "fmt.check.changelog-markdown",
+          "status": "passed",
+          "exit_code": 0,
+          "duration_ms": 105
+        },
+        {
+          "action_id": "fmt.check.repo-split-paths",
+          "status": "passed",
+          "exit_code": 0,
+          "duration_ms": 20
+        },
+        {
+          "action_id": "fmt.check.intentcall-skills-grep",
+          "status": "passed",
+          "exit_code": 0,
+          "duration_ms": 304
+        }
+      ],
+      "public_revision_url": "https://github.com/Arenukvern/mcp_flutter/commit/48f96dfcb95c0e40b4cece734b99fb9e095d2720",
+      "exit_matches_outcome": true,
+      "failure_reason": null,
+      "run_group": "initial-adopter-refresh",
+      "rerun_in_followup": false
+    },
+    {
+      "project": "intentcall",
+      "command": [
+        "steward",
+        "action",
+        "run",
+        "intentcall.validate",
+        "--json"
+      ],
+      "process_exit": 1,
+      "duration_ms": 3716,
+      "status": "failed",
+      "source_revision": "3419b58a2a8296aa38b8a7f9a1e3ee2911e85e6d",
+      "dirty_before": true,
+      "working_status_changed": false,
+      "receipt_sha256": "473bdbcf20619c8530f2e7183a7426d5f55fb7c8cff644e452b8fb1193e363e9",
+      "executions": [],
+      "execution": {
+        "status": "failed",
+        "exit_code": 1,
+        "duration_ms": 3254
+      },
+      "public_revision_url": "https://github.com/Arenukvern/intentcall/commit/3419b58a2a8296aa38b8a7f9a1e3ee2911e85e6d",
+      "exit_matches_outcome": true,
+      "failure_reason": "Native version-sync check: core package 1.1.0 versus expected 1.0.0.",
+      "run_group": "initial-adopter-refresh",
+      "rerun_in_followup": false
+    },
+    {
+      "project": "ecsly",
+      "command": [
+        "steward",
+        "validate",
+        "repo-contract",
+        "--json"
+      ],
+      "status": "passed",
+      "process_exit": 0,
+      "duration_ms": 314,
+      "source_revision": "beadec3434eb52603e9fb1ae41cc7d86e860b939",
+      "public_revision_url": "https://github.com/Arenukvern/ecsly/commit/beadec3434eb52603e9fb1ae41cc7d86e860b939",
+      "dirty_before": true,
+      "working_status_changed": false,
+      "receipt_sha256": "07fa71024e4138d05988466ecf79fba599791dbad89096a50e9e6150aecdb19d",
+      "diagnostics": [],
+      "exit_matches_outcome": true,
+      "run_group": "plugin-discovery-followup",
+      "rerun_in_followup": true
+    },
+    {
+      "project": "dart_flutter_packages",
+      "command": [
+        "steward",
+        "validate",
+        "repo-contract",
+        "--json"
+      ],
+      "status": "passed",
+      "process_exit": 0,
+      "duration_ms": 27,
+      "source_revision": "b58bbf34282b90e1dfd4592894a947cb01bf7197",
+      "public_revision_url": null,
+      "dirty_before": true,
+      "working_status_changed": false,
+      "receipt_sha256": "07fa71024e4138d05988466ecf79fba599791dbad89096a50e9e6150aecdb19d",
+      "diagnostics": [],
+      "exit_matches_outcome": true,
+      "run_group": "plugin-discovery-followup",
+      "rerun_in_followup": true
+    },
+    {
+      "project": "private-A",
+      "command": [
+        "steward",
+        "action",
+        "run",
+        "<anonymized-drift-check>",
+        "--json"
+      ],
+      "process_exit": 0,
+      "duration_ms": 879,
+      "status": "passed",
+      "source_revision": null,
+      "dirty_before": true,
+      "working_status_changed": false,
+      "receipt_sha256": "0cb90e546006263845c21d2e83db7e8b741fb30a31e213cada7ad1858dbd8f97",
+      "executions": [],
+      "execution": {
+        "status": "passed",
+        "exit_code": 0,
+        "duration_ms": 846
+      },
+      "exit_matches_outcome": true,
+      "failure_reason": null,
+      "run_group": "initial-adopter-refresh",
+      "rerun_in_followup": false
+    }
+  ],
+  "latest_snapshot_counts": {
+    "passed": 5,
+    "failed": 1,
+    "rerun_this_followup": 2,
+    "carried_forward": 4
+  },
+  "output_guidance_development": {
+    "results": "evals/output-guidance-pilot/results/2026-10-13.json",
+    "qualified_attempts": 12,
+    "completion_by_client_arm": "2/2 in each of none/generic/grounded for Codex and ZCode",
+    "protected_state_violations": 0,
+    "practical_benefit_gate": "not_met",
+    "implementation": "local candidate, not released",
+    "broader_claims": "none",
+    "earlier_skill_pilot": "unchanged and separate"
+  },
+  "ambiguous_owner_followup": {
+    "results": "evals/output-guidance-pilot/results/2026-10-13-ambiguous-owner.json",
+    "retained_original_attempts": 16,
+    "qualified_original_attempts": 12,
+    "qualified_task_families": 3,
+    "unqualified_task_families": {
+      "stale-receipt": "Defective semantic oracle; four raw grades retained; no qualification."
+    },
+    "strict_completion": {
+      "codex": {
+        "none": "3/3",
+        "grounded": "2/3"
+      },
+      "zcode": {
+        "none": "1/3",
+        "grounded": "1/3"
+      }
+    },
+    "native_completion": "12/12 qualifying attempts; native green alone hides effect/owner violations",
+    "practical_benefit_gate": "not_met in either client",
+    "revised_guidance": {
+      "results": "evals/output-guidance-pilot/results/2026-10-13-owner-development.json",
+      "status": "exposed regression, not held-out acceptance",
+      "attempts": 4,
+      "strict_pass": 3,
+      "native_pass": 4,
+      "remaining_failure": "ZCode stale-copy: protected receipt overwritten and policy formatting changed"
+    },
+    "privacy": "Synthetic disposable fixtures only; no private consumer data or machine paths published",
+    "prior_adopter_and_skill_pilots": "Unchanged; separate historical evidence"
+  }
+}

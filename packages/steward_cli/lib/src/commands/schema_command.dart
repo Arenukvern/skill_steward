@@ -5,6 +5,7 @@ import 'package:args/command_runner.dart';
 import 'package:path/path.dart' as p;
 
 import '../contracts/schema_contracts.dart';
+import '../output_guidance.dart';
 import '../path_safety.dart';
 import '../repo_root.dart';
 import '../validation/json_schema_subset.dart';
@@ -29,7 +30,7 @@ class SchemaCommand extends Command<void> {
   final name = 'schema';
 
   @override
-  final description = 'Validate Steward JSON artifacts and CLI output shapes.';
+  final description = 'Maintainer. Do not start here. Validate Steward JSON artifacts and CLI output shapes.';
 }
 
 class SchemaEmitCommand extends Command<void> {
@@ -245,6 +246,11 @@ Future<Map<String, dynamic>> checkSchemaOutputsPayload(
     'doctor',
     'doctor',
     () async => stewardDoctorPayload(root, result),
+  );
+  await addCheck(
+    'output-guidance',
+    'output-guidance',
+    () async => outputGuidance(root, {'status': 'unknown'}),
   );
   await addCheck(
     'blocked-explain',
@@ -548,6 +554,7 @@ String _normalizeSchemaId(final String schemaId) => switch (schemaId.trim()) {
   'steward.ecology.snapshot.v1' || 'ecology-snapshot-v1' => 'ecology-snapshot',
   'steward.ecology.route.v1' || 'ecology-route-v1' => 'ecology-route',
   'steward.claim.check.v1' || 'claim-check-v1' => 'claim-check',
+  'steward.output-guidance.v1' || 'output-guidance-v1' => 'output-guidance',
   'steward.blocked.explain.v1' || 'blocked-explain-v1' => 'blocked-explain',
   'steward.schema.validate.v1' || 'schema-validate-v1' => 'schema-validate',
   'steward.schema.check_outputs.v1' ||
@@ -581,6 +588,7 @@ String _schemaFile(final String schemaName) => switch (schemaName) {
   'ecology-route' => 'ecology-route-v1.schema.json',
   'claim-check' => 'claim-check-v1.schema.json',
   'blocked-explain' => 'blocked-explain-v1.schema.json',
+  'output-guidance' => 'output-guidance-v1.schema.json',
   'schema-validate' => 'schema-validate-v1.schema.json',
   'schema-check-outputs' => 'schema-check-outputs-v1.schema.json',
   'schema-emit' => 'schema-emit-v1.schema.json',

@@ -5,6 +5,7 @@ import 'package:args/command_runner.dart';
 import 'package:path/path.dart' as p;
 
 import '../eval/eval.dart';
+import '../output_guidance.dart';
 import '../repo_root.dart';
 import '../validation/steward_config.dart';
 
@@ -13,6 +14,11 @@ void _write([final Object? object = '']) => stdout.writeln(object);
 class EvalCommand extends Command<void> {
   EvalCommand() {
     argParser
+      ..addOption('goal', help: 'Original task goal for advisory guidance.')
+      ..addFlag(
+        'guidance',
+        help: 'Include optional advice; default output contains facts only.',
+      )
       ..addOption(
         'name',
         abbr: 'n',
@@ -22,14 +28,13 @@ class EvalCommand extends Command<void> {
       ..addFlag(
         'json',
         negatable: false,
-        help:
-            'Emit machine-readable JSON for T1 behavior-critical skill evals.',
+        help: 'Emit JSON with static case coverage and skipped status.',
       )
       ..addFlag(
         'skill',
         negatable: false,
         help:
-            'Run T1 behavior-critical skill evals. This is the default when --name is omitted.',
+            'Run static skill evals: required T1 and any declared cases. This is the default.',
       );
   }
 
@@ -38,7 +43,7 @@ class EvalCommand extends Command<void> {
 
   @override
   final description =
-      'Runs T1 behavior-critical skill evals; --name runs a registered steward.yaml eval.';
+      'Maintainer. Do not start here. Runs static skill evals; --name runs a registered steward.yaml eval.';
 
   @override
   Future<void> run() async {
@@ -63,14 +68,24 @@ class EvalCommand extends Command<void> {
       targets: targets == null || targets.isEmpty ? null : targets,
     );
 
+    final payload = report.toJson();
+    payload['guidance'] = outputGuidance(
+      root,
+      payload,
+      goal: argResults?['goal'] as String?,
+      rerun: ['steward', 'eval', ...?targets, '--json'],
+    );
+    if (argResults?['guidance'] == false) payload.remove('guidance');
     if (useJson) {
-      _write(jsonEncode(report.toJson()));
+      _write(jsonEncode(payload));
     } else {
-      _write('T1 behavior-critical skill evals');
+      _write('Static skill evals (required T1 and declared cases)');
       for (final result in report.results) {
-        final status = result.isOk ? 'ok' : 'error';
+        final status = result.status;
         _write(
-          '$status ${result.skillName}: ${result.passed}/${result.total} cases passed',
+          result.status == 'skipped'
+              ? 'skipped ${result.skillName}: no cases executed'
+              : '$status ${result.skillName}: ${result.passed}/${result.total} cases passed',
         );
         for (final warning in result.warnings) {
           _write('  warn: $warning');
@@ -81,6 +96,9 @@ class EvalCommand extends Command<void> {
       }
     }
 
+    if (!useJson && argResults?['guidance'] != false) {
+      writeOutputGuidance(stdout, payload['guidance'] as Map<String, dynamic>);
+    }
     exit(report.ok ? 0 : 1);
   }
 

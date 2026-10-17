@@ -1,12 +1,10 @@
-id: vision-alignment-harness-vision-trigger
+id: harness-vision-trigger
 skill: vision-alignment-foresight
-routing: should_trigger
-input: "Critically analyze whether this harness vision fits user intent and future agent direction"
+routing: should_not_trigger
+input: "Use the superseded vision-alignment-foresight skill for a new workflow"
 rules:
-  - kind: file_exists
-    path: references/evals.md
   - kind: description_includes_any
-    terms: ["vision", "user intent", "future direction", "harness"]
+    terms: ["Superseded", "Do not use"]
   - kind: body_includes_any
     path: SKILL.md
-    terms: ["Future Fit", "Smallest Proof", "falsifier"]
+    terms: ["Do not use", "repository-governance-lifecycle"]

@@ -1,6 +1,6 @@
 # Skill Steward
 
-[![skills.sh](https://skills.sh/b/arenukvern/skill_steward)](https://skills.sh/arenukvern/skill_steward) [![maintained with Skill Steward](docs/brand/assets/svg/badge-solid.svg)](https://github.com/Arenukvern/skill_steward) [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/arenukvern/skill_steward)
+[![Repository checks](https://github.com/arenukvern/skill_steward/actions/workflows/validate-skills.yml/badge.svg?branch=main)](https://github.com/arenukvern/skill_steward/actions/workflows/validate-skills.yml) [![skills.sh](https://skills.sh/b/arenukvern/skill_steward)](https://skills.sh/arenukvern/skill_steward) [![maintained with Skill Steward](docs/brand/assets/svg/badge-solid.svg)](https://github.com/Arenukvern/skill_steward) [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/arenukvern/skill_steward)
 
 ![Cross-section of a cared-for ancient tree trunk at first light: precise growth rings, one clean radial extraction mark (plan hygiene), delicate geometric lattice threads emerging from the cut, and a single warm amber resin bead at the boundary — the visual symbol of long-term ethical stewardship and careful buildership for agent-operated repositories.](docs/brand/assets/hero/skill-steward-growth-rings-hero-16x9.jpg)
 
@@ -96,6 +96,31 @@ npx skills add <skill-steward-checkout> -a cursor -a claude-code -a codex -a zed
 cd <skill-steward-checkout>/packages/steward_cli && dart run :steward validate
 ```
 
+## Evidence and production value
+
+Skill Steward provides portable stewardship guidance, repo-local contracts, and
+executable validation. It is already used across a maintainer portfolio: [six public downstream
+repositories and private projects](docs/evidence/archive/cross-project-usage-2026-10-13.mdx),
+with observed Codex/ZCode command execution and documentation maintenance.
+Its intended production value is less repeated discovery,
+clearer ownership, and reliable handoff with evidence attached. **A general
+productivity gain or production-readiness certification has not been established.**
+Use it where those problems recur; keep routine repairs on their native path.
+
+Current results, blockers and experiment dispositions live in the
+[current scoreboard](docs/evidence/current-dogfood-status.mdx), with links to
+native machine-readable outcomes and retained failures. [CI](https://github.com/arenukvern/skill_steward/actions/workflows/validate-skills.yml)
+checks the displayed revision; it does not certify agent behavior.
+
+CLI output is facts-only by default. Request `--guidance` for optional advice;
+MCP doctor uses `guidance: true`. Use a focused skill only when structural pain
+recurs. The next proof is [ordinary workflow reuse](skills/skill-eval-improve/references/paired-dogfood.md#ordinary-workflow-reuse),
+including human review and maintenance cost; broad benchmark integrations are deferred.
+
+The CI badge reports repository checks, not a safety seal. The pilot used
+Skillgrade as a runner; it is not an official SkillsBench, ACES, AgentDojo, or
+Terminal-Bench score. Pilot tokens include cached inputs; billed cost is unknown.
+
 ## First honest claim
 
 Start by asking what you can honestly claim right now. Use the broad repo-quality baseline for S0/S1 claims; add harness proof only when the repo needs typed actions, probes, or benchmark evidence.
@@ -112,7 +137,7 @@ steward evidence init --minimal
 
 This creates only `docs/evidence/current-status.mdx`. Use it to record weakest true claims, blockers, rerun routes, and non-claims; move repeated deterministic drift into native checks, schemas, tests, CLI diagnostics, or probes.
 
-Canonical commands and expected interpretation: [First adopter golden path](docs/evidence/first-adopter-golden-path.mdx) is a reference fixture, not proof from a live adopter run. Claim routing lives in [DX FAQ: honest claim routing](docs/DX_FAQ.mdx#honest-claim-routing); steward status vocabulary is centralized in [ADR 0021](docs/decisions/0021-protocol-first-steward-status-gates.mdx) and [NORTH_STAR](docs/NORTH_STAR.mdx#adoption-claim-vocabulary).
+Canonical commands and expected interpretation: [First adopter golden path](docs/evidence/archive/first-adopter-golden-path.mdx) is a reference fixture, not proof from a live adopter run. Claim routing lives in [DX FAQ: honest claim routing](docs/DX_FAQ.mdx#honest-claim-routing); steward status vocabulary is centralized in [ADR 0021](docs/decisions/0021-protocol-first-steward-status-gates.mdx) and [NORTH_STAR](docs/NORTH_STAR.mdx#adoption-claim-vocabulary).
 
 ## Updating installed skills
 

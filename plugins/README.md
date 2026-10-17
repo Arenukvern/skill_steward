@@ -26,3 +26,11 @@ to preview the local copy layout before materializing generated payloads.
 | [steward-validate-on-save](steward-validate-on-save/) | Cursor `afterFileEdit` → validate when `skills/**/SKILL.md` changes (wired in [`.cursor/hooks.json`](../.cursor/hooks.json)) |
 
 **Planned:** `steward-faq-reminder` (ADR 0004).
+
+Discovery is shared by validation and bundling. A directory under `plugins/`
+with `pubspec.yaml` or `mcp.json` and no `plugin.yaml` is treated as a native
+Dart/MCP package and excluded from Steward wiring checks. Empty/cache-only directories are also excluded. Other directories with visible
+wiring content still require a Steward manifest. A present `plugin.yaml` always
+receives strict schema, references, lifecycle, path and artifact-hash checks,
+even beside native package metadata. Native package correctness remains owned
+by its native checks. A dangling manifest is an error, not an exemption.

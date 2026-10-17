@@ -21,16 +21,18 @@ See [DX_FAQ](DX_FAQ) for full install, update, and listing commands.
 
 ## Which skill should I use first?
 
-| Situation | Start with | Then add |
-|-----------|------------|----------|
-| Any app, library, CLI/tool, plugin, harness, or meta repo needs stewardship | `repo-quality-system-lifecycle` | `repository-governance-lifecycle` for structural decisions |
-| A standing decision, ADR, FAQ, or stale plan needs cleanup | `repository-governance-lifecycle` | `vision-alignment-foresight` when the direction itself is uncertain |
-| A steward/status claim needs continuity, boundary review, or handoff-safe mode context | `steward-continuity-boundary-lifecycle` | ADR 0021 for status gates; `multi-agent-handoff` when context moves between agents |
-| A repo's honest claim requires typed actions, probes, and benchmarks | `mcp-harness-repo-maintainer` | `harness-engineering-lifecycle` after H2 proof exists |
-| A reusable Agent Skill is being authored or reviewed | `skill-authoring-lifecycle` | `skill-source-citations`, then `skill-eval-improve` |
-| A public story, origin article, or generated-vs-curated disclosure is needed | `storytelling-ethics-lifecycle` | `repository-governance-lifecycle` if a decision must be locked |
-| Release notes, versioning, or binary provenance is unclear | `release-changelog-harness` | `repo-quality-system-lifecycle` for the broader release contract |
-| A complex decision needs multiple critical lenses | `mixture-of-experts` | `multi-agent-handoff` only when work moves between agents |
+Standing procedure: [work discipline](core/work-discipline).
+
+| Situation | Skill |
+|-----------|--------|
+| Adopt or audit a repo contract | `repo-quality-system-lifecycle` |
+| ADR, FAQ, plan, MoE, vision, continuity, docs, or a public story | `repository-governance-lifecycle` |
+| Move one obligation to another agent | `multi-agent-handoff` |
+| Author a skill, evals, or citations | `skill-authoring-lifecycle` |
+| Local harness contract through cross-repo proof | `harness-engineering-lifecycle` |
+| Release, changelog, or marketplace install | `release-changelog-harness` |
+
+Directories still named `mixture-of-experts`, `vision-alignment-foresight`, `steward-continuity-boundary-lifecycle`, `docs-refresh-lifecycle`, `storytelling-ethics-lifecycle`, `mcp-harness-repo-maintainer`, `skill-eval-improve`, `skill-source-citations`, and `plugin-marketplace-setup` are superseded redirects. Do not start new work there.
 
 ---
 
@@ -42,6 +44,7 @@ See [DX_FAQ](DX_FAQ) for full install, update, and listing commands.
 |-------|-------------|
 | [`repo-quality-system-lifecycle`](https://github.com/arenukvern/skill_steward/tree/main/skills/repo-quality-system-lifecycle) | Establishes or audits a repo quality contract: charter, docs lattice, type-native gates, evidence, action safety, maturity proof, and feedback loops. |
 | [`repository-governance-lifecycle`](https://github.com/arenukvern/skill_steward/tree/main/skills/repository-governance-lifecycle) | Guides architectural decisions, ADRs, FAQs, stale-plan cleanup, ethics, and brand-tone governance. |
+| [`docs-refresh-lifecycle`](https://github.com/arenukvern/skill_steward/tree/main/skills/docs-refresh-lifecycle) | Refreshes the docs lattice for first-time readers: gate-safe rewriting, snippet verification against code, stale-plan compression to status records, examples ladder, and contributor recognition. |
 | [`steward-continuity-boundary-lifecycle`](https://github.com/arenukvern/skill_steward/tree/main/skills/steward-continuity-boundary-lifecycle) | Maintains continuity, self-model update decisions, delegation hygiene, and handoff-safe boundaries; status vocabulary and gates stay in [ADR 0021](decisions/0021-protocol-first-steward-status-gates). |
 | [`vision-alignment-foresight`](https://github.com/arenukvern/skill_steward/tree/main/skills/vision-alignment-foresight) | Critically analyzes vision vs application reality, user intent, evidence, and likely future direction before committing to a roadmap. |
 
@@ -106,12 +109,12 @@ See [DX_FAQ](DX_FAQ) for full install, update, and listing commands.
 
 ## Philosophy before skills
 
-Installable skills are procedures. The worldview that makes them make sense lives in Core Concepts. If you installed skills without the docs tree, four skills ship portable digests under `references/`: `repo-quality-system-lifecycle`, `repository-governance-lifecycle`, `mcp-harness-repo-maintainer`, and `mixture-of-experts`. Full essays stay on docs.page.
+Installable skills are procedures. The worldview that makes them make sense lives in Core Concepts. If you installed skills without the docs tree, two skills ship portable digests under `references/`: `repo-quality-system-lifecycle` and `repository-governance-lifecycle`. Full essays stay on docs.page.
 
 | Concept | One-line | Skills that apply it |
 |---------|----------|----------------------|
-| [Evolutionary simplicity](https://docs.page/arenukvern/skill_steward/core/evolutionary-simplicity) | Evolve toward lower future confusion — not always fewer parts | `repo-quality-system-lifecycle`, `repository-governance-lifecycle`, `mcp-harness-repo-maintainer` |
-| [Generational architecture ladder](https://docs.page/arenukvern/skill_steward/core/generational-architecture-ladder) | Choose the smallest useful layer (G0–G5); higher is not automatically better | `repo-quality-system-lifecycle`, `mixture-of-experts`, `mcp-harness-repo-maintainer` |
+| [Evolutionary simplicity](https://docs.page/arenukvern/skill_steward/core/evolutionary-simplicity) | Evolve toward lower future confusion — not always fewer parts | `repo-quality-system-lifecycle`, `repository-governance-lifecycle` |
+| [Generational architecture ladder](https://docs.page/arenukvern/skill_steward/core/generational-architecture-ladder) | Choose the smallest useful layer (G0–G5); higher is not automatically better | `repo-quality-system-lifecycle`, `repository-governance-lifecycle` |
 | [Stewardship loop](https://docs.page/arenukvern/skill_steward/core/stewardship-loop) | Observe → decide → update → prove → preserve | All stewardship skills; charter in [North Star](https://docs.page/arenukvern/skill_steward/NORTH_STAR) |
 
 When deciding whether to split, compress, promote, demote, delete, or stay native, start with `repo-quality-system-lifecycle` and read its concept digests first.

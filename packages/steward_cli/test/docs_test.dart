@@ -186,8 +186,8 @@ void main() {
         evidenceHrefs,
         unorderedEquals([
           '/evidence/current-dogfood-status',
-          '/evidence/current-dogfood-reproducibility',
-          '/evidence/first-adopter-golden-path',
+          '/evidence/archive/current-dogfood-reproducibility',
+          '/evidence/archive/first-adopter-golden-path',
         ]),
         reason:
             'Start Here should link only current/fixture evidence. Historical packets belong in the Evidence Archive group.',
@@ -205,7 +205,7 @@ void main() {
           .expand((final group) => (group['pages'] as List?) ?? const [])
           .whereType<Map<String, dynamic>>();
       final adoptionTemplate = pages.firstWhere(
-        (final page) => page['href'] == '/evidence/adoption-run-v2-template',
+        (final page) => page['href'] == '/evidence/archive/adoption-run-v2-template',
       );
 
       expect(adoptionTemplate['title'], contains('reference'));
@@ -232,7 +232,7 @@ void main() {
       expect(
         content,
         allOf(
-          contains('Adoption run v2 template](adoption-run-v2-template)'),
+          contains('Adoption run v2 template](archive/adoption-run-v2-template)'),
           contains('template/reference, not evidence of an adoption run'),
         ),
       );
@@ -243,7 +243,7 @@ void main() {
         p.join(docsDir, 'evidence', 'current-dogfood-status.mdx'),
       );
       final publicCard = File(
-        p.join(docsDir, 'evidence', 'current-dogfood-reproducibility.mdx'),
+        p.join(docsDir, 'evidence', 'archive', 'current-dogfood-reproducibility.mdx'),
       );
       expect(ledger.existsSync(), isTrue);
       expect(publicCard.existsSync(), isTrue);
@@ -253,7 +253,7 @@ void main() {
       expect(
         ledgerContent,
         contains(
-          '[Public dogfood reproducibility](current-dogfood-reproducibility)',
+          '[Public dogfood reproducibility](archive/current-dogfood-reproducibility)',
         ),
       );
       expect(
@@ -288,7 +288,7 @@ void main() {
       expect(
         pages.any(
           (final page) =>
-              page['href'] == '/evidence/current-dogfood-reproducibility',
+              page['href'] == '/evidence/archive/current-dogfood-reproducibility',
         ),
         isTrue,
       );

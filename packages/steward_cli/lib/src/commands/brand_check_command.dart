@@ -22,7 +22,7 @@ class BrandCheckCommand extends Command {
 
   @override
   final description =
-      'Static linter to enforce brand tone and prevent banned jargon usage.';
+      'Maintainer. Do not start here. Static linter to enforce brand tone and prevent banned jargon usage.';
 
   @override
   Future<void> run() async {

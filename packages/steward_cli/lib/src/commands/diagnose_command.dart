@@ -27,7 +27,7 @@ class DiagnoseCommand extends Command<void> {
   final name = 'diagnose';
 
   @override
-  final description = 'Match an observation against promoted diagnostics.';
+  final description = 'Maintainer. Do not start here. Match an observation against promoted diagnostics.';
 
   @override
   Future<void> run() async {

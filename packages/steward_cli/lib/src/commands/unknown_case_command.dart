@@ -22,7 +22,7 @@ class UnknownCaseCommand extends Command<void> {
   final name = 'unknown-case';
 
   @override
-  final description = 'Create append-only local unknown-case records.';
+  final description = 'Maintainer. Do not start here. Create append-only local unknown-case records.';
 }
 
 class UnknownCaseCreateCommand extends Command<void> {

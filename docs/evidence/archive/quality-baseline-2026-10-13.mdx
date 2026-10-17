@@ -1,0 +1,143 @@
+# Quality baseline and adopter refresh — 2026-10-13
+
+```yaml
+status: historical
+evidence_type: benchmark
+date: 2026-10-13
+scope: CLI failure semantics, static eval coverage, six existing adopter workflows
+claim_tested: reported check outcomes propagate to callers and existing evidence can be refreshed
+proof_level: process regression tests and local native adopter checks
+commands_or_sources: exit_and_eval_coverage_test.dart; Dart tests/analyze; native actions and probes
+result: propagation and discovery repaired; latest snapshot five routes pass and one fails; two affected routes freshly rerun
+limitations: local candidate binary, dirty consumer checkouts, single-run durations, no fresh agent comparison
+non_claims: released fix, whole-project acceptance, causal productivity uplift, broad safety
+next_disposition: release tested fixes; investigate remaining producer version-policy failure
+current_status_pointer: docs/evidence/current-dogfood-status.mdx
+```
+
+## Scoreboard: keep the dimensions separate
+
+| Dimension | Baseline / before | Observed after | Claim |
+|---|---|---|---|
+| Failure propagation and eval execution | Original six regression cases: 1 pass, 5 fail | All nine extended regression cases pass | Action/probe/benchmark CLI statuses now reach callers; explicit optional cases run and empty requests cannot masquerade as passes. |
+| Static skill coverage | 61 cases executed; five existing cases silently outside the default T1 selection | 66/66 execute and pass | Broader static coverage, not five new behavioral successes. |
+| Repository code | Earlier candidate: 224 Dart tests pass | Discovery candidate: 232 Dart tests pass; analysis clean; 15 skills validate | Candidate code checks, not a release or production-readiness verdict. |
+| Native adopter workflows | Initial refresh: three pass, three fail across six selected routes | Both affected routes now pass; latest snapshot five pass, one fail | Two fresh reruns; four earlier rows carried forward. This is not a portfolio reliability percentage. |
+| Real agent usefulness | Codex 6/6 per arm; final ZCode 2/2 baseline versus 1/2 candidate + timeout | Not rerun in this repair | Earlier no-uplift/inconclusive findings remain intact. |
+| Output guidance | No/generic/grounded advice, two exposed tasks per client | 2/2 native completion per arm in each client; zero protected violations; benefit gate not met | [Separate guidance baseline](output-guidance-pilot-2026-10-13); local interface changes verified, no general speedup or semantic fidelity claim. |
+| Ambiguous-owner guidance | Frozen current advice versus none; three qualified families | Codex strict 3/3 versus 2/3; ZCode 1/3 versus 1/3; five protected receipt overwrites | [Separate owner/effort baseline](ambiguous-owner-pilot-2026-10-13); no benefit gate met. One defective oracle family retained but unqualified. |
+| Economic value | Setup/maintenance/operator cost incomplete | Still unmeasured | No speedup, ROI or billed-cost claim. |
+
+The portable [baseline JSON](https://github.com/arenukvern/skill_steward/blob/main/evals/baselines/2026-10-13.json)
+records commands, process exits, native statuses, single-run duration, artifact
+hashes, dirty-state flags, public source links and limitations. Local raw receipts
+are retained separately; private commands are anonymized in the public record.
+The earlier agent baseline remains in `evals/skillgrade-pilot/results/2026-10-13-rerun.json`.
+
+## Implemented repairs
+
+`action run` previously printed failure while exiting zero. It now returns the
+native positive exit code (1 for rejected, blocked or abnormal outcomes).
+`probe` exits zero only for `passed`; `benchmark` only for `pass`. Both text
+and JSON modes preserve structured outcomes. This is a compatibility change
+for automation that previously ignored failure; the global installed binary
+was not replaced. A child process cannot prevent a caller from masking its
+status with a pipeline: use `pipefail` or explicit exit capture.
+
+Static evals now run all T1 skills and all skills declaring case directories.
+Explicit non-T1 targets execute declared cases; T1 minimum coverage remains two.
+Explicit targets without cases report `skipped` and nonzero exit. JSON exposes
+status and executed/skipped coverage. The existing docs-refresh dormant case
+used an unsupported enum; it was normalized to `should_not_trigger`, preserving
+the prompt and assertions. The storytelling skill repeated banned hype terms
+in its own warning; redundant examples were removed while preserving the rule.
+Neither the pilot grader nor its acceptance conditions were changed.
+
+## Initial adopter refresh — preserved history
+
+Every row used the same compiled candidate runner; its SHA-256 is in the
+baseline. No consumer source was edited. Before/after Git status was unchanged
+for all six runs; that check is not a complete filesystem effect audit.
+All six consumer trees were already dirty. Public HEAD links identify the base,
+not a complete reproduction of the dirty working tree.
+
+| Adopter / public source | Command or scope | Fresh result | Limit / next owner |
+|---|---|---|---|
+| [Oka](https://github.com/Arenukvern/oka/commit/8c2b15b5e062c3899441949c4490759d932f7cd9) | `steward benchmark --scenario oka.contract-status-smoke --strict --json` | Pass; exit 0; 4 native gates; 7.940 s | Required-input durability accepted by the existing checker despite unrelated dirty files. Docs/version/changelog/path checks only. |
+| [Flutter MCP](https://github.com/Arenukvern/mcp_flutter/commit/48f96dfcb95c0e40b4cece734b99fb9e095d2720) | `steward probe --profile quick --json` | Passed; exit 0; 8 checks; 2.496 s | Historical hosted-dependency failure is absent in this run. Not a device/runtime or registry-publication proof. |
+| [IntentCall](https://github.com/Arenukvern/intentcall/commit/3419b58a2a8296aa38b8a7f9a1e3ee2911e85e6d) | `steward action run intentcall.validate --json` | Failed; exit 1; 3.716 s | Native owner reports core 1.1.0 versus expected 1.0.0. Release owner must decide whether version drift or synchronization policy is wrong; do not blindly change versions. |
+| [ECSly](https://github.com/Arenukvern/ecsly/commit/beadec3434eb52603e9fb1ae41cc7d86e860b939) | `steward validate repo-contract --json` | Failed; exit 1; 0.038 s | Steward requires manifests in eight native Dart plugin directories. Validator discovery compatibility is the first owner, not eight new manifests. |
+| [Dart/Flutter packages — public contract](https://github.com/xsoulspace/dart_flutter_packages/blob/6255cbc6cbabc1ef254695e82f1d859594609954/steward.yaml) | `steward validate repo-contract --json` | Failed; exit 1; 0.038 s | Same directory-assumption gap for an MCP plugin. Local run revision was not publicly verified; linked contract is an earlier public anchor. |
+| Private A | Existing read-only drift action | Passed; exit 0; 0.879 s | Anonymized local proof only; no private repository, path, commit or session ID published. |
+
+These durations include process startup and varied workloads. They are baseline
+observations, not cross-project rankings or performance estimates. All six
+process exits agree with their structured outcomes.
+
+## Plugin discovery repair and affected-route reruns
+
+Validation and bundling now share one discovery function. A native Dart/MCP
+package identified by `pubspec.yaml` or `mcp.json`, without a `plugin.yaml`, is
+excluded from Steward wiring checks. Empty/cache-only directory residues are
+also excluded. A present manifest always receives the original schema,
+references, lifecycle, path and artifact-integrity checks, including beside
+native metadata. Unclassified directories with visible wiring still require a
+manifest; dangling manifests fail. Native package validity remains owned by its
+native checks. Eight regression cases cover this boundary and bundle parity.
+
+| Affected route | Original refresh | Final discovery rerun | Evidence |
+|---|---|---|---|
+| ECSly repo contract | Exit 1; eight inappropriate manifest requirements | Passed; exit 0; 314 ms; zero diagnostics | [Same public base revision](https://github.com/Arenukvern/ecsly/commit/beadec3434eb52603e9fb1ae41cc7d86e860b939) |
+| Dart/Flutter packages repo contract | Exit 1; inappropriate MCP manifest requirement | Passed; exit 0; 27 ms; zero diagnostics | [Public contract anchor](https://github.com/xsoulspace/dart_flutter_packages/blob/6255cbc6cbabc1ef254695e82f1d859594609954/steward.yaml); local run revision remains unpublished/unverified remotely |
+
+Both consumer source revisions and Git status were unchanged across the reruns.
+The first discovery attempt left one ECSly cache-only directory failing while
+the package collection passed. That intermediate attempt is retained in the
+baseline's `followups`, together with the final candidate binary/source hashes
+and receipts. Original `runs` remain unchanged. `latest_snapshot` selects the
+two new results and explicitly carries four earlier results forward; IntentCall
+still has its recorded native validation failure. No private project was rerun
+or newly identified in this follow-up.
+
+These are local candidate contract checks in dirty consumer checkouts, not
+runtime/product acceptance, independent public reproduction, or speedup proof.
+No global installation was replaced. The fresh durations measure different
+validation scope than the failing original run and are not performance deltas.
+
+## Quality direction and next useful experiments
+
+The North Star already values shorter future repair paths. A useful clarification
+is to measure **maintenance burden avoided while preserving native correctness**,
+not how often a skill is invoked, how many documents exist, or how many tools
+Steward owns. This is a proposed emphasis, not a new maturity tier or an amended
+charter.
+
+1. **Discovery compatibility repaired locally.** Existing strict manifest
+   checks and the new native/cache/mixed-directory regression cases pass.
+   Extend discovery only when another real native package format requires it;
+   keep validation and bundling on the same owner.
+2. **Keep truthful outcomes as a release invariant.** Process failure, rejection,
+   timeout, missing configuration and skipped coverage must survive JSON/text,
+   shell wrappers and relevant MCP adapters. Extend existing regression tests
+   when another boundary fails; do not add a separate validation framework.
+3. **Measure recurring maintenance in existing adopters.** On three comparable
+   episodes per selected adopter, record native success, setup/repair/operator
+   effort, repeated failures and the durable change. Capture from existing
+   receipts; missing values stay unknown. Retrospective adoption is the starting
+   evidence, not a causal control group.
+4. **Run a small held-out guidance comparison only for a concrete hypothesis.**
+   Example: explicit stale-install routing reduces repair attempts without
+   increasing incorrect updates. Freeze cases and oracle, counterbalance arms,
+   pin client/model/skill/configuration, and include routine tasks where the
+   skill should stay unused. Predeclare an acceptable overhead and practical
+   benefit before running; do not select a threshold after seeing results.
+5. **Use external suites selectively.** SkillsBench for skill transfer, ACES for
+   a specific validation/overlap gap, AgentDojo adaptations for unauthorized
+   effects plus legitimate completion, Terminal-Bench only for a demonstrated
+   terminal-recovery problem. A local adaptation is not an official score.
+
+Keep a change when it preserves correctness/safety and improves the targeted
+outcome beyond its setup/maintenance cost. Narrow or retire guidance when it
+adds recurring work without benefit. Retain an explicit “inconclusive” result
+when the sample or instrumentation cannot answer the question. Stronger claims
+require independent replay or held-out evidence; no automatic promotion follows.

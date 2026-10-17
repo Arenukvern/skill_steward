@@ -19,9 +19,18 @@ current_status_pointer: docs/evidence/current-dogfood-status.mdx
 
 # Current dogfood reproducibility
 
-This card is the public/auditable subset of dogfood evidence. It does not replace [Current dogfood status](current-dogfood-status), which remains the current source for weakest true claims, blockers, rerun routes, and maintainer-local diary context.
+This card is the public/auditable subset of dogfood evidence. It does not replace [Current dogfood status](../current-dogfood-status), which remains the current source for weakest true claims, blockers, rerun routes, and maintainer-local diary context.
 
 Use this card to decide whether a claim can be checked without one maintainer's workstation. A public proof row needs durable repo URLs, fetchable commit SHAs, repo-relative or placeholder-based commands, artifact names or hashes, limitations, and non-claims.
+
+## October 13 follow-up
+
+[Cross-project usage](cross-project-usage-2026-10-13) verifies public contract
+anchors; the [quality baseline](quality-baseline-2026-10-13) adds fresh local
+adopter runs and sanitized machine-readable results. These are stronger than
+installation claims, but dirty working trees and a local candidate runner still
+prevent calling them independent public reproductions. The June rows below
+remain historical and do not erase the newer bounded observations.
 
 ## Public proof bar
 
@@ -31,7 +40,7 @@ Use this card to decide whether a claim can be checked without one maintainer's 
 | Reproducible command | Repo-relative command or placeholder-based command such as `cd <skill-steward-checkout> && steward ...`. |
 | Proof artifact | Checked-in artifact path, CI artifact name, or artifact hash. |
 | Claim boundary | Exact claim, limitations, and non-claims. |
-| Current status pointer | Link back to [Current dogfood status](current-dogfood-status). |
+| Current status pointer | Link back to [Current dogfood status](../current-dogfood-status). |
 
 ## Public reproducibility rows
 
@@ -48,4 +57,4 @@ Use this card to decide whether a claim can be checked without one maintainer's 
 - This card does not prove `steward_presence` as a default mode.
 - This card does not prove broad H5, S5, repo maturity, product runtime correctness, release readiness, or graphics parity.
 - This card does not turn maintainer-local clean replays into public proof.
-- This card does not replace [Current dogfood status](current-dogfood-status).
+- This card does not replace [Current dogfood status](../current-dogfood-status).

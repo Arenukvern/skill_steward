@@ -50,6 +50,9 @@ jobs:
         working-directory: packages/steward_cli
         run: dart test
 
+      - name: Edit hook failure propagation
+        run: bash plugins/steward-validate-on-save/tests/validate-on-skill-edit.sh
+
       - name: Validate skills
         working-directory: packages/steward_cli
         run: dart run :steward validate

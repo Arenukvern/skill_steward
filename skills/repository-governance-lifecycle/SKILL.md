@@ -29,6 +29,17 @@ This is the central nervous system for governing an agent-operated repository. I
 
 Whenever an agent proposes or executes a structural shift, claim change, durable policy change, or docs-lattice change, they must walk this loop. Routine repo repairs should keep the original goal and native gate first; use this governance loop only when the repair changes durable ownership, policy, evidence, ADR/FAQ truth, or plan hygiene.
 
+Ordinary work uses one procedure: [work discipline](../../docs/core/work-discipline.mdx). Do not restate it.
+
+## Absorbed procedures
+
+These skills are superseded. Do not load them for new work.
+
+- **Mixture of Experts** — ADR-level `amends` / `conflicts` only. Define Expert Personas, keep an Integration contract, and label a missing_lens. Include a Generational Architecture Skeptic and Evidence / Validation QA when the change claims architecture or proof. Not a preflight for ordinary fixes. History: [mixture-of-experts/references](../mixture-of-experts/references).
+- **Vision alignment** — when the direction itself is uncertain, name the falsifier before writing another plan. History: [vision-alignment-foresight/references](../vision-alignment-foresight/references).
+- **Continuity boundaries** — status claims still need a mode, a handoff, and non-claims. A handoff does not create an owner. History: [steward-continuity-boundary-lifecycle/references](../steward-continuity-boundary-lifecycle/references).
+- **Docs refresh and public stories** — compress the living doc or disclose generated story material inside this loop. Do not open a parallel docs or storytelling queue.
+
 ## The Governance Loop
 
 ### 1. Check Ethics & Boundaries (NORTH_STAR)
@@ -38,6 +49,8 @@ Before making any decision, check the repository's foundational charter and ethi
 - Classify `north_star_impact` for durable structural changes: `none`, `applies`, `clarifies`, `sub_star`, `amends`, or `conflicts`. Use the protocol only when ownership, policy, evidence truth, ADR/FAQ truth, or the repo's center may change.
 - Ask the gate questions before editing durable governance surfaces: what pain triggered this; which North Star value path it serves; whether it is a mechanism or a new center; whether it changes what the repo owns or refuses; where the ADR is if it does; and what check prevents the mechanism becoming the mission if it does not.
 - Route `none` and `applies` through the native workflow, `clarifies` through FAQ/skill/map/check updates, `sub_star` through an explicit parent/child boundary, and `amends` or `conflicts` through an ADR plus a North Star diff before implementation.
+- `none`, `applies`, and `clarifies` do not wait on a Mixture of Experts review. MoE is optional critique for ADR-level `amends` / `conflicts`, not a preflight. Shipping repos should keep `moe_required_for_architecture: false`.
+- Forward plans stay a spine. Fold new work into an open item or one deferred note. Do not open a parallel queue. When the item lands, extract durable truth and delete the plan instruction.
 
 ### 2. Log the Decision (ADRs)
 If you have made an architecturally significant decision (or triggered a T1-T8 threshold), you must write it down. Decisions are not valid if they only live in an agent's context window.

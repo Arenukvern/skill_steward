@@ -7,6 +7,9 @@ import 'package:steward_cli/src/commands/benchmark_command.dart';
 import 'package:test/test.dart';
 
 void main() {
+  tearDown(() {
+    exitCode = 0;
+  });
   late Directory tempDir;
 
   setUp(() async {

@@ -18,7 +18,7 @@ class MapCommand extends Command<void> {
 
   @override
   final description =
-      'Print a Markdown map of active skills, task runners, and docs for agents.';
+      'Front door. Print a Markdown map of active skills, task runners, and docs.';
 
   @override
   Future<void> run() async {

@@ -1,0 +1,152 @@
+{
+  "format": "steward-paired-dogfood-summary/v1",
+  "experiment": "cursor-hook-failure-preservation-native-control",
+  "kind": "native_control",
+  "configuration_ref": "local-bash-node-stub-validators-no-agent",
+  "baseline_ref": "sha256:55e402ade4daeaaa9914539c2e73a051c1d8b919c9fca492461e4614845aeac5",
+  "candidate_ref": "sha256:ab9138fe23f8c9ab98a0cdba76cdfdbdc0c91d780eeb18fa7dacd7ea8a498942",
+  "status": "descriptive_only",
+  "pair_count": 3,
+  "task_count": 1,
+  "baseline_passes": 0,
+  "candidate_passes": 3,
+  "quality_wins": 3,
+  "quality_regressions": 0,
+  "incomplete_pairs": 0,
+  "unsafe_candidate_runs": 0,
+  "candidate_invocation": {
+    "known": 0,
+    "invoked": 0
+  },
+  "both_passed_pairs": 0,
+  "metrics_both_passed": {
+    "duration_ms": {
+      "observed_pairs": 0,
+      "missing_pairs": 0,
+      "median_candidate_minus_baseline": null,
+      "candidate_lower": 0,
+      "equal": 0,
+      "candidate_higher": 0
+    },
+    "time_to_first_useful_action_ms": {
+      "observed_pairs": 0,
+      "missing_pairs": 0,
+      "median_candidate_minus_baseline": null,
+      "candidate_lower": 0,
+      "equal": 0,
+      "candidate_higher": 0
+    },
+    "tool_calls": {
+      "observed_pairs": 0,
+      "missing_pairs": 0,
+      "median_candidate_minus_baseline": null,
+      "candidate_lower": 0,
+      "equal": 0,
+      "candidate_higher": 0
+    },
+    "repair_attempts": {
+      "observed_pairs": 0,
+      "missing_pairs": 0,
+      "median_candidate_minus_baseline": null,
+      "candidate_lower": 0,
+      "equal": 0,
+      "candidate_higher": 0
+    },
+    "human_interventions": {
+      "observed_pairs": 0,
+      "missing_pairs": 0,
+      "median_candidate_minus_baseline": null,
+      "candidate_lower": 0,
+      "equal": 0,
+      "candidate_higher": 0
+    },
+    "tokens": {
+      "observed_pairs": 0,
+      "missing_pairs": 0,
+      "median_candidate_minus_baseline": null,
+      "candidate_lower": 0,
+      "equal": 0,
+      "candidate_higher": 0
+    },
+    "cost_usd": {
+      "observed_pairs": 0,
+      "missing_pairs": 0,
+      "median_candidate_minus_baseline": null,
+      "candidate_lower": 0,
+      "equal": 0,
+      "candidate_higher": 0
+    }
+  },
+  "metrics_all_attempts": {
+    "duration_ms": {
+      "observed_pairs": 3,
+      "missing_pairs": 0,
+      "median_candidate_minus_baseline": 159.9275,
+      "candidate_lower": 1,
+      "equal": 0,
+      "candidate_higher": 2
+    },
+    "time_to_first_useful_action_ms": {
+      "observed_pairs": 0,
+      "missing_pairs": 3,
+      "median_candidate_minus_baseline": null,
+      "candidate_lower": 0,
+      "equal": 0,
+      "candidate_higher": 0
+    },
+    "tool_calls": {
+      "observed_pairs": 0,
+      "missing_pairs": 3,
+      "median_candidate_minus_baseline": null,
+      "candidate_lower": 0,
+      "equal": 0,
+      "candidate_higher": 0
+    },
+    "repair_attempts": {
+      "observed_pairs": 0,
+      "missing_pairs": 3,
+      "median_candidate_minus_baseline": null,
+      "candidate_lower": 0,
+      "equal": 0,
+      "candidate_higher": 0
+    },
+    "human_interventions": {
+      "observed_pairs": 0,
+      "missing_pairs": 3,
+      "median_candidate_minus_baseline": null,
+      "candidate_lower": 0,
+      "equal": 0,
+      "candidate_higher": 0
+    },
+    "tokens": {
+      "observed_pairs": 0,
+      "missing_pairs": 3,
+      "median_candidate_minus_baseline": null,
+      "candidate_lower": 0,
+      "equal": 0,
+      "candidate_higher": 0
+    },
+    "cost_usd": {
+      "observed_pairs": 0,
+      "missing_pairs": 3,
+      "median_candidate_minus_baseline": null,
+      "candidate_lower": 0,
+      "equal": 0,
+      "candidate_higher": 0
+    }
+  },
+  "tasks": {
+    "validation-failure-preservation": {
+      "trials": 3,
+      "baseline_all_passed": false,
+      "candidate_all_passed": true
+    }
+  },
+  "promotion": "not_assessed",
+  "limitations": [
+    "Caller-supplied observations; evidence and isolation are not authenticated.",
+    "Descriptive paired deltas only; no confidence interval or causal claim.",
+    "All-attempt costs include failures; use both-passed metrics for efficiency.",
+    "This is not evidence of agent or skill effectiveness."
+  ]
+}

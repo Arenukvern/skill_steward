@@ -1,0 +1,71 @@
+---
+status: accepted
+date: 2026-10-13
+decision-makers: Skill Steward maintainer
+---
+
+# Grounded output guidance through shared core
+
+The maintainer authorized implementation of the output-guidance recommendations.
+North Star impact: clarifies existing goal-first stewardship and thin adapters.
+
+## Problem
+
+Eligible actions were presented as next actions; filename-based ecology advice
+could imply completion; blocked advice was detached from its originating result.
+Free-text log keywords could select a repair route despite being untrusted data.
+
+## Decision
+
+Use one advisory core projection with observations, basis, preserved original
+goal, uncertainty, a bounded next option, native verification and optional
+expansion references. CLI results are facts-only by default; `--guidance` renders
+two short guidance lines and JSON carries
+the typed `steward.output-guidance.v1` object. Methods do not execute advice or
+grant permission. Explicit MCP explanation, doctor, prompts and a method resource
+remain read-only for v1. Existing execution owners and authorization stay intact.
+
+Share structure while preserving project-local interpretation. Unknown causes
+and task goals stay unknown. Free text does not establish a route. Doctor keeps
+eligible actions in `eligible_actions`; `next_actions` remains present but empty
+until relevance is established. Ecology file signals route to review/orientation
+before any extraction or deletion.
+
+Original goals are limited to 2,048 UTF-8 bytes with named refusal, not silent
+truncation. Guidance has a 6,000-byte application budget; explicit result prompts
+have a 16,000-byte evidence budget. These are byte bounds, not provider token
+counts. Only locally verified resources are offered. Imported action/scenario
+identifiers do not establish local capability or mutation rights.
+
+## Alternatives and limits
+
+A longer system prompt on every result would increase irrelevant context and
+hide the goal. A new adviser service or memory store would duplicate owners.
+The chosen projection reuses result routes and has no model dependency.
+
+Typed shape and deterministic regression checks establish interface behavior.
+A bounded no/generic/grounded-advice comparison tests usefulness on two exposed
+native tasks and two clients. It cannot establish general intent fidelity,
+multilingual parity, official benchmark quality or production safety. Held-out
+independent review remains required before those broader claims.
+
+## Verification
+
+Behavior owners: `output_guidance.dart`, blocked/doctor/core result builders,
+CLI renderers and MCP handlers. Typed contract: `output_guidance_contract.dart`.
+Controls: `output_guidance_test.dart`, `guidance_mcp_transport_test.dart`, existing
+exit/coverage and schema tests. Development comparison: `evals/output-guidance-pilot/`.
+
+## Accepted simplification after the pilot
+
+The maintainer accepted applying evolutionary simplicity on 2026-10-13.
+Guidance did not meet the measured benefit gate, so CLI advice is opt-in and MCP
+doctor requires `guidance: true`; explicit explanation remains available.
+Native diagnostics, statuses, action inspection and failure exits remain primary.
+No new permission service, scheduler, memory layer or automatic skill optimizer
+belongs here. Those runtime responsibilities remain with the client/host.
+
+Keep one current evidence index; dated reports and raw outcomes remain historical.
+Benchmark integrations are deferred until a named adopter decision needs them.
+The next proof is ordinary workflow reuse, including human and evaluation upkeep,
+as described in the paired-dogfood method. No charter expansion is required.

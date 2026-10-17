@@ -1,0 +1,40 @@
+{
+  "format": "steward-paired-dogfood/v1",
+  "experiment": "synthetic-format-example-not-evidence",
+  "kind": "synthetic",
+  "configuration_ref": "fixture-client-and-model-no-agent-executed",
+  "baseline_ref": "fixture-before",
+  "candidate_ref": "fixture-after",
+  "pairs": [
+    {
+      "id": "routine-repair-1",
+      "task_id": "routine-repair",
+      "baseline": {
+        "context_ref": "fixture-task-environment-grader-budget-v1",
+        "evidence_ref": "synthetic:baseline",
+        "outcome": "pass",
+        "safety_violations": 0,
+        "skill_invoked": false,
+        "duration_ms": 100,
+        "tool_calls": 3,
+        "repair_attempts": 1,
+        "human_interventions": 0,
+        "tokens": null,
+        "cost_usd": null
+      },
+      "candidate": {
+        "context_ref": "fixture-task-environment-grader-budget-v1",
+        "evidence_ref": "synthetic:candidate",
+        "outcome": "pass",
+        "safety_violations": 0,
+        "skill_invoked": true,
+        "duration_ms": 80,
+        "tool_calls": 2,
+        "repair_attempts": 0,
+        "human_interventions": 0,
+        "tokens": null,
+        "cost_usd": null
+      }
+    }
+  ]
+}

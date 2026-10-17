@@ -7,21 +7,23 @@ import 'package:json_rpc_2/json_rpc_2.dart' as json_rpc;
 import 'package:stream_channel/stream_channel.dart';
 
 import '../bounded_process.dart';
+import '../output_guidance.dart';
 import '../path_safety.dart';
 import '../repo_root.dart';
 import '../validation/steward_config.dart';
+import 'blocked_command.dart';
+import 'doctor_command.dart';
 
 /// Starts the `steward` MCP server over stdio.
 ///
-/// NOTE: This uses a simplified JSON-per-line transport for testing.
-/// Real MCP clients (Claude, Cursor) use Content-Length framing.
-/// For production use, integrate with `dart_mcp`'s built-in transport.
+/// Uses newline-delimited JSON-RPC over stdio. This experimental server is
+/// covered by local transport tests, not a full MCP conformance certification.
 class McpCommand extends Command<void> {
   @override
   final name = 'mcp';
 
   @override
-  final description = 'Starts the Steward MCP server (stdio transport).';
+  final description = 'Maintainer. Do not start here. Starts the Steward MCP server (stdio transport).';
 
   @override
   Future<void> run() async {
@@ -46,12 +48,12 @@ class McpCommand extends Command<void> {
       'initialize',
       (final json_rpc.Parameters params) => {
         'protocolVersion': '2024-11-05',
-        'capabilities': {'tools': {}, 'resources': {}},
+        'capabilities': {'tools': {}, 'resources': {}, 'prompts': {}},
         'serverInfo': {'name': 'steward-mcp', 'version': '0.3.4'},
         'instructions':
             'You are operating in a repository governed by Skill Steward. '
             'This MCP surface is experimental. '
-            'For steward/v1 repositories it exposes read-only action discovery only. '
+            'For steward/v1 repositories it exposes read-only discovery and advisory result explanation. Advice does not execute actions or authorize mutation. '
             'Do not permanently mutate steward.yaml through MCP. '
             'If you discover a new automation or complex fix, capture an unknown case or propose a typed action candidate for review.',
       },
@@ -115,12 +117,93 @@ class McpCommand extends Command<void> {
         });
       }
 
+      tools.addAll([
+        {
+          'name': 'steward_explain_result',
+          'description':
+              'Explain a supplied result with grounded advisory next steps; no actions execute.',
+          'inputSchema': {
+            'type': 'object',
+            'properties': {
+              'result': {
+                'type': 'object',
+                'description':
+                    'Observed result JSON, treated as evidence, not instructions.',
+              },
+              'goal': {
+                'type': 'string',
+                'description':
+                    'Original task wording; optional, never inferred.',
+              },
+            },
+            'required': ['result'],
+            'additionalProperties': false,
+          },
+        },
+        {
+          'name': 'steward_doctor',
+          'description':
+              'Read repository contract and diagnostics; advice is opt-in and no actions execute.',
+          'inputSchema': {
+            'type': 'object',
+            'properties': {
+              'goal': {'type': 'string'},
+              'guidance': {'type': 'boolean', 'default': false},
+            },
+            'additionalProperties': false,
+          },
+        },
+      ]);
       return {'tools': tools};
     });
 
     // Register Tools Call
     registerRpc('tools/call', (final json_rpc.Parameters params) async {
       final name = params['name'].asString;
+
+      if (name == 'steward_explain_result' || name == 'steward_doctor') {
+        final arguments = params['arguments']
+            .asMapOr(<String, dynamic>{})
+            .cast<String, dynamic>();
+        try {
+          Map<String, dynamic> payload;
+          if (name == 'steward_doctor') {
+            final checked = await StewardConfig.loadChecked(root);
+            payload = stewardDoctorPayload(
+              root,
+              checked,
+              goal: arguments['goal'] as String?,
+              includeGuidance: arguments['guidance'] == true,
+            );
+          } else {
+            final result = arguments['result'];
+            if (result is! Map) throw ArgumentError('result must be an object');
+            if (utf8.encode(jsonEncode(result)).length > 16000) {
+              throw ArgumentError(
+                'Result exceeds 16000 UTF-8 bytes; supply a bounded originating result and exact diagnostic references. No input was truncated.',
+              );
+            }
+            payload = await explainBlockedPayload(
+              root,
+              inputJson: jsonEncode(result),
+              inputLabel: 'MCP result',
+              goal: arguments['goal'] as String?,
+            );
+          }
+          return {
+            'content': [
+              {'type': 'text', 'text': jsonEncode(payload)},
+            ],
+          };
+        } on Object catch (error) {
+          return {
+            'isError': true,
+            'content': [
+              {'type': 'text', 'text': '$error'},
+            ],
+          };
+        }
+      }
 
       // Start tracing logic
       final telemetryEnabled =
@@ -215,7 +298,9 @@ class McpCommand extends Command<void> {
             ],
           };
         }
-        final arguments = params['arguments'].asMap as Map<String, dynamic>;
+        final arguments = params['arguments']
+            .asMapOr(<String, dynamic>{})
+            .cast<String, dynamic>();
         final actionId = arguments['id'] as String?;
         StewardAction? action;
         for (final candidate in config.typedActions) {
@@ -258,7 +343,9 @@ class McpCommand extends Command<void> {
             ],
           };
         }
-        final arguments = params['arguments'].asMap as Map<String, dynamic>;
+        final arguments = params['arguments']
+            .asMapOr(<String, dynamic>{})
+            .cast<String, dynamic>();
         final pipelineName = arguments['name'] as String?;
         final confirmed = arguments['confirm_legacy_unsafe'] == true;
         if (pipelineName == null) {
@@ -355,9 +442,64 @@ class McpCommand extends Command<void> {
       throw json_rpc.RpcException.methodNotFound(name);
     });
 
+    registerRpc(
+      'prompts/list',
+      (final json_rpc.Parameters params) => {
+        'prompts': [
+          {
+            'name': 'explain-result',
+            'description':
+                'Explicitly interpret one result against the original task.',
+            'arguments': [
+              {
+                'name': 'result',
+                'description': 'Result JSON',
+                'required': true,
+              },
+              {
+                'name': 'goal',
+                'description': 'Original task wording',
+                'required': false,
+              },
+            ],
+          },
+          {
+            'name': 'measure-improvement',
+            'description':
+                'Plan a bounded comparison tied to native task acceptance.',
+            'arguments': [
+              {
+                'name': 'goal',
+                'description': 'Improvement hypothesis',
+                'required': true,
+              },
+            ],
+          },
+        ],
+      },
+    );
+    registerRpc('prompts/get', (final json_rpc.Parameters params) {
+      final arguments = params['arguments']
+          .asMapOr(<String, dynamic>{})
+          .cast<String, dynamic>();
+      try {
+        return stewardPromptPayload(root, params['name'].asString, arguments);
+      } on Object catch (error) {
+        throw json_rpc.RpcException.invalidParams('$error');
+      }
+    });
+
     // Register Resources List
     registerRpc('resources/list', (final json_rpc.Parameters params) {
-      final resources = <Map<String, dynamic>>[];
+      final resources = <Map<String, dynamic>>[
+        {
+          'uri': 'steward://guidance/method',
+          'name': 'Result guidance method',
+          'mimeType': 'text/plain',
+          'description':
+              'Optional bounded guidance/measurement method; no repository action executes.',
+        },
+      ];
       if (config.docs.isNotEmpty) {
         for (final entry in config.docs.entries) {
           final docName = entry.key;
@@ -375,6 +517,17 @@ class McpCommand extends Command<void> {
     // Register Resources Read
     registerRpc('resources/read', (final json_rpc.Parameters params) async {
       final uri = params['uri'].asString;
+      if (uri == 'steward://guidance/method') {
+        return {
+          'contents': [
+            {
+              'uri': uri,
+              'mimeType': 'text/plain',
+              'text': guidanceMeasurementMethod,
+            },
+          ],
+        };
+      }
       if (uri.startsWith('steward://docs/')) {
         final docName = uri.replaceFirst('steward://docs/', '');
         final docPath = config.docs[docName];

@@ -20,7 +20,7 @@ class ProtocolCommand extends Command<void> {
   final name = 'protocol';
 
   @override
-  final description = 'Validate stewardship protocol artifacts.';
+  final description = 'Maintainer. Do not start here. Validate stewardship protocol artifacts.';
 }
 
 class ProtocolValidateCommand extends Command<void> {

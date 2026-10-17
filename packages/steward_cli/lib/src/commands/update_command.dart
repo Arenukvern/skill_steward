@@ -48,7 +48,7 @@ class UpdateCommand extends Command<void> {
 
   @override
   final description =
-      'Update local skills according to skills.json pinned sources.';
+      'Maintainer. Do not start here. Update local skills according to skills.json pinned sources.';
 
   @override
   Future<void> run() async {

@@ -43,6 +43,7 @@ void main() {
     await runner.run([
       'blocked',
       'explain',
+      '--guidance',
       '--input',
       p.relative(input.path, from: tempDir.path),
       '--json',
@@ -78,6 +79,7 @@ void main() {
     await runner.run([
       'blocked',
       'explain',
+      '--guidance',
       '--input',
       p.relative(input.path, from: tempDir.path),
       '--json',
@@ -109,7 +111,7 @@ void main() {
         ),
       );
 
-    await runner.run(['blocked', 'explain', '--stdin', '--json']);
+    await runner.run(['blocked', 'explain', '--guidance', '--stdin', '--json']);
 
     final payload = jsonDecode(buffer.toString()) as Map<String, dynamic>;
     expect(payload['input'], 'stdin');
@@ -137,7 +139,14 @@ void main() {
         ),
       );
 
-    await runner.run(['blocked', 'explain', '--input', '-', '--json']);
+    await runner.run([
+      'blocked',
+      'explain',
+      '--guidance',
+      '--input',
+      '-',
+      '--json',
+    ]);
 
     final payload = jsonDecode(buffer.toString()) as Map<String, dynamic>;
     expect(payload['input'], 'stdin');
@@ -201,7 +210,13 @@ void main() {
           ),
         );
 
-      await runner.run(['blocked', 'explain', '--stdin', '--json']);
+      await runner.run([
+        'blocked',
+        'explain',
+        '--guidance',
+        '--stdin',
+        '--json',
+      ]);
 
       final payload = jsonDecode(buffer.toString()) as Map<String, dynamic>;
       expect(payload['blocked_by'], 'invalid_input');

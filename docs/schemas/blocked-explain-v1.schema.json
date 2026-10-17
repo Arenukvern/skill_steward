@@ -40,6 +40,9 @@
       "items": {
         "type": "string"
       }
+    },
+    "guidance": {
+      "type": "object"
     }
   },
   "additionalProperties": false

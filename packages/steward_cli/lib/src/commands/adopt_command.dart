@@ -78,6 +78,9 @@ class AdoptCommand extends Command<void> {
           .replaceAll(RegExp('[^a-z0-9_-]+'), '_')
           .replaceAll(RegExp('_+'), '_');
       final gitSource = withHarness ? await _gitSourceFacts(currentDir) : null;
+      final moeRequired = moeRequiredForArchitecture(
+        archetypeDetection.archetype,
+      );
       final template = withHarness
           ? _harnessTemplate(
               repoId: repoId,
@@ -85,12 +88,14 @@ class AdoptCommand extends Command<void> {
               nativeValidation: nativeValidation,
               ownsInstallableSkills: ownsInstallableSkills,
               includeBenchmark: gitSource != null,
+              moeRequiredForArchitecture: moeRequired,
             )
           : _baselineTemplate(
               repoId: repoId,
               archetypeDetection: archetypeDetection,
               nativeValidation: nativeValidation,
               ownsInstallableSkills: ownsInstallableSkills,
+              moeRequiredForArchitecture: moeRequired,
             );
       await stewardYamlFile.writeAsString(template);
       stdout.writeln('Created steward.yaml in project root.');
@@ -153,11 +158,20 @@ Welcome. This project uses **Skill Steward** to make repository purpose, validat
 
 ## Operational Desk
 
-Run the following commands to interact with the project's agentic tools:
-
+- **Validate first**: use the native validation command recorded in `steward.yaml` (`quality.validate`). That is the delivery gate.
 - **Show operational map**: `steward map`
-- **Inspect Steward contract**: `steward doctor --json`
-- **Validate workspace**: use the native validation command recorded in `steward.yaml`
+- **Health, not a preflight**: `steward doctor --json` inspects adoption. It does not replace the native gate and is not required before ordinary edits.
+
+## Work discipline
+
+1. Two attempts on the same owner with no new evidence → rewrite, delete, or hand off. Do not open a third local patch.
+2. One obligation per claimant. Adjacent finds are a handoff, not the next edit.
+3. Prove the product or use-path before adding fixtures.
+4. Name the use-path. Fixture-only work, or a suite you will not rerun, is not delivery.
+5. Run the native gate for the change. A suite too slow to run on the edit is the bug.
+6. Keep the plan a spine. Fold into the open item, or extract and delete. Do not open a parallel queue.
+
+Before editing a shipping repo, name the product use-path. If the only diff is `steward.yaml`, a fixture, an eval, or an evidence note, stop or leave the work native. A handoff does not create an owner.
 
 ## North Star Impact
 
@@ -210,11 +224,17 @@ For more information on the project charter and decisions:
   }
 }
 
+/// MoE is an architecture critique, not a package-fix preflight.
+/// Only meta/governance repos default it on. Shipping archetypes default off.
+bool moeRequiredForArchitecture(final String archetype) =>
+    archetype == 'meta_governance';
+
 String _baselineTemplate({
   required final String repoId,
   required final _ArchetypeDetection archetypeDetection,
   required final String nativeValidation,
   required final bool ownsInstallableSkills,
+  required final bool moeRequiredForArchitecture,
 }) =>
     '''
 schema: steward/v1
@@ -260,7 +280,8 @@ stewardship:
     changelog: CHANGELOG.md
     artifact_provenance: required
   review_handoff:
-    moe_required_for_architecture: true
+    # true = ADR-level architecture may use MoE. Not a preflight for ordinary edits.
+    moe_required_for_architecture: $moeRequiredForArchitecture
   strategic_alignment:
     vision_source: AGENTS.md
     success_evidence: required
@@ -294,6 +315,7 @@ String _harnessTemplate({
   required final String nativeValidation,
   required final bool ownsInstallableSkills,
   required final bool includeBenchmark,
+  required final bool moeRequiredForArchitecture,
 }) =>
     '''
 schema: steward/v1
@@ -339,7 +361,8 @@ stewardship:
     changelog: CHANGELOG.md
     artifact_provenance: required
   review_handoff:
-    moe_required_for_architecture: true
+    # true = ADR-level architecture may use MoE. Not a preflight for ordinary edits.
+    moe_required_for_architecture: $moeRequiredForArchitecture
   strategic_alignment:
     vision_source: AGENTS.md
     success_evidence: required

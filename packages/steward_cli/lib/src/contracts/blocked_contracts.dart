@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'output_guidance_contract.dart';
+
 part 'blocked_contracts.freezed.dart';
 part 'blocked_contracts.g.dart';
 
@@ -14,6 +16,8 @@ sealed class BlockedRouteDecision with _$BlockedRouteDecision {
 
 @JsonSerializable(
   checked: true,
+  includeIfNull: false,
+  explicitToJson: true,
   createJsonSchema: true,
   disallowUnrecognizedKeys: true,
 )
@@ -25,6 +29,7 @@ class BlockedExplanationPayload {
     required this.artifactRoute,
     required this.nextActions,
     required this.nonClaims,
+    this.guidance,
     this.schemaVersion = 'steward.blocked.explain.v1',
   });
 
@@ -35,6 +40,7 @@ class BlockedExplanationPayload {
 
   @JsonKey(name: 'schema_version', required: true)
   final String schemaVersion;
+  final OutputGuidancePayload? guidance;
   final String root;
   final String input;
   @JsonKey(name: 'blocked_by')

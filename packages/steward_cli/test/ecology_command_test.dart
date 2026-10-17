@@ -156,7 +156,7 @@ void main() {
           .cast<Map<String, dynamic>>();
       expect(
         dispositions.map((final item) => item['disposition']),
-        contains('compress'),
+        contains('orient'),
       );
       expect(
         dispositions.map((final item) => item['disposition']),
@@ -168,14 +168,14 @@ void main() {
       );
       expect(
         laneCandidates.map((final item) => item['source_disposition']),
-        contains('compress'),
+        contains('orient'),
       );
       expect(
         laneCandidates.map((final item) => item['source_disposition']),
         isNot(contains('leave_native')),
       );
       final compressCandidate = laneCandidates.firstWhere(
-        (final item) => item['source_disposition'] == 'compress',
+        (final item) => item['source_disposition'] == 'orient',
       );
       expect(compressCandidate, containsPair('advisory', true));
       expect(compressCandidate, containsPair('ephemeral', true));

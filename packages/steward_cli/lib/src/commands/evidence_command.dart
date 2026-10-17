@@ -19,7 +19,7 @@ class EvidenceCommand extends Command<void> {
   final name = 'evidence';
 
   @override
-  final description = 'Initialize minimal claim-proof evidence surfaces.';
+  final description = 'Maintainer. Do not start here. Initialize minimal claim-proof evidence surfaces.';
 }
 
 class EvidenceInitCommand extends Command<void> {

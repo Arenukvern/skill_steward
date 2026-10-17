@@ -7,6 +7,7 @@ import 'package:yaml/yaml.dart';
 
 import '../bounded_process.dart';
 import '../git_status.dart';
+import '../output_guidance.dart';
 import '../path_safety.dart';
 import '../repo_root.dart';
 import '../validation/steward_config.dart';
@@ -19,6 +20,11 @@ const _compiledStewardVersion = String.fromEnvironment('STEWARD_VERSION');
 class BenchmarkCommand extends Command<void> {
   BenchmarkCommand([this.outputSink, this.startDirectory]) {
     argParser
+      ..addOption('goal', help: 'Original task goal for advisory guidance.')
+      ..addFlag(
+        'guidance',
+        help: 'Include optional advice; default output contains facts only.',
+      )
       ..addFlag('json', negatable: false, help: 'Emit machine-readable JSON.')
       ..addFlag(
         'strict',
@@ -45,16 +51,34 @@ class BenchmarkCommand extends Command<void> {
   final name = 'benchmark';
 
   @override
-  final description = 'Run compact runtime dogfood benchmark scenarios.';
+  final description = 'Maintainer. Do not start here. Run compact runtime dogfood benchmark scenarios.';
 
   @override
   Future<void> run() async {
+    validateGuidanceGoal(argResults?['goal'] as String?);
     final root = findRepoRoot(startDirectory ?? Directory.current);
     final result = await benchmarkPayload(
       root,
       argResults?['scenario'] as String,
       strict: argResults?['strict'] == true,
     );
+    result['guidance'] = outputGuidance(
+      root,
+      result,
+      goal: argResults?['goal'] as String?,
+      rerun: [
+        'steward',
+        'benchmark',
+        '--scenario',
+        argResults?['scenario'] as String,
+        if (argResults?['strict'] == true) '--strict',
+        '--json',
+      ],
+    );
+    exitCode = result['result'] == 'pass' ? 0 : 1;
+    if (argResults?['guidance'] == false) {
+      result.remove('guidance');
+    }
     final encoded = const JsonEncoder.withIndent('  ').convert(result);
     final outputPath = argResults?['output'] as String?;
     if (outputPath != null && outputPath.trim().isNotEmpty) {
@@ -73,6 +97,9 @@ class BenchmarkCommand extends Command<void> {
       ..writeln('Steward benchmark')
       ..writeln('- scenario: ${result['scenario']}')
       ..writeln('- result: ${result['result']}');
+    if (argResults?['guidance'] != false) {
+      writeOutputGuidance(sink, result['guidance'] as Map<String, dynamic>);
+    }
   }
 }
 

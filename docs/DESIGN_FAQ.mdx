@@ -74,6 +74,9 @@ A: **Zero-dependency consumer access.** While primary artifacts are portable ski
 **Q: How are skills evaluated (Microsoft / Google / Codex style)?**
 A: **T-named quality gates:** T1 behavior-critical charter skills require `evals/cases/*.yaml` + `pnpm run eval` (rule-based, no LLM in CI). T2 structural skills require validation only unless real usage promotes them to T1. Behavioral suites and judges stay offline (`references/evals.md`, plugin-eval, SkillOpt loop). Design language from [Chrome evals](https://developer.chrome.com/docs/ai/evals/design). [ADR 0011](decisions/0011-tiered-skill-evals-and-rule-based-ci) · [ADR 0027](decisions/0027-t-named-skill-quality-gates) · skill `skill-eval-improve`.
 
+**Q: Does an official benchmark prove a skill, tool or stewardship concept is good?**
+A: Only the measured claim under the recorded conditions. MCP conformance tests protocol behavior; local effect/permission tests cover tool boundaries; paired agent tasks measure usefulness. OWASP is risk guidance, not a pass certificate. Public benchmark methods can inform local tasks, but a modified suite must be labeled a derivative. Concepts such as evolutionary simplicity earn their place through better decisions and lower future rework, with an explicit counterexample or removal condition. Keep safety, correctness, purpose and cost separate. [Research and benchmark map](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-eval-improve/references/evaluation-research-2026-10.md).
+
 **Q: Where does GitHub profile / bio copy live?**
 A: **Not in this repo.** Public bio should point at the product harness and [skill_steward](https://github.com/Arenukvern/skill_steward) ([ADR 0008](decisions/0008-adopt-skill-steward-product-name)). Repo-shape audits use `repo-quality-system-lifecycle` plus `repository-governance-lifecycle`; use `mcp-harness-repo-maintainer` only when typed action contracts or harness proof are in scope.
 
@@ -129,3 +132,29 @@ A: Inclusion criteria in ADR 0001—out-of-scope PRs dilute the meta-layer and r
 
 **Q: Why MIT license at repo root?**
 A: Default for marketplace skills; per-skill `license` frontmatter can narrow if needed later.
+
+**Q: How should Steward guide a human or agent from a result to useful work?**
+A: Ground one bounded next option in the observed outcome and native owner,
+expose uncertainty, name the same verification route, and finish or return to
+the original goal. Eligible actions and filename heuristics are not proof of
+relevance or semantic understanding. Keep deterministic facts separate from
+interpretive advice, and make deeper method/skill guidance optional. The
+[output-guidance method](https://github.com/arenukvern/skill_steward/blob/main/skills/mcp-harness-repo-maintainer/references/output-guidance.md)
+describes the implemented advisory core and delivery boundaries.
+[ADR 0028](decisions/0028-grounded-output-guidance) records the decision.
+[Development comparison](evidence/archive/output-guidance-pilot-2026-10-13) keeps
+measured task results separate from semantic fidelity or general uplift.
+
+
+**Q: What earns a permanent Steward surface?**
+A: A recurring repository problem and evidence that the surface reduces future
+rediscovery, failure or repair enough to justify its upkeep. Apply evolutionary
+simplicity and the generational architecture ladder: stay native first, promote
+only when needed, and demote or delete a layer that does not help. Routine work
+needs no maturity ceremony. Skills-only adoption is valid. Guidance is opt-in;
+permissions, session identity and scheduling remain host responsibilities. The
+[reuse method](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-eval-improve/references/paired-dogfood.md#ordinary-workflow-reuse)
+includes human review and evaluation maintenance in the cost. The
+[current scoreboard](evidence/current-dogfood-status) owns current dispositions;
+dated experiments retain their original results. External benchmarks remain
+conditional tools, not roadmap obligations.

@@ -30,6 +30,12 @@
       }
     },
     "probes": { "type": "object" },
+    "eligible_actions": {
+      "description": "Auto-eligible capabilities; not a task-relevance recommendation.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/action_summary" }
+    },
+    "guidance": { "type": "object" },
     "next_actions": {
       "type": "array",
       "items": {

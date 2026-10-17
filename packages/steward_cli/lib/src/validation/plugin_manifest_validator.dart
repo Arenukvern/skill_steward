@@ -6,25 +6,41 @@ import 'package:yaml/yaml.dart';
 
 import '../path_safety.dart';
 
-/// Validates Skill Steward local plugin manifests.
+/// Discovers Steward wiring without treating native Dart/MCP packages as wiring.
 ///
 /// These manifests are not vendor marketplace manifests. They document local
 /// wiring bundles under plugins/{id}/ while keeping canonical SKILL.md files in
 /// skills/{id}/.
+List<Directory> discoverStewardPluginDirectories(final String rootPath) {
+  final pluginsDir = Directory(p.join(rootPath, 'plugins'));
+  if (!pluginsDir.existsSync()) return const [];
+  return pluginsDir
+      .listSync(followLinks: false)
+      .whereType<Directory>()
+      .where((final dir) => !p.basename(dir.path).startsWith('.'))
+      .where(
+        (final dir) => dir
+            .listSync(followLinks: false)
+            .any((final entry) => !p.basename(entry.path).startsWith('.')),
+      )
+      .where(
+        (final dir) =>
+            FileSystemEntity.typeSync(
+                  p.join(dir.path, 'plugin.yaml'),
+                  followLinks: false,
+                ) !=
+                FileSystemEntityType.notFound ||
+            (!File(p.join(dir.path, 'pubspec.yaml')).existsSync() &&
+                !File(p.join(dir.path, 'mcp.json')).existsSync()),
+      )
+      .toList()
+    ..sort((final a, final b) => a.path.compareTo(b.path));
+}
+
+/// Validates every discovered wiring bundle, including malformed manifests.
 Future<List<String>> validatePluginManifests(final String rootPath) async {
   final diagnostics = <String>[];
-  final pluginsDir = Directory(p.join(rootPath, 'plugins'));
-  if (!pluginsDir.existsSync()) {
-    return diagnostics;
-  }
-
-  final entries =
-      pluginsDir
-          .listSync(followLinks: false)
-          .whereType<Directory>()
-          .where((final dir) => !p.basename(dir.path).startsWith('.'))
-          .toList()
-        ..sort((final a, final b) => a.path.compareTo(b.path));
+  final entries = discoverStewardPluginDirectories(rootPath);
 
   for (final pluginDir in entries) {
     final pluginId = p.basename(pluginDir.path);

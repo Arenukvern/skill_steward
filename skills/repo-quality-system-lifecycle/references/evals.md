@@ -24,6 +24,7 @@ Use these prompts during manual or plugin-eval runs:
 
 ## Rubric
 
+- For a routine repair with a known owner and native gate, exits to native work without creating a baseline or ledger. The 2026-10-13 development pilot found no Codex quality uplift (6/6 per arm); the narrowed description passed one candidate-only repair routing probe without observed skill reads. ZCode final pairs had one candidate timeout. These are not held-out acceptance or proof of faster routing; see `docs/evidence/archive/skillgrade-pilot-2026-10-13.mdx`.
 - Identifies repo archetype before prescribing gates.
 - Separates general stewardship maturity from harness/action-contract maturity.
 - Uses type-native validation instead of forcing every repo into `steward benchmark`.

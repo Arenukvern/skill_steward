@@ -12,7 +12,7 @@ For ordinary repo work, do not start with a maturity ladder or an evidence packe
 2. Identify the repo's primary artifact and native validation gate.
 3. Name the bold outcome, proof, minimal controls, deleted or compressed surface, and hot-path residue.
 4. Choose one disposition: `orient`, `compress`, `validate`, `tutor_pain`, `promote_tool`, `leave_native`, or `stop`.
-5. Make the smallest safe change only when that disposition calls for it, including in another allowed repo when that owner is the right place.
+5. Make the change that makes the named use-path true, then stop. After two attempts on the same owner with no new evidence, rewrite, delete, or hand off. See [work discipline](core/work-discipline).
 6. Rerun the same native gate or blocked Steward route.
 7. For product repos, name the product impact check: source-owned behavior/API/UI/visual/performance/release/workflow delta, or explicit product-native proof. Green Steward artifacts alone are stewardship support, not product acceleration.
 8. Leave the hot path: better map, shorter doc, native check, schema, test, FAQ row, action candidate, deleted stale surface, or current-ledger update.
@@ -50,7 +50,7 @@ VALIDATE before PR     → pnpm run validate  (skill structure; CI also runs ana
 CITE / EVAL SKILLS     → skill-source-citations, skill-eval-improve
 EVAL CI (T1 behavior-critical)       → pnpm run eval · evals/cases/*.yaml · ADR 0011
 STEWARD CLI              → ../packages/steward_cli/README.md  (ADR 0007)
-HONEST CLAIM ROUTING    → this file (Honest claim routing) · evidence/current-dogfood-status · evidence/first-adopter-golden-path (reference)
+HONEST CLAIM ROUTING    → this file (Honest claim routing) · evidence/current-dogfood-status · evidence/archive/first-adopter-golden-path (reference)
 EVIDENCE ROUTING       → core/evidence-artifacts.mdx · core/evidence-ladder.mdx · ADR 0023
 RELEASE / CHANGELOG    → this file (Release desk) · ADR 0009 · ADR 0010 · skill release-changelog-harness
 PLUGINS (hooks)        → ../plugins/README.md  (not via npx skills)
@@ -111,7 +111,7 @@ Treat split/compress/promote/demote/delete/stay-native as movement rules for the
 | Gather repo ecology inventory | `steward ecology snapshot --json` | Read-only facts for a Repository Ecology Review; not an adoption or maturity verdict |
 | Route repo ecology dispositions | `steward ecology route --json` | Composes snapshot facts into orient/compress/validate/tutor/promote/leave/stop suggestions; not repair automation |
 | Compose current dogfood route | `steward dogfood status --json` | Current ledger plus ecology facts; not maturity, H2/H5, or steward status |
-| Audit public dogfood proof | `docs/evidence/current-dogfood-reproducibility.mdx` | Public/auditable subset with durable anchors; not the current-status source |
+| Audit public dogfood proof | `docs/evidence/archive/current-dogfood-reproducibility.mdx` | Public/auditable subset with durable anchors; not the current-status source |
 | Start a minimal current-status ledger | `steward evidence init --minimal` | Creates one claim/status ledger; not an evidence archive, benchmark, or readiness claim |
 | Turn blocked JSON into next actions | `steward blocked explain` | Artifact routing for blocked evidence; does not repair or prove |
 | Validate Skill Steward skills | `pnpm run validate`, `steward validate skills`, `steward validate all`, `pnpm run eval` | Split validation ownership and T1 behavior-critical routing cases |
@@ -172,7 +172,7 @@ Expected first result:
 
 Use the harness flag only when the repo is ready to declare typed actions, probes, and benchmark evidence from the start. The smoke scenario is generated only when the repo has a durable git remote and resolved HEAD commit; otherwise add the scenario after those facts exist.
 
-Canonical commands and interpretation: [First adopter golden path](evidence/first-adopter-golden-path). It is a reference fixture, not current adopter proof; current dogfood/adopter truth lives in [Current dogfood status](evidence/current-dogfood-status). A passing smoke benchmark proves only H2 contract discovery and safe first observation. A `durability_blocked` result is useful blocked evidence when it points to dirty or untracked contract inputs, but it is not H2 proof and not H4 fresh-agent workflow proof. Steward status vocabulary is intentionally centralized in [ADR 0021](decisions/0021-protocol-first-steward-status-gates); adoption and maturity vocabulary lives in [NORTH_STAR](NORTH_STAR#adoption-claim-vocabulary).
+Canonical commands and interpretation: [First adopter golden path](evidence/archive/first-adopter-golden-path). It is a reference fixture, not current adopter proof; current dogfood/adopter truth lives in [Current dogfood status](evidence/current-dogfood-status). A passing smoke benchmark proves only H2 contract discovery and safe first observation. A `durability_blocked` result is useful blocked evidence when it points to dirty or untracked contract inputs, but it is not H2 proof and not H4 fresh-agent workflow proof. Steward status vocabulary is intentionally centralized in [ADR 0021](decisions/0021-protocol-first-steward-status-gates); adoption and maturity vocabulary lives in [NORTH_STAR](NORTH_STAR#adoption-claim-vocabulary).
 
 ### Dogfood state routing
 
@@ -300,7 +300,7 @@ This is maintainer-local context, not general consumer adoption guidance. When a
 
 Current status: [Current dogfood status](evidence/current-dogfood-status).
 
-Historical dated note: [Maintainer-local integration roadmap — 2026-06-08](evidence/maintainer-local-integration-roadmap-2026-06-08). Keep it for provenance only; do not use it as an active current-note link.
+Historical dated note: [Maintainer-local integration roadmap — 2026-06-08](evidence/archive/maintainer-local-integration-roadmap-2026-06-08). Keep it for provenance only; do not use it as an active current-note link.
 
 ## 📦 Install Skill Steward (consumers)
 
@@ -333,6 +333,27 @@ Maintainer local override while iterating before publishing:
 npx skills add <skill-steward-checkout> -a cursor -a claude-code -a codex -a zed -y
 npx skills add <skill-steward-checkout> -g -y
 ```
+
+### Which Skill Steward copy does an agent session use?
+
+Installation, discovery, invocation, and useful behavior are separate checks.
+When guidance differs between sessions, inspect the skill path advertised by
+that session before reinstalling. Compare that file with the intended source
+using `shasum -a 256 <loaded-SKILL.md> <source-SKILL.md>`; a different hash
+means different content, not necessarily a broken installation.
+
+Prefer one intended distribution channel per client and scope. A standalone
+skill and a plugin may both expose the same skill name. Do not assume universal
+precedence across Codex, Zcode, Cursor, Claude Code, or Zed. Inspect the client's
+discovery surface, update through the owning installer, then verify a fresh
+session advertises the intended path. Preserve local customizations and do not
+hand-edit plugin caches. Installing every target is not needed for one client.
+
+For an ordinary repair, start with the owner and native gate; do not load the
+whole guild. For an adoption trial, record the client, loaded skill path/ref,
+original task, outcome, setup detours, and validation result in an existing
+run record. Claim acceleration only after a comparable repeat preserves task
+quality while reducing time or rework. See the [session application review](evidence/archive/session-application-review-2026-10-13).
 
 ### Install steward CLI (Global Binary)
 
@@ -449,6 +470,26 @@ Optional Cursor hook: `../plugins/steward-validate-on-save/README.md`.
 Fix all `error:` lines before merge. Warnings (long SKILL.md, missing skills.sh entry) should be addressed or justified in PR.
 
 `pnpm run eval` is for T1 behavior-critical skill routing and docs-SSOT quality. Runtime dogfood and local harness benchmarks use `steward benchmark --scenario <id> --json`; do not put product runtime scenarios under skill evals. Benchmark execution is durability-gated: `source.steward_contract` and any file-backed scenario manifest must be clean and tracked before actions run.
+
+### Measuring whether a skill, MCP tool, CLI or concept helps
+
+Use native tests and T1 static evals first. For agent usefulness, use the
+[paired dogfood procedure](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-eval-improve/references/paired-dogfood.md)
+and [October 2026 benchmark selection](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-eval-improve/references/evaluation-research-2026-10.md).
+`steward benchmark` runs declared actions; it does not execute paired agents.
+
+```bash
+# Portable offline summary; requires Dart, no model/provider calls.
+dart skills/skill-eval-improve/scripts/compare_dogfood.dart /path/to/paired-runs.json
+# Deterministic comparator controls, also included in the normal Dart test lane.
+cd packages/steward_cli && dart test test/paired_dogfood_test.dart
+```
+
+Inspect summary status, per-task regressions, incomplete runs and metric
+coverage. Exit 0 only means the input was valid and summarized. Safety
+regressions veto promotion; unknown measurements stay null. Keep external
+runner logs in their owner and link summaries from the existing adoption record.
+For tools, add [protocol, parity and actual-effect checks](https://github.com/arenukvern/skill_steward/blob/main/skills/mcp-harness-repo-maintainer/references/tool-assurance.md).
 
 ### Validation matrix
 
@@ -594,3 +635,70 @@ Schemas:     schemas/README.mdx
 ```
 
 Do not duplicate SKILL.md bodies in ADRs or FAQs—link to `../skills/{name}/`.
+
+### How do I run the bounded external skill pilot?
+
+Use the [Skillgrade pilot fixtures](https://github.com/arenukvern/skill_steward/tree/main/evals/skillgrade-pilot)
+and its functional preflight before spending model budget. A text-only READY
+response does not qualify tool execution. The October 13
+[real-client rerun](evidence/archive/skillgrade-pilot-2026-10-13) completed Codex pairs
+and a bounded ZCode pair: no measured quality uplift, with one ZCode candidate
+timeout. Earlier setup failures remain separate.
+Keep per-client outcomes and benchmark dimensions separate using the
+[adoption and scoreboard guide](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-eval-improve/references/benchmark-adoption.md).
+
+### How do I preserve check failures and identify skipped evals?
+
+`steward action run` returns the native nonzero action exit (1 for rejected,
+blocked or abnormal outcomes). `probe` returns 0 only for `passed`;
+`benchmark` returns 0 only for `pass`. Text and JSON modes use the same process
+status. Structured output remains available on failure. This is candidate
+behavior from the October 13 repair; older installed binaries may return zero
+for a printed failure. Use the exact tested release/source when comparing runs.
+
+A child cannot control its caller's pipeline status. In Bash/Zsh, enable
+`set -o pipefail` before piping checks to `tee` or `tail`; in CI, use
+`set -euo pipefail` and avoid a later successful command replacing the result.
+For machine consumers, retain both process exit and the structured result.
+
+`steward eval` runs required T1 skills plus every skill declaring an
+`evals/cases` directory. An explicit non-T1 target also executes its cases;
+T1 still requires at least two. An explicit target with no cases reports
+`skipped`, executes zero cases and exits nonzero. JSON includes overall/per-skill
+status, `executed_cases`, and `skipped_skills`. A skip is not a pass. These remain
+static rule checks, not runtime skill-effectiveness tests.
+
+The [October 13 quality baseline](evidence/archive/quality-baseline-2026-10-13) separates
+these regressions, fresh adopter checks and the earlier real-agent comparison.
+
+
+**Q: How can a result guide the next useful step without adding a new workflow?**
+A: Results contain native facts by default. Supply `--guidance --goal "<original task>"`
+on doctor, probe, action run, benchmark,
+blocked explain, eval or validation. Text shows two short lines; JSON adds optional
+`guidance` with the observation, basis, uncertainty, precondition, native rerun and
+return-to-goal condition. `--no-guidance` explicitly retains the default and the same
+native exit. Doctor's `eligible_actions` lists capability; `next_actions` is
+retained but empty because eligibility does not prove task relevance.
+
+The experimental MCP surface provides read-only `steward_explain_result` and
+`steward_doctor` (facts-only unless `guidance: true`), explicit `explain-result` / `measure-improvement` prompts, and
+`steward://guidance/method`. Advice never executes or authorizes a change. Goals
+have a 2,048 UTF-8-byte limit; guidance has a 6,000-byte bound; imported MCP result
+and prompt evidence have a 16,000-byte limit. Refusals name the missing expansion
+route rather than silently truncating the original. These are application bytes,
+not a bound on the native result or billed model tokens.
+
+Bind the intended executable explicitly when versions coexist; a login shell
+may replace PATH. [Behavior and evaluation](evidence/archive/output-guidance-pilot-2026-10-13)
+cover local candidate behavior; client prompt UI support and full MCP conformance
+remain separate claims.
+
+
+**Q: Does a fresh native pass justify rewriting an input receipt?**
+A: Preserve protected input evidence; read the fresh native output instead.
+Counterexample probes belong in a disposable copy when they alter authoritative
+inputs. Guidance compares policy, source and executed copy but does not grant
+permissions. [The ownership comparison](evidence/archive/ambiguous-owner-pilot-2026-10-13)
+records native-green runs that violated those boundaries. Host permissions and
+observed effects, not advisory wording alone, must support an enforcement claim.

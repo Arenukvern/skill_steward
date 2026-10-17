@@ -687,6 +687,10 @@ Local version.
           ),
         );
         expect(stewardContent, contains('enabled: false'));
+        expect(
+          stewardContent,
+          contains('moe_required_for_architecture: false'),
+        );
         expect(stewardContent, contains('actions: {}'));
         expect(stewardContent, isNot(contains('doctor.local:')));
         expect(
@@ -698,6 +702,8 @@ Local version.
         expect(agentsMd.existsSync(), isTrue);
         final agentsContent = await agentsMd.readAsString();
         expect(agentsContent, contains('steward map'));
+        expect(agentsContent, contains('## Work discipline'));
+        expect(agentsContent, contains('Health, not a preflight'));
         expect(agentsContent, contains('## North Star Impact'));
         expect(agentsContent, contains('north_star_impact'));
         expect(agentsContent, contains('sub_star'));
@@ -760,6 +766,10 @@ Local version.
         expect(stewardContent, contains('confidence: 1.0'));
         expect(stewardContent, contains('explicit --archetype'));
         expect(stewardContent, contains("validate: 'pnpm run validate'"));
+        expect(
+          stewardContent,
+          contains('moe_required_for_architecture: false'),
+        );
       } finally {
         Directory.current = originalCwd;
       }

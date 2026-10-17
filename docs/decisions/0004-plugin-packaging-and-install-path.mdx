@@ -172,3 +172,16 @@ Product plugins are product-specific bundles (MCP server + skills + marketplace 
 * [skills CLI — supported agents & hooks matrix](https://github.com/vercel-labs/skills#compatibility)
 * [Cursor hooks](https://cursor.com/docs/agent/hooks) (project: `.cursor/hooks.json`)
 * Reference product plugin patterns
+
+## Discovery clarification — 2026-10-13
+
+Adopter repositories also use `plugins/` for native Dart and MCP packages.
+The directory name alone cannot establish a Steward wiring obligation.
+Validation and bundling share one discovery function: empty/cache-only
+directories are excluded; native directories with
+`pubspec.yaml` or `mcp.json` and no `plugin.yaml` are excluded; remaining visible
+directories require the manifest. Present manifests are always validated,
+including malformed schemas and dangling links. This clarifies the existing
+product-plugin boundary without changing manifest requirements or adding a
+second plugin registry. The package marker identifies scope; it does not prove
+the native package is valid.

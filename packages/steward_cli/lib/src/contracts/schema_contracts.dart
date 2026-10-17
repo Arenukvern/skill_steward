@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'blocked_contracts.dart';
 import 'claim_contracts.dart';
+import 'output_guidance_contract.dart';
 import 'protocol_contracts.dart';
 
 part 'schema_contracts.g.dart';
@@ -174,6 +175,7 @@ class SchemaDriftCheckPayload {
 Map<String, dynamic> generatedStewardSchema(final String schemaName) {
   final schema = switch (schemaName.trim()) {
     'claim-check' => ClaimCheckPayload.generatedSchema,
+    'output-guidance' => OutputGuidancePayload.generatedSchema,
     'blocked-explain' => BlockedExplanationPayload.generatedSchema,
     'schema-validate' => SchemaValidatePayload.generatedSchema,
     'schema-check-outputs' => SchemaCheckOutputsPayload.generatedSchema,
@@ -190,6 +192,7 @@ Map<String, dynamic> generatedStewardSchema(final String schemaName) {
 List<String> get generatedStewardSchemaNames => const [
   'claim-check',
   'blocked-explain',
+  'output-guidance',
   'schema-validate',
   'schema-check-outputs',
   'schema-emit',

@@ -11,7 +11,9 @@ metadata:
 
 # Harness Engineering Lifecycle
 
-Evolve a proven repo-local contract into a generalized, high-performance, declarative harness system, then safely dogfood those changes across a producer-consumer repository boundary. Start here only after the target repo has a `steward.yaml` contract and at least an H2 smoke proof; use `mcp-harness-repo-maintainer` before that.
+Evolve a proven repo-local contract into a generalized harness, then dogfood it across a producer-consumer boundary. Follow [work discipline](../../docs/core/work-discipline.mdx).
+
+`mcp-harness-repo-maintainer` is superseded. Cold start and cross-repo generalization are one lifecycle: do not add typed actions, probes, or benchmarks until a local contract exists and the native gate is the thing you rerun. Historical cold-start notes stay in [mcp-harness-repo-maintainer/references](../mcp-harness-repo-maintainer/references). Green Steward artifacts are not a product use-path.
 
 ## When to use
 

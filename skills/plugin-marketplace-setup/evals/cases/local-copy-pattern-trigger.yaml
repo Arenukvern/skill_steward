@@ -1,19 +1,10 @@
-id: plugin-marketplace-local-copy-pattern-trigger
+id: local-copy-pattern-trigger
 skill: plugin-marketplace-setup
-routing: should_trigger
-input: "Create a reusable Codex/Cursor/Claude marketplace copy pattern like mcp_flutter, with local scripts that copy skills, plugin manifests, hooks, and marketplace files."
+routing: should_not_trigger
+input: "Use the superseded plugin-marketplace-setup skill for a new workflow"
 rules:
-  - kind: file_exists
-    path: references/local-copy-pattern.md
+  - kind: description_includes_any
+    terms: ["Superseded", "Do not use"]
   - kind: body_includes_any
     path: SKILL.md
-    terms: ["repo-local copy/init pattern", "local-copy-pattern.md"]
-  - kind: body_includes_any
-    path: references/local-copy-pattern.md
-    terms: [".codex-plugin/plugin.json", ".cursor-plugin/plugin.json", ".claude-plugin/plugin.json"]
-  - kind: body_includes_any
-    path: references/local-copy-pattern.md
-    terms: [".agents/plugins/marketplace.json", ".claude-plugin/marketplace.json"]
-  - kind: body_includes_any
-    path: references/local-copy-pattern.md
-    terms: ["Cache refresh", "Rollback", "Non-claims"]
+    terms: ["Do not use", "release-changelog-harness"]

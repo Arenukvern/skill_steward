@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:args/command_runner.dart';
 
 import '../action_runner.dart';
+import '../output_guidance.dart';
 import '../repo_root.dart';
 import '../validation/steward_config.dart';
 
@@ -11,6 +12,11 @@ import '../validation/steward_config.dart';
 class ProbeCommand extends Command<void> {
   ProbeCommand([this.outputSink, this.startDirectory]) {
     argParser
+      ..addOption('goal', help: 'Original task goal for advisory guidance.')
+      ..addFlag(
+        'guidance',
+        help: 'Include optional advice; default output contains facts only.',
+      )
       ..addFlag('json', negatable: false, help: 'Emit machine-readable JSON.')
       ..addOption(
         'profile',
@@ -27,15 +33,26 @@ class ProbeCommand extends Command<void> {
   final name = 'probe';
 
   @override
-  final description = 'Run a bounded Steward probe profile.';
+  final description = 'Maintainer. Do not start here. Run a bounded Steward probe profile.';
 
   @override
   Future<void> run() async {
+    validateGuidanceGoal(argResults?['goal'] as String?);
     final root = findRepoRoot(startDirectory ?? Directory.current);
     final profile = argResults?['profile'] as String? ?? 'quick';
     final result = await StewardConfig.loadChecked(root);
     final payload = await stewardProbePayload(root, result, profile);
 
+    payload['guidance'] = outputGuidance(
+      root,
+      payload,
+      goal: argResults?['goal'] as String?,
+      rerun: ['steward', 'probe', '--profile', profile, '--json'],
+    );
+    exitCode = payload['status'] == 'passed' ? 0 : 1;
+    if (argResults?['guidance'] == false) {
+      payload.remove('guidance');
+    }
     final sink = outputSink ?? stdout;
     if (argResults?['json'] == true) {
       sink.writeln(const JsonEncoder.withIndent('  ').convert(payload));
@@ -46,6 +63,9 @@ class ProbeCommand extends Command<void> {
       ..writeln('Steward probe')
       ..writeln('- profile: $profile')
       ..writeln('- status: ${payload['status']}');
+    if (argResults?['guidance'] != false) {
+      writeOutputGuidance(sink, payload['guidance'] as Map<String, dynamic>);
+    }
     for (final rejected in payload['rejected_actions'] as List) {
       final item = rejected as Map<String, dynamic>;
       sink.writeln('- rejected ${item['id']}: ${item['reasons']}');

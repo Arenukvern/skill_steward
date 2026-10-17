@@ -1,6 +1,6 @@
-/// Dart port of eval-skill.mjs — T1 behavior-critical skill evaluator.
+/// Static skill evaluator: mandatory T1 coverage plus optional declared cases.
 ///
-/// Mirrors the logic in the original Node script exactly:
+/// Uses the original rule-based checks:
 ///   - Loads YAML eval cases from skills/{name}/evals/cases/*.yaml
 ///   - Validates case schema
 ///   - Runs rule checks (file_exists, description_includes_any, etc.)
@@ -173,7 +173,7 @@ Future<List<String>> _runCaseRules(
 /// Evaluates a single skill by name.
 ///
 /// [skillsDir] is the `skills/` directory path.
-/// Mirrors the Node [evalSkill] function exactly, including T1 gating.
+/// Executes declared cases; T1 skills additionally require minimum coverage.
 Future<EvalSkillResult> evalSkill(
   final String skillsDir,
   final String skillName,
@@ -192,21 +192,19 @@ Future<EvalSkillResult> evalSkill(
     );
   }
 
-  if (!t1BehaviorCriticalSkills.contains(skillName)) {
-    warnings.add(
-      '$skillName is not T1 behavior-critical — skipping case requirements',
-    );
-    return EvalSkillResult(
-      skillName: skillName,
-      errors: const [],
-      warnings: warnings,
-      passed: 0,
-      total: 0,
-    );
-  }
+  final requiredCases = t1BehaviorCriticalSkills.contains(skillName);
 
   final casesDir = Directory(p.join(skillPath, 'evals', 'cases'));
   if (!casesDir.existsSync()) {
+    if (!requiredCases) {
+      return EvalSkillResult(
+        skillName: skillName,
+        errors: const [],
+        warnings: const ['No eval cases declared; no evaluation performed.'],
+        passed: 0,
+        total: 0,
+      );
+    }
     errors.add(
       'T1 behavior-critical requires evals/cases/*.yaml '
       '(min $t1BehaviorCriticalMinCases)',
@@ -226,7 +224,7 @@ Future<EvalSkillResult> evalSkill(
       .where((final f) => f.path.endsWith('.yaml') || f.path.endsWith('.yml'))
       .toList();
 
-  if (caseFiles.length < t1BehaviorCriticalMinCases) {
+  if (requiredCases && caseFiles.length < t1BehaviorCriticalMinCases) {
     errors.add(
       'T1 behavior-critical requires ≥$t1BehaviorCriticalMinCases case files; found ${caseFiles.length}',
     );
@@ -298,20 +296,35 @@ Future<EvalSkillResult> evalSkill(
 
 // ─── Aggregate runner ─────────────────────────────────────────────────────────
 
-/// Runs evals for [targets] (defaults to all [t1BehaviorCriticalSkills]).
+/// Runs explicit targets, or all T1 skills plus skills declaring case directories.
 ///
 /// [skillsDir] must be the absolute path to the repo `skills/` directory.
 Future<EvalReport> evalAllSkills(
   final String skillsDir, {
   final List<String>? targets,
 }) async {
-  final names = targets ?? t1BehaviorCriticalSkills;
+  final names =
+      targets?.toList() ??
+            {
+              ...t1BehaviorCriticalSkills,
+              if (Directory(skillsDir).existsSync())
+                ...Directory(skillsDir)
+                    .listSync()
+                    .whereType<Directory>()
+                    .where(
+                      (final dir) => Directory(
+                        p.join(dir.path, 'evals', 'cases'),
+                      ).existsSync(),
+                    )
+                    .map((final dir) => p.basename(dir.path)),
+            }.toList()
+        ..sort();
   final results = <EvalSkillResult>[];
 
   for (final name in names) {
     results.add(await evalSkill(skillsDir, name));
   }
 
-  final ok = results.every((final r) => r.isOk);
+  final ok = results.isNotEmpty && results.every((final r) => r.isOk);
   return EvalReport(results: results, ok: ok);
 }

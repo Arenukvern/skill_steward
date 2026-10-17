@@ -17,6 +17,92 @@ void main() {
     }
   });
 
+  for (final marker in ['pubspec.yaml', 'mcp.json']) {
+    test(
+      'ignores native plugin with $marker and no Steward manifest',
+      () async {
+        final dir = Directory(p.join(tempDir.path, 'plugins', 'native-plugin'))
+          ..createSync(recursive: true);
+        File(p.join(dir.path, marker)).writeAsStringSync('{}');
+        expect(await validatePluginManifests(tempDir.path), isEmpty);
+      },
+    );
+  }
+
+  test('native marker cannot hide a dangling Steward manifest', () async {
+    final dir = Directory(p.join(tempDir.path, 'plugins', 'mixed'))
+      ..createSync(recursive: true);
+    File(p.join(dir.path, 'pubspec.yaml')).writeAsStringSync('name: mixed');
+    Link(p.join(dir.path, 'plugin.yaml')).createSync('missing.yaml');
+    expect(
+      (await validatePluginManifests(tempDir.path)).join('\n'),
+      contains('plugin.yaml is required'),
+    );
+  });
+
+  test('ignores empty and cache-only plugin residues', () async {
+    Directory(
+      p.join(tempDir.path, 'plugins', 'empty'),
+    ).createSync(recursive: true);
+    Directory(
+      p.join(tempDir.path, 'plugins', 'old-package', '.dart_tool'),
+    ).createSync(recursive: true);
+    expect(await validatePluginManifests(tempDir.path), isEmpty);
+  });
+
+  test('unclassified wiring directory still requires a manifest', () async {
+    Directory(
+      p.join(tempDir.path, 'plugins', 'wiring'),
+    ).createSync(recursive: true);
+    File(
+      p.join(tempDir.path, 'plugins', 'wiring', 'README.md'),
+    ).writeAsStringSync('Wiring bundle');
+    expect(
+      (await validatePluginManifests(tempDir.path)).join('\n'),
+      contains('plugins/wiring/plugin.yaml is required'),
+    );
+  });
+
+  test(
+    'native marker never exempts a present malformed Steward manifest',
+    () async {
+      final dir = Directory(p.join(tempDir.path, 'plugins', 'mixed'))
+        ..createSync(recursive: true);
+      File(p.join(dir.path, 'pubspec.yaml')).writeAsStringSync('name: mixed');
+      File(p.join(dir.path, 'plugin.yaml')).writeAsStringSync('schema: wrong');
+      expect(
+        (await validatePluginManifests(tempDir.path)).join('\n'),
+        contains('schema must be "steward/plugin-manifest/v1"'),
+      );
+    },
+  );
+
+  test(
+    'mixed native and Steward plugins retain artifact integrity checks',
+    () async {
+      await _writeSkill(tempDir.path, 'skill-authoring-lifecycle');
+      await _writePlugin(
+        tempDir.path,
+        id: 'steward-validate-on-save',
+        skillId: 'skill-authoring-lifecycle',
+      );
+      final native = Directory(p.join(tempDir.path, 'plugins', 'native'))
+        ..createSync(recursive: true);
+      File(p.join(native.path, 'mcp.json')).writeAsStringSync('{}');
+      final wiring = p.join(
+        tempDir.path,
+        'plugins',
+        'steward-validate-on-save',
+      );
+      File(p.join(wiring, 'pubspec.yaml')).writeAsStringSync('name: mixed');
+      File(p.join(wiring, 'hooks', 'example.sh')).writeAsStringSync('changed');
+      expect(
+        (await validatePluginManifests(tempDir.path)).join('\n'),
+        contains('sha256 mismatch'),
+      );
+    },
+  );
+
   test('accepts v1 plugin manifest that references canonical skills', () async {
     await _writeSkill(tempDir.path, 'skill-authoring-lifecycle');
     await _writePlugin(

@@ -13,7 +13,7 @@ let s=''; process.stdin.on('data',d=>s+=d); process.stdin.on('end',()=>{
 });
 " 2>/dev/null || true)
 
-SKILL_DIR=$(printf '%s' "$FILE" | sed -n 's|.*/skills/\([^/]*\)/SKILL\.md$|\1|p')
+SKILL_DIR=$(printf '%s' "/$FILE" | sed -n 's|.*/skills/\([^/]*\)/SKILL\.md$|\1|p')
 if [[ -z "$FILE" ]] || [[ -z "$SKILL_DIR" ]]; then
   exit 0
 fi
@@ -26,17 +26,16 @@ if [[ ! -f "$SOURCES" ]]; then
 fi
 
 if command -v dart >/dev/null 2>&1 && [[ -f packages/steward_cli/pubspec.yaml ]]; then
-  (cd packages/steward_cli && dart run :steward validate) 2>/dev/null && exit 0
+  cd packages/steward_cli
+  exec dart run :steward validate
 fi
 
 if command -v pnpm >/dev/null 2>&1 && [[ -f package.json ]]; then
-  pnpm run validate --silent
-  exit $?
+  exec pnpm run validate --silent
 fi
 
 if command -v npm >/dev/null 2>&1 && [[ -f package.json ]]; then
-  npm run validate --silent
-  exit $?
+  exec npm run validate --silent
 fi
 
 echo "steward-validate-on-save: need dart, pnpm, or npm to validate" >&2

@@ -13,7 +13,7 @@ class ListCommand extends Command<void> {
 
   @override
   final description =
-      'List available or installed skills with their descriptions.';
+      'Maintainer. Do not start here. List available or installed skills with their descriptions.';
 
   @override
   Future<void> run() async {

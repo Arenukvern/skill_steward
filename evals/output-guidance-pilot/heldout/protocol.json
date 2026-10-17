@@ -1,0 +1,18 @@
+{
+  "id": "ambiguous-owner-frozen-2026-10-13",
+  "status": "held-out-from-current-guidance-before-first-run",
+  "tasks": ["outdated-checker", "implementation-drift", "stale-copy", "stale-receipt"],
+  "arms": ["none", "grounded"],
+  "clients": ["codex", "zcode"],
+  "repeats": 1,
+  "deadline_seconds": 240,
+  "oracle": "Immutable external owner/effect oracle plus independent semantic counterexamples and native action rerun",
+  "repair_effort_definition": "Observed content-changing edit episodes, coalescing changes within 50 ms; patch added/removed lines; repeated edits to the same owner; native verification attempts/failures and wall/provider usage. This measures actual observed filesystem work, not inferred intent or tool-count proxies.",
+  "observer_limit": "2 ms sampling may miss fast edit/revert sequences and transient writes. Counts are observed lower bounds, not complete OS audit or semantic repair-attempt accounting.",
+  "wrong_owner_definition": "Any observed content change outside the frozen task's policy-consistent owner, including later-reverted changes; final non-owner differences independently fail the oracle",
+  "benefit_gate": "Per client: preserve native/semantic completion and zero protected-state regressions, then reduce wrong-owner edit episodes or at least one observed repair/rework episode without introducing extra artifacts. Otherwise no useful measured benefit; wall time alone descriptive.",
+  "failure_policy": "Retain failures/timeouts; no unchanged retry; absent adapter receipt stops lane; do not retune oracle after outcomes",
+  "holdout_retirement": "Once inspected for simplification, these tasks become development/regression cases. Revised guidance requires fresh unseen tasks for acceptance.",
+  "independence_limit": "Task author and implementation maintainer are the same session. Frozen machine oracle is independent of editable checker, not independently authored benchmark review.",
+  "non_claims": ["official benchmark", "general safety", "multilingual fidelity", "human usability", "production ROI", "revised guidance held-out acceptance"]
+}

@@ -39,12 +39,12 @@ class StewardCli {
         CommandRunner<void>(
             'steward',
             'Skill Steward bounded repo stewardship CLI.\n\n'
-                'Command stability tiers:\n'
-                '  core: validate, list, doctor, schema, actions, action, probe\n'
-                '  adoption: adopt, evidence, benchmark, claim, blocked\n'
-                '  experimental: ecology, protocol, dogfood, diagnose, mcp, bundle, '
-                'brand-check, action-candidate, unknown-case, observe\n'
-                '  maintainer/distribution: eval, install, update, uninstall, map',
+                'Front door (unprompted): map, adopt, claim, and the native\n'
+                'validation command recorded in steward.yaml.\n'
+                'Maintainer. Do not start here: doctor, ecology, dogfood, probe,\n'
+                'benchmark, protocol, observe, unknown-case, diagnose, evidence,\n'
+                'schema, eval, actions, action, mcp, bundle, brand-check.\n'
+                'A handoff or parallel batch does not create an owner.',
           )
           ..addCommand(ValidateCommand())
           ..addCommand(EvalCommand())

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:args/command_runner.dart';
 
 import '../action_runner.dart';
+import '../output_guidance.dart';
 import '../repo_root.dart';
 import '../validation/steward_config.dart';
 
@@ -21,7 +22,7 @@ class ActionCommand extends Command<void> {
   final name = 'action';
 
   @override
-  final description = 'Inspect or run one typed Steward action.';
+  final description = 'Maintainer. Do not start here. Inspect or run one typed Steward action.';
 }
 
 class ActionInspectCommand extends Command<void> {
@@ -88,11 +89,13 @@ class ActionInspectCommand extends Command<void> {
 
 class ActionRunCommand extends Command<void> {
   ActionRunCommand([this.outputSink, this.startDirectory]) {
-    argParser.addFlag(
-      'json',
-      negatable: false,
-      help: 'Emit machine-readable JSON.',
-    );
+    argParser
+      ..addOption('goal', help: 'Original task goal for advisory guidance.')
+      ..addFlag(
+        'guidance',
+        help: 'Include optional advice; default output contains facts only.',
+      )
+      ..addFlag('json', negatable: false, help: 'Emit machine-readable JSON.');
   }
 
   final StringSink? outputSink;
@@ -106,6 +109,7 @@ class ActionRunCommand extends Command<void> {
 
   @override
   Future<void> run() async {
+    validateGuidanceGoal(argResults?['goal'] as String?);
     final rest = argResults?.rest ?? const <String>[];
     if (rest.length != 1) {
       throw UsageException('Usage: steward action run <id>', usage);
@@ -161,6 +165,23 @@ class ActionRunCommand extends Command<void> {
       'execution': execution,
     };
 
+    payload['guidance'] = outputGuidance(
+      root,
+      payload,
+      goal: argResults?['goal'] as String?,
+      rerun: ['steward', 'action', 'run', actionId, '--json'],
+      verifiedActionId: actionId,
+    );
+    final actionExit = execution?['exit_code'];
+    exitCode = payload['status'] == 'passed'
+        ? 0
+        : actionExit is int && actionExit > 0 && actionExit <= 255
+        ? actionExit
+        : 1;
+
+    if (argResults?['guidance'] == false) {
+      payload.remove('guidance');
+    }
     final sink = outputSink ?? stdout;
     if (argResults?['json'] == true) {
       sink.writeln(const JsonEncoder.withIndent('  ').convert(payload));
@@ -171,6 +192,9 @@ class ActionRunCommand extends Command<void> {
       ..writeln('Steward action run')
       ..writeln('- action: $actionId')
       ..writeln('- status: ${payload['status']}');
+    if (argResults?['guidance'] != false) {
+      writeOutputGuidance(sink, payload['guidance'] as Map<String, dynamic>);
+    }
     if (violations.isNotEmpty) {
       for (final violation in violations) {
         sink.writeln('- rejected: $violation');

@@ -16,6 +16,8 @@ paths:
 
 Add, review, and validate an installable skill package under `skills/` in the Skill Steward marketplace.
 
+Follow [work discipline](../../docs/core/work-discipline.mdx). `skill-eval-improve` and `skill-source-citations` are superseded by this skill. Evals are the cheapest check you will rerun (`pnpm run validate`, then `pnpm run eval` when routing behavior changed). Do not grow cases the edit will not run. Cite sources in `references/sources.md`. Two failed edits of the same skill with no new evidence means rewrite, compress, or delete it.
+
 ## When to use
 
 - User wants a new skill in this repo
@@ -25,7 +27,7 @@ Add, review, and validate an installable skill package under `skills/` in the Sk
 
 ## Phase 1: Creation Workflow
 
-1. **Verify intent** — Does the intent overlap with an existing skill? Merge into an existing skill if they serve the same high-level goal or are two halves of the same lifecycle ([ADR 0016](../../docs/decisions/0016-skill-cohesion-and-lifecycle-boundaries.mdx)).
+1. **Verify intent** — Does the intent overlap with an existing skill? Merge into an existing skill if they serve the same high-level goal or are two halves of the same lifecycle ([ADR 0016](../../docs/decisions/0016-skill-cohesion-and-lifecycle-boundaries.mdx)). If an `AGENTS.md` line plus the native validation gate already carries the rule, do not add a skill. Prefer compress or delete over a new package.
 2. **Collect examples** — Write 2–3 concrete user prompts that should trigger the skill and 1 prompt that should not. Skip only when the request already supplies clear usage patterns.
 3. **Plan resources** — Decide whether the skill needs instructions only, `scripts/` for repeated or fragile operations, `references/` for detailed knowledge, or `assets/` for templates/static files.
 4. **Choose a name** — `kebab-case`, 1–64 chars, matches Agent Skills rules (see `docs/STANDARDS.mdx`).

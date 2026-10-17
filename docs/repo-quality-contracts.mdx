@@ -116,7 +116,11 @@ stewardship:
     changelog: CHANGELOG.md
     artifact_provenance: required
   review_handoff:
-    moe_required_for_architecture: true
+    # Shipping archetypes (app, library, cli_tool, plugin, harness) default
+    # false. meta_governance defaults true. true means ADR-level architecture
+    # may use MoE; it is not a preflight for ordinary edits. `steward doctor`
+    # is health inventory; `quality.validate` is the delivery gate.
+    moe_required_for_architecture: false
   strategic_alignment:
     vision_source: docs/NORTH_STAR.mdx
     success_evidence: required
@@ -211,6 +215,10 @@ The canonical `S0`-`S5` ladder lives in [North Star](NORTH_STAR#general-stewards
 - Do not let skipped validation, blocked generators, or manually synced generated files support readiness claims.
 - Do not copy producer architecture truth into consumer docs; consumer docs should carry proof, local deltas, and links to the owner.
 - Do not treat `steward ecology snapshot` as a verdict. It is read-only inventory for a Repository Ecology Review, not proof of adoption or maturity.
+- Do not treat a green fixture, an unrun suite, or a longer plan as a product use-path.
+- Do not treat `steward doctor` as the delivery gate. The native `quality.validate` command is.
+- Do not open a third local patch on the same owner with no new evidence. Rewrite, delete, or hand off.
+- Do not set `moe_required_for_architecture: true` on a shipping repo to force architecture review before ordinary fixes. Reserve it for meta/governance repos and ADR-level `amends` / `conflicts`.
 
 ## Related skills
 

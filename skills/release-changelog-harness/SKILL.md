@@ -22,7 +22,7 @@ paths:
 
 Make **releases understandable**: every version bump has structured intent that agents and humans can read in git—not only in a maintainer’s head or a GitHub Releases textarea.
 
-This skill is **meta harness culture** (which tool, which gates, which docs). It is **not** a full tutorial for every package manager.
+This skill is **meta harness culture** (which tool, which gates, which docs). It is **not** a full tutorial for every package manager. Follow [work discipline](../../docs/core/work-discipline.mdx). `plugin-marketplace-setup` is superseded; marketplace install notes stay in that directory's `references/` and do not get a new queue.
 
 ## Mixture of experts — critique your idea
 

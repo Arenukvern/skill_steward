@@ -1,7 +1,7 @@
 ---
 status: current
 evidence_type: ledger
-date: 2026-06-13
+date: 2026-10-13
 scope: Skill Steward dogfood and adopter status
 claim_tested: Current weakest true claims for Skill Steward, IntentCall, mcp_flutter, and ecsly dogfood loops.
 proof_level: current ledger with linked historical evidence and rerun routes
@@ -18,7 +18,7 @@ current_status_pointer: docs/evidence/current-dogfood-status.mdx
 
 # Current dogfood status
 
-**Last verified:** 2026-06-13
+**Last refreshed:** 2026-10-13 for the selected routes below; June 13 rows are historical.
 **Status owner:** evidence ledger only
 **Current mode:** `stewardship_protocol`
 
@@ -26,49 +26,92 @@ This is the single current card for Skill Steward dogfood/adopter status. A fres
 
 Claim-gate terms for `stewardship_protocol`: the current mode is bounded to protocol shape and repo-local evidence routing. Memory artifacts are limited to checked-in protocol examples with redaction rules; handoff material is the current ledger plus linked evidence packets; non-claims stay explicit below.
 
+The [October 13 cross-project usage audit](archive/cross-project-usage-2026-10-13)
+adds verified adoption and session observations. It does not rerun or refresh the
+June maturity rows below; use its dated inventory for portfolio-usage claims.
+
 ## Current Evidence Card
 
-```bash
-steward dogfood status --json
-```
+Selected-route refresh: October 13.
 
-[Public dogfood reproducibility](current-dogfood-reproducibility) records which current rows have durable public anchors. This ledger may preserve maintainer-local diary facts; public proof lives in the reproducibility card.
+The [quality baseline](archive/quality-baseline-2026-10-13) records fresh native runs with
+local candidate runners, exact commands, hashes, public links and limitations.
+Only ECSly and Dart/Flutter packages were rerun for the discovery fix; four
+earlier route results are carried forward. Consumer source was not changed. All source checkouts were already dirty; these
+are local observations, not clean independent reproductions or global maturity.
 
-**Weakest honest claim right now:** Skill Steward has current local proof only for the bounded `stewardship_protocol` smoke path. IntentCall's Steward schema repair passed a maintainer-local clean H2 replay, but its source checkout still needs that repair committed before the repo-owned benchmark summary should be treated as current pass evidence. `mcp_flutter` now has a maintainer-local runtime text-input candidate repeat, including bounded reveal and acceptance, but its source checkout still needs the minimal candidate landed before treating it as repo-owned current evidence. `ecsly` now has both a bounded Steward observe smoke and a passing product-native `spark_physics_ecs` T1 smoke for this checkout.
+The [output-guidance development baseline](archive/output-guidance-pilot-2026-10-13)
+records a separate local CLI/MCP implementation and three-arm comparison.
+All 12 qualified task attempts pass with zero protected-state violations; the
+practical benefit gate was not met. This does not refresh the six adopter routes
+or supersede the earlier skill/no-skill findings.
 
-**Use this card for current status.** Historical evidence below is provenance unless the table says that surface was rerun and still holds. The adoption-run v2 file is a template/reference, not proof and not current evidence.
+The [ambiguous-owner follow-up](archive/ambiguous-owner-pilot-2026-10-13) records three
+qualified families, sampled real edit effort and owner/evidence violations.
+Original guidance did not meet its benefit gate. One defective oracle family is
+retained but unqualified; narrowed-guidance reruns are exposed development evidence.
+These experiments do not refresh adopter rows or grant acceptance.
 
 ## Current status table
 
-| Surface | Last verified | Current blocker | Next rerun | Weakest true claim |
-|---------|---------------|-----------------|------------|--------------------|
-| Skill Steward protocol smoke | 2026-06-13 | None for the local strict protocol smoke. Warning remains: local HEAD differs from `scenario_source.commit`. | Rerun `dart run packages/steward_cli/bin/steward.dart benchmark --scenario skill_steward.protocol-smoke --strict --output .steward/benchmark-summaries/skill-steward-protocol-smoke.json --json` after committing or otherwise changing `steward.yaml`, `steward/scenarios/skill_steward.protocol-smoke.yaml`, `.steward/events.example.jsonl`, or `.steward/self-model.example.json`. | Local strict protocol smoke returned `result: "pass"` with `durability.status: "ready"` for required protocol inputs. Local summary: `.steward/benchmark-summaries/skill-steward-protocol-smoke.json` (`run_id: 2026-06-13T15:38:43.310580Z`). This proves only `stewardship_protocol` smoke for the local checkout, not remote reproducibility, `steward_presence`, `proven_repo_steward`, H4/H5, or product runtime behavior. |
-| IntentCall producer Steward H2 | 2026-06-13 | Source checkout still has a dirty `steward.yaml` repair and a durability-blocked benchmark summary; maintainer-local clean replay passed. | Commit or isolate only the schema repair (`repo.archetype: library` plus `stewardship.repo_quality`), then rerun `dart run tool/intentcall/bin/intentcall.dart validate`, `steward doctor --json`, `steward actions list --json`, `steward action inspect intentcall.validate --json`, `steward probe --profile quick --json`, and `steward benchmark --scenario intentcall.adapter-contract --strict --output .steward/benchmark-summaries/intentcall.adapter-contract.strict.json --json` in the producer checkout. | A maintainer-local clean replay containing only the schema repair passed native validation, doctor, actions, inspect, quick probe, and strict `intentcall.adapter-contract` benchmark (`run_id: 2026-06-13T16:58:50.993364Z`, `dirty: false`, `result: "pass"`, `durability.status: "ready"`, `proof.status: "ready"`). This proves the schema repair can satisfy producer H2 cleanly in that replay; it is not public reproducibility proof and is not yet a repo-owned persisted pass in the dirty source checkout. |
-| `mcp_flutter` runtime text-input repeat | 2026-06-13 | Source checkout still needs the minimal maintainer-local candidate landed and rerun as repo-owned evidence; no clean-source H5 or broad adoption claim. | Land or isolate the minimal candidate at commit `a7537b7254565c5ec0e8903740bb0525841d4082`, then rerun `flutter test test/semantic_snapshot_surface_test.dart test/flutter_mcp_toolkit_schema_parity_test.dart` from `mcp_toolkit`, `make showcase`, and `tool/evals/run_runtime_enter_text_greeting.sh --output <outside-worktree-json>` from the source checkout. | In the maintainer-local clean candidate, `tool/evals/run_runtime_enter_text_greeting.sh --output <outside-worktree-json>` passed after one bounded `swipe(direction: "down", distance: 220)` revealed `greeting_input_field`; `doctor` was 10/10, `enter_text` succeeded via `editable_state`, and `AgentState.instance.greeting == "steward runtime proof"`. This is a capability-level candidate repeat, not public reproducibility proof, H5 promotion, or repo-wide adoption. |
-| `ecsly` root steward loop | 2026-06-13 | None for the bounded observe smoke or declared `spark_physics_ecs` T1 smoke in this checkout. | Rerun `steward benchmark --scenario ecsly.spark-t1-dry-run --strict --output .steward/benchmark-summaries/ecsly.spark-t1-dry-run.strict.json --json`, then `dart run tools/ecsly_cli/bin/ecsly.dart verify spark_physics_ecs --tier-max T1 --json`. Current status pointer: `<ecsly-checkout>/docs/evidence/current-status.mdx`. | Bounded Steward observe smoke passed with `result: "pass"` and `durability.status: "ready"` for `ecsly.observe`; product-native `spark_physics_ecs` T1 smoke passed after stale prototype tests were realigned to the declarative scene-description boundary. This proves only those two bounded routes in the checkout, not public reproducibility, broad repo H4/H5, release readiness, or graphics parity. |
+| Route | Fresh result | Next disposition |
+|---|---|---|
+| Oka strict contract smoke | Pass, 4 gates | Retain bounded docs/version/changelog/path proof. |
+| Flutter MCP quick probe | Pass, 8 checks | Runtime/device acceptance remains separate. |
+| IntentCall native validation | Fail: version-sync mismatch | Producer owner reviews package versions versus synchronization policy. |
+| ECSly repo contract | Pass after discovery fix | Original failure retained; native package directories and cache residue excluded. |
+| Dart/Flutter packages repo contract | Pass after discovery fix | Original failure retained; MCP package excluded from Steward wiring. |
+| Private A drift check | Pass | Anonymized local evidence; no public runtime claim. |
+
+No protocol-smoke, fresh-agent, runtime-text-input or broad maturity promotion was
+rerun or awarded here. Historical results below retain their original dates.
+
+[Public dogfood reproducibility](archive/current-dogfood-reproducibility) distinguishes
+public anchors from maintainer-local observations.
+
+## Agent comparisons and disposition
+
+| Record | Finding | Current disposition |
+|---|---|---|
+| [Skill comparison](archive/skillgrade-pilot-2026-10-13) | No observed Codex quality uplift; ZCode candidate timeout retained | Narrow skill activation; routine repairs stay native. |
+| [Output guidance](archive/output-guidance-pilot-2026-10-13) | Development benefit gate not met | Advice opt-in; no speedup claim. |
+| [Owner comparison](archive/ambiguous-owner-pilot-2026-10-13) | Benefit gate not met; defective oracle quarantined; revised runs exposed | Preserve failures; no general owner/safety claim. |
+| [Adoption inventory](archive/cross-project-usage-2026-10-13) | Ongoing use and concrete maintenance outputs | Adoption is established; causal payback remains unmeasured. |
+
+Exact counts, revisions and costs belong to each dated report's linked native
+JSON records, not duplicated current summaries. This card owns dispositions only.
+The local simplification makes CLI advice and MCP doctor advice opt-in; it does
+not rerun these experiments or refresh adopter results.
+
+Next measurement: ordinary Oka documentation-drift and anonymized Private A drift
+workflow reuse. [Protocol](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-eval-improve/references/paired-dogfood.md#ordinary-workflow-reuse).
+Future reuse and maintenance payback are **not yet measured**. Framework
+integrations are deferred pending a concrete decision that needs them.
+
+[June status and exact rerun details](archive/dogfood-status-2026-06-13) remain historical.
 
 ## Stale and historical evidence
 
-The PDSA diary and command details live in [Repository ecology PDSA — 2026-06-12](repository-ecology-pdsa-2026-06-12). Keep them historical unless a current rerun updates this card.
+The PDSA diary and command details live in [Repository ecology PDSA — 2026-06-12](archive/repository-ecology-pdsa-2026-06-12). Keep them historical unless a current rerun updates this card.
 
 Historical proof packets:
 
-- [Repository ecology PDSA — 2026-06-12](repository-ecology-pdsa-2026-06-12)
-- [Stewardship protocol smoke packet — 2026-06-12](stewardship-protocol-smoke-packet-2026-06-12)
-- [Stewardship protocol adopter run — 2026-06-12](stewardship-protocol-adopter-run-2026-06-12)
-- [Paired adoption ledger — 2026-06-10](paired-adoption-ledger-2026-06-10)
-- [mcp_flutter capability-level proof — 2026-06-10](mcp-flutter-capability-level-proof-2026-06-10)
-- [mcp_flutter runtime text-input capability packet — 2026-06-10](mcp-flutter-runtime-text-input-capability-proof-2026-06-10)
-- [H3 to H5 adoption promotion packet — 2026-06-10](h3-h5-adoption-promotion-packet-2026-06-10)
+- [Repository ecology PDSA — 2026-06-12](archive/repository-ecology-pdsa-2026-06-12)
+- [Stewardship protocol smoke packet — 2026-06-12](archive/stewardship-protocol-smoke-packet-2026-06-12)
+- [Stewardship protocol adopter run — 2026-06-12](archive/stewardship-protocol-adopter-run-2026-06-12)
+- [Paired adoption ledger — 2026-06-10](archive/paired-adoption-ledger-2026-06-10)
+- [mcp_flutter capability-level proof — 2026-06-10](archive/mcp-flutter-capability-level-proof-2026-06-10)
+- [mcp_flutter runtime text-input capability packet — 2026-06-10](archive/mcp-flutter-runtime-text-input-capability-proof-2026-06-10)
+- [H3 to H5 adoption promotion packet — 2026-06-10](archive/h3-h5-adoption-promotion-packet-2026-06-10)
 
 Reference template:
 
-- [Adoption run v2 template](adoption-run-v2-template) — keep in place for link stability; this is a template/reference, not evidence of an adoption run.
-- [First adopter golden path](first-adopter-golden-path) — reference fixture only; this is not current adopter proof.
+- [Adoption run v2 template](archive/adoption-run-v2-template) — keep in place for link stability; this is a template/reference, not evidence of an adoption run.
+- [First adopter golden path](archive/first-adopter-golden-path) — reference fixture only; this is not current adopter proof.
 
 Superseded maintainer-local roadmap:
 
-- [Maintainer-local integration roadmap — 2026-06-08](maintainer-local-integration-roadmap-2026-06-08) — historical dependency-order note only; do not use it as an active current-note link.
+- [Maintainer-local integration roadmap — 2026-06-08](archive/maintainer-local-integration-roadmap-2026-06-08) — historical dependency-order note only; do not use it as an active current-note link.
 
 ## Moved out of evidence
 

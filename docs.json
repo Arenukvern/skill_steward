@@ -63,9 +63,9 @@
         { "title": "Repo quality contracts", "href": "/repo-quality-contracts" },
         { "title": "DESIGN_FAQ", "href": "/DESIGN_FAQ" },
         { "title": "DX_FAQ", "href": "/DX_FAQ" },
-        { "title": "First adopter reference fixture", "href": "/evidence/first-adopter-golden-path" },
+        { "title": "First adopter reference fixture", "href": "/evidence/archive/first-adopter-golden-path" },
         { "title": "Current dogfood status", "href": "/evidence/current-dogfood-status" },
-        { "title": "Current dogfood reproducibility", "href": "/evidence/current-dogfood-reproducibility" },
+        { "title": "Current dogfood reproducibility", "href": "/evidence/archive/current-dogfood-reproducibility" },
         { "title": "Skills Catalog", "href": "/skills-catalog" },
         { "title": "Docs Map", "href": "/start_here/docs_map" },
         { "title": "Plan hygiene (extract & remove)", "href": "/start_here/executable-plans" },
@@ -76,15 +76,15 @@
     {
       "group": "Evidence Archive",
       "pages": [
-        { "title": "Adoption run template (reference)", "href": "/evidence/adoption-run-v2-template" },
-        { "title": "Pattern promotion review", "href": "/evidence/pattern-promotion-review-2026-06-10-generational-lens" },
-        { "title": "Capability-level proof", "href": "/evidence/mcp-flutter-capability-level-proof-2026-06-10" },
-        { "title": "Runtime text-input packet", "href": "/evidence/mcp-flutter-runtime-text-input-capability-proof-2026-06-10" },
-        { "title": "Paired adoption ledger", "href": "/evidence/paired-adoption-ledger-2026-06-10" },
-        { "title": "Repository ecology PDSA", "href": "/evidence/repository-ecology-pdsa-2026-06-12" },
-        { "title": "Stewardship protocol smoke packet", "href": "/evidence/stewardship-protocol-smoke-packet-2026-06-12" },
-        { "title": "Stewardship adopter run", "href": "/evidence/stewardship-protocol-adopter-run-2026-06-12" },
-        { "title": "H4 workflow check", "href": "/evidence/h4-fresh-agent-workflow-check-2026-06-08" }
+        { "title": "Adoption run template (reference)", "href": "/evidence/archive/adoption-run-v2-template" },
+        { "title": "Pattern promotion review", "href": "/evidence/archive/pattern-promotion-review-2026-06-10-generational-lens" },
+        { "title": "Capability-level proof", "href": "/evidence/archive/mcp-flutter-capability-level-proof-2026-06-10" },
+        { "title": "Runtime text-input packet", "href": "/evidence/archive/mcp-flutter-runtime-text-input-capability-proof-2026-06-10" },
+        { "title": "Paired adoption ledger", "href": "/evidence/archive/paired-adoption-ledger-2026-06-10" },
+        { "title": "Repository ecology PDSA", "href": "/evidence/archive/repository-ecology-pdsa-2026-06-12" },
+        { "title": "Stewardship protocol smoke packet", "href": "/evidence/archive/stewardship-protocol-smoke-packet-2026-06-12" },
+        { "title": "Stewardship adopter run", "href": "/evidence/archive/stewardship-protocol-adopter-run-2026-06-12" },
+        { "title": "H4 workflow check", "href": "/evidence/archive/h4-fresh-agent-workflow-check-2026-06-08" }
       ]
     },
     {
@@ -96,7 +96,8 @@
         { "title": "Generational architecture ladder", "href": "/core/generational-architecture-ladder" },
         { "title": "Evidence ladder", "href": "/core/evidence-ladder" },
         { "title": "Evidence artifacts", "href": "/core/evidence-artifacts" },
-        { "title": "Doc lattice", "href": "/core/doc-lattice" }
+        { "title": "Doc lattice", "href": "/core/doc-lattice" },
+        { "title": "Work discipline", "href": "/core/work-discipline" }
       ]
     },
     {
@@ -138,7 +139,8 @@
         { "title": "0024 — Loop pain extraction", "href": "/decisions/0024-loop-pain-extraction-into-stewardship-patterns" },
         { "title": "0025 — Steward presence readiness", "href": "/decisions/0025-steward-presence-readiness-signs" },
         { "title": "0026 — Parallel acceleration", "href": "/decisions/0026-parallel-acceleration-governance" },
-        { "title": "0027 — T-named quality gates", "href": "/decisions/0027-t-named-skill-quality-gates" }
+        { "title": "0027 — T-named quality gates", "href": "/decisions/0027-t-named-skill-quality-gates" },
+        { "title": "0028 — Grounded output guidance", "href": "/decisions/0028-grounded-output-guidance" }
       ]
     },
     {

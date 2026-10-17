@@ -22,7 +22,7 @@ class DogfoodCommand extends Command<void> {
 
   @override
   final description =
-      'Compose current dogfood status without awarding maturity.';
+      'Maintainer. Do not start here. Compose current dogfood status without awarding maturity.';
 }
 
 class DogfoodStatusCommand extends Command<void> {

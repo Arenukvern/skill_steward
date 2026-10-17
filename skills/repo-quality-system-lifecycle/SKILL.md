@@ -1,7 +1,7 @@
 ---
 name: repo-quality-system-lifecycle
 description: >-
-  Establish or audit a structural quality contract for any agent-operated engineering repository: app, library, CLI/tool, plugin, harness, or meta repo. Use when a repo needs charter clarity, docs/decision ownership, type-native validation gates, evidence paths, safe action policy, cold-start legibility, maturity proof, repair-loop routing, consumer/producer owner-boundary routing, command surface evolution, evolutionary simplicity (see references/evolutionary-simplicity.md), or a repo ecology pass to decide what should be compressed, merged, removed, updated, created, retired, or moved to checks.
+  Establish or audit an agent-operated repository's quality contract or recurring stewardship friction. Skip routine repairs with a known owner and native check. Use for charter/docs ownership, validation gates, evidence paths, maturity proof, consumer/producer boundaries, command-surface evolution, or a repo ecology pass to decide what should be compressed, merged, retired, or moved to checks.
 license: MIT
 type: governance
 metadata:
@@ -28,6 +28,8 @@ These lenses are not a new doctrine skill (see [DESIGN_FAQ](https://docs.page/ar
 
 Use this skill to make a repository legible, safe, and improvable for humans and agents. It is broader than Agent Skill authoring and narrower than product implementation.
 
+The standing procedure is [work discipline](../../docs/core/work-discipline.mdx). Do not restate it. `steward adopt` writes that procedure into a new `AGENTS.md`.
+
 ## When to use
 
 - Setting up Engineering Stewardship in an app, library, CLI/tool, plugin, harness, or meta repo.
@@ -47,6 +49,18 @@ Use this skill to make a repository legible, safe, and improvable for humans and
 - Generalizing a proven harness across producer/consumer repos; use `harness-engineering-lifecycle`.
 
 ## Workflow
+
+### Entry: choose the needed depth
+
+Identify the original goal, owning surface, and native gate from the existing
+agent map. If a routine repair has a clear owner and gate, leave native: complete
+the repair and validation, then stop. Do not establish a new baseline, ledger,
+contract, or maturity review for that task.
+
+For recurring friction, read only the workflow section that owns it. Run the
+full ecology review when the user requests it or the owner remains unclear.
+Related skills are routing options, not a checklist of skills to load. Reuse
+current session context; reopen sources when they changed or a claim needs it.
 
 ### 1. Classify the repo
 
@@ -77,7 +91,9 @@ If the repo is not ready for Steward CLI, bootstrap manually: add the claim/evid
 
 ### 3. Define the quality contract
 
-Write the smallest contract that can be checked.
+Write the smallest contract that can be checked. For shipping archetypes (`app`, `library`, `cli_tool`, `plugin`, `harness`), `steward adopt` sets `moe_required_for_architecture: false`. Only `meta_governance` defaults it on. `steward doctor` is health inventory; the recorded native validate command is the delivery gate.
+
+Work discipline for the repo you are adopting: two attempts then rewrite, delete, or hand off; one obligation per claimant; product use-path before fixtures; do not grow checks you will not rerun; keep the plan a spine. Do not add a loop-doctor action to enforce this.
 
 | Contract area | Required question |
 |---------------|-------------------|

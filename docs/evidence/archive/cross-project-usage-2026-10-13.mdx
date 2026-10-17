@@ -1,0 +1,158 @@
+# Cross-project usage audit — 2026-10-13
+
+```yaml
+status: historical
+evidence_type: pattern_review
+date: 2026-10-13
+scope: maintainer portfolio; repository contracts, Git artifacts, Codex records and ZCode tool records
+claim_tested: existing adoption and concrete stewardship outcomes beyond the two-task pilot
+proof_level: verified artifact adoption and retrospective session observations
+result: sustained multi-project use; concrete maintenance outputs; causal productivity uplift unmeasured
+limitations: bounded convenience sample; one maintainer ecosystem; private sessions; no fresh product acceptance runs
+non_claims: independent customer adoption, universal safety, production SLA, benchmark ranking, causal speedup
+next_disposition: publish public artifact proofs; refresh stale status from existing native receipts; sample future maintenance cost
+current_status_pointer: this dated usage inventory; maturity remains owned by each repository
+```
+
+The subsequent [quality baseline and adopter refresh](quality-baseline-2026-10-13)
+repairs CLI propagation and skipped evals, and records six fresh native runs.
+The retrospective findings below retain their original observation scope.
+
+## Corrected conclusion
+
+Skill Steward is already adopted and used in ongoing engineering work. The
+October two-task pilot cannot answer whether that existing stewardship practice
+has production value across the portfolio. Conversely, adoption and useful
+artifacts do not by themselves prove that the skills caused faster or better
+work than native practice would have produced.
+
+The strongest current positioning is **used across a maintainer's public and
+private projects for repository governance, native-check routing, documentation
+maintenance and evidence discipline, with auditable examples**. Do not describe
+this as merely a proposed adoption experiment, or as independent customer scale.
+
+## Inventory and sampling
+
+A bounded scan of two local development roots found **10 distinct repositories
+with root `steward.yaml` contracts**, counting Steward itself. A second checkout
+of the same public project was deduplicated. This is six public downstream
+projects, three private projects, and Steward. Two additional private projects
+have observed skill/structural adoption without a root contract; this is valid
+skills-only use, not a missing harness to install. The scan is not an exhaustive
+census of every project on the machine, so “all projects” remains the operator's
+statement rather than an audited universal count.
+
+Public visibility and the following commit-specific files were verified through
+the GitHub API on October 13. Public source adoption is independently inspectable:
+
+| Project / pinned proof | Observation |
+|---|---|
+| [oka](https://github.com/Arenukvern/oka/blob/c329e984345a9d47b67fc649254a072b12819fe4/steward.yaml) | Public pinned contract verified |
+| [ecsly](https://github.com/Arenukvern/ecsly/blob/90578578911c225bf6be519ba2c3de86a5268a96/steward.yaml) | Public pinned contract verified |
+| [dart_flutter_packages](https://github.com/xsoulspace/dart_flutter_packages/blob/6255cbc6cbabc1ef254695e82f1d859594609954/steward.yaml) | Public pinned contract verified |
+| [last_answer](https://github.com/xsoulspace/last_answer/blob/62425235ead1069a4da1c1c61a8be8a7d78554e7/steward.yaml) | Public pinned contract verified |
+| [mcp_flutter](https://github.com/Arenukvern/mcp_flutter/blob/5d60a794ad2fb1ffbc94475603183cfffedef43a/steward.yaml) | Public pinned contract verified |
+| [intentcall](https://github.com/Arenukvern/intentcall/blob/6272b7cdf853edc9880cfc13f709a4a6a8ddd765/steward.yaml) | Public pinned contract verified |
+
+Private cases use labels A–E below. No private repository URL, path, commit ID,
+session ID, customer name or raw transcript is published in this report.
+Visibility is not inferred from a GitHub remote; private/unknown repositories
+remain anonymized. Public links prove their specific artifacts, not private
+session contents or current runtime readiness.
+
+Session sample: six existing Codex chats were inspected selectively, plus a
+read-only ZCode session database search from September 1 through October 13.
+The ZCode search excluded subagent IDs and required relevant tool inputs, then
+corroborating output; catalog text and memory mentions alone were not executions.
+It found **109 tool records across 24 sessions** with Steward command-output
+evidence: private A (84 records / 19 sessions), mcp_flutter (5 / 3), and Oka
+(20 / 2). These include failures, repeated checks and compound shell commands;
+they are usage counts, not unique tasks, passing checks or time saved. An
+additional five private-B sessions contain completed reads of the repo-quality
+skill. This is a lower-bound selected sample, not a client-wide usage rate.
+
+## What worked and what it supports
+
+| Case | Correlated observation | Claim supported / limit |
+|---|---|---|
+| Oka — native gate routing in Codex | A recorded session executed `doctor`, `actions list`, `action inspect`, `action run oka.check.docs-drift`, and strict `oka.contract-status-smoke` with successful terminal exits. Its final report explicitly limited proof to docs/contracts. The public contract names the native owners. | Steward is used as an executable route to existing checks, not just installed text. Historical session execution; no fresh October runtime/build acceptance or speedup claim. |
+| Oka — documentation simplification in ZCode | The original session reads Steward conventions and extracts reusable documentation guidance. [Public commit](https://github.com/Arenukvern/oka/commit/ea6e836cad1ac03999ba33d118983e597bf81e0f) contains docs, examples and maintenance guidance. Comparing parent/commit gives `build_and_config.mdx` **668 → 507 lines**, **28,849 → 21,519 bytes**. | Reproducible content reduction and maintenance artifact. This is a dogfood-to-guidance feedback loop, not proof that a pre-existing Steward skill caused the initial redesign or that readers finish faster. |
+| mcp_flutter — actionable failures | ZCode receipts show native quick-probe results by action: tool-prefix and several other checks passed while hosted-dependency validation failed. The public contract includes the registry-validation gate. | Checks expose a specific integration failure. A failed probe can be useful, but it does not prove release readiness or that the failure was repaired. |
+| Private A — recurring native checks and guarded improvement | Repeated ZCode action receipts; Codex executed the drift action and registered an evidence evaluator with 23 reported regression controls. The evaluator preserved a blocked starter state; the full project gate remained failing. | Sustained operational use and bounded evidence discipline. A passing focused check did not establish whole-project readiness. Control results are historical, not rerun here. |
+| Private B — structural skill use | Five ZCode sessions explicitly read the repo-quality skill. A separate Codex review distinguished implemented migration from unrun acceptance and identified stale analysis. | Real consultation and a useful evidence boundary. It does not attribute product changes, defect reduction or saved time to the skill. |
+| Private C — internal tooling | Root Steward contract and dated evidence surface exist in Git history. | Artifact adoption only in this audit; no execution-effect claim. |
+| Private D — simplifying an agent-facing repository | Session memory explicitly cites Steward plan hygiene; Git independently confirms skill lock/router adoption, movement of old plans into receipts, and README compression **25,171 → 3,778 bytes**, **610 → 84 lines** at the selected change. | Concrete, locally reproducible cleanup associated with Steward use. Historical memory reported a different approximate starting size; this report uses Git bytes. No measured context-token, task-time or correctness benefit; private proof is not publicly replayable. |
+| Private E — skills-only stewardship | Repository charter, agent map, local maintenance procedure and validation ledger match a dated ZCode adoption note. | Structural adoption without requiring a Steward CLI contract. Product performance fixes described nearby are not credited to Steward without a causal trace. |
+
+For the public Oka reduction, anyone can fetch the linked commit and compare
+`git show <commit>^:docs/guides/build_and_config.mdx` with
+`git show <commit>:docs/guides/build_and_config.mdx` using `wc -lc`.
+That reproduces the size observation, not a usability result. Public contracts
+provide rerun recipes, but a recipe is not a fresh replay result.
+
+## What did not work, or remains unproven
+
+1. **Status maintenance lagged actual work.** Steward's central ledger is dated
+   June 13 while adopter receipts and sessions continue into September/October.
+   Oka retains a September 6 passing smoke receipt; the package collection retains
+   an August 20 blocked receipt; another public library retains a June blocked
+   receipt. These dates cannot establish today's pass/fail. A stale card made
+   actual usage look absent. Refresh the relevant existing row from a new native
+   run when its claim matters; do not rewrite historical receipts as current.
+2. **Shell success can conceal action failure.** One ZCode command completed
+   while the printed action exit was 127, followed by “whitespace clean.” Other
+   samples show missing CLI PATH entries, and a quick probe reporting failed
+   while piped through `tail`. Preserve the command's exit with `pipefail` or
+   capture it explicitly; inspect structured action status, not just tool status.
+3. **Eval coverage can be vacuous.** The Oka documentation-skill extraction ran
+   an eval that reported `0/0 cases passed` because the new skill was outside
+   the T1 list. Later YAML parsing and 205 repository tests are different checks;
+   neither turns skipped skill cases into behavioral coverage. Report skip/zero
+   coverage directly; do not expand T1 merely to manufacture a green badge.
+4. **Setup work consumed effort.** That same session hit missing docs dependencies,
+   missing YAML tooling and an incorrect temporary Dart package context before
+   reaching native checks. Existing portable commands should be the first route;
+   another validator stack adds maintenance cost.
+5. **More guidance is not automatically better.** Installed-copy drift and the
+   repaired validation-hook failure remain documented in the earlier review.
+   The paired pilot found no Codex quality uplift and one final ZCode candidate
+   timeout. Real adoption does not negate those negative results.
+6. **Attribution is limited.** Native checks, model capability, human direction,
+   project-specific skills and Steward coexist. Many product successes have no
+   observed Steward intervention. We should credit Steward's observed role and
+   the native owner separately, rather than claim every green project result.
+
+## Public claims and next work
+
+Claim now: **“Used across six public downstream repositories and private projects;
+observed in real Codex and ZCode workflows for governance, validation routing and
+documentation maintenance.”** Link this dated inventory and its public artifacts.
+This is maintainer-portfolio adoption, not six independent customers.
+
+Also claim the exact public artifact reductions and bounded failure detection
+above. Keep the paired pilot as a separate usefulness experiment. Do not award a
+single production score that mixes adoption, correctness, safety and efficiency.
+
+The next work starts with existing adopters, not recruiting hypothetical ones:
+
+- Extract three already-occurring maintenance episodes into the existing evidence
+  records: what failed, what Steward routed/changed, native result, unresolved
+  blocker and durable artifact. Use public commit links or anonymized summaries.
+- Refresh only status rows used for a current claim. Preserve last-run revision,
+  date and failure; automate projection from an existing receipt only if repeated
+  manual drift justifies it. Do not add another telemetry service.
+- For the next comparable episodes, record setup + maintenance + execution +
+  repair burden. Retrospective logs establish use and outcomes; prospective
+  paired or carefully matched comparisons test incremental benefit.
+- Test the observed failure boundaries first: piped exit status, skipped evals,
+  stale installations and stale evidence. External suites come after these local
+  questions, with a named claim and bounded cost.
+
+## Reproducibility and privacy
+
+Public Git artifacts: externally auditable, with a concrete replay for size
+measurements. Historical local sessions: inspected directly, not publicly
+replayable. Private Git/session observations: anonymized case evidence only.
+No fresh product benchmark or broad test suite was run during this audit; it
+would change the question from retrospective use to present-day acceptance.
+The audit does not mutate consumer repositories or publish their transcripts.

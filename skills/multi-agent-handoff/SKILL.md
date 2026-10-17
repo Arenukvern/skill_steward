@@ -19,6 +19,12 @@ Structure work so multiple agents can execute sequentially without losing contex
 - Foreman/worker or parent/subagent patterns
 - Need a written baton between chat sessions or tools
 
+## One obligation
+
+Name one outcome. After two attempts on the same owner with no new evidence, hand off with what was tried, the evidence, and the non-claims. Adjacent discoveries are part of the baton, not permission for the sender to absorb the next problem. MoE findings do not authorize writes.
+
+A handoff does not create an owner. Skill Steward does not schedule claims or presence. Do not add more baton fields. See [work discipline](../../docs/core/work-discipline.mdx).
+
 ## Handoff document template
 
 Create or update `HANDOFF.md` (or a section in the task issue) with:

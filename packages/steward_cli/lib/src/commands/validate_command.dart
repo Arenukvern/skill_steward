@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:args/command_runner.dart';
 
+import '../output_guidance.dart';
 import '../repo_root.dart';
 import '../validation/validation.dart'
     show
@@ -19,6 +20,11 @@ import '../validation/validation.dart'
 class ValidateCommand extends Command<void> {
   ValidateCommand() {
     argParser
+      ..addOption('goal', help: 'Original task goal for advisory guidance.')
+      ..addFlag(
+        'guidance',
+        help: 'Include optional advice; default output contains facts only.',
+      )
       ..addFlag('json', help: 'Output results as JSON.')
       ..addFlag(
         'local',
@@ -35,7 +41,8 @@ class ValidateCommand extends Command<void> {
   final name = 'validate';
 
   @override
-  final description = 'Validate skills, registry, repo contract, and evidence.';
+  final description =
+      'Front door for this meta repo. Product repos run the native command in steward.yaml instead.';
 
   @override
   Future<void> run() async {
@@ -52,7 +59,13 @@ class ValidateCommand extends Command<void> {
       report = await validateAllSkills(skillsDir);
     }
 
-    _writeValidationReport(report, asJson);
+    _writeValidationReport(
+      report,
+      asJson,
+      goal: argResults?['goal'] as String?,
+      includeGuidance: argResults?['guidance'] != false,
+      rerun: ['steward', 'validate', if (isLocal) '--local', '--json'],
+    );
 
     exitCode = report.ok ? 0 : 1;
   }
@@ -60,7 +73,13 @@ class ValidateCommand extends Command<void> {
 
 class _ValidateSkillsCommand extends Command<void> {
   _ValidateSkillsCommand() {
-    argParser.addFlag('json', help: 'Output results as JSON.');
+    argParser
+      ..addOption('goal', help: 'Original task goal for advisory guidance.')
+      ..addFlag(
+        'guidance',
+        help: 'Include optional advice; default output contains facts only.',
+      )
+      ..addFlag('json', help: 'Output results as JSON.');
   }
 
   @override
@@ -73,14 +92,32 @@ class _ValidateSkillsCommand extends Command<void> {
   Future<void> run() async {
     final root = findRepoRoot(Directory.current);
     final report = await validateSkillsDirectory('$root/skills');
-    _writeValidationReport(report, argResults!['json'] as bool);
+    _writeValidationReport(
+      report,
+      argResults!['json'] as bool,
+      goal: argResults?['goal'] as String?,
+      includeGuidance: argResults?['guidance'] != false,
+      rerun: [
+        'steward',
+        'validate',
+        name,
+        if (argResults?['local'] == true) '--local',
+        '--json',
+      ],
+    );
     exitCode = report.ok ? 0 : 1;
   }
 }
 
 class _ValidateRegistryCommand extends Command<void> {
   _ValidateRegistryCommand() {
-    argParser.addFlag('json', help: 'Output results as JSON.');
+    argParser
+      ..addOption('goal', help: 'Original task goal for advisory guidance.')
+      ..addFlag(
+        'guidance',
+        help: 'Include optional advice; default output contains facts only.',
+      )
+      ..addFlag('json', help: 'Output results as JSON.');
   }
 
   @override
@@ -93,14 +130,32 @@ class _ValidateRegistryCommand extends Command<void> {
   Future<void> run() async {
     final root = findRepoRoot(Directory.current);
     final report = await validateSkillRegistry('$root/skills');
-    _writeValidationReport(report, argResults!['json'] as bool);
+    _writeValidationReport(
+      report,
+      argResults!['json'] as bool,
+      goal: argResults?['goal'] as String?,
+      includeGuidance: argResults?['guidance'] != false,
+      rerun: [
+        'steward',
+        'validate',
+        name,
+        if (argResults?['local'] == true) '--local',
+        '--json',
+      ],
+    );
     exitCode = report.ok ? 0 : 1;
   }
 }
 
 class _ValidateRepoContractCommand extends Command<void> {
   _ValidateRepoContractCommand() {
-    argParser.addFlag('json', help: 'Output results as JSON.');
+    argParser
+      ..addOption('goal', help: 'Original task goal for advisory guidance.')
+      ..addFlag(
+        'guidance',
+        help: 'Include optional advice; default output contains facts only.',
+      )
+      ..addFlag('json', help: 'Output results as JSON.');
   }
 
   @override
@@ -113,14 +168,32 @@ class _ValidateRepoContractCommand extends Command<void> {
   Future<void> run() async {
     final root = findRepoRoot(Directory.current);
     final report = await validateRepoContract(root);
-    _writeValidationReport(report, argResults!['json'] as bool);
+    _writeValidationReport(
+      report,
+      argResults!['json'] as bool,
+      goal: argResults?['goal'] as String?,
+      includeGuidance: argResults?['guidance'] != false,
+      rerun: [
+        'steward',
+        'validate',
+        name,
+        if (argResults?['local'] == true) '--local',
+        '--json',
+      ],
+    );
     exitCode = report.ok ? 0 : 1;
   }
 }
 
 class _ValidateEvidenceCommand extends Command<void> {
   _ValidateEvidenceCommand() {
-    argParser.addFlag('json', help: 'Output results as JSON.');
+    argParser
+      ..addOption('goal', help: 'Original task goal for advisory guidance.')
+      ..addFlag(
+        'guidance',
+        help: 'Include optional advice; default output contains facts only.',
+      )
+      ..addFlag('json', help: 'Output results as JSON.');
   }
 
   @override
@@ -133,7 +206,19 @@ class _ValidateEvidenceCommand extends Command<void> {
   Future<void> run() async {
     final root = findRepoRoot(Directory.current);
     final report = await validateEvidence(root);
-    _writeValidationReport(report, argResults!['json'] as bool);
+    _writeValidationReport(
+      report,
+      argResults!['json'] as bool,
+      goal: argResults?['goal'] as String?,
+      includeGuidance: argResults?['guidance'] != false,
+      rerun: [
+        'steward',
+        'validate',
+        name,
+        if (argResults?['local'] == true) '--local',
+        '--json',
+      ],
+    );
     exitCode = report.ok ? 0 : 1;
   }
 }
@@ -141,6 +226,11 @@ class _ValidateEvidenceCommand extends Command<void> {
 class _ValidateAllCommand extends Command<void> {
   _ValidateAllCommand() {
     argParser
+      ..addOption('goal', help: 'Original task goal for advisory guidance.')
+      ..addFlag(
+        'guidance',
+        help: 'Include optional advice; default output contains facts only.',
+      )
       ..addFlag('json', help: 'Output results as JSON.')
       ..addFlag(
         'local',
@@ -161,18 +251,45 @@ class _ValidateAllCommand extends Command<void> {
     final report = isLocal
         ? await validateLocalSkills(root)
         : await validateAllSkills('$root/skills');
-    _writeValidationReport(report, argResults!['json'] as bool);
+    _writeValidationReport(
+      report,
+      argResults!['json'] as bool,
+      goal: argResults?['goal'] as String?,
+      includeGuidance: argResults?['guidance'] != false,
+      rerun: [
+        'steward',
+        'validate',
+        name,
+        if (argResults?['local'] == true) '--local',
+        '--json',
+      ],
+    );
     exitCode = report.ok ? 0 : 1;
   }
 }
 
-void _writeValidationReport(final ValidationReport report, final bool asJson) {
+void _writeValidationReport(
+  final ValidationReport report,
+  final bool asJson, {
+  final String? goal,
+  final List<String>? rerun,
+  final bool includeGuidance = true,
+}) {
+  final payload = report.toJson();
+  final guidance = outputGuidance(
+    findRepoRoot(Directory.current),
+    payload,
+    goal: goal,
+    rerun: rerun,
+  );
+  if (includeGuidance) payload['guidance'] = guidance;
   if (asJson) {
-    final json = const JsonEncoder.withIndent('  ').convert(report.toJson());
+    final json = const JsonEncoder.withIndent('  ').convert(payload);
     stdout.writeln(json);
     return;
   }
 
+  if (includeGuidance) writeOutputGuidance(stdout, guidance);
   for (final r in report.skills) {
     final icon = r.isValid ? '✓' : '✗';
     stdout.writeln('$icon ${r.dirName}');
