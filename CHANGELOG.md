@@ -1,5 +1,15 @@
 # skill-steward
 
+## 0.7.0
+
+### Minor Changes
+
+- a15a8ce: Add `steward sync`: diff installed skill copies against the `skills.sh.json` marketplace manifest and prune skills this repository retired (report-only by default, `--prune` to delete, `--global` and repeatable `--path` to widen scope, `--json` for automation with exit 1 on drift). Steward-authored skills from other repos are reported as unrecognized and never pruned, and foreign skills sharing an install directory are untouched.
+
+### Patch Changes
+
+- 6e6d95f: Document how consumers remove installed skills that upstream deleted: `npx skills update` never prunes removed skills, so the updating-installed-skills guide now covers `npx skills remove`, direct removal from the universal store and symlinked or plain-copy agent directories, dangling-symlink checks, and the current six-skill guild surface.
+
 ## 0.6.0
 
 ### Minor Changes
