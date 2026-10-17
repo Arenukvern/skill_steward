@@ -55,6 +55,7 @@ Command stability tiers:
 | `steward adopt --with-harness` | Create baseline files plus a quick-safe action and probe; add a contract smoke scenario when durable git source facts exist |
 | `steward install` | Apply repo-local `skills.json` registrations into agent-readable folders |
 | `steward update` | Refresh pinned repo-local skill registrations and update `skills.json` commits |
+| `steward sync` | Diff installed skill copies against `skills.sh.json` and prune retired steward skills (`--prune` to delete, `--global`/`--path` to widen scope) |
 
 Cold-start proof starts with the claim question: what can this repo honestly claim right now? The loop assumes the `steward` command is installed or activated; see [Portable invocation hierarchy](#portable-invocation-hierarchy) for the supported paths.
 

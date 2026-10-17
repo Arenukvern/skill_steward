@@ -26,6 +26,7 @@ import 'commands/observe_command.dart';
 import 'commands/probe_command.dart';
 import 'commands/protocol_command.dart';
 import 'commands/schema_command.dart';
+import 'commands/sync_command.dart';
 import 'commands/uninstall_command.dart';
 import 'commands/unknown_case_command.dart';
 import 'commands/update_command.dart';
@@ -72,7 +73,8 @@ class StewardCli {
           ..addCommand(MapCommand())
           ..addCommand(BrandCheckCommand())
           ..addCommand(McpCommand())
-          ..addCommand(BundleCommand());
+          ..addCommand(BundleCommand())
+          ..addCommand(SyncCommand());
   }
   late final CommandRunner<void> _runner;
 

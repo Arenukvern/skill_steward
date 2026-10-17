@@ -427,7 +427,17 @@ npx skills add <skill-steward-checkout> -g -y
 
 ### Removing skills that upstream deleted
 
-`npx skills update` refreshes living skills; it never deletes an installed skill that upstream removed (for example the 0.6.0 hard cut that deleted nine superseded directories). Remove those by name:
+`npx skills update` refreshes living skills; it never deletes an installed skill that upstream removed (for example the 0.6.0 hard cut that deleted nine superseded directories). The one-command path is the Steward CLI (from a repo clone or a released binary):
+
+```bash
+# Report stale steward-owned skills in project + explicit dirs (exit 1 when found)
+steward sync --path ~/.agents/skills
+
+# Include global agent dirs; delete what it found
+steward sync --global --prune
+```
+
+`steward sync` only prunes skills this repo actually shipped (retired names); steward-authored skills from other repos are reported as unrecognized and kept. Without the CLI, remove by name:
 
 ```bash
 # Works for installs the skills CLI tracks (recent installs)
