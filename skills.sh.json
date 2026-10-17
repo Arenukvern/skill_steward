@@ -1,19 +1,10 @@
 {
   "skills": [
-    "docs-refresh-lifecycle",
     "harness-engineering-lifecycle",
-    "mcp-harness-repo-maintainer",
-    "mixture-of-experts",
     "multi-agent-handoff",
-    "plugin-marketplace-setup",
     "release-changelog-harness",
     "repo-quality-system-lifecycle",
     "repository-governance-lifecycle",
-    "skill-authoring-lifecycle",
-    "skill-eval-improve",
-    "skill-source-citations",
-    "steward-continuity-boundary-lifecycle",
-    "storytelling-ethics-lifecycle",
-    "vision-alignment-foresight"
+    "skill-authoring-lifecycle"
   ]
 }

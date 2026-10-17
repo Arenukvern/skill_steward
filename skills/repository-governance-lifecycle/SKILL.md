@@ -35,9 +35,9 @@ Ordinary work uses one procedure: [work discipline](../../docs/core/work-discipl
 
 These skills are superseded. Do not load them for new work.
 
-- **Mixture of Experts** — ADR-level `amends` / `conflicts` only. Define Expert Personas, keep an Integration contract, and label a missing_lens. Include a Generational Architecture Skeptic and Evidence / Validation QA when the change claims architecture or proof. Not a preflight for ordinary fixes. History: [mixture-of-experts/references](../mixture-of-experts/references).
-- **Vision alignment** — when the direction itself is uncertain, name the falsifier before writing another plan. History: [vision-alignment-foresight/references](../vision-alignment-foresight/references).
-- **Continuity boundaries** — status claims still need a mode, a handoff, and non-claims. A handoff does not create an owner. History: [steward-continuity-boundary-lifecycle/references](../steward-continuity-boundary-lifecycle/references).
+- **Mixture of Experts** — ADR-level `amends` / `conflicts` only. Define Expert Personas, keep an Integration contract, and label a missing_lens. Include a Generational Architecture Skeptic and Evidence / Validation QA when the change claims architecture or proof. Not a preflight for ordinary fixes.
+- **Vision alignment** — when the direction itself is uncertain, name the falsifier before writing another plan.
+- **Continuity boundaries** — status claims still need a mode, a handoff, and non-claims. A handoff does not create an owner.
 - **Docs refresh and public stories** — compress the living doc or disclose generated story material inside this loop. Do not open a parallel docs or storytelling queue.
 
 ## The Governance Loop

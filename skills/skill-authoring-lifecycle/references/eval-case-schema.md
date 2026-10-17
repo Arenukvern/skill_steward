@@ -55,6 +55,6 @@ This is **not** production agent routing. Pair with `references/evals.md` for re
 
 ## Offline only (not in YAML)
 
-- LLM judge + rubric ([Chrome eval design](chrome-eval-design.md))
-- Held-out prompt pass rate ([evals-template.md](evals-template.md))
+- LLM judge + rubric
+- Held-out prompt pass rate
 - Codex `plugin-eval benchmark`

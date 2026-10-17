@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:test/test.dart';
 
-import '../../../skills/skill-eval-improve/scripts/compare_dogfood.dart';
+import '../../../skills/skill-authoring-lifecycle/scripts/compare_dogfood.dart';
 
 Map<String, dynamic> sample() => {
   'format': 'steward-paired-dogfood/v1',
@@ -142,7 +142,7 @@ void main() {
     final file = File('${directory.path}/invalid.json')
       ..writeAsStringSync('{}');
     final result = await Process.run(Platform.resolvedExecutable, [
-      '../../skills/skill-eval-improve/scripts/compare_dogfood.dart',
+      '../../skills/skill-authoring-lifecycle/scripts/compare_dogfood.dart',
       file.path,
     ]);
     expect(result.exitCode, 2);

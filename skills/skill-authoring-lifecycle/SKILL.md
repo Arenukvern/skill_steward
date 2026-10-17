@@ -16,7 +16,7 @@ paths:
 
 Add, review, and validate an installable skill package under `skills/` in the Skill Steward marketplace.
 
-Follow [work discipline](../../docs/core/work-discipline.mdx). `skill-eval-improve` and `skill-source-citations` are superseded by this skill. Evals are the cheapest check you will rerun (`pnpm run validate`, then `pnpm run eval` when routing behavior changed). Do not grow cases the edit will not run. Cite sources in `references/sources.md`. Two failed edits of the same skill with no new evidence means rewrite, compress, or delete it.
+Follow [work discipline](../../docs/core/work-discipline.mdx). The former `skill-eval-improve` and `skill-source-citations` skills were removed in 0.6.0; this skill absorbs them. Evals are the cheapest check you will rerun (`pnpm run validate`, then `pnpm run eval` when routing behavior changed). Do not grow cases the edit will not run. Cite sources in `references/sources.md`. Two failed edits of the same skill with no new evidence means rewrite, compress, or delete it.
 
 ## When to use
 
@@ -144,4 +144,4 @@ npx skills add arenukvern/skill_steward --skill skill-authoring-lifecycle
 
 ## Sources
 
-See [references/sources.md](references/sources.md). When researching, follow `skill-source-citations`.
+See [references/sources.md](references/sources.md). When researching, follow `skill-authoring-lifecycle`.

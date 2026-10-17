@@ -9,7 +9,7 @@ Neither `skill/` nor `plugin/` is installable via `npx skills`. They exist only 
 | Directory | Purpose | Target Location | Used By |
 |-----------|---------|------------------|---------|
 | `skill/` | Template for new **skills** | `skills/{name}/` | `skill-authoring-lifecycle` skill, manual contribution |
-| `plugin/` | Template for new **plugins** (hooks, wiring) | `plugins/{id}/` | `plugin-marketplace-setup` skill, manual contribution |
+| `plugin/` | Template for new **plugins** (hooks, wiring) | `plugins/{id}/` | manual contribution |
 
 ## Why the separation?
 
@@ -43,7 +43,6 @@ cp -r templates/plugin plugins/my-plugin-id
 
 See:
 - [plugins/README.md](../plugins/README.md)
-- [skills/plugin-marketplace-setup/SKILL.md](../skills/plugin-marketplace-setup/SKILL.md)
 - [ADR 0004](../docs/decisions/0004-plugin-packaging-and-install-path.mdx)
 
 ## Governance

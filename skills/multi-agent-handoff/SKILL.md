@@ -198,4 +198,4 @@ npx skills add arenukvern/skill_steward --skill multi-agent-handoff
 
 ## Sources
 
-See [references/sources.md](references/sources.md). When researching, follow `skill-source-citations`.
+See [references/sources.md](references/sources.md). When researching, follow `skill-authoring-lifecycle`.

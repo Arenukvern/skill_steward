@@ -1,7 +1,7 @@
 /// Dart representation of a single eval case loaded from a YAML file.
 ///
 /// Mirrors the schema documented in:
-///   skills/skill-eval-improve/references/eval-case-schema.md
+///   skills/skill-authoring-lifecycle/references/eval-case-schema.md
 ///
 /// Supported rule kinds (matching eval-skill.mjs):
 ///   file_exists, description_includes_any, description_excludes_all,

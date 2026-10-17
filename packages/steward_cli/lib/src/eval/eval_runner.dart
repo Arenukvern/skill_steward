@@ -9,7 +9,7 @@
 ///
 /// See also:
 ///   - scripts/eval-tiers.mjs (now: eval_tiers.dart)
-///   - skills/skill-eval-improve/references/eval-case-schema.md
+///   - skills/skill-authoring-lifecycle/references/eval-case-schema.md
 ///   - docs/decisions/0011-tiered-skill-evals-and-rule-based-ci.md
 library;
 

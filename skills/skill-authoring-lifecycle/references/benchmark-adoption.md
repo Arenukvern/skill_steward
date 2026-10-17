@@ -164,7 +164,7 @@ is required to measure that.
 Guidance hypothesis for held-out review: grounded advice beside an existing blocked
 result reduces wrong-owner edits and repair attempts without lowering task
 completion or adding unnecessary artifacts. See the bounded
-`skills/mcp-harness-repo-maintainer/references/output-guidance.md` method and
+`skills/harness-engineering-lifecycle/references/output-guidance.md` method and
 `evals/output-guidance-pilot/` exposed development comparison. Keep its three
 advice arms separate from the skill/no-skill pilot. Neither establishes
 multilingual fidelity or an official benchmark rank.

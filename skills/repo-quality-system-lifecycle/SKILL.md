@@ -45,7 +45,7 @@ The standing procedure is [work discipline](../../docs/core/work-discipline.mdx)
 
 - Writing product/domain features directly; use the repo's native stack and product skills.
 - Creating or packaging an Agent Skill; use `skill-authoring-lifecycle`.
-- Maintaining a `steward.yaml` action contract, probes, benchmarks, or CLI/MCP parity after the baseline exists; use `mcp-harness-repo-maintainer`.
+- Maintaining a `steward.yaml` action contract, probes, benchmarks, or CLI/MCP parity after the baseline exists; use `harness-engineering-lifecycle`.
 - Generalizing a proven harness across producer/consumer repos; use `harness-engineering-lifecycle`.
 
 ## Workflow

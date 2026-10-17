@@ -22,7 +22,7 @@ cd "$ROOT"
 
 SOURCES="skills/${SKILL_DIR}/references/sources.md"
 if [[ ! -f "$SOURCES" ]]; then
-  echo "steward-validate-on-save: warn — missing ${SOURCES} (see skill-source-citations)" >&2
+  echo "steward-validate-on-save: warn — missing ${SOURCES} (see skill-authoring-lifecycle)" >&2
 fi
 
 if command -v dart >/dev/null 2>&1 && [[ -f packages/steward_cli/pubspec.yaml ]]; then

@@ -1,6 +1,6 @@
 ---
 name: harness-engineering-lifecycle
-description: Design, implement, and integrate generalized validation harnesses across a producer-consumer boundary after a local harness contract exists. Use when refactoring custom validation CLIs/MCPs for large polyrepos, extending Steward across sibling repos, or deploying a local tool to a consumer project for dogfooding and testing; use mcp-harness-repo-maintainer first for initial steward.yaml adoption and cold-start proof.
+description: Design, implement, and integrate generalized validation harnesses across a producer-consumer boundary after a local harness contract exists. Use when refactoring custom validation CLIs/MCPs for large polyrepos, extending Steward across sibling repos, or deploying a local tool to a consumer project for dogfooding and testing.
 license: MIT
 type: governance
 metadata:
@@ -13,7 +13,7 @@ metadata:
 
 Evolve a proven repo-local contract into a generalized harness, then dogfood it across a producer-consumer boundary. Follow [work discipline](../../docs/core/work-discipline.mdx).
 
-`mcp-harness-repo-maintainer` is superseded. Cold start and cross-repo generalization are one lifecycle: do not add typed actions, probes, or benchmarks until a local contract exists and the native gate is the thing you rerun. Historical cold-start notes stay in [mcp-harness-repo-maintainer/references](../mcp-harness-repo-maintainer/references). Green Steward artifacts are not a product use-path.
+The former `mcp-harness-repo-maintainer` skill was removed in 0.6.0. Cold start and cross-repo generalization are one lifecycle: do not add typed actions, probes, or benchmarks until a local contract exists and the native gate is the thing you rerun. Green Steward artifacts are not a product use-path.
 
 ## When to use
 
@@ -24,8 +24,8 @@ Evolve a proven repo-local contract into a generalized harness, then dogfood it 
 
 ## When not to use
 
-- Initial `steward.yaml` adoption or first quick probe in one repo — use `mcp-harness-repo-maintainer`.
-- Skill creation, registry updates, or marketplace packaging — use `skill-authoring-lifecycle` or `plugin-marketplace-setup`.
+- Initial `steward.yaml` adoption or first quick probe in one repo — start here; cold start is part of this lifecycle.
+- Skill creation, registry updates, or marketplace packaging — use `skill-authoring-lifecycle`.
 - Product-specific diagnostics before a cold-start contract exists — first add a bounded action, probe, and scenario in the target repo.
 
 ## Part 1: The Cascading Agent Surface (Architecture & Generalization)

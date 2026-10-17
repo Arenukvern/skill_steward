@@ -66,7 +66,7 @@ claims. Do not add an HTTP wrapper just to obtain a score from an HTTP-oriented
 suite; select a compatible test route or report the transport coverage gap.
 
 See [paired dogfood](paired-dogfood.md) for the operational loop and
-[tool assurance](https://github.com/arenukvern/skill_steward/blob/main/skills/mcp-harness-repo-maintainer/references/tool-assurance.md)
+tool assurance
 for local MCP/CLI checks. These remain separate proof dimensions.
 
 For implementation order, bounded cohorts and scoreboard fields, use

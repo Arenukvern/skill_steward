@@ -39,16 +39,16 @@ skill-name/
 
 ### Citations (skill_steward)
 
-Every skill must include **`references/sources.md`** listing URLs for specs, papers, and reference repos used. Update when research changes. Skill: `skill-source-citations`.
+Every skill must include **`references/sources.md`** listing URLs for specs, papers, and reference repos used. Update when research changes. Skill: `skill-authoring-lifecycle`.
 
 ### T-named skill quality gates ([ADR 0011](decisions/0011-tiered-skill-evals-and-rule-based-ci), [ADR 0027](decisions/0027-t-named-skill-quality-gates))
 
 | Tier | Skills | Required |
 |------|--------|----------|
-| **T1 — Behavior-critical eval-gated** | `harness-engineering-lifecycle`, `mcp-harness-repo-maintainer`, `mixture-of-experts`, `multi-agent-handoff`, `plugin-marketplace-setup`, `repo-quality-system-lifecycle`, `repository-governance-lifecycle`, `skill-authoring-lifecycle`, `skill-eval-improve`, `steward-continuity-boundary-lifecycle`, `vision-alignment-foresight` | `references/evals.md` + ≥2 files in `evals/cases/*.yaml`; `pnpm run eval` passes |
+| **T1 — Behavior-critical eval-gated** | `harness-engineering-lifecycle`, `multi-agent-handoff`, `repo-quality-system-lifecycle`, `repository-governance-lifecycle`, `skill-authoring-lifecycle` | `references/evals.md` + ≥2 files in `evals/cases/*.yaml`; `pnpm run eval` passes |
 | **T2 — Structural validate-only** | All other skills under `skills/` | `pnpm run validate`; optional `evals.md` when behavior-critical |
 
-Case schema: [eval-case-schema.md](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-eval-improve/references/eval-case-schema.md). Skill: `skill-eval-improve`.
+Case schema: [eval-case-schema.md](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-authoring-lifecycle/references/eval-case-schema.md). Skill: `skill-authoring-lifecycle`.
 
 ## SKILL.md
 

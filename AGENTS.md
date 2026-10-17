@@ -51,7 +51,7 @@ Standing procedure: [docs/core/work-discipline.mdx](docs/core/work-discipline.md
 | `harness-engineering-lifecycle` | Local contract through cross-repo harness proof |
 | `release-changelog-harness` | Release, changelog, and marketplace install |
 
-Other skill directories are superseded redirects. Do not start new work from them.
+Superseded skill directories were removed in 0.6.0; the six guild skills above are the entire `skills/` surface.
 
 ## Add or change a skill (checklist)
 

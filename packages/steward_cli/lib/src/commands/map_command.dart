@@ -303,26 +303,12 @@ class MapCommand extends Command<void> {
             'Creates and audits installable SKILL.md packages while keeping skill boundaries small and discoverable.',
       });
     }
-    if (!installedNames.contains('skill-source-citations')) {
-      recs.add({
-        'name': 'skill-source-citations',
-        'why':
-            'Persists source links and provenance so skill knowledge survives beyond one agent session.',
-      });
-    }
-    if (installableSkills && !installedNames.contains('skill-eval-improve')) {
-      recs.add({
-        'name': 'skill-eval-improve',
-        'why':
-            'Adds T1 behavior-critical rule-based evals, prompt suites, and bounded improvement loops.',
-      });
-    }
-    if (!installedNames.contains('mcp-harness-repo-maintainer')) {
+    if (!installedNames.contains('harness-engineering-lifecycle')) {
       final harnessWhy =
           (archetype == 'plugin' || archetype == 'meta_governance')
           ? 'Tailored for agent-facing repositories that need typed contracts, bounded tools, and validation surfaces.'
           : 'Teaches CLI/MCP/core parity, mechanical gates, and local harness contracts without moving product runtime logic into Skill Steward.';
-      recs.add({'name': 'mcp-harness-repo-maintainer', 'why': harnessWhy});
+      recs.add({'name': 'harness-engineering-lifecycle', 'why': harnessWhy});
     }
 
     if (recs.isNotEmpty) {

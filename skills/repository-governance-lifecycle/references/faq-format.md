@@ -158,4 +158,4 @@ Repo-wide navigation and SSOT rules live in [repository-governance-lifecycle](..
 
 ## Sources
 
-See [sources.md](sources.md). When researching, follow `skill-source-citations`.
+See [sources.md](sources.md). When researching, follow `skill-authoring-lifecycle`.

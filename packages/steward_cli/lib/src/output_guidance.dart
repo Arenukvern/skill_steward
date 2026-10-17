@@ -126,9 +126,9 @@ Map<String, dynamic> outputGuidance(
           ? <String>[]
           : [
               'docs/DX_FAQ.mdx',
-              'skills/mcp-harness-repo-maintainer/references/output-guidance.md',
+              'skills/harness-engineering-lifecycle/references/output-guidance.md',
               if (normalized == 'skipped')
-                'skills/skill-eval-improve/references/paired-dogfood.md',
+                'skills/skill-authoring-lifecycle/references/paired-dogfood.md',
             ]) {
     try {
       if (File(resolveUnderRoot(root, relative)).existsSync()) {

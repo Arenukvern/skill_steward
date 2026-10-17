@@ -69,7 +69,7 @@ Run this spine **before** a multi-file feature, new integration, or repo reshape
 1. North Star — still in scope? (own / do-not-own)
 2. repository-governance-lifecycle — any trigger T1–T8? → decision brief or proposed ADR
 3. repo-quality-system-lifecycle — repo archetype, native gate, evidence path?
-4. mcp-harness-repo-maintainer — typed actions, CLI/MCP, benchmark proof needed?
+4. harness-engineering-lifecycle — typed actions, CLI/MCP, benchmark proof needed?
 4. Implement — only after checkpoint answered or waived by user
 5. Close — extract to ADR/FAQ/code; delete plan scratch
 ```
@@ -132,7 +132,7 @@ If missing or incorrect, add:
 | Tool | Scope |
 |------|--------|
 | **repository-governance-lifecycle** (this skill) | Repo-wide lattice, ADRs, charters, FAQs, agent programs |
-| **skill-source-citations** | Source provenance for durable docs and skills |
+| **skill-authoring-lifecycle** | Skill authoring: structure, evals, and source provenance |
 
 Use both: lattice for navigation and decisions; FAQs for dense package knowledge.
 
@@ -150,4 +150,4 @@ npx skills add arenukvern/skill_steward --skill repository-governance-lifecycle
 
 ## Sources
 
-See [sources.md](sources.md). When researching, follow `skill-source-citations`.
+See [sources.md](sources.md). When researching, follow `skill-authoring-lifecycle`.

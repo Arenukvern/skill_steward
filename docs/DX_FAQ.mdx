@@ -47,7 +47,7 @@ INSTALL for users      → npx skills add arenukvern/skill_steward
 UPDATE installed       → this file (Updating installed skills)
 ANALYZE steward_cli    → pnpm run steward:analyze  (xsoulspace_lints; CI on PR)
 VALIDATE before PR     → pnpm run validate  (skill structure; CI also runs analyze/test/eval/list)
-CITE / EVAL SKILLS     → skill-source-citations, skill-eval-improve
+CITE / EVAL SKILLS     → skill-authoring-lifecycle (sources + eval cases)
 EVAL CI (T1 behavior-critical)       → pnpm run eval · evals/cases/*.yaml · ADR 0011
 STEWARD CLI              → ../packages/steward_cli/README.md  (ADR 0007)
 HONEST CLAIM ROUTING    → this file (Honest claim routing) · evidence/current-dogfood-status · evidence/archive/first-adopter-golden-path (reference)
@@ -127,15 +127,13 @@ Harness work is one part of engineering stewardship. Use the narrowest pillar th
 |--------|-----|-----------------|
 | Repo quality contracts | Type-native gates, evidence, action safety, maturity proof | `repo-quality-system-lifecycle`, repo-quality-contracts.mdx |
 | Governance | Charter, ADRs, FAQs, ethics, plan hygiene | `repository-governance-lifecycle` |
-| Knowledge | Source provenance, docs traceability, public-story disclosure | `skill-source-citations`, `storytelling-ethics-lifecycle` |
+| Knowledge | Source provenance, docs traceability, public-story disclosure | `skill-authoring-lifecycle` |
 | Skill lifecycle | Authoring and auditing installable skills | `skill-authoring-lifecycle` |
-| Quality gates | T1 behavior-critical static skill evals and bounded improvement loops | `skill-eval-improve`, `pnpm run eval` |
-| Local harness adoption | `steward.yaml`, typed actions, quick probes, benchmark smoke loops | `mcp-harness-repo-maintainer` |
-| Cross-repo harness engineering | Producer/consumer generalization and sibling dogfood | `harness-engineering-lifecycle` |
+| Quality gates | T1 behavior-critical static skill evals and bounded improvement loops | `skill-authoring-lifecycle`, `pnpm run eval` |
+| Harness engineering (local → cross-repo) | `steward.yaml`, typed actions, probes, benchmarks, cross-repo generalization | `harness-engineering-lifecycle` |
 | Release legibility | Changelog, versioning, release artifacts | `release-changelog-harness` |
-| Review and handoff | MoE critique and agent handoff | `mixture-of-experts`, `multi-agent-handoff` |
-| Strategic alignment | Vision vs implementation fit, usage evidence, future-fit analysis | `vision-alignment-foresight` |
-| Packaging | Agent-specific plugin and skill distribution | `plugin-marketplace-setup`, `steward bundle` |
+| Review and handoff | Agent handoff | `multi-agent-handoff` |
+| Packaging | Agent-specific plugin and skill distribution | `steward bundle` |
 
 ## 📦 Repo setup (maintainers)
 
@@ -155,7 +153,7 @@ pnpm run validate
 cd <workspace>/<cli_tool_repo>
 make agent-skills
 # or install from the cloned local copy while iterating before release:
-npx skills add <skill-steward-checkout> --skill mcp-harness-repo-maintainer -a cursor -y
+npx skills add <skill-steward-checkout> --skill harness-engineering-lifecycle -a cursor -y
 ```
 
 ### Honest claim routing
@@ -277,10 +275,8 @@ Claim checks are negative gates. They do not award a score, accept a claim, or p
 |-------|------|
 | `repository-governance-lifecycle` | Charter, AGENTS map, ADRs, FAQs, plan hygiene |
 | `repo-quality-system-lifecycle` | General stewardship baseline, repo archetype, native gates, evidence path |
-| `mcp-harness-repo-maintainer` | Local harness contract adoption and first proof loop |
 | `harness-engineering-lifecycle` | Cross-repo generalization after the local contract exists |
 | `skill-authoring-lifecycle` | Author and audit `skills/` |
-| `plugin-marketplace-setup` | Skill/plugin distribution across Cursor, Claude Code, Codex, Zed, and Open Plugin |
 
 ### Local harness naming
 
@@ -474,13 +470,13 @@ Fix all `error:` lines before merge. Warnings (long SKILL.md, missing skills.sh 
 ### Measuring whether a skill, MCP tool, CLI or concept helps
 
 Use native tests and T1 static evals first. For agent usefulness, use the
-[paired dogfood procedure](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-eval-improve/references/paired-dogfood.md)
-and [October 2026 benchmark selection](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-eval-improve/references/evaluation-research-2026-10.md).
+[paired dogfood procedure](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-authoring-lifecycle/references/paired-dogfood.md)
+and [October 2026 benchmark selection](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-authoring-lifecycle/references/evaluation-research-2026-10.md).
 `steward benchmark` runs declared actions; it does not execute paired agents.
 
 ```bash
 # Portable offline summary; requires Dart, no model/provider calls.
-dart skills/skill-eval-improve/scripts/compare_dogfood.dart /path/to/paired-runs.json
+dart skills/skill-authoring-lifecycle/scripts/compare_dogfood.dart /path/to/paired-runs.json
 # Deterministic comparator controls, also included in the normal Dart test lane.
 cd packages/steward_cli && dart test test/paired_dogfood_test.dart
 ```
@@ -489,7 +485,7 @@ Inspect summary status, per-task regressions, incomplete runs and metric
 coverage. Exit 0 only means the input was valid and summarized. Safety
 regressions veto promotion; unknown measurements stay null. Keep external
 runner logs in their owner and link summaries from the existing adoption record.
-For tools, add [protocol, parity and actual-effect checks](https://github.com/arenukvern/skill_steward/blob/main/skills/mcp-harness-repo-maintainer/references/tool-assurance.md).
+For tools, add protocol, parity, and actual-effect checks.
 
 ### Validation matrix
 
@@ -589,10 +585,7 @@ Skip (maintainer only) → PR title contains [skip changeset]
 
 ```text
 Repo stewardship        → skill repo-quality-system-lifecycle
-Agent-first harness culture → skill mcp-harness-repo-maintainer
-OpenAI principles       → ../skills/mcp-harness-repo-maintainer/references/harness-principles.md
-CLI+MCP dual surface    → ../skills/mcp-harness-repo-maintainer/references/cli-mcp-pattern.md (product MCP / platform libs)
-Compose Skill Steward skills    → ../skills/mcp-harness-repo-maintainer/references/steward-composition.md
+Agent-first harness culture → skill harness-engineering-lifecycle
 ```
 
 Product example: `<cli_tool_repo> doctor`, `make check-contracts` — not shipped from Skill Steward.
@@ -604,7 +597,7 @@ Product example: `<cli_tool_repo> doctor`, `make check-contracts` — not shippe
 | Need | Skill / doc |
 |------|-------------|
 | Repo quality contract | `repo-quality-system-lifecycle` |
-| Harness / CLI / MCP culture | `mcp-harness-repo-maintainer` |
+| Harness / CLI / MCP culture | `harness-engineering-lifecycle` |
 | Release / changelog tooling | `release-changelog-harness` |
 | DESIGN + DX FAQ | `repository-governance-lifecycle` |
 | Repo lattice (router, SSOT) | `repository-governance-lifecycle` |
@@ -645,7 +638,7 @@ response does not qualify tool execution. The October 13
 and a bounded ZCode pair: no measured quality uplift, with one ZCode candidate
 timeout. Earlier setup failures remain separate.
 Keep per-client outcomes and benchmark dimensions separate using the
-[adoption and scoreboard guide](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-eval-improve/references/benchmark-adoption.md).
+[adoption and scoreboard guide](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-authoring-lifecycle/references/benchmark-adoption.md).
 
 ### How do I preserve check failures and identify skipped evals?
 

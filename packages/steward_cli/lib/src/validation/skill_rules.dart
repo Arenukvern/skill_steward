@@ -11,7 +11,7 @@ final RegExp _nameRegex = RegExp(r'^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$');
 ///
 /// References:
 /// - https://spdx.org/licenses/
-/// - skills/skill-source-citations/SKILL.md (citation + provenance requirements)
+/// - skills/skill-authoring-lifecycle/SKILL.md (citation + provenance requirements)
 /// - skills/repository-governance-lifecycle/references/charter-and-ethics.md
 ///   (Artisan Credit & Craftsmanship principle)
 const _knownSpdxIds = {
@@ -100,13 +100,13 @@ List<String> validateDescription(final String? description) {
 ///
 /// A missing `license` key is a **warning** (not an error) because many existing
 /// skills and early-stage contributions will lack it. The goal is to surface the
-/// gap so authors can add an SPDX identifier (see `skill-source-citations`).
+/// gap so authors can add an SPDX identifier (see `skill-authoring-lifecycle`).
 ///
 /// An unrecognized identifier produces a lighter advisory warning to guide
 /// authors toward canonical SPDX ids without blocking CI.
 ///
 /// References:
-/// - skills/skill-source-citations/SKILL.md
+/// - skills/skill-authoring-lifecycle/SKILL.md
 /// - skills/repository-governance-lifecycle/references/charter-and-ethics.md
 ///   (Artisan Credit & Craftsmanship)
 List<String> validateLicense(final String? license) {
@@ -116,7 +116,7 @@ List<String> validateLicense(final String? license) {
     warnings.add(
       'Missing frontmatter field: license — add an SPDX identifier '
       '(e.g. license: MIT) to honor Artisan Credit & Craftsmanship '
-      '(see skill-source-citations)',
+      '(see skill-authoring-lifecycle)',
     );
     return warnings;
   }
@@ -212,7 +212,7 @@ Future<({List<String> errors, List<String> warnings})> validateSkillStructure(
   final sourcesFile = File('$skillPath/references/sources.md');
   if (!sourcesFile.existsSync()) {
     warnings.add(
-      'Missing references/sources.md — add curated links (see skill-source-citations)',
+      'Missing references/sources.md — add curated links (see skill-authoring-lifecycle)',
     );
   }
 

@@ -39,19 +39,19 @@ A: Harnesses are only the executable feedback lane. Skill Steward also owns gove
 A: **Skills** are portable instructions (`SKILL.md`, `npx skills`). **Plugins** are wiring (editor hooks, install glue) that skills CLI does not handle automatically. See [ADR 0004](decisions/0004-plugin-packaging-and-install-path).
 
 **Q: How do public vs private marketplaces work across agents?**
-A: **Public skills:** public Git + `npx skills add` + skills.sh. **Public plugins:** Editor marketplace manifests (`.cursor-plugin/`, `.claude-plugin/`). **Private:** private Git with team install (editor team marketplaces, agent `/plugin` commands + tokens, same `npx skills` if clone access). Skill `plugin-marketplace-setup` has the full matrix.
+A: **Public skills:** public Git + `npx skills add` + skills.sh. **Public plugins:** Editor marketplace manifests (`.cursor-plugin/`, `.claude-plugin/`). **Private:** private Git with team install (editor team marketplaces, agent `/plugin` commands + tokens, same `npx skills` if clone access).
 
 **Q: How should sibling repos differ?**
-A: One primary archetype per repo: app, library, CLI/tool, plugin, harness/action contract, or meta/governance. Product-centric repos own their runtime and domain guidance; Skill Steward owns structural stewardship patterns, skills, specs, and quality contracts. Skill `mcp-harness-repo-maintainer` documents layout, contract gates, and production agent patterns.
+A: One primary archetype per repo: app, library, CLI/tool, plugin, harness/action contract, or meta/governance. Product-centric repos own their runtime and domain guidance; Skill Steward owns structural stewardship patterns, skills, specs, and quality contracts. Skill `harness-engineering-lifecycle` covers the local contract and cross-repo harness lifecycle.
 
 **Q: Why both CLI and agent-protocol in product harnesses?**
 A: They are **thin interfaces** to the same **core**—CLI for CI and scripts, agent-protocols for in-chat agents. Logic belongs in core packages (e.g. product packages or core libraries); adapters must not diverge. Repos without agent-protocols (CLI harnesses, visual sidecars) still use CLI → core only.
 
 **Q: Why require `references/sources.md` per skill?**
-A: Research and external knowledge must survive beyond one chat—links are provenance for humans and agents. Skill `skill-source-citations` defines the practice; `skill-eval-improve` adds eval/improve loops (plugin-eval, SkillOpt-style gates). Validator warns if `sources.md` is missing.
+A: Research and external knowledge must survive beyond one chat—links are provenance for humans and agents. Skill `skill-authoring-lifecycle` defines the practice and the eval/improve loop. Validator warns if `sources.md` is missing.
 
 **Q: Why is there a storytelling skill in a stewardship repo?**
-A: Public work often publishes not only code but ethics, decisions, and the path that produced them. That narrative is operational knowledge: it needs creation ethics (consent, no invented biography, no stolen voice), application ethics (no hype, no hiding generators, no test-as-triumph), and maintenance (walk claims, update the generated/curated ledger, stop the story becoming a second spec). Skill `storytelling-ethics-lifecycle` is abstract and domain-agnostic. It is not a fiction workshop and not an ADR replacement. [NORTH_STAR](NORTH_STAR) still refuses domain tutorial catalogs.
+A: Public work often publishes not only code but ethics, decisions, and the path that produced them. That narrative is operational knowledge: it needs creation ethics (consent, no invented biography, no stolen voice), application ethics (no hype, no hiding generators, no test-as-triumph), and maintenance (walk claims, update the generated/curated ledger, stop the story becoming a second spec). Story ethics guidance lives in `repository-governance-lifecycle` and is domain-agnostic. It is not a fiction workshop and not an ADR replacement. [NORTH_STAR](NORTH_STAR) still refuses domain tutorial catalogs.
 
 **Q: Why keep each skill small and focused?**
 A: Agents load name + description first; bloated skills waste context. One outcome per skill; depth in `references/` or separate skills.
@@ -60,7 +60,7 @@ A: Agents load name + description first; bloated skills waste context. One outco
 A: Generational architecture is the architecture-layer application of evolutionary simplicity: systems should evolve toward lower future confusion, not always fewer parts. Skill Steward should help maintainers notice when a repo has outgrown its current shape, choose the smallest next layer, and prove the change reduces future work. That can mean docs, API extraction, schema/codegen, harness proof, a skill update, or deletion/collapse. A standalone skill comes only after repeated Pattern Promotion Reviews show existing stewardship skills cannot cover the workflow. [Evolutionary simplicity](core/evolutionary-simplicity) · [Generational architecture ladder](core/generational-architecture-ladder) · [ADR 0019](decisions/0019-pattern-promotion-review-as-lens-and-proof-loop).
 
 **Q: Why distinguish steward personality from tool-mode?**
-A: Relational and governance work needs continuity, boundary awareness, ethical care, and accountable synthesis from steward presence. Deterministic generation, validation, and transformation should stay narrow tool-mode. The distinction keeps cascading delegation traceable: a steward may delegate to tools or sub-steward lenses, but remains visible and accountable in relational contexts. [ADR 0020](decisions/0020-ethical-boundaries-steward-personalities-and-tool-delegation) · skill `steward-continuity-boundary-lifecycle`.
+A: Relational and governance work needs continuity, boundary awareness, ethical care, and accountable synthesis from steward presence. Deterministic generation, validation, and transformation should stay narrow tool-mode. The distinction keeps cascading delegation traceable: a steward may delegate to tools or sub-steward lenses, but remains visible and accountable in relational contexts. [ADR 0020](decisions/0020-ethical-boundaries-steward-personalities-and-tool-delegation).
 
 **Q: When does a stewardship protocol earn steward status?**
 A: Only when repeated or held-out evidence shows continuity improves real repo work. Keep the vocabulary and non-claims in one place: [ADR 0021](decisions/0021-protocol-first-steward-status-gates) defines the gates, and [NORTH_STAR](NORTH_STAR#adoption-claim-vocabulary) defines adjacent adoption/maturity claims.
@@ -72,13 +72,13 @@ A: **Release legibility**—structured `.changeset/*.md` in PRs and `CHANGELOG.m
 A: **Zero-dependency consumer access.** While primary artifacts are portable skills, the `steward` CLI performs project-local installation and validation. Requiring Dart SDK for non-Dart teams was a high-friction barrier. Compiling native target-specific binaries (darwin-arm64, linux-x64) via GitHub Actions enables a fast, zero-dependency `install.sh` bootstrapper. [ADR 0014](decisions/0014-distribute-steward-cli-as-binary) (modifying [ADR 0010](decisions/0010-binary-releases-for-product-harness-not-meta-steward)).
 
 **Q: How are skills evaluated (Microsoft / Google / Codex style)?**
-A: **T-named quality gates:** T1 behavior-critical charter skills require `evals/cases/*.yaml` + `pnpm run eval` (rule-based, no LLM in CI). T2 structural skills require validation only unless real usage promotes them to T1. Behavioral suites and judges stay offline (`references/evals.md`, plugin-eval, SkillOpt loop). Design language from [Chrome evals](https://developer.chrome.com/docs/ai/evals/design). [ADR 0011](decisions/0011-tiered-skill-evals-and-rule-based-ci) · [ADR 0027](decisions/0027-t-named-skill-quality-gates) · skill `skill-eval-improve`.
+A: **T-named quality gates:** T1 behavior-critical charter skills require `evals/cases/*.yaml` + `pnpm run eval` (rule-based, no LLM in CI). T2 structural skills require validation only unless real usage promotes them to T1. Behavioral suites and judges stay offline (`references/evals.md`, plugin-eval, SkillOpt loop). Design language from [Chrome evals](https://developer.chrome.com/docs/ai/evals/design). [ADR 0011](decisions/0011-tiered-skill-evals-and-rule-based-ci) · [ADR 0027](decisions/0027-t-named-skill-quality-gates).
 
 **Q: Does an official benchmark prove a skill, tool or stewardship concept is good?**
-A: Only the measured claim under the recorded conditions. MCP conformance tests protocol behavior; local effect/permission tests cover tool boundaries; paired agent tasks measure usefulness. OWASP is risk guidance, not a pass certificate. Public benchmark methods can inform local tasks, but a modified suite must be labeled a derivative. Concepts such as evolutionary simplicity earn their place through better decisions and lower future rework, with an explicit counterexample or removal condition. Keep safety, correctness, purpose and cost separate. [Research and benchmark map](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-eval-improve/references/evaluation-research-2026-10.md).
+A: Only the measured claim under the recorded conditions. MCP conformance tests protocol behavior; local effect/permission tests cover tool boundaries; paired agent tasks measure usefulness. OWASP is risk guidance, not a pass certificate. Public benchmark methods can inform local tasks, but a modified suite must be labeled a derivative. Concepts such as evolutionary simplicity earn their place through better decisions and lower future rework, with an explicit counterexample or removal condition. Keep safety, correctness, purpose and cost separate. [Research and benchmark map](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-authoring-lifecycle/references/evaluation-research-2026-10.md).
 
 **Q: Where does GitHub profile / bio copy live?**
-A: **Not in this repo.** Public bio should point at the product harness and [skill_steward](https://github.com/Arenukvern/skill_steward) ([ADR 0008](decisions/0008-adopt-skill-steward-product-name)). Repo-shape audits use `repo-quality-system-lifecycle` plus `repository-governance-lifecycle`; use `mcp-harness-repo-maintainer` only when typed action contracts or harness proof are in scope.
+A: **Not in this repo.** Public bio should point at the product harness and [skill_steward](https://github.com/Arenukvern/skill_steward) ([ADR 0008](decisions/0008-adopt-skill-steward-product-name)). Repo-shape audits use `repo-quality-system-lifecycle` plus `repository-governance-lifecycle`; use `harness-engineering-lifecycle` when typed action contracts or harness proof are in scope.
 
 ## Documentation
 
@@ -139,7 +139,7 @@ expose uncertainty, name the same verification route, and finish or return to
 the original goal. Eligible actions and filename heuristics are not proof of
 relevance or semantic understanding. Keep deterministic facts separate from
 interpretive advice, and make deeper method/skill guidance optional. The
-[output-guidance method](https://github.com/arenukvern/skill_steward/blob/main/skills/mcp-harness-repo-maintainer/references/output-guidance.md)
+[output-guidance method](https://github.com/arenukvern/skill_steward/blob/main/skills/harness-engineering-lifecycle/references/output-guidance.md)
 describes the implemented advisory core and delivery boundaries.
 [ADR 0028](decisions/0028-grounded-output-guidance) records the decision.
 [Development comparison](evidence/archive/output-guidance-pilot-2026-10-13) keeps
@@ -153,7 +153,7 @@ simplicity and the generational architecture ladder: stay native first, promote
 only when needed, and demote or delete a layer that does not help. Routine work
 needs no maturity ceremony. Skills-only adoption is valid. Guidance is opt-in;
 permissions, session identity and scheduling remain host responsibilities. The
-[reuse method](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-eval-improve/references/paired-dogfood.md#ordinary-workflow-reuse)
+[reuse method](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-authoring-lifecycle/references/paired-dogfood.md#ordinary-workflow-reuse)
 includes human review and evaluation maintenance in the cost. The
 [current scoreboard](evidence/current-dogfood-status) owns current dispositions;
 dated experiments retain their original results. External benchmarks remain

@@ -114,7 +114,7 @@ checks the displayed revision; it does not certify agent behavior.
 
 CLI output is facts-only by default. Request `--guidance` for optional advice;
 MCP doctor uses `guidance: true`. Use a focused skill only when structural pain
-recurs. The next proof is [ordinary workflow reuse](skills/skill-eval-improve/references/paired-dogfood.md#ordinary-workflow-reuse),
+recurs. The next proof is [ordinary workflow reuse](skills/skill-authoring-lifecycle/references/paired-dogfood.md#ordinary-workflow-reuse),
 including human review and maintenance cost; broad benchmark integrations are deferred.
 
 The CI badge reports repository checks, not a safety seal. The pilot used
@@ -193,15 +193,13 @@ Meta, governance, and process capabilities only. Domain content belongs in the g
 | Pillar | Current surface |
 |--------|-----------------|
 | Governance | [repository-governance-lifecycle](skills/repository-governance-lifecycle/) |
-| Steward continuity | [steward-continuity-boundary-lifecycle](skills/steward-continuity-boundary-lifecycle/) |
-| Knowledge | [skill-source-citations](skills/skill-source-citations/), [storytelling-ethics-lifecycle](skills/storytelling-ethics-lifecycle/), ADR/FAQ/docs lattice |
+| Knowledge | [skill-authoring-lifecycle](skills/skill-authoring-lifecycle/) (source provenance), ADR/FAQ/docs lattice |
 | Repo quality contracts | [repo-quality-system-lifecycle](skills/repo-quality-system-lifecycle/), [docs/repo-quality-contracts.mdx](docs/repo-quality-contracts.mdx) |
-| Skill lifecycle | [skill-authoring-lifecycle](skills/skill-authoring-lifecycle/), [plugin-marketplace-setup](skills/plugin-marketplace-setup/) |
-| Quality gates | [skill-eval-improve](skills/skill-eval-improve/), `steward validate`, `steward eval` |
-| Harness engineering | [mcp-harness-repo-maintainer](skills/mcp-harness-repo-maintainer/), [harness-engineering-lifecycle](skills/harness-engineering-lifecycle/) |
+| Skill lifecycle | [skill-authoring-lifecycle](skills/skill-authoring-lifecycle/) |
+| Quality gates | `steward validate`, `steward eval` |
+| Harness engineering | [harness-engineering-lifecycle](skills/harness-engineering-lifecycle/) |
 | Release legibility | [release-changelog-harness](skills/release-changelog-harness/) |
-| Review and handoff | [mixture-of-experts](skills/mixture-of-experts/), [multi-agent-handoff](skills/multi-agent-handoff/) |
-| Strategic alignment | [vision-alignment-foresight](skills/vision-alignment-foresight/) |
+| Review and handoff | [multi-agent-handoff](skills/multi-agent-handoff/) |
 | Security posture | Developing through action effects, redaction, provenance, and risk classes in repo-quality contracts. |
 | Org patterns | Developing through repo archetypes, ownership, and routing guidance. |
 
@@ -213,17 +211,9 @@ Start with [`repo-quality-system-lifecycle`](skills/repo-quality-system-lifecycl
 |-------|----------|
 | [repo-quality-system-lifecycle](skills/repo-quality-system-lifecycle/) | Establish or audit a structural quality contract for any agent-operated app, library, tool, plugin, harness, or meta repo. |
 | [repository-governance-lifecycle](skills/repository-governance-lifecycle/) | Govern architectural decisions, ADRs, FAQs, ethics, brand tone, and plan hygiene. |
-| [steward-continuity-boundary-lifecycle](skills/steward-continuity-boundary-lifecycle/) | Maintain stewardship protocol mode boundaries, self-model update decisions, delegation hygiene, and handoff-safe continuity without overclaiming steward personality. |
-| [vision-alignment-foresight](skills/vision-alignment-foresight/) | Test repo/product/skill vision against implementation reality, user intent, evidence, and future direction. |
-| [mcp-harness-repo-maintainer](skills/mcp-harness-repo-maintainer/) | Adopt or maintain repo-local action contracts, `steward.yaml`, probes, benchmarks, and CLI/MCP/core parity. |
 | [harness-engineering-lifecycle](skills/harness-engineering-lifecycle/) | Generalize a proven local harness across producer/consumer repos and dogfood it safely. |
 | [skill-authoring-lifecycle](skills/skill-authoring-lifecycle/) | Scaffold and review Agent Skills with valid `SKILL.md`, sources, evals, and registry entries. |
-| [skill-source-citations](skills/skill-source-citations/) | Maintain durable citations in `references/sources.md` when authoring skills. |
-| [storytelling-ethics-lifecycle](skills/storytelling-ethics-lifecycle/) | Steward public stories of any work: creation ethics, application ethics, and generated/curated/authored disclosure. |
-| [skill-eval-improve](skills/skill-eval-improve/) | Improve Agent Skills through validate, rule-based eval cases, plugin-eval, prompt suites, and bounded edits. |
-| [plugin-marketplace-setup](skills/plugin-marketplace-setup/) | Design public/private skill and plugin distribution across supported agents and marketplaces. |
 | [release-changelog-harness](skills/release-changelog-harness/) | Maintain release legibility, changelog intent, versioning, and binary distribution. |
-| [mixture-of-experts](skills/mixture-of-experts/) | Run multi-lens critique to detect drift, overlap, and missing checks. |
 | [multi-agent-handoff](skills/multi-agent-handoff/) | Transfer context between specialized agents without losing ownership or evidence. |
 
 ## Standards and specs

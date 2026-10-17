@@ -30,7 +30,7 @@ Describe how to format the final response.
 
 ## Sources
 
-Maintain [references/sources.md](references/sources.md). Follow [skill-source-citations](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-source-citations/SKILL.md).
+Maintain [references/sources.md](references/sources.md). Follow [skill-authoring-lifecycle](https://github.com/arenukvern/skill_steward/blob/main/skills/skill-authoring-lifecycle/SKILL.md).
 
 ## Install
 

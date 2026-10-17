@@ -10,7 +10,7 @@
 
 | ID | User prompt | Pass criteria |
 |----|-------------|---------------|
-| N1 | Add a first quick-safe action to a single project | Routes to `mcp-harness-repo-maintainer` instead. |
+| N1 | Add a first quick-safe action to a single project | Routes to `harness-engineering-lifecycle` instead. |
 
 ## Held-out
 

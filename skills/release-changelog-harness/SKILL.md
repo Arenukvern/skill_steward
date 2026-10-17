@@ -22,7 +22,7 @@ paths:
 
 Make **releases understandable**: every version bump has structured intent that agents and humans can read in git—not only in a maintainer’s head or a GitHub Releases textarea.
 
-This skill is **meta harness culture** (which tool, which gates, which docs). It is **not** a full tutorial for every package manager. Follow [work discipline](../../docs/core/work-discipline.mdx). `plugin-marketplace-setup` is superseded; marketplace install notes stay in that directory's `references/` and do not get a new queue.
+This skill is **meta harness culture** (which tool, which gates, which docs). It is **not** a full tutorial for every package manager. Follow [work discipline](../../docs/core/work-discipline.mdx). The former `plugin-marketplace-setup` skill was removed in 0.6.0.
 
 ## Mixture of experts — critique your idea
 
@@ -182,9 +182,7 @@ If the tag is pushed with `GITHUB_TOKEN`, do not depend on a separate `on: push:
 | Skill | Use for |
 |-------|---------|
 | `repo-quality-system-lifecycle` | Repo archetype, mechanical gates, evidence path |
-| `mcp-harness-repo-maintainer` | Typed actions, probes, benchmarks, CLI/MCP parity |
 | `repository-governance-lifecycle` | ADRs, DESIGN_FAQ/DX_FAQ updates, and plan hygiene |
-| `skill-source-citations` | Durable release-tooling sources |
 
 ## Install
 

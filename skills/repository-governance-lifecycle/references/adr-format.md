@@ -47,7 +47,7 @@ When triggers fire, **stop and ask**—do not implement the most convenient opti
 
 **Output:** a short decision brief in chat/PR, or an ADR with `status: proposed`. A useful brief names the trigger, options, recommendation, known risk, validation route, and what would make the decision reversible.
 
-Combine the ADR checkpoint with this skill's North Star rules and `repo-quality-system-lifecycle` before large edits; add `mcp-harness-repo-maintainer` only for action-contract or harness changes.
+Combine the ADR checkpoint with this skill's North Star rules and `repo-quality-system-lifecycle` before large edits; add `harness-engineering-lifecycle` only for action-contract or harness changes.
 
 ## Locate or bootstrap the decision log
 
@@ -166,4 +166,4 @@ npx skills add arenukvern/skill_steward --skill repository-governance-lifecycle
 
 ## Sources
 
-See [sources.md](sources.md). When researching, follow `skill-source-citations`.
+See [sources.md](sources.md). When researching, follow `skill-authoring-lifecycle`.
