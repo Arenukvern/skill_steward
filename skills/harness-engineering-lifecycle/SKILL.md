@@ -1,11 +1,14 @@
 ---
 name: harness-engineering-lifecycle
-description: Design, implement, and integrate generalized validation harnesses across a producer-consumer boundary after a local harness contract exists. Use when refactoring custom validation CLIs/MCPs for large polyrepos, extending Steward across sibling repos, or deploying a local tool to a consumer project for dogfooding and testing.
+description: >-
+  After a local harness contract exists, design and integrate generalized validation harnesses across a producer-consumer boundary.
+  Use when refactoring validation CLIs/MCPs for polyrepos, extending Steward across sibling repos, or dogfooding a local tool in a consumer project.
+  Not for cold-start adoption in a single repo — use repo-quality-system-lifecycle.
 license: MIT
 type: governance
 metadata:
   author: skill-steward
-  version: "1.1.0"
+  version: "1.1.1"
   category: harness
 ---
 
@@ -13,7 +16,7 @@ metadata:
 
 Evolve a proven repo-local contract into a generalized harness, then dogfood it across a producer-consumer boundary. Follow [work discipline](../../docs/core/work-discipline.mdx).
 
-The former `mcp-harness-repo-maintainer` skill was removed in 0.6.0. Cold start and cross-repo generalization are one lifecycle: do not add typed actions, probes, or benchmarks until a local contract exists and the native gate is the thing you rerun. Green Steward artifacts are not a product use-path.
+The former `mcp-harness-repo-maintainer` skill was removed in 0.6.0. **Cold start** (`steward.yaml` adoption, first quick probe in one repo) belongs to `repo-quality-system-lifecycle`. **This skill** starts only after a local harness contract exists: do not add typed actions, probes, or benchmarks before that baseline, and keep the native gate as the thing you rerun. Green Steward artifacts are not a product use-path.
 
 ## When to use
 
@@ -24,7 +27,7 @@ The former `mcp-harness-repo-maintainer` skill was removed in 0.6.0. Cold start 
 
 ## When not to use
 
-- Initial `steward.yaml` adoption or first quick probe in one repo — start here; cold start is part of this lifecycle.
+- Cold start in one repo — use `repo-quality-system-lifecycle` only (see catalog).
 - Skill creation, registry updates, or marketplace packaging — use `skill-authoring-lifecycle`.
 - Product-specific diagnostics before a cold-start contract exists — first add a bounded action, probe, and scenario in the target repo.
 

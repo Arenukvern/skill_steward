@@ -1,0 +1,498 @@
+{
+  "method": "description_token_overlap_v1",
+  "non_claim": "Not live agent sessions; deterministic weak router only.",
+  "git_ref": "a15a8ceb89fc9e65e3510a2e083fa90bd8a390c4",
+  "signals": {
+    "routing_accuracy": {
+      "prompts_pass": 14,
+      "prompts_total": 21,
+      "prompts_rate": 0.6666666666666666,
+      "scenarios_pass": 3,
+      "scenarios_total": 6,
+      "scenarios_rate": 0.5,
+      "combined_pass": 17,
+      "combined_total": 27,
+      "combined_rate": 0.6296296296296297
+    },
+    "must_not_primary": {
+      "pass": 3,
+      "total": 4,
+      "rate": 0.75
+    },
+    "missed_blockers": "not_measured",
+    "context_kb_before_acting": "not_measured",
+    "loops_past_two": "not_measured"
+  },
+  "routing_prompts": [
+    {
+      "id": "adopt-fresh-repo",
+      "expected_skill": "repo-quality-system-lifecycle",
+      "predicted_skill": "repo-quality-system-lifecycle",
+      "top_scores": [
+        {
+          "skill": "repo-quality-system-lifecycle",
+          "score": 14
+        },
+        {
+          "skill": "harness-engineering-lifecycle",
+          "score": 9
+        },
+        {
+          "skill": "repository-governance-lifecycle",
+          "score": 4
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "audit-contract-gaps",
+      "expected_skill": "repo-quality-system-lifecycle",
+      "predicted_skill": "repo-quality-system-lifecycle",
+      "top_scores": [
+        {
+          "skill": "repo-quality-system-lifecycle",
+          "score": 19
+        },
+        {
+          "skill": "repository-governance-lifecycle",
+          "score": 6
+        },
+        {
+          "skill": "multi-agent-handoff",
+          "score": 5
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "ecology-compress-docs",
+      "expected_skill": "repo-quality-system-lifecycle",
+      "predicted_skill": "repo-quality-system-lifecycle",
+      "top_scores": [
+        {
+          "skill": "repo-quality-system-lifecycle",
+          "score": 13
+        },
+        {
+          "skill": "repository-governance-lifecycle",
+          "score": 8
+        },
+        {
+          "skill": "harness-engineering-lifecycle",
+          "score": 1
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "claim-audit-platform",
+      "expected_skill": "repo-quality-system-lifecycle",
+      "predicted_skill": "repo-quality-system-lifecycle",
+      "top_scores": [
+        {
+          "skill": "repo-quality-system-lifecycle",
+          "score": 18
+        },
+        {
+          "skill": "repository-governance-lifecycle",
+          "score": 4
+        },
+        {
+          "skill": "skill-authoring-lifecycle",
+          "score": 2
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "multi-repo-publish-order",
+      "expected_skill": "repo-quality-system-lifecycle",
+      "predicted_skill": "repo-quality-system-lifecycle",
+      "top_scores": [
+        {
+          "skill": "repo-quality-system-lifecycle",
+          "score": 12
+        },
+        {
+          "skill": "harness-engineering-lifecycle",
+          "score": 5
+        },
+        {
+          "skill": "repository-governance-lifecycle",
+          "score": 2
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "write-adr",
+      "expected_skill": "repository-governance-lifecycle",
+      "predicted_skill": "repo-quality-system-lifecycle",
+      "top_scores": [
+        {
+          "skill": "repo-quality-system-lifecycle",
+          "score": 3
+        },
+        {
+          "skill": "harness-engineering-lifecycle",
+          "score": 3
+        },
+        {
+          "skill": "multi-agent-handoff",
+          "score": 1
+        }
+      ],
+      "pass": false
+    },
+    {
+      "id": "update-design-faq",
+      "expected_skill": "repository-governance-lifecycle",
+      "predicted_skill": "release-changelog-harness",
+      "top_scores": [
+        {
+          "skill": "release-changelog-harness",
+          "score": 5
+        },
+        {
+          "skill": "skill-authoring-lifecycle",
+          "score": 3
+        },
+        {
+          "skill": "repo-quality-system-lifecycle",
+          "score": 1
+        }
+      ],
+      "pass": false
+    },
+    {
+      "id": "north-star-impact",
+      "expected_skill": "repository-governance-lifecycle",
+      "predicted_skill": "repo-quality-system-lifecycle",
+      "top_scores": [
+        {
+          "skill": "repo-quality-system-lifecycle",
+          "score": 9
+        },
+        {
+          "skill": "skill-authoring-lifecycle",
+          "score": 7
+        },
+        {
+          "skill": "multi-agent-handoff",
+          "score": 4
+        }
+      ],
+      "pass": false
+    },
+    {
+      "id": "moe-adr-conflict",
+      "expected_skill": "repository-governance-lifecycle",
+      "predicted_skill": "repo-quality-system-lifecycle",
+      "top_scores": [
+        {
+          "skill": "repo-quality-system-lifecycle",
+          "score": 3
+        },
+        {
+          "skill": "harness-engineering-lifecycle",
+          "score": 3
+        },
+        {
+          "skill": "repository-governance-lifecycle",
+          "score": 2
+        }
+      ],
+      "pass": false
+    },
+    {
+      "id": "plan-hygiene-delete",
+      "expected_skill": "repository-governance-lifecycle",
+      "predicted_skill": "repo-quality-system-lifecycle",
+      "top_scores": [
+        {
+          "skill": "repo-quality-system-lifecycle",
+          "score": 2
+        },
+        {
+          "skill": "release-changelog-harness",
+          "score": 2
+        },
+        {
+          "skill": "repository-governance-lifecycle",
+          "score": 0
+        }
+      ],
+      "pass": false
+    },
+    {
+      "id": "handoff-single-obligation",
+      "expected_skill": "multi-agent-handoff",
+      "predicted_skill": "multi-agent-handoff",
+      "top_scores": [
+        {
+          "skill": "multi-agent-handoff",
+          "score": 9
+        },
+        {
+          "skill": "repo-quality-system-lifecycle",
+          "score": 4
+        },
+        {
+          "skill": "skill-authoring-lifecycle",
+          "score": 2
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "parallel-batch-contract",
+      "expected_skill": "multi-agent-handoff",
+      "predicted_skill": "multi-agent-handoff",
+      "top_scores": [
+        {
+          "skill": "multi-agent-handoff",
+          "score": 15
+        },
+        {
+          "skill": "repo-quality-system-lifecycle",
+          "score": 3
+        },
+        {
+          "skill": "harness-engineering-lifecycle",
+          "score": 2
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "new-marketplace-skill",
+      "expected_skill": "skill-authoring-lifecycle",
+      "predicted_skill": "skill-authoring-lifecycle",
+      "top_scores": [
+        {
+          "skill": "skill-authoring-lifecycle",
+          "score": 12
+        },
+        {
+          "skill": "release-changelog-harness",
+          "score": 6
+        },
+        {
+          "skill": "repo-quality-system-lifecycle",
+          "score": 5
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "skill-eval-case",
+      "expected_skill": "skill-authoring-lifecycle",
+      "predicted_skill": "repo-quality-system-lifecycle",
+      "top_scores": [
+        {
+          "skill": "repo-quality-system-lifecycle",
+          "score": 4
+        },
+        {
+          "skill": "skill-authoring-lifecycle",
+          "score": 3
+        },
+        {
+          "skill": "release-changelog-harness",
+          "score": 3
+        }
+      ],
+      "pass": false
+    },
+    {
+      "id": "changesets-release",
+      "expected_skill": "release-changelog-harness",
+      "predicted_skill": "release-changelog-harness",
+      "top_scores": [
+        {
+          "skill": "release-changelog-harness",
+          "score": 12
+        },
+        {
+          "skill": "repo-quality-system-lifecycle",
+          "score": 0
+        },
+        {
+          "skill": "repository-governance-lifecycle",
+          "score": 0
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "install-sh-binary",
+      "expected_skill": "release-changelog-harness",
+      "predicted_skill": "release-changelog-harness",
+      "top_scores": [
+        {
+          "skill": "release-changelog-harness",
+          "score": 11
+        },
+        {
+          "skill": "repo-quality-system-lifecycle",
+          "score": 1
+        },
+        {
+          "skill": "repository-governance-lifecycle",
+          "score": 0
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "cross-repo-dogfood",
+      "expected_skill": "harness-engineering-lifecycle",
+      "predicted_skill": "harness-engineering-lifecycle",
+      "top_scores": [
+        {
+          "skill": "harness-engineering-lifecycle",
+          "score": 19
+        },
+        {
+          "skill": "repo-quality-system-lifecycle",
+          "score": 11
+        },
+        {
+          "skill": "repository-governance-lifecycle",
+          "score": 2
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "polyrepo-harness-generalize",
+      "expected_skill": "harness-engineering-lifecycle",
+      "predicted_skill": "harness-engineering-lifecycle",
+      "top_scores": [
+        {
+          "skill": "harness-engineering-lifecycle",
+          "score": 11
+        },
+        {
+          "skill": "repo-quality-system-lifecycle",
+          "score": 1
+        },
+        {
+          "skill": "multi-agent-handoff",
+          "score": 1
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "maintain-probes-post-baseline",
+      "expected_skill": "harness-engineering-lifecycle",
+      "predicted_skill": "repo-quality-system-lifecycle",
+      "top_scores": [
+        {
+          "skill": "repo-quality-system-lifecycle",
+          "score": 11
+        },
+        {
+          "skill": "harness-engineering-lifecycle",
+          "score": 11
+        },
+        {
+          "skill": "repository-governance-lifecycle",
+          "score": 0
+        }
+      ],
+      "pass": false
+    },
+    {
+      "id": "product-bugfix-native",
+      "expected_skill": "none",
+      "predicted_skill": "repo-quality-system-lifecycle",
+      "top_scores": [
+        {
+          "skill": "repo-quality-system-lifecycle",
+          "score": 0
+        },
+        {
+          "skill": "repository-governance-lifecycle",
+          "score": 0
+        },
+        {
+          "skill": "multi-agent-handoff",
+          "score": 0
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "routine-formatter",
+      "expected_skill": "none",
+      "predicted_skill": "repo-quality-system-lifecycle",
+      "top_scores": [
+        {
+          "skill": "repo-quality-system-lifecycle",
+          "score": 0
+        },
+        {
+          "skill": "repository-governance-lifecycle",
+          "score": 0
+        },
+        {
+          "skill": "multi-agent-handoff",
+          "score": 0
+        }
+      ],
+      "pass": true
+    }
+  ],
+  "behavior_scenarios": [
+    {
+      "id": "adoption-fresh-repo",
+      "expected_skill": "repo-quality-system-lifecycle",
+      "predicted_skill": "repo-quality-system-lifecycle",
+      "must_not_primary": "harness-engineering-lifecycle",
+      "must_not_respected": true,
+      "pass": true
+    },
+    {
+      "id": "compress-architecture-ask",
+      "expected_skill": "repo-quality-system-lifecycle",
+      "predicted_skill": "repo-quality-system-lifecycle",
+      "must_not_primary": "repository-governance-lifecycle",
+      "must_not_respected": true,
+      "pass": true
+    },
+    {
+      "id": "catalog-removed-skills-pr53",
+      "expected_skill": "none",
+      "predicted_skill": "harness-engineering-lifecycle",
+      "must_not_primary": "skill-authoring-lifecycle",
+      "must_not_respected": true,
+      "pass": false
+    },
+    {
+      "id": "repair-loop-third-attempt",
+      "expected_skill": "repo-quality-system-lifecycle",
+      "predicted_skill": "release-changelog-harness",
+      "must_not_primary": null,
+      "must_not_respected": null,
+      "pass": false
+    },
+    {
+      "id": "research-experiment-verdict",
+      "expected_skill": "repo-quality-system-lifecycle",
+      "predicted_skill": "multi-agent-handoff",
+      "must_not_primary": null,
+      "must_not_respected": null,
+      "pass": false
+    },
+    {
+      "id": "generic-product-task",
+      "expected_skill": "none",
+      "predicted_skill": "repo-quality-system-lifecycle",
+      "must_not_primary": "repo-quality-system-lifecycle",
+      "must_not_respected": false,
+      "pass": true
+    }
+  ]
+}

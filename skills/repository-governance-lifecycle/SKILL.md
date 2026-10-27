@@ -1,11 +1,13 @@
 ---
 name: repository-governance-lifecycle
-description: Master orchestration for repository governance, North Star impact, sub-Star boundaries, and repair-first or evidence-first drift checks. Guides an agent through the complete lifecycle of making architectural decisions, documenting them, writing FAQs, and cleaning up stale plans while adhering strictly to repo ethics and brand tone. Use whenever you need to make a structural change, write an ADR, update the doc lattice, or govern repository architecture.
+description: >-
+  For ADRs, FAQs, north_star_impact, plan hygiene, ethics, brand tone, MoE on amend/conflict, and docs-lattice cleanup after a decision — not routine product repair or repo ecology compress/merge/retire passes.
+  Use when durable policy, charter, or lattice truth changes; use repo-quality-system-lifecycle for adopt, audit, evidence, maturity, and ecology dispositions.
 license: MIT
 type: governance
 metadata:
   author: skill-steward
-  version: "1.1.0"
+  version: "1.1.1"
   category: governance
 ---
 

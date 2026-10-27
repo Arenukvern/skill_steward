@@ -1,0 +1,87 @@
+# Held-out routing prompts for AX baseline (not wired to steward eval CI).
+# expected_skill: guild skill name, or "none" when native/product work should win.
+version: 1
+prompts:
+  - id: adopt-fresh-repo
+    input: "This repo has no steward.yaml and no quality contract. Adopt Skill Steward and establish a baseline."
+    expected_skill: repo-quality-system-lifecycle
+
+  - id: audit-contract-gaps
+    input: "Audit whether our app repo has enough charter, validation gates, and evidence paths for agents."
+    expected_skill: repo-quality-system-lifecycle
+
+  - id: ecology-compress-docs
+    input: "Run a repository ecology pass: compress stale plans and docs, decide what to merge or retire."
+    expected_skill: repo-quality-system-lifecycle
+
+  - id: claim-audit-platform
+    input: "Audit broad claims like 'works on every platform' against live evidence and owner boundaries."
+    expected_skill: repo-quality-system-lifecycle
+
+  - id: multi-repo-publish-order
+    input: "We have a producer library and a consumer app — audit the integration chain and publish order."
+    expected_skill: repo-quality-system-lifecycle
+
+  - id: write-adr
+    input: "Write an ADR for splitting our validation CLI from the MCP server."
+    expected_skill: repository-governance-lifecycle
+
+  - id: update-design-faq
+    input: "Update DESIGN_FAQ to explain why we rejected a domain React skill pack."
+    expected_skill: repository-governance-lifecycle
+
+  - id: north-star-impact
+    input: "Before we add a new guild skill, run a north_star_impact check and document boundaries."
+    expected_skill: repository-governance-lifecycle
+
+  - id: moe-adr-conflict
+    input: "Two ADRs conflict on harness ownership — run mixture-of-experts lenses for amends/conflicts only."
+    expected_skill: repository-governance-lifecycle
+
+  - id: plan-hygiene-delete
+    input: "Extract decisions from this stale executable plan into an ADR, then delete the plan file."
+    expected_skill: repository-governance-lifecycle
+
+  - id: handoff-single-obligation
+    input: "Hand off fixing the flaky integration test to a worker agent — one obligation, baton only."
+    expected_skill: multi-agent-handoff
+
+  - id: parallel-batch-contract
+    input: "Define a parallel batch contract for three subagents with a parent lane and terminal states."
+    expected_skill: multi-agent-handoff
+
+  - id: new-marketplace-skill
+    input: "Scaffold a new Agent Skill directory, SKILL.md frontmatter, and skills.sh.json entry for a PR."
+    expected_skill: skill-authoring-lifecycle
+
+  - id: skill-eval-case
+    input: "Add a should_trigger eval case YAML for routing on our new stewardship skill."
+    expected_skill: skill-authoring-lifecycle
+
+  - id: changesets-release
+    input: "Set up Changesets, version bump, and CHANGELOG for this meta repo release."
+    expected_skill: release-changelog-harness
+
+  - id: install-sh-binary
+    input: "Ship install.sh and GitHub Release tarballs so users can install the CLI without cloning."
+    expected_skill: release-changelog-harness
+
+  - id: cross-repo-dogfood
+    input: "Dogfood our local steward CLI build against a sibling consumer repo after we have a contract here."
+    expected_skill: harness-engineering-lifecycle
+
+  - id: polyrepo-harness-generalize
+    input: "Generalize our custom validate script into a shared harness for a large polyrepo."
+    expected_skill: harness-engineering-lifecycle
+
+  - id: maintain-probes-post-baseline
+    input: "steward.yaml exists with quick probe — extend benchmarks and CLI/MCP parity, not first adoption."
+    expected_skill: harness-engineering-lifecycle
+
+  - id: product-bugfix-native
+    input: "Fix the failing unit test in our payment service — use the repo's normal test runner."
+    expected_skill: none
+
+  - id: routine-formatter
+    input: "Run prettier on src/ and open a small PR."
+    expected_skill: none

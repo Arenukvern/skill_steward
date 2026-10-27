@@ -1,0 +1,109 @@
+# Draft behavioral eval cases — NOT run by `dart run :steward eval`.
+# Schema proposal for agent/LLM judges (routing + behavior rubrics).
+schema_version: ax-behavior-draft-1
+cases:
+  - id: cold-start-routes-quality-not-harness
+    prompt: "Add the first quick-safe steward action to a single project with no steward.yaml yet."
+    expect_primary_skill: repo-quality-system-lifecycle
+    forbid_primary: [harness-engineering-lifecycle]
+    rubric:
+      - id: no-harness-actions-first
+        must_not: ["add typed actions before local contract"]
+      - id: cites-catalog
+        should: ["repo-quality-system-lifecycle"]
+
+  - id: harness-after-contract
+    prompt: "We already have steward.yaml and green quick probe — generalize probes for a sibling repo."
+    expect_primary_skill: harness-engineering-lifecycle
+    rubric:
+      - id: acknowledges-contract
+        should: ["local contract", "baseline"]
+
+  - id: ecology-not-governance
+    prompt: "Compress duplicate disposition tables across skills and retire stale plans."
+    expect_primary_skill: repo-quality-system-lifecycle
+    forbid_primary: [repository-governance-lifecycle]
+    rubric:
+      - id: no-adr-unless-policy
+        must_not: ["write a new ADR unless"]
+
+  - id: governance-adr-only
+    prompt: "Document why we demoted the ecology section to references in ADR form."
+    expect_primary_skill: repository-governance-lifecycle
+    rubric:
+      - id: decide-document-cleanup
+        should: ["Decide", "Document", "Cleanup"]
+
+  - id: handoff-not-owner
+    prompt: "Pass the OAuth bugfix to another agent with what was tried."
+    expect_primary_skill: multi-agent-handoff
+    rubric:
+      - id: no-new-owner
+        should: ["does not create an owner"]
+
+  - id: release-changesets-meta
+    prompt: "Prepare a 0.6.1 meta release with Changesets and changelog legibility."
+    expect_primary_skill: release-changelog-harness
+    rubric:
+      - id: not-domain-tutorial
+        must_not: ["flutter", "react tutorial"]
+
+  - id: skill-authoring-registry
+    prompt: "Add eval cases and skills.sh.json row for a new guild skill PR."
+    expect_primary_skill: skill-authoring-lifecycle
+    rubric:
+      - id: validate-eval
+        should: ["pnpm run validate"]
+
+  - id: product-feature-dormant
+    prompt: "Implement CSV export for the dashboard."
+    expect_primary_skill: none
+    forbid_load: [repo-quality-system-lifecycle, repository-governance-lifecycle]
+    rubric:
+      - id: native-first
+        should: ["native", "product"]
+
+  - id: disposition-after-two-loops
+    prompt: "Same install friction again after two prior steward attempts — next step?"
+    expect_primary_skill: repo-quality-system-lifecycle
+    rubric:
+      - id: disposition-table
+        should: ["disposition table"]
+      - id: stop-pdsa
+        should: ["stop", "two"]
+
+  - id: retired-skill-honesty
+    prompt: "Install mcp-harness-repo-maintainer from skill_steward."
+    expect_primary_skill: none
+    rubric:
+      - id: name-retired
+        should: ["removed", "0.6.0", "harness-engineering-lifecycle"]
+
+  - id: research-verdict-native
+    prompt: "Log held-out result for our routing experiment in a research sandbox repo."
+    expect_primary_skill: repo-quality-system-lifecycle
+    rubric:
+      - id: no-new-skill
+        must_not: ["new guild skill", "research-lifecycle"]
+
+  - id: dual-fire-compress
+    prompt: "Structural cleanup: merge overlapping FAQ and compress governance SKILL."
+    expect_primary_skill: repo-quality-system-lifecycle
+    forbid_primary: [repository-governance-lifecycle]
+    rubric:
+      - id: single-primary
+        should: ["ecology", "compress"]
+
+  - id: brand-ethics-governance
+    prompt: "Check banned words and ethics before publishing the public README story."
+    expect_primary_skill: repository-governance-lifecycle
+    rubric:
+      - id: ethics-loop
+        should: ["ethics", "brand"]
+
+  - id: parallel-handoff-depth
+    prompt: "Spin up four workers with a parent lane — write the batch contract only."
+    expect_primary_skill: multi-agent-handoff
+    rubric:
+      - id: contract-shape
+        should: ["parallel", "parent lane"]

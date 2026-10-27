@@ -1,12 +1,14 @@
 ---
 name: repo-quality-system-lifecycle
 description: >-
-  Establish or audit an agent-operated repository's quality contract or recurring stewardship friction. Skip routine repairs with a known owner and native check. Use for charter/docs ownership, validation gates, evidence paths, maturity proof, consumer/producer boundaries, command-surface evolution, or a repo ecology pass to decide what should be compressed, merged, retired, or moved to checks.
+  Establish or audit an agent-operated repository's quality contract or recurring stewardship friction. Skip routine repairs with a known owner and native check.
+  Use for cold start, steward.yaml adoption, first quick probe, charter/docs ownership, validation gates, evidence paths, maturity proof, consumer/producer boundaries, command-surface evolution, or a repo ecology pass to compress, merge, retire, or move surfaces to checks.
+  Not for ADR/FAQ authoring, north_star_impact, ethics/brand, or plan-to-ADR lattice cleanup — use repository-governance-lifecycle.
 license: MIT
 type: governance
 metadata:
   author: skill-steward
-  version: "1.0.0"
+  version: "1.0.1"
   category: governance
 ---
 

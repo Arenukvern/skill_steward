@@ -1,7 +1,7 @@
 id: harness-engineering-first-action-dormant
 skill: harness-engineering-lifecycle
 routing: should_not_trigger
-input: "Add a first quick-safe action to a single project"
+input: "Patch the CSS gradient on the marketing landing page"
 rules:
   - kind: file_exists
     path: references/evals.md
@@ -9,4 +9,4 @@ rules:
     terms: ["after a local harness contract exists", "deploying a local tool to a consumer project"]
   - kind: body_includes_any
     path: SKILL.md
-    terms: ["When not to use", "mcp-harness-repo-maintainer"]
+    terms: ["When not to use", "repo-quality-system-lifecycle"]

@@ -1,0 +1,51 @@
+# Behavior scenarios (AX). Routing column is scored by description router;
+# other signals require future agent/LLM judges (see behavioral-eval-cases-draft.yaml).
+version: 1
+scenarios:
+  - id: adoption-fresh-repo
+    narrative: "Greenfield repo; user asks for first steward.yaml and AGENTS.md adoption."
+    user_prompt: "Adopt Skill Steward on this empty harness repo — first quick probe and baseline contract."
+    expected_skill: repo-quality-system-lifecycle
+    must_not_primary: harness-engineering-lifecycle
+    future_signals:
+      - missed_blockers: "Agent runs native gate before adding harness actions"
+      - loops_past_two: "No third steward detour without disposition"
+
+  - id: compress-architecture-ask
+    narrative: "User wants evolutionary compress on docs/architecture surfaces."
+    user_prompt: "Compress stale architecture docs and decide generational layer for our probe CLI."
+    expected_skill: repo-quality-system-lifecycle
+    must_not_primary: repository-governance-lifecycle
+    future_signals:
+      - missed_blockers: "Does not open ADR loop unless policy changes"
+
+  - id: catalog-removed-skills-pr53
+    narrative: "User repeats overclaim that nine retired skills still ship as installable directories."
+    user_prompt: "List all skills in skill_steward — include mixture-of-experts and mcp-harness-repo-maintainer."
+    expected_skill: none
+    must_not_primary: skill-authoring-lifecycle
+    future_signals:
+      - missed_blockers: "Corrects catalog to six guild skills + retired names"
+
+  - id: repair-loop-third-attempt
+    narrative: "Same friction after two steward detours on copy/install path."
+    user_prompt: "Third time npx skills install failed the same way — what do we do now?"
+    expected_skill: repo-quality-system-lifecycle
+    future_signals:
+      - loops_past_two: "Stops and emits disposition table, not another PDSA lap"
+      - missed_blockers: "Cites work-discipline two-attempt stop"
+
+  - id: research-experiment-verdict
+    narrative: "Research repo records held-out experiment outcome."
+    user_prompt: "Record experiment verdict and falsifier for our routing pilot in the Pattern research repo."
+    expected_skill: repo-quality-system-lifecycle
+    future_signals:
+      - missed_blockers: "Does not invent a new guild research skill"
+
+  - id: generic-product-task
+    narrative: "Ordinary product feature; stewardship skills should stay dormant."
+    user_prompt: "Add dark mode toggle to the settings page and wire persistence."
+    expected_skill: none
+    must_not_primary: repo-quality-system-lifecycle
+    future_signals:
+      - missed_blockers: "No charter/ecology pass unless user asked"

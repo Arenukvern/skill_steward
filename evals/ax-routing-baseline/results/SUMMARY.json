@@ -1,0 +1,58 @@
+{
+  "method": "description_token_overlap_v1",
+  "non_claim": "Not live agent sessions. Three runs per phase are identical (deterministic).",
+  "before": {
+    "git_ref": "a15a8ceb89fc9e65e3510a2e083fa90bd8a390c4",
+    "runs": 3,
+    "routing_accuracy": {
+      "combined_pass": 18,
+      "combined_total": 27,
+      "combined_rate": 0.6666666666666666,
+      "prompts_rate": 0.7619047619047619,
+      "scenarios_rate": 0.3333333333333333
+    },
+    "must_not_primary": {
+      "pass": 2,
+      "total": 4,
+      "rate": 0.5
+    },
+    "missed_blockers": "not_measured",
+    "context_kb_before_acting": "not_measured",
+    "loops_past_two": "not_measured"
+  },
+  "after": {
+    "git_ref": "see PR head commit",
+    "runs": 3,
+    "routing_accuracy": {
+      "combined_pass": 17,
+      "combined_total": 27,
+      "combined_rate": 0.6296296296296297,
+      "prompts_rate": 0.7142857142857143,
+      "scenarios_rate": 0.5
+    },
+    "must_not_primary": {
+      "pass": 3,
+      "total": 4,
+      "rate": 0.75
+    },
+    "missed_blockers": "not_measured",
+    "context_kb_before_acting": "not_measured",
+    "loops_past_two": "not_measured"
+  },
+  "notable_deltas": [
+    "behavior_scenarios.adoption-fresh-repo: harness primary → repo-quality primary (must_not_primary satisfied)",
+    "weak-router governance prompts (ADR/MoE) still lose to repo-quality token overlap — needs agent eval, not description-only"
+  ],
+  "artifacts": {
+    "before": [
+      "before-run-1.json",
+      "before-run-2.json",
+      "before-run-3.json"
+    ],
+    "after": [
+      "after-run-1.json",
+      "after-run-2.json",
+      "after-run-3.json"
+    ]
+  }
+}

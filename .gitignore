@@ -20,3 +20,4 @@ coverage/
 .dart_tool/
 __pycache__/
 *.pyc
+.dart-sdk/
