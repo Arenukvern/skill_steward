@@ -1,6 +1,8 @@
 ---
 name: release-changelog-harness
-description: Chooses ecosystem-native release and changelog tooling (Changesets, Melos, release-plz) plus binary distribution (GitHub Release tarballs, install.sh) when the product is an executable. Use for release CI, install.sh, versioning, CHANGELOGs, shipping MCP/CLI without clone, or meta repos that only ship skills via npx skills—not domain app tutorials.
+description: >-
+  For Changesets/Melos/release-plz, CHANGELOG hygiene, release CI, install.sh, and binary/GitHub Release distribution for CLIs and meta skill marketplaces.
+  Not for repo quality baselines, ADRs, harness dogfood, or domain app feature work—use repo-quality-system-lifecycle or native product gates.
 license: MIT
 type: governance
 metadata:

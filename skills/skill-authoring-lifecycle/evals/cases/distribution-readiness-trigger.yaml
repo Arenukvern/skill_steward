@@ -12,4 +12,4 @@ rules:
     path: SKILL.md
     terms: ["copied directory", "agent-specific assumptions", "host manifests"]
   - kind: description_includes_any
-    terms: ["marketplace readiness", "SKILL.md"]
+    terms: ["marketplace", "registry readiness", "SKILL.md"]

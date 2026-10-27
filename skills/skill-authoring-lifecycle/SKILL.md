@@ -1,6 +1,8 @@
 ---
 name: skill-authoring-lifecycle
-description: Scaffold and formally review a new Agent Skill in this marketplace repo. Covers valid SKILL.md generation, directory layout, registry entries, and spec auditing. Use when adding a skill, validating frontmatter, or checking marketplace readiness before a PR.
+description: >-
+  For creating or editing installable Agent Skills, eval cases, citations, and marketplace/registry readiness in this repo.
+  Not for adopting consumer repos, governance ADRs, or release automation—use repo-quality-system-lifecycle, repository-governance-lifecycle, or release-changelog-harness.
 license: MIT
 type: governance
 metadata:
