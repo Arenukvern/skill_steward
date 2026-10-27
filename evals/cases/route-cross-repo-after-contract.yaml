@@ -1,0 +1,4 @@
+id: route-cross-repo-after-contract
+suite: routing
+input: "Generalize our proven steward.yaml harness across producer and consumer polyrepos."
+expected_skill: harness-engineering-lifecycle

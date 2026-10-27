@@ -1,0 +1,9 @@
+id: scenario-compress-architecture
+suite: scenario
+input: "Compress confusing architecture docs and decide generational layer without writing another ADR."
+expected_skill: repo-quality-system-lifecycle
+expect:
+  body_includes:
+    - "ecology"
+    - "disposition"
+  body_excludes:

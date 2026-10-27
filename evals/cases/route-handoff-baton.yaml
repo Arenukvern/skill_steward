@@ -1,0 +1,4 @@
+id: route-handoff-baton
+suite: routing
+input: "Pass one obligation to a reviewer subagent with a baton and non-claims."
+expected_skill: multi-agent-handoff

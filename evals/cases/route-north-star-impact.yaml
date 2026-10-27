@@ -1,0 +1,4 @@
+id: route-north-star-impact
+suite: routing
+input: "Assess north_star_impact before we change charter scope."
+expected_skill: repository-governance-lifecycle

@@ -1,0 +1,4 @@
+id: route-audit-contract
+suite: routing
+input: "Audit whether this repo has a complete agent-operated quality contract, evidence paths, and validation gates."
+expected_skill: repo-quality-system-lifecycle

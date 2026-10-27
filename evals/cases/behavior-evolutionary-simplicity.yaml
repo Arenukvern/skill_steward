@@ -1,0 +1,8 @@
+id: behavior-evolutionary-simplicity
+suite: behavior
+input: "Before splitting CLI commands, apply evolutionary simplicity."
+expected_skill: repo-quality-system-lifecycle
+replaces_case: skills/repo-quality-system-lifecycle/evals/cases/evolutionary-simplicity-cli-trigger.yaml
+expect:
+  body_includes:
+    - "evolutionary simplicity"

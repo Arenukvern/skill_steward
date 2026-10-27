@@ -1,0 +1,4 @@
+id: route-first-steward-yaml
+suite: routing
+input: "Add the first steward.yaml and a quick-safe probe to this single library repo."
+expected_skill: repo-quality-system-lifecycle

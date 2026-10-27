@@ -1,0 +1,8 @@
+id: behavior-governance-adr
+suite: behavior
+input: "Write an ADR using the governance lifecycle."
+expected_skill: repository-governance-lifecycle
+replaces_case: skills/repository-governance-lifecycle/evals/cases/governance-adr-trigger.yaml
+expect:
+  body_includes:
+    - "ADR"

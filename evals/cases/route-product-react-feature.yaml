@@ -1,0 +1,4 @@
+id: route-product-react-feature
+suite: routing
+input: "Implement a new React dashboard feature with charts and filters."
+expected_skill: none

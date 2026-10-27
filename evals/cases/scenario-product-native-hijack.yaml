@@ -1,0 +1,5 @@
+id: scenario-product-native-hijack
+suite: scenario
+input: "Ship the checkout button color change the PM asked for today."
+expected_skill: none
+expect:

@@ -1,0 +1,4 @@
+id: route-write-adr
+suite: routing
+input: "We need a new ADR for splitting the CLI package. Walk the governance loop."
+expected_skill: repository-governance-lifecycle

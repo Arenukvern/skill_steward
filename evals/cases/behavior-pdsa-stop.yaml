@@ -1,0 +1,8 @@
+id: behavior-pdsa-stop
+suite: behavior
+input: "After two learning loops on the same friction, stop PDSA."
+expected_skill: repo-quality-system-lifecycle
+replaces_case: skills/repo-quality-system-lifecycle/evals/cases/repeated-pdsa-disposition-trigger.yaml
+expect:
+  body_includes:
+    - "two learning loops"

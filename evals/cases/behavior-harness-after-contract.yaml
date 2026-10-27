@@ -1,0 +1,8 @@
+id: behavior-harness-after-contract
+suite: behavior
+input: "Extend harness proof only after a local contract exists."
+expected_skill: harness-engineering-lifecycle
+replaces_case: skills/harness-engineering-lifecycle/evals/cases/producer-consumer-trigger.yaml
+expect:
+  body_includes:
+    - "local harness contract"

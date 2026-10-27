@@ -1,0 +1,4 @@
+id: route-install-sh-release
+suite: routing
+input: "Ship install.sh and GitHub release tarballs for our CLI binary."
+expected_skill: release-changelog-harness

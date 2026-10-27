@@ -1,0 +1,4 @@
+id: route-ecology-compress
+suite: routing
+input: "Run a repository ecology pass: compress stale docs, merge duplicate guidance, and retire unused skills."
+expected_skill: repo-quality-system-lifecycle

@@ -1,0 +1,4 @@
+id: route-update-design-faq
+suite: routing
+input: "Update DESIGN_FAQ with the standing why for plugins versus skills."
+expected_skill: repository-governance-lifecycle

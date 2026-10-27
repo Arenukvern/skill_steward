@@ -12,6 +12,7 @@
     "eval": "cd packages/steward_cli && dart pub get && dart run :steward eval",
     "eval:json": "cd packages/steward_cli && dart pub get && dart run :steward eval --json",
     "eval:skill": "cd packages/steward_cli && dart pub get && dart run :steward eval --skill",
+    "eval:ax": "cd packages/steward_cli && dart pub get && dart run :steward eval --ax --baseline-out evals/baselines/ax-2026-10-27.json",
     "list": "cd packages/steward_cli && dart pub get && dart run :steward list",
     "docs:check": "node node_modules/@docs.page/cli/dist/cli.js check",
     "steward:analyze": "cd packages/steward_cli && dart pub get && dart analyze --fatal-infos",

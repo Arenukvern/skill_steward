@@ -1,0 +1,8 @@
+id: scenario-experiment-verdict
+suite: scenario
+input: "Record a reproducible experiment verdict with claim, tier, falsifier, and reviewer restatement in a research repo."
+expected_skill: repo-quality-system-lifecycle
+expect:
+  body_includes:
+    - "claim"
+    - "falsifier"

@@ -35,6 +35,22 @@ class EvalCommand extends Command<void> {
         negatable: false,
         help:
             'Run static skill evals: required T1 and any declared cases. This is the default.',
+      )
+      ..addFlag(
+        'ax',
+        negatable: false,
+        help:
+            'Run AX behavioral routing cases from evals/cases/*.yaml (description router; not live agents).',
+      )
+      ..addOption(
+        'baseline-out',
+        help:
+            'With --ax: write compact multi-run baseline JSON to this path (default: evals/baselines/ax-latest.json).',
+      )
+      ..addOption(
+        'runs',
+        help: 'With --ax --baseline-out: number of repeated runs (default 3).',
+        defaultsTo: '3',
       );
   }
 
@@ -51,11 +67,59 @@ class EvalCommand extends Command<void> {
     final String? evalName = argResults?['name'] as String?;
 
     if (evalName == null || evalName.isEmpty) {
+      final runAx = argResults?['ax'] as bool? ?? false;
+      if (runAx) {
+        await _runAxEvals(root);
+        return;
+      }
       await _runSkillEvals(root);
       return;
     }
 
     await _runRegisteredEval(root, evalName);
+  }
+
+  Future<void> _runAxEvals(final String root) async {
+    final useJson = argResults?['json'] as bool? ?? false;
+    final baselineOut = argResults?['baseline-out'] as String?;
+    final runs = int.tryParse(argResults?['runs'] as String? ?? '3') ?? 3;
+
+    if (baselineOut != null && baselineOut.isNotEmpty) {
+      final baseline = await runAxBaseline(root, runs: runs);
+      final outPath = p.isAbsolute(baselineOut)
+          ? baselineOut
+          : p.join(root, baselineOut);
+      File(outPath).writeAsStringSync('${encodeAxBaselineJson(baseline)}\n');
+      if (useJson) {
+        _write(jsonEncode(baseline));
+      } else {
+        _write('AX baseline written to $outPath');
+        final means = baseline['signal_means'] as Map<String, dynamic>;
+        _write(
+          'signals (mean of $runs runs): routing_accuracy=${means['routing_accuracy']} '
+          'missed_blockers=${means['missed_blockers_rate']} '
+          'mean_kb=${means['mean_kb_skill_loaded']} '
+          'loops_past_two=${means['loops_past_two_rate']}',
+        );
+        _write('measurement: ${baseline['measurement']}');
+      }
+      final failed = baseline['failed_cases'] as List<dynamic>;
+      exit(failed.isEmpty ? 0 : 1);
+    }
+
+    final report = await runAxEvalSuite(root);
+    if (useJson) {
+      _write(jsonEncode(report.toJson()));
+    } else {
+      _write('AX eval (${report.measurement})');
+      _write('signals: ${jsonEncode(report.signals.toJson())}');
+      for (final c in report.cases.where(
+        (final r) => !r.routingOk || r.missedBlockers || r.loopsPastTwoRisk,
+      )) {
+        _write('  fail ${c.id}: ${c.errors.join('; ')}');
+      }
+    }
+    exit(report.ok ? 0 : 1);
   }
 
   Future<void> _runSkillEvals(final String root) async {

@@ -1,0 +1,9 @@
+id: scenario-adopt-fresh-repo
+suite: scenario
+input: "Cold-start adopt on a fresh repo with no AGENTS.md yet."
+expected_skill: repo-quality-system-lifecycle
+expect:
+  body_includes:
+    - "steward adopt"
+    - "Entry"
+  max_skill_kb: 28

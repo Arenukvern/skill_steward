@@ -1,0 +1,4 @@
+id: route-harness-dogfood-sibling
+suite: routing
+input: "Dogfood our steward CLI build against a sibling consumer repo after the local contract exists."
+expected_skill: harness-engineering-lifecycle

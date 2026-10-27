@@ -1,0 +1,5 @@
+id: behavior-product-dormant
+suite: behavior
+input: "Implement OAuth login for the mobile app."
+expected_skill: none
+replaces_case: skills/repo-quality-system-lifecycle/evals/cases/product-feature-dormant.yaml
