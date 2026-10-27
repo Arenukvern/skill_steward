@@ -8,23 +8,23 @@ rules:
   - kind: description_includes_any
     terms: ["repo ecology", "compress", "retire", "moved to checks"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/ecology-review.md
     terms: ["boldest useful outcome"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/ecology-review.md
     terms: ["least machinery needed to prove it"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/ecology-review.md
     terms: ["anti-bureaucracy gate"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/ecology-review.md
     terms: ["reduce future uncertainty", "automate repeated judgment", "prevent a demonstrated failure"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/ecology-review.md
     terms: ["enable an honest claim", "delete/compress an older surface"]
   - kind: body_includes_any
     path: SKILL.md
-    terms: ["Boldest useful next improvement"]
+    terms: ["boldest useful change"]
   - kind: body_includes_any
     path: references/evals.md
     terms: ["Choose the boldest useful path"]

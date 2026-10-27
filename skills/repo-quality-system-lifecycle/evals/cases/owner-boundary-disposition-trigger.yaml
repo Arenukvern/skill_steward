@@ -6,16 +6,16 @@ rules:
   - kind: file_exists
     path: references/evals.md
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/multi-repo.md
     terms: ["The producer repo owns architecture"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/multi-repo.md
     terms: ["consumer repos own adoption proof"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/multi-repo.md
     terms: ["consumer gate"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/ecology-review.md
     terms: ["move to consumer proof"]
   - kind: body_includes_any
     path: ../../docs/repo-quality-contracts.mdx

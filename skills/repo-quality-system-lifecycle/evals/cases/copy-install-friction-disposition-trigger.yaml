@@ -6,11 +6,11 @@ rules:
   - kind: file_exists
     path: references/evals.md
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/ecology-review.md
     terms: ["Repeated copy/install layout friction"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/ecology-review.md
     terms: ["product-owned local copy/init script", "Pattern Promotion Review"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/ecology-review.md
     terms: ["repeated cross-repo evidence"]

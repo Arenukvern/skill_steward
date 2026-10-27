@@ -8,29 +8,29 @@ rules:
   - kind: description_includes_any
     terms: ["quality contract", "evidence", "maturity proof"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/multi-repo.md
     terms: ["multi-repo integration chain", "dependency order", "publish evidence"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/multi-repo.md
     terms: ["The producer repo owns architecture"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/multi-repo.md
     terms: ["public contract"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/multi-repo.md
     terms: ["compatibility claims"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/multi-repo.md
     terms: ["consumer repos own adoption proof"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/multi-repo.md
     terms: ["local deltas"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/multi-repo.md
     terms: ["blocked state"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/multi-repo.md
     terms: ["cutover commands"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/ecology-review.md
     terms: ["move to consumer proof"]

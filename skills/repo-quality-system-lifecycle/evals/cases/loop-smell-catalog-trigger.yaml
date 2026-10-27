@@ -6,26 +6,26 @@ rules:
   - kind: file_exists
     path: references/evals.md
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/ecology-review.md
     terms: ["Loop smells to name before creating another artifact"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/ecology-review.md
     terms: ["third evidence note or packet"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/ecology-review.md
     terms: ["repeated blocker proof"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/ecology-review.md
     terms: ["tool tunnel"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/ecology-review.md
     terms: ["stale proof loop"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/ecology-review.md
     terms: ["repair replacing the original goal"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/ecology-review.md
     terms: ["status artifacts multiplying faster than fixes"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/ecology-review.md
     terms: ["Prefer a single disposition table over a new doctrine page"]
