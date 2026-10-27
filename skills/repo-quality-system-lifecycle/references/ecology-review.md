@@ -65,7 +65,7 @@ Keep the two vocabularies distinct:
 - When the review finds invalid config, dirty declared inputs, schema/output drift, blocked payload routing, stale navigation, or a broken native gate, update the owning surface and rerun the same gate when that is the smallest safe disposition.
 - For command, tool, docs, evidence, and skill surfaces, ask whether the boldest useful move is to split, compress, promote, demote, delete, or stay native.
 - For `tutor_pain`, name the pain signal, owner, native gate, smallest disposition, rerun route, hot-path residue, and non-claim.
-- Before adding a new doc, check, schema, skill, evidence artifact, command, or tool, apply the anti-bureaucracy gate: it must reduce future uncertainty, automate repeated judgment, prevent a demonstrated failure, enable an honest claim, or delete/compress an older surface.
+- Before adding a new doc, check, schema, skill, evidence artifact, command, or tool, apply the anti-bureaucracy gate: it must reduce future uncertainty, automate repeated judgment, prevent a demonstrated failure, enable an honest claim, or delete/compress an older surface. Proof scales with the cost of being wrong: a reversible change ships on the cheapest check that could catch the mistake. Each new safeguard states its cost and names the safeguard it replaces, or it does not get added.
 - For product repos, name the product impact check before adding or trusting
   Steward proof. If no product-native behavior, API, UI/visual, performance,
   release, or workflow surface changed or was directly proven, downgrade the

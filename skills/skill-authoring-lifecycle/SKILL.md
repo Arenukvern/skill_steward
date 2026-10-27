@@ -37,7 +37,7 @@ Ordinary work: [work discipline](references/work-discipline.md). The former `ski
 6. **Copy template** — from `templates/skill/SKILL.md`; replace placeholders.
 7. **Write description** — one concise block covering *what* and *when* (trigger phrases users say). Activation-critical routing belongs here, not only in a body "When to use" section.
 8. **Cite sources** — create `references/sources.md` from `templates/skill/references/sources.md`; add rows for every spec/repo/paper used.
-9. **Write body** — numbered steps, examples, output format; keep under 500 lines.
+9. **Write body** — numbered steps, examples, output format; keep under 500 lines. Moving content to `references/` is reversible: optional `pnpm run eval:ax` plus review is enough; PRs note in one line whether the skill sufficed or a reference had to be opened, and references opened repeatedly promote back into `SKILL.md`.
 10. **Evals** — T1 behavior-critical skills (see [STANDARDS](../../docs/STANDARDS.mdx)): `references/evals.md` + ≥2 `evals/cases/*.yaml`. Others: optional `evals.md`.
 11. **Optional metadata** — add `agents/openai.yaml` only when Codex app UI metadata, invocation policy, or tool dependencies are useful.
 12. **Optional resources** — create only the needed `scripts/`, `references/`, and `assets/` directories; delete placeholder resources.
