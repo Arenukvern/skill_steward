@@ -1,0 +1,4 @@
+id: route-claim-evidence-audit
+suite: routing
+input: "Audit broad product claims and maturity language against live evidence and owner boundaries."
+expected_skill: repo-quality-system-lifecycle

@@ -1,0 +1,4 @@
+id: route-moe-conflict
+suite: routing
+input: "Run mixture-of-experts review on conflicting ADR proposals."
+expected_skill: repository-governance-lifecycle

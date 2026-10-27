@@ -1,0 +1,4 @@
+id: route-adopt-fresh-repo
+suite: routing
+input: "We just cloned an empty app repo. Adopt the smallest Steward baseline and steward.yaml without touching product code."
+expected_skill: repo-quality-system-lifecycle

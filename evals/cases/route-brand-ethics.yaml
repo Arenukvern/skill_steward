@@ -1,0 +1,4 @@
+id: route-brand-ethics
+suite: routing
+input: "Review public story copy for banned brand words and ethics alignment."
+expected_skill: repository-governance-lifecycle

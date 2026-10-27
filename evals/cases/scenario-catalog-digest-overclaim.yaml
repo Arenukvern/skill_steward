@@ -1,0 +1,11 @@
+id: scenario-catalog-digest-overclaim
+suite: scenario
+input: "The catalog still says every stewardship skill ships concept digests. Correct the claim against what actually installs."
+expected_skill: repo-quality-system-lifecycle
+expect:
+  body_includes:
+    - "digests"
+  repo_file_includes:
+    - path: docs/skills-catalog.mdx
+      terms:
+        - "two skills"

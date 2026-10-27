@@ -1,0 +1,7 @@
+id: behavior-release-changesets
+suite: behavior
+input: "Wire Changesets for meta repo release."
+expected_skill: release-changelog-harness
+expect:
+  body_includes:
+    - "Changesets"

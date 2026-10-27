@@ -1,0 +1,4 @@
+id: route-new-marketplace-skill
+suite: routing
+input: "Create a new marketplace skill package with eval cases and citations."
+expected_skill: skill-authoring-lifecycle

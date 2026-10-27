@@ -1,0 +1,8 @@
+id: behavior-generational-ladder
+suite: behavior
+input: "Pick the smallest generational layer before adding harness actions."
+expected_skill: repo-quality-system-lifecycle
+replaces_case: skills/repo-quality-system-lifecycle/evals/cases/generational-architecture-trigger.yaml
+expect:
+  body_includes:
+    - "generational architecture"

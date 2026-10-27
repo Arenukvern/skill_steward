@@ -1,0 +1,8 @@
+id: behavior-skill-authoring-eval
+suite: behavior
+input: "Add eval cases when changing skill routing behavior."
+expected_skill: skill-authoring-lifecycle
+replaces_case: skills/skill-authoring-lifecycle/evals/cases/new-marketplace-skill.yaml
+expect:
+  body_includes:
+    - "evals/cases"

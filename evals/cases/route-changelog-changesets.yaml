@@ -1,0 +1,4 @@
+id: route-changelog-changesets
+suite: routing
+input: "Set up Changesets and release CI for this meta repo."
+expected_skill: release-changelog-harness

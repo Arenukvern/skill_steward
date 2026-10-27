@@ -1,0 +1,8 @@
+id: behavior-owner-boundary
+suite: behavior
+input: "Route owner-boundary pain to disposition instead of another packet."
+expected_skill: repo-quality-system-lifecycle
+replaces_case: skills/repo-quality-system-lifecycle/evals/cases/owner-boundary-disposition-trigger.yaml
+expect:
+  body_includes:
+    - "owner"

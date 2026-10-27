@@ -1,0 +1,8 @@
+id: behavior-ecology-disposition
+suite: behavior
+input: "Repository ecology review with explicit dispositions."
+expected_skill: repo-quality-system-lifecycle
+replaces_case: skills/repo-quality-system-lifecycle/evals/cases/repository-ecology-review-trigger.yaml
+expect:
+  body_includes:
+    - "disposition"

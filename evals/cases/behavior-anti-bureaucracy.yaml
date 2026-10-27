@@ -1,0 +1,8 @@
+id: behavior-anti-bureaucracy
+suite: behavior
+input: "Apply the anti-bureaucracy gate before adding stewardship surface."
+expected_skill: repo-quality-system-lifecycle
+replaces_case: skills/repo-quality-system-lifecycle/evals/cases/boldest-useful-path-trigger.yaml
+expect:
+  body_includes:
+    - "anti-bureaucracy"

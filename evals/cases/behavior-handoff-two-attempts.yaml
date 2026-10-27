@@ -1,0 +1,8 @@
+id: behavior-handoff-two-attempts
+suite: behavior
+input: "After two attempts on the same owner, hand off with evidence."
+expected_skill: multi-agent-handoff
+replaces_case: skills/multi-agent-handoff/evals/cases/parallel-overhead-collapse-trigger.yaml
+expect:
+  body_includes:
+    - "two attempts"

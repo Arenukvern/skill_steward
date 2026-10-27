@@ -1,0 +1,7 @@
+id: scenario-third-repair-loop
+suite: scenario
+input: "This is the third attempt on the same schema drift with no new evidence. Stop and produce a disposition table."
+expected_skill: repo-quality-system-lifecycle
+expect:
+  stop_loop_encoded: true
+  disposition_table: true

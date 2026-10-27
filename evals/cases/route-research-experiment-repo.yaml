@@ -1,0 +1,4 @@
+id: route-research-experiment-repo
+suite: routing
+input: "This research repo runs held-out trials with an oracle. Adopt stewardship without inventing a new guild skill."
+expected_skill: repo-quality-system-lifecycle

@@ -1,0 +1,4 @@
+id: route-parallel-subagents
+suite: routing
+input: "Coordinate parallel subagents with a parent lane contract for a large refactor."
+expected_skill: multi-agent-handoff
