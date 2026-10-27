@@ -6,26 +6,26 @@ rules:
   - kind: file_exists
     path: references/evals.md
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/ecology-review.md
     terms: ["For `tutor_pain`, name the pain signal"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/ecology-review.md
     terms: ["owner"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/ecology-review.md
     terms: ["native gate"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/ecology-review.md
     terms: ["smallest disposition"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/ecology-review.md
     terms: ["rerun route"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/ecology-review.md
     terms: ["hot-path residue"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/ecology-review.md
     terms: ["non-claim"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/ecology-review.md
     terms: ["evidence treadmill or a tool tunnel"]

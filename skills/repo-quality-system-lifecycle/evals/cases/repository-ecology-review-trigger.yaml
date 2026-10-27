@@ -8,7 +8,7 @@ rules:
   - kind: description_includes_any
     terms: ["repo ecology", "compress", "merge", "retire"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/ecology-review.md
     terms: ["repository ecology review", "Disposition", "move to check"]
   - kind: body_includes_any
     path: ../../docs/start_here/executable-plans.mdx

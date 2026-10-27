@@ -8,17 +8,17 @@ rules:
   - kind: description_includes_any
     terms: ["product runtime correctness", "quality contract", "repo ecology"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/product-impact.md
     terms: ["Product impact"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/product-impact.md
     terms: ["product acceleration"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/product-impact.md
     terms: ["source-owned product delta"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/product-impact.md
     terms: ["visual screenshot"]
   - kind: body_includes_any
-    path: SKILL.md
+    path: references/product-impact.md
     terms: ["performance metric"]
