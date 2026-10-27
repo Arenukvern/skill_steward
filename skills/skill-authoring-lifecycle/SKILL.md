@@ -18,7 +18,7 @@ paths:
 
 Add, review, and validate an installable skill package under `skills/` in the Skill Steward marketplace.
 
-Follow [work discipline](../../docs/core/work-discipline.mdx). The former `skill-eval-improve` and `skill-source-citations` skills were removed in 0.6.0; this skill absorbs them. Evals are the cheapest check you will rerun (`pnpm run validate`, then `pnpm run eval` when routing behavior changed). Do not grow cases the edit will not run. Cite sources in `references/sources.md`. Two failed edits of the same skill with no new evidence means rewrite, compress, or delete it.
+Ordinary work: [work discipline](references/work-discipline.md). The former `skill-eval-improve` and `skill-source-citations` skills were removed in 0.6.0; this skill absorbs them. Evals are the cheapest check you will rerun (`pnpm run validate`, then `pnpm run eval` when routing behavior changed). Do not grow cases the edit will not run. Cite sources in `references/sources.md`.
 
 ## When to use
 

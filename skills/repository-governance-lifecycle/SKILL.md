@@ -31,7 +31,7 @@ This is the central nervous system for governing an agent-operated repository. I
 
 Whenever an agent proposes or executes a structural shift, claim change, durable policy change, or docs-lattice change, they must walk this loop. Routine repo repairs should keep the original goal and native gate first; use this governance loop only when the repair changes durable ownership, policy, evidence, ADR/FAQ truth, or plan hygiene.
 
-Ordinary work uses one procedure: [work discipline](../../docs/core/work-discipline.mdx). Do not restate it.
+Ordinary work: [work discipline](references/work-discipline.md). Do not restate it.
 
 ## Absorbed procedures
 

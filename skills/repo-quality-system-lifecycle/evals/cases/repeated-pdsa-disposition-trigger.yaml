@@ -57,10 +57,7 @@ rules:
     terms: ["For normal implementation tasks, the shorter output is enough"]
   - kind: body_includes_any
     path: SKILL.md
-    terms: ["After two learning loops on the same friction"]
-  - kind: body_includes_any
-    path: SKILL.md
-    terms: ["delete/retire duplicate plans or historical packets"]
+    terms: ["work discipline", "disposition table"]
   - kind: body_includes_any
     path: ../../docs/NORTH_STAR.mdx
     terms: ["Orient", "Compress", "Validate", "Tutor pain", "Promote tools"]

@@ -40,7 +40,7 @@ those three kinds of evidence distinct.
    acceleration; demote a surface that no longer earns its upkeep.
 
 An unavailable client or runner is a named coverage gap, not a reason to spend
-the whole task installing infrastructure. After two failed setup attempts, keep
+the whole task installing infrastructure. Apply [work discipline](work-discipline.md) §2, then keep
 the blocked record and return to the original native goal.
 
 ## Functional preflight and report normalization

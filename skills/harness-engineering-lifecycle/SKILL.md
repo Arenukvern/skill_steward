@@ -13,7 +13,7 @@ metadata:
 
 # Harness Engineering Lifecycle
 
-Evolve a proven repo-local contract into a generalized harness, then dogfood it across a producer-consumer boundary. Follow [work discipline](../../docs/core/work-discipline.mdx).
+Evolve a proven repo-local contract into a generalized harness, then dogfood it across a producer-consumer boundary. Ordinary work: [work discipline](references/work-discipline.md).
 
 The former `mcp-harness-repo-maintainer` skill was removed in 0.6.0. Cold start and cross-repo generalization are one lifecycle: do not add typed actions, probes, or benchmarks until a local contract exists and the native gate is the thing you rerun. Green Steward artifacts are not a product use-path.
 
@@ -61,7 +61,7 @@ When you make changes to the harness (Producer), you must validate it against de
 6. **Dual Verification:** Verify that the consumer suite passes, and the producer suite passes.
 7. **Durable Knowledge:** Extract any learnings to ADRs or FAQs using the `repository-governance-lifecycle` skill.
 
-**Detour stop rule:** If installing, activating, or wiring the local producer build fails twice, stop restoration, record the friction, use the consumer's native gate or portable fallback when possible, and return to the original acceptance check. Do not promote a generalized harness capability from that same detour; capture an observation or unknown case first.
+**Detour stop rule:** Apply [work discipline](references/work-discipline.md) §2 if producer install/wiring fails twice; record friction, use the consumer native gate when possible, and do not promote a generalized harness capability from that detour.
 
 ## Producer/consumer proof artifacts
 
