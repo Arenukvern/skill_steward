@@ -1,6 +1,6 @@
 // ignore_for_file: avoid_print
-/// Deterministic description-based routing check for AX baseline prompts.
-/// Not an agent router — see evals/ax-routing-baseline/README.md.
+// Deterministic description-based routing check for AX baseline prompts.
+// Not an agent router — see evals/ax-routing-baseline/README.md.
 import 'dart:convert';
 import 'dart:io';
 
@@ -57,8 +57,8 @@ void main(final List<String> args) async {
 
   final descriptions = await _loadSkillCorpora(skillsRoot);
 
-  final promptsFile = File(_resolvePath(promptsPath!, repoRoot));
-  final scenariosFile = File(_resolvePath(scenariosPath!, repoRoot));
+  final promptsFile = File(_resolvePath(promptsPath, repoRoot));
+  final scenariosFile = File(_resolvePath(scenariosPath, repoRoot));
 
   final promptDoc = loadYaml(await promptsFile.readAsString());
   final scenarioDoc = loadYaml(await scenariosFile.readAsString());
@@ -202,14 +202,12 @@ List<_Rank> _rank(
   return scores;
 }
 
-List<String> _inputTokens(final String input) {
-  return input
-      .toLowerCase()
-      .split(RegExp(r'\W+'))
-      .where((final w) => w.length > 4)
-      .toSet()
-      .toList();
-}
+List<String> _inputTokens(final String input) => input
+    .toLowerCase()
+    .split(RegExp(r'\W+'))
+    .where((final w) => w.length > 4)
+    .toSet()
+    .toList();
 
 Future<Map<String, _Corpus>> _loadSkillCorpora(final String skillsRoot) async {
   final out = <String, _Corpus>{};
