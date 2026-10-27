@@ -17,6 +17,7 @@ node_modules/
 !.steward/self-model.example.json
 dist/
 coverage/
+evals/baselines/ax-latest-run.json
 .dart_tool/
 __pycache__/
 *.pyc

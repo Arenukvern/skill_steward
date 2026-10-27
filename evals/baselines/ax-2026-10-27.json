@@ -1,61 +1,50 @@
 {
   "baseline_id": "ax-guild-skills-2026-10-27",
-  "measurement": "deterministic_description_router_v1 (not live agent sessions)",
+  "measurement_id": "deterministic_description_router_v1",
   "non_claims": [
-    "Not live agent sessions or skillgrade pairs.",
-    "Router scores description + When to/not sections only.",
-    "KB loaded is SKILL.md body size for the routed skill, not references."
+    "Stage signals are deterministic_description_router_v1 — a substitute, not live agent sessions or skillgrade pairs.",
+    "Each stage replays skills/ at the listed git revision with the current evals/cases tree and router.",
+    "KB loaded is SKILL.md body size for the routed skill, not references.",
+    "pnpm run eval:ax writes evals/baselines/ax-latest-run.json only; it does not mutate this file."
   ],
-  "before_routing_fix": {
-    "git_revision": "a15a8ceb89fc9e65e3510a2e083fa90bd8a390c4",
-    "skill_md_kb": {
-      "harness-engineering-lifecycle": 7,
-      "multi-agent-handoff": 12,
-      "release-changelog-harness": 11,
-      "repo-quality-system-lifecycle": 24,
-      "repository-governance-lifecycle": 10,
-      "skill-authoring-lifecycle": 8
+  "stages": {
+    "before": {
+      "git_revision": "a15a8ceb89fc9e65e3510a2e083fa90bd8a390c4",
+      "measurement": "deterministic_description_router_v1 (not live agent sessions)",
+      "skills_snapshot": "a15a8ceb89fc9e65e3510a2e083fa90bd8a390c4",
+      "runs": 3,
+      "signal_means": {
+        "routing_accuracy": 0.631578947368421,
+        "missed_blockers_rate": 0.39473684210526316,
+        "mean_kb_skill_loaded": 11.842105263157896,
+        "loops_past_two_rate": 0.02631578947368421
+      }
     },
-    "runs": 3,
-    "signal_means": {
-      "routing_accuracy": 0.631578947368421,
-      "missed_blockers_rate": 0.39473684210526316,
-      "mean_kb_skill_loaded": 11.842105263157896,
-      "loops_past_two_rate": 0.02631578947368421
+    "after_routing": {
+      "git_revision": "ac6ccf3a595b263904edcea8c56900e88868ff87",
+      "pr": 59,
+      "measurement": "deterministic_description_router_v1 (not live agent sessions)",
+      "skills_snapshot": "ac6ccf3a595b263904edcea8c56900e88868ff87",
+      "runs": 3,
+      "signal_means": {
+        "routing_accuracy": 0.6578947368421053,
+        "missed_blockers_rate": 0.3684210526315789,
+        "mean_kb_skill_loaded": 12.31578947368421,
+        "loops_past_two_rate": 0.0
+      }
+    },
+    "after_compress": {
+      "git_revision": "f53b94dfeb6d11666efa3c8ac9985661db91c8e2",
+      "pr": 61,
+      "measurement": "deterministic_description_router_v1 (not live agent sessions)",
+      "skills_snapshot": "f53b94dfeb6d11666efa3c8ac9985661db91c8e2",
+      "runs": 3,
+      "signal_means": {
+        "routing_accuracy": 0.6578947368421053,
+        "missed_blockers_rate": 0.3684210526315789,
+        "mean_kb_skill_loaded": 8.394736842105264,
+        "loops_past_two_rate": 0.02631578947368421
+      }
     }
-  },
-  "after_routing_fix": {
-    "git_revision": "2d8a5f5",
-    "skill_md_kb": {
-      "harness-engineering-lifecycle": 8,
-      "multi-agent-handoff": 13,
-      "release-changelog-harness": 12,
-      "repo-quality-system-lifecycle": 25,
-      "repository-governance-lifecycle": 11,
-      "skill-authoring-lifecycle": 9
-    },
-    "runs": 3,
-    "signal_means": {
-      "routing_accuracy": 0.6578947368421053,
-      "missed_blockers_rate": 0.3684210526315789,
-      "mean_kb_skill_loaded": 12.31578947368421,
-      "loops_past_two_rate": 0.0
-    },
-    "failed_cases": [
-      "behavior-ecology-disposition",
-      "behavior-evolutionary-simplicity",
-      "behavior-handoff-two-attempts",
-      "behavior-harness-after-contract",
-      "behavior-owner-boundary",
-      "behavior-pdsa-stop",
-      "route-adopt-fresh-repo",
-      "route-ecology-compress",
-      "route-first-steward-yaml",
-      "route-moe-conflict",
-      "route-north-star-impact",
-      "route-update-design-faq",
-      "route-write-adr",
-      "scenario-adopt-fresh-repo"
-    ]
   }
 }
