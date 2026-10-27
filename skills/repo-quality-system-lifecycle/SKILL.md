@@ -29,7 +29,7 @@ These lenses are not a new doctrine skill (see [DESIGN_FAQ](https://docs.page/ar
 
 Use this skill to make a repository legible, safe, and improvable for humans and agents. It is broader than Agent Skill authoring and narrower than product implementation.
 
-The standing procedure is [work discipline](../../docs/core/work-discipline.mdx). Do not restate it. `steward adopt` writes that procedure into a new `AGENTS.md`.
+Ordinary work: [work discipline](references/work-discipline.md). Do not restate it. `steward adopt` writes the full procedure into a new `AGENTS.md`.
 
 ## When to use
 
@@ -75,6 +75,7 @@ Pick one primary archetype. Do not let every repo become a harness repo.
 | Plugin | Host integration | Manifest, permissions, install/rollback note |
 | Harness/action contract | Agent-facing action/probe/benchmark | Quick-safe action and benchmark scenario |
 | Meta/governance | Skills, docs, policies, validators | Skill validation, eval cases, registry consistency |
+| Research/experiment | Experiment log, oracle, and metric | Held-out trial with falsifier; repo owns runner—Steward summarizes verdict only |
 
 ### 2. Establish the stewardship baseline
 
@@ -94,7 +95,7 @@ If the repo is not ready for Steward CLI, bootstrap manually: add the claim/evid
 
 Write the smallest contract that can be checked. For shipping archetypes (`app`, `library`, `cli_tool`, `plugin`, `harness`), `steward adopt` sets `moe_required_for_architecture: false`. Only `meta_governance` defaults it on. `steward doctor` is health inventory; the recorded native validate command is the delivery gate.
 
-Work discipline for the repo you are adopting: two attempts then rewrite, delete, or hand off; one obligation per claimant; product use-path before fixtures; do not grow checks you will not rerun; keep the plan a spine. Do not add a loop-doctor action to enforce this.
+Adoption follows [work discipline](references/work-discipline.md). Do not add a loop-doctor action to enforce it.
 
 | Contract area | Required question |
 |---------------|-------------------|
@@ -277,7 +278,7 @@ Keep the two vocabularies distinct:
 - For experiment campaigns, require a product-owned oracle/capture/metric before
   any product-acceleration claim. Summaries with only Steward docs, schemas,
   evals, or harness changes are `support_only: true`.
-- After two learning loops on the same friction, stop PDSA and produce a disposition table. Extract the durable lesson into ADR, FAQ, skill, check, CLI diagnostic, or current ledger, then delete/retire duplicate plans or historical packets from active navigation.
+- When ecology PDSA hits the same friction, apply [work discipline](references/work-discipline.md) §2, then produce a disposition table and extract the durable lesson into ADR, FAQ, skill, check, CLI diagnostic, or current ledger.
 - Do not add sub-stewards, new broad skills, new benchmark scenarios, or new evidence indices from the same blocked detour unless the repaired owner still cannot represent the repo honestly.
 
 ## Output contract

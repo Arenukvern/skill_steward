@@ -23,9 +23,9 @@ Structure work so multiple agents can execute sequentially without losing contex
 
 ## One obligation
 
-Name one outcome. After two attempts on the same owner with no new evidence, hand off with what was tried, the evidence, and the non-claims. Adjacent discoveries are part of the baton, not permission for the sender to absorb the next problem. MoE findings do not authorize writes.
+Name one outcome. Baton rules: [work discipline](references/work-discipline.md) §2–§3 (hand off with evidence and non-claims; MoE findings do not authorize writes).
 
-A handoff does not create an owner. Skill Steward does not schedule claims or presence. Do not add more baton fields. See [work discipline](../../docs/core/work-discipline.mdx).
+A handoff does not create an owner. Skill Steward does not schedule claims or presence. Do not add more baton fields.
 
 ## Handoff document template
 
