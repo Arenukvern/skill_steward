@@ -59,8 +59,5 @@ rules:
     path: SKILL.md
     terms: ["work discipline", "disposition table"]
   - kind: body_includes_any
-    path: SKILL.md
-    terms: ["delete/retire duplicate plans or historical packets"]
-  - kind: body_includes_any
     path: ../../docs/NORTH_STAR.mdx
     terms: ["Orient", "Compress", "Validate", "Tutor pain", "Promote tools"]
