@@ -218,7 +218,7 @@ Use evidence only when it protects a claim, preserves a blocked state, records a
 
 New durable evidence should include the lightweight envelope from [ADR 0023](decisions/0023-evidence-artifacts-as-claim-proof-records): `status`, `evidence_type`, `date`, `scope`, `claim_tested`, `proof_level`, `result`, `limitations`, `non_claims`, `next_disposition`, and `current_status_pointer`.
 
-New stewardship surface must pass the anti-bureaucracy gate: it should reduce future uncertainty, automate repeated judgment, prevent a demonstrated failure, enable an honest claim, or delete/compress an older surface. If it mainly adds another thing to maintain, route to `compress`, `leave_native`, or `stop`.
+New stewardship surface must pass the anti-bureaucracy gate: it should reduce future uncertainty, automate repeated judgment, prevent a demonstrated failure, enable an honest claim, or delete/compress an older surface. Proof scales with the cost of being wrong: a reversible change ships on the cheapest check that could catch the mistake. Each new safeguard states its cost and names the safeguard it replaces, or it does not get added. If it mainly adds another thing to maintain, route to `compress`, `leave_native`, or `stop`.
 
 For a new or unique repo, start with the manual habit before adding machinery:
 
