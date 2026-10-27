@@ -40,16 +40,16 @@ class EvalCommand extends Command<void> {
         'ax',
         negatable: false,
         help:
-            'Run AX behavioral routing cases from evals/cases/*.yaml (description router; not live agents).',
+            'Offline AX substitute: run evals/cases/*.yaml through deterministic_description_router_v1 (not live agents; not CI-gated).',
       )
       ..addOption(
-        'baseline-out',
+        'write-baseline',
         help:
-            'With --ax: write compact multi-run baseline JSON to this path (default: evals/baselines/ax-latest.json).',
+            'With --ax: explicitly write a multi-run snapshot JSON to this path. Does not update committed stage history unless you choose that path.',
       )
       ..addOption(
         'runs',
-        help: 'With --ax --baseline-out: number of repeated runs (default 3).',
+        help: 'With --ax: repeated router runs when writing JSON output (default 3).',
         defaultsTo: '3',
       );
   }
@@ -81,45 +81,52 @@ class EvalCommand extends Command<void> {
 
   Future<void> _runAxEvals(final String root) async {
     final useJson = argResults?['json'] as bool? ?? false;
-    final baselineOut = argResults?['baseline-out'] as String?;
+    final writeBaseline = argResults?['write-baseline'] as String?;
     final runs = int.tryParse(argResults?['runs'] as String? ?? '3') ?? 3;
 
-    if (baselineOut != null && baselineOut.isNotEmpty) {
-      final baseline = await runAxBaseline(root, runs: runs);
-      final outPath = p.isAbsolute(baselineOut)
-          ? baselineOut
-          : p.join(root, baselineOut);
-      File(outPath).writeAsStringSync('${encodeAxBaselineJson(baseline)}\n');
-      if (useJson) {
-        _write(jsonEncode(baseline));
-      } else {
-        _write('AX baseline written to $outPath');
-        final means = baseline['signal_means'] as Map<String, dynamic>;
-        _write(
-          'signals (mean of $runs runs): routing_accuracy=${means['routing_accuracy']} '
-          'missed_blockers=${means['missed_blockers_rate']} '
-          'mean_kb=${means['mean_kb_skill_loaded']} '
-          'loops_past_two=${means['loops_past_two_rate']}',
-        );
-        _write('measurement: ${baseline['measurement']}');
-      }
-      final failed = baseline['failed_cases'] as List<dynamic>;
-      exit(failed.isEmpty ? 0 : 1);
+    final baseline = await runAxBaseline(root, runs: runs);
+    final means = baseline['signal_means'] as Map<String, dynamic>;
+
+    String? writtenPath;
+    if (writeBaseline != null && writeBaseline.isNotEmpty) {
+      writtenPath = p.isAbsolute(writeBaseline)
+          ? writeBaseline
+          : p.join(root, writeBaseline);
+    } else if (!useJson) {
+      writtenPath = p.join(root, 'evals', 'baselines', 'ax-latest-run.json');
     }
 
-    final report = await runAxEvalSuite(root);
+    if (writtenPath != null) {
+      File(writtenPath).writeAsStringSync('${encodeAxBaselineJson(baseline)}\n');
+    }
+
     if (useJson) {
-      _write(jsonEncode(report.toJson()));
+      _write(jsonEncode(baseline));
     } else {
-      _write('AX eval (${report.measurement})');
-      _write('signals: ${jsonEncode(report.signals.toJson())}');
-      for (final c in report.cases.where(
-        (final r) => !r.routingOk || r.missedBlockers || r.loopsPastTwoRisk,
-      )) {
-        _write('  fail ${c.id}: ${c.errors.join('; ')}');
+      _write('AX eval (${baseline['measurement']})');
+      if (writtenPath != null) {
+        final gitignored = writtenPath.endsWith('ax-latest-run.json');
+        _write(
+          'snapshot written to $writtenPath'
+          '${gitignored ? " (gitignored)" : ""}',
+        );
+      }
+      _write(
+        'signals (mean of $runs runs): routing_accuracy=${means['routing_accuracy']} '
+        'missed_blockers=${means['missed_blockers_rate']} '
+        'mean_kb=${means['mean_kb_skill_loaded']} '
+        'loops_past_two=${means['loops_past_two_rate']}',
+      );
+      _write(
+        'offline substitute only — not CI-gated; stage history lives in evals/baselines/ax-2026-10-27.json',
+      );
+      for (final id in baseline['failed_cases'] as List<dynamic>) {
+        _write('  fail $id');
       }
     }
-    exit(report.ok ? 0 : 1);
+
+    final failed = baseline['failed_cases'] as List<dynamic>;
+    exit(failed.isEmpty ? 0 : 1);
   }
 
   Future<void> _runSkillEvals(final String root) async {

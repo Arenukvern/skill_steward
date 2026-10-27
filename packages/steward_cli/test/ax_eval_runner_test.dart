@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:path/path.dart' as p;
@@ -46,5 +47,14 @@ void main() {
     expect(baseline['deterministic'], isTrue);
     final signals = baseline['signals_per_run'] as List<dynamic>;
     expect(signals.length, 3);
+  });
+
+  test('stage history baseline keeps stages map', () async {
+    final raw = await File(
+      p.join(repoRoot, 'evals', 'baselines', 'ax-2026-10-27.json'),
+    ).readAsString();
+    final doc = jsonDecode(raw) as Map<String, dynamic>;
+    final stages = doc['stages'] as Map<String, dynamic>;
+    expect(stages.keys, containsAll(['before', 'after_routing', 'after_compress']));
   });
 }
