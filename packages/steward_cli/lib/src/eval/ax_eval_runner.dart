@@ -362,6 +362,5 @@ Future<String?> _gitHead(final String repoRoot) async {
   return (result.stdout as String).trim();
 }
 
-String encodeAxBaselineJson(final Map<String, dynamic> baseline) {
-  return const JsonEncoder.withIndent('  ').convert(baseline);
-}
+String encodeAxBaselineJson(final Map<String, dynamic> baseline) =>
+    const JsonEncoder.withIndent('  ').convert(baseline);

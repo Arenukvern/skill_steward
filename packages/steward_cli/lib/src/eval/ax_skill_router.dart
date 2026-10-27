@@ -100,22 +100,17 @@ const _routingStopWords = {
   'using',
 };
 
-List<String> _tokens(final String text) {
-  return text
-      .toLowerCase()
-      .split(RegExp(r'\W+'))
-      .where((final w) => w.length > 3 && !_routingStopWords.contains(w))
-      .toSet()
-      .toList();
-}
+List<String> _tokens(final String text) => text
+    .toLowerCase()
+    .split(RegExp(r'\W+'))
+    .where((final w) => w.length > 3 && !_routingStopWords.contains(w))
+    .toSet()
+    .toList();
 
 double _overlapScore(final List<String> promptTokens, final String corpus) {
   if (promptTokens.isEmpty || corpus.isEmpty) return 0;
   final corpusTokens = _tokens(corpus).toSet();
-  var hits = 0;
-  for (final t in promptTokens) {
-    if (corpusTokens.contains(t)) hits++;
-  }
+  final hits = promptTokens.where(corpusTokens.contains).length;
   return hits / promptTokens.length;
 }
 

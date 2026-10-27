@@ -4,12 +4,11 @@ library;
 class AxRepoFileExpect {
   const AxRepoFileExpect({required this.path, required this.terms});
 
-  factory AxRepoFileExpect.fromMap(final Map<Object?, Object?> map) {
-    return AxRepoFileExpect(
-      path: (map['path'] ?? '') as String,
-      terms: AxExpect._stringList(map['terms']),
-    );
-  }
+  factory AxRepoFileExpect.fromMap(final Map<Object?, Object?> map) =>
+      AxRepoFileExpect(
+        path: (map['path'] ?? '') as String,
+        terms: AxExpect._stringList(map['terms']),
+      );
 
   final String path;
   final List<String> terms;

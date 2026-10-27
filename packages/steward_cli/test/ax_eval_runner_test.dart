@@ -41,7 +41,7 @@ void main() {
   });
 
   test('baseline writer is deterministic across runs', () async {
-    final baseline = await runAxBaseline(repoRoot, runs: 3);
+    final baseline = await runAxBaseline(repoRoot);
     expect(baseline['runs'], 3);
     expect(baseline['deterministic'], isTrue);
     final signals = baseline['signals_per_run'] as List<dynamic>;
