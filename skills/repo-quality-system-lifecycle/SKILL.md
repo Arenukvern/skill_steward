@@ -142,7 +142,7 @@ See friction→artifact routing in [ecology-review.md](references/ecology-review
 
 ### 7. Repository ecology
 
-Load [ecology-review.md](references/ecology-review.md) when the user asks what to compress, merge, retire, or move to checks—not for routine product repairs.
+Load [ecology-review.md](references/ecology-review.md) when the user asks what to compress, merge, retire, or move to checks—not for routine product repairs. Ecology passes apply the anti-bureaucracy gate defined there.
 
 
 ## Output contract
