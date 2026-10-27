@@ -21,7 +21,7 @@
     "loops_past_two": "not_measured"
   },
   "after": {
-    "git_ref": "see PR head commit",
+    "git_ref": "cea6379",
     "runs": 3,
     "routing_accuracy": {
       "combined_pass": 17,
