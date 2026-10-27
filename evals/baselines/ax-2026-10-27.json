@@ -1,63 +1,61 @@
 {
   "baseline_id": "ax-guild-skills-2026-10-27",
-  "git_revision": "a15a8ceb89fc9e65e3510a2e083fa90bd8a390c4",
   "measurement": "deterministic_description_router_v1 (not live agent sessions)",
-  "skill_md_kb": {
-    "harness-engineering-lifecycle": 7,
-    "multi-agent-handoff": 12,
-    "release-changelog-harness": 11,
-    "repo-quality-system-lifecycle": 24,
-    "repository-governance-lifecycle": 10,
-    "skill-authoring-lifecycle": 8
-  },
-  "runs": 3,
-  "deterministic": true,
   "non_claims": [
     "Not live agent sessions or skillgrade pairs.",
     "Router scores description + When to/not sections only.",
     "KB loaded is SKILL.md body size for the routed skill, not references."
   ],
-  "signals_per_run": [
-    {
-      "routing_accuracy": 0.631578947368421,
-      "missed_blockers_rate": 0.39473684210526316,
-      "mean_kb_skill_loaded": 11.842105263157896,
-      "loops_past_two_rate": 0.02631578947368421
+  "before_routing_fix": {
+    "git_revision": "a15a8ceb89fc9e65e3510a2e083fa90bd8a390c4",
+    "skill_md_kb": {
+      "harness-engineering-lifecycle": 7,
+      "multi-agent-handoff": 12,
+      "release-changelog-harness": 11,
+      "repo-quality-system-lifecycle": 24,
+      "repository-governance-lifecycle": 10,
+      "skill-authoring-lifecycle": 8
     },
-    {
-      "routing_accuracy": 0.631578947368421,
-      "missed_blockers_rate": 0.39473684210526316,
-      "mean_kb_skill_loaded": 11.842105263157896,
-      "loops_past_two_rate": 0.02631578947368421
-    },
-    {
+    "runs": 3,
+    "signal_means": {
       "routing_accuracy": 0.631578947368421,
       "missed_blockers_rate": 0.39473684210526316,
       "mean_kb_skill_loaded": 11.842105263157896,
       "loops_past_two_rate": 0.02631578947368421
     }
-  ],
-  "signal_means": {
-    "routing_accuracy": 0.631578947368421,
-    "missed_blockers_rate": 0.39473684210526316,
-    "mean_kb_skill_loaded": 11.842105263157896,
-    "loops_past_two_rate": 0.02631578947368421
   },
-  "failed_cases": [
-    "behavior-ecology-disposition",
-    "behavior-evolutionary-simplicity",
-    "behavior-generational-ladder",
-    "behavior-handoff-two-attempts",
-    "behavior-harness-after-contract",
-    "behavior-owner-boundary",
-    "behavior-pdsa-stop",
-    "behavior-skill-authoring-eval",
-    "route-adopt-fresh-repo",
-    "route-first-steward-yaml",
-    "route-moe-conflict",
-    "route-north-star-impact",
-    "scenario-adopt-fresh-repo",
-    "scenario-experiment-verdict",
-    "scenario-third-repair-loop"
-  ]
+  "after_routing_fix": {
+    "git_revision": "2d8a5f5",
+    "skill_md_kb": {
+      "harness-engineering-lifecycle": 8,
+      "multi-agent-handoff": 13,
+      "release-changelog-harness": 12,
+      "repo-quality-system-lifecycle": 25,
+      "repository-governance-lifecycle": 11,
+      "skill-authoring-lifecycle": 9
+    },
+    "runs": 3,
+    "signal_means": {
+      "routing_accuracy": 0.6578947368421053,
+      "missed_blockers_rate": 0.3684210526315789,
+      "mean_kb_skill_loaded": 12.31578947368421,
+      "loops_past_two_rate": 0.0
+    },
+    "failed_cases": [
+      "behavior-ecology-disposition",
+      "behavior-evolutionary-simplicity",
+      "behavior-handoff-two-attempts",
+      "behavior-harness-after-contract",
+      "behavior-owner-boundary",
+      "behavior-pdsa-stop",
+      "route-adopt-fresh-repo",
+      "route-ecology-compress",
+      "route-first-steward-yaml",
+      "route-moe-conflict",
+      "route-north-star-impact",
+      "route-update-design-faq",
+      "route-write-adr",
+      "scenario-adopt-fresh-repo"
+    ]
+  }
 }

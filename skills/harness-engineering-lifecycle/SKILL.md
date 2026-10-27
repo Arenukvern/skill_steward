@@ -1,6 +1,8 @@
 ---
 name: harness-engineering-lifecycle
-description: Design, implement, and integrate generalized validation harnesses across a producer-consumer boundary after a local harness contract exists. Use when refactoring custom validation CLIs/MCPs for large polyrepos, extending Steward across sibling repos, or deploying a local tool to a consumer project for dogfooding and testing.
+description: >-
+  For generalizing a proven local steward.yaml harness across producer-consumer repos, polyrepo CLI/MCP integration, and sibling-repo dogfood after a contract exists.
+  Not for cold-start adoption, first steward.yaml, first quick probe, or skill packaging—use repo-quality-system-lifecycle or skill-authoring-lifecycle.
 license: MIT
 type: governance
 metadata:
@@ -24,7 +26,7 @@ The former `mcp-harness-repo-maintainer` skill was removed in 0.6.0. Cold start 
 
 ## When not to use
 
-- Initial `steward.yaml` adoption or first quick probe in one repo — start here; cold start is part of this lifecycle.
+- Initial `steward.yaml` adoption or first quick probe in one repo — use `repo-quality-system-lifecycle` (catalog cold-start route).
 - Skill creation, registry updates, or marketplace packaging — use `skill-authoring-lifecycle`.
 - Product-specific diagnostics before a cold-start contract exists — first add a bounded action, probe, and scenario in the target repo.
 

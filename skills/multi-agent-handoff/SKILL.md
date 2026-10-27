@@ -1,6 +1,8 @@
 ---
 name: multi-agent-handoff
-description: Plan and document handoffs, parent lane contracts, and parallel batch contracts between specialized AI agents (foreman, workers, reviewers). Use for multi-agent workflows, subagents, original goal preservation, native gates, claim ceilings, terminal states, baton passes, or guild-style agent coordination.
+description: >-
+  For baton handoffs, one-obligation moves between agents, and parent-lane or parallel-batch contracts when multiple subagents share work.
+  Not for repo adopt, ADRs, ecology cleanup, or product implementation—use repo-quality-system-lifecycle, repository-governance-lifecycle, or native work.
 license: MIT
 type: governance
 metadata:

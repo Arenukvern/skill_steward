@@ -1,7 +1,8 @@
 ---
 name: repo-quality-system-lifecycle
 description: >-
-  Establish or audit an agent-operated repository's quality contract or recurring stewardship friction. Skip routine repairs with a known owner and native check. Use for charter/docs ownership, validation gates, evidence paths, maturity proof, consumer/producer boundaries, command-surface evolution, or a repo ecology pass to decide what should be compressed, merged, retired, or moved to checks.
+  For adopt/baseline, stewardship quality-contract audits, evidence and maturity proof, producer/consumer boundaries, repo ecology compress/merge/retire, and claim-honesty reviews.
+  Not for ADR/FAQ-only governance, harness generalization after baseline, release CI, skill packaging, or routine product repairs with a known native gate.
 license: MIT
 type: governance
 metadata:
