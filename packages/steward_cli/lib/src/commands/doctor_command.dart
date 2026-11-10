@@ -58,7 +58,7 @@ class DoctorCommand extends Command<void> {
     sink
       ..writeln('Steward doctor')
       ..writeln('- root: $root')
-      ..writeln('- schema: ${config['schema'] ?? 'legacy'}')
+      ..writeln('- schema: ${config['schema'] ?? 'unknown'}')
       ..writeln('- config valid: ${config['valid']}');
     if (argResults?['guidance'] != false) {
       writeOutputGuidance(sink, payload['guidance'] as Map<String, dynamic>);

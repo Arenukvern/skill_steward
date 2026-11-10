@@ -612,6 +612,8 @@ Skip (maintainer only) → PR title contains [skip changeset]
 
 **When to skip:** typos, comments-only, or internal refactors with zero consumer impact (use `[skip changeset]` in PR title).
 
+**Pre-v1 `pipelines` removal:** MCP pipeline tools, the `pipelines:` steward.yaml key, and the non-v1 bundle path are removed. Migrate to `schema: steward/v1` typed `actions` — see [pre-v1 pipelines migration](migrations/pre-v1-pipelines-to-steward-v1).
+
 ## 🏗️ Harness workshop
 
 ```text
