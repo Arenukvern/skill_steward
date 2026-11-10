@@ -6,10 +6,10 @@ import 'package:args/command_runner.dart';
 import 'package:json_rpc_2/json_rpc_2.dart' as json_rpc;
 import 'package:stream_channel/stream_channel.dart';
 
-import '../bounded_process.dart';
 import '../output_guidance.dart';
 import '../path_safety.dart';
 import '../repo_root.dart';
+import '../steward_version.dart';
 import '../validation/steward_config.dart';
 import 'blocked_command.dart';
 import 'doctor_command.dart';
@@ -49,7 +49,10 @@ class McpCommand extends Command<void> {
       (final json_rpc.Parameters params) => {
         'protocolVersion': '2024-11-05',
         'capabilities': {'tools': {}, 'resources': {}, 'prompts': {}},
-        'serverInfo': {'name': 'steward-mcp', 'version': '0.3.4'},
+        'serverInfo': {
+          'name': 'steward-mcp',
+          'version': stewardPackageVersion,
+        },
         'instructions':
             'You are operating in a repository governed by Skill Steward. '
             'This MCP surface is experimental. '
@@ -67,57 +70,28 @@ class McpCommand extends Command<void> {
 
     // Register Tools List
     registerRpc('tools/list', (final json_rpc.Parameters params) {
-      final tools = <Map<String, dynamic>>[];
-
-      if (config.isV1) {
-        tools
-          ..add({
-            'name': 'steward_list_actions',
-            'description':
-                'List typed Steward actions without executing repository commands.',
-            'inputSchema': {'type': 'object', 'properties': {}},
-          })
-          ..add({
-            'name': 'steward_inspect_action',
-            'description':
-                'Inspect one typed Steward action by exact id without executing it.',
-            'inputSchema': {
-              'type': 'object',
-              'properties': {
-                'id': {
-                  'type': 'string',
-                  'description': 'The exact action id from steward.yaml.',
-                },
-              },
-              'required': ['id'],
-            },
-          });
-      } else {
-        // Thin Router approach: expose a single native tool for legacy pipelines.
-        tools.add({
-          'name': 'steward_run_pipeline',
+      final tools = <Map<String, dynamic>>[
+        {
+          'name': 'steward_list_actions',
           'description':
-              'Execute a legacy pipeline by precise name. Experimental unsafe path: use only after explicit human approval.',
+              'List typed Steward actions without executing repository commands.',
+          'inputSchema': {'type': 'object', 'properties': {}},
+        },
+        {
+          'name': 'steward_inspect_action',
+          'description':
+              'Inspect one typed Steward action by exact id without executing it.',
           'inputSchema': {
             'type': 'object',
             'properties': {
-              'name': {
+              'id': {
                 'type': 'string',
-                'description':
-                    'The exact name of the pipeline from steward.yaml to execute.',
-              },
-              'confirm_legacy_unsafe': {
-                'type': 'boolean',
-                'description':
-                    'Must be true to acknowledge legacy bash execution without typed action policy.',
+                'description': 'The exact action id from steward.yaml.',
               },
             },
-            'required': ['name', 'confirm_legacy_unsafe'],
+            'required': ['id'],
           },
-        });
-      }
-
-      tools.addAll([
+        },
         {
           'name': 'steward_explain_result',
           'description':
@@ -153,7 +127,7 @@ class McpCommand extends Command<void> {
             'additionalProperties': false,
           },
         },
-      ]);
+      ];
       return {'tools': tools};
     });
 
@@ -240,26 +214,6 @@ class McpCommand extends Command<void> {
         }
       }
 
-      String capOutput(final String output) {
-        const maxOutputChars = 200000;
-        if (output.length <= maxOutputChars) return output;
-        return '${output.substring(0, maxOutputChars)}\n[steward: output truncated at $maxOutputChars characters]';
-      }
-
-      if (name == 'steward_declare_pipeline' ||
-          name == 'steward_update_pipeline' ||
-          name == 'steward_delete_pipeline') {
-        const message =
-            'Permanent steward.yaml mutation through MCP is disabled. Capture an unknown case or propose a typed action candidate for review.';
-        logTelemetry(isError: true, resultOrError: message);
-        return {
-          'isError': true,
-          'content': [
-            {'type': 'text', 'text': message},
-          ],
-        };
-      }
-
       if (name == 'steward_list_actions') {
         if (!config.isV1) {
           const message = 'Typed action discovery requires schema: steward/v1.';
@@ -329,113 +283,6 @@ class McpCommand extends Command<void> {
             {'type': 'text', 'text': out},
           ],
         };
-      }
-
-      if (name == 'steward_run_pipeline') {
-        if (config.isV1) {
-          const message =
-              'Legacy pipeline execution is disabled for schema: steward/v1. Use typed action discovery instead.';
-          logTelemetry(isError: true, resultOrError: message);
-          return {
-            'isError': true,
-            'content': [
-              {'type': 'text', 'text': message},
-            ],
-          };
-        }
-        final arguments = params['arguments']
-            .asMapOr(<String, dynamic>{})
-            .cast<String, dynamic>();
-        final pipelineName = arguments['name'] as String?;
-        final confirmed = arguments['confirm_legacy_unsafe'] == true;
-        if (pipelineName == null) {
-          logTelemetry(isError: true, resultOrError: 'Missing pipeline name.');
-          return {
-            'isError': true,
-            'content': [
-              {
-                'type': 'text',
-                'text': 'Error: Missing pipeline name argument.',
-              },
-            ],
-          };
-        }
-        if (!confirmed) {
-          const message =
-              'Legacy pipeline execution requires confirm_legacy_unsafe: true after explicit human approval.';
-          logTelemetry(isError: true, resultOrError: message);
-          return {
-            'isError': true,
-            'content': [
-              {'type': 'text', 'text': message},
-            ],
-          };
-        }
-
-        final pipelineConfig = config.pipelines[pipelineName];
-        if (pipelineConfig is Map) {
-          final cmd = pipelineConfig['cmd'] as String?;
-          if (cmd == null) {
-            logTelemetry(
-              isError: true,
-              resultOrError: 'Pipeline "$pipelineName" has no cmd field.',
-            );
-            return {
-              'isError': true,
-              'content': [
-                {
-                  'type': 'text',
-                  'text': 'Error: Pipeline "$pipelineName" has no cmd field.',
-                },
-              ],
-            };
-          }
-
-          try {
-            final result = await runBoundedProcess(
-              'bash',
-              ['-c', cmd],
-              workingDirectory: root,
-              timeout: const Duration(seconds: 120),
-              timeoutMessage: 'Timed out after 120 seconds.',
-            );
-            final out = capOutput('${result.stdout}\n${result.stderr}'.trim());
-            logTelemetry(isError: result.exitCode != 0, resultOrError: out);
-            return {
-              'content': [
-                {
-                  'type': 'text',
-                  'text': out.isEmpty ? 'Pipeline executed successfully.' : out,
-                },
-              ],
-              if (result.exitCode != 0) 'isError': true,
-            };
-          } on Exception catch (e) {
-            logTelemetry(isError: true, resultOrError: e.toString());
-            return {
-              'isError': true,
-              'content': [
-                {'type': 'text', 'text': 'Error: $e'},
-              ],
-            };
-          }
-        } else {
-          logTelemetry(
-            isError: true,
-            resultOrError:
-                'Pipeline "$pipelineName" not found in steward.yaml.',
-          );
-          return {
-            'isError': true,
-            'content': [
-              {
-                'type': 'text',
-                'text':
-                    'Error: Pipeline "$pipelineName" not found in steward.yaml. Please read the file first.',
-              },
-            ],
-          };
-        }
       }
 
       logTelemetry(isError: true, resultOrError: 'Method not found');

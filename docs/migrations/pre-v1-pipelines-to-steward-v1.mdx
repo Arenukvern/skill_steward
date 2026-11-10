@@ -1,0 +1,35 @@
+# Migrate from `pipelines` to `steward/v1` actions
+
+Pre-`schema: steward/v1` steward.yaml used a top-level `pipelines:` map with `cmd` shells, optional MCP tools (`steward_run_pipeline` with `confirm_legacy_unsafe`), and a non-v1 `steward bundle` path that rewrote `skills.sh.json` and agent rule files. That surface is removed.
+
+## Removed
+
+| Surface | Replacement |
+|---------|-------------|
+| `steward.yaml` → `pipelines:` | `schema: steward/v1` with `actions.<id>.command.argv` |
+| MCP `steward_run_pipeline` / `confirm_legacy_unsafe` | `steward_list_actions`, `steward_inspect_action` (read-only on v1) |
+| MCP refuse stubs `steward_declare/update/delete_pipeline` | Typed action candidates via CLI (`steward action-candidate`) |
+| Non-v1 `steward bundle` (`skills_distribution` + `.clinerules`) | `steward bundle` with `steward/plugin-bundle/v1` manifests |
+
+## Migration steps
+
+1. Set `schema: steward/v1` and fill required stewardship pillars (see this repo's [`steward.yaml`](https://github.com/arenukvern/skill_steward/blob/main/steward.yaml)).
+2. For each former `pipelines.<name>.cmd`, declare an action:
+
+```yaml
+actions:
+  validate:
+    desc: Check skills and repository hygiene
+    safety:
+      class: bounded_local
+      default_policy: allow
+    command:
+      argv: [pnpm, run, validate]
+```
+
+3. Point harness entrypoints and CI at `steward actions list` / native commands instead of MCP pipeline execution.
+4. Re-run `steward doctor --json` and `pnpm run validate`.
+
+## MCP clients
+
+Install the CLI (`install.sh` on GitHub Releases), then use stdio MCP with `steward mcp`. The experimental read-only v1 surface does not execute repository commands through MCP.

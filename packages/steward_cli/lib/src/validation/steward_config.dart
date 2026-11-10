@@ -194,7 +194,6 @@ class StewardConfig {
     this.provenance = const {},
     this.harnessName,
     this.harnessDescription,
-    this.pipelines = const {},
     this.docs = const {},
     this.governance = const {},
     this.branding = const {},
@@ -219,7 +218,6 @@ class StewardConfig {
   final Map<String, dynamic> provenance;
   final String? harnessName;
   final String? harnessDescription;
-  final Map<String, dynamic> pipelines;
   final Map<String, String> docs;
   final Map<String, dynamic> governance;
   final Map<String, dynamic> branding;
@@ -311,7 +309,6 @@ class StewardConfig {
 
       final harnessName = harnessMap?['name'] as String?;
       final harnessDescription = harnessMap?['description'] as String?;
-      final pipelinesMap = _stringMap(rootMap['pipelines']);
       final docsMap = _stringMap(rootMap['docs']);
       final docs = <String, String>{};
       docsMap?.forEach((final key, final value) => docs[key] = '$value');
@@ -353,7 +350,6 @@ class StewardConfig {
         provenance: provenanceMap ?? const {},
         harnessName: harnessName,
         harnessDescription: harnessDescription,
-        pipelines: pipelinesMap ?? const {},
         docs: docs,
         governance: Map<String, dynamic>.from(governanceMap),
         branding: Map<String, dynamic>.from(brandingMap),
@@ -362,9 +358,20 @@ class StewardConfig {
         telemetry: _stringMap(rootMap['telemetry']) ?? const {},
       );
 
+      final diagnostics = _validateContract(config, rootPath);
+      if (rootMap.containsKey('pipelines')) {
+        diagnostics.add(
+          const ConfigDiagnostic.error(
+            path: 'pipelines',
+            message:
+                'The pipelines key was removed; use schema: steward/v1 with actions.*.command.argv instead.',
+          ),
+        );
+      }
+
       return StewardConfigLoadResult(
         config: config,
-        diagnostics: _validateContract(config, rootPath),
+        diagnostics: diagnostics,
       );
     } on Object catch (_) {
       return StewardConfigLoadResult(
@@ -620,7 +627,6 @@ List<ConfigDiagnostic> _validateContract(
     }
   }
 
-  _validateLegacyPipelines(config, diagnostics);
   _validateActions(config, diagnostics);
   _validateProbes(config, diagnostics);
   _requireString(config.unknownCases, 'unknown_cases', 'path', diagnostics);
@@ -672,31 +678,6 @@ void _validateStewardshipPillars(
           path: 'stewardship.$pillar',
           message:
               'schema: steward/v1 requires stewardship.$pillar pillar proof.',
-        ),
-      );
-    }
-  }
-}
-
-void _validateLegacyPipelines(
-  final StewardConfig config,
-  final List<ConfigDiagnostic> diagnostics,
-) {
-  for (final entry in config.pipelines.entries) {
-    if (entry.value is String) {
-      diagnostics.add(
-        ConfigDiagnostic.error(
-          path: 'pipelines.${entry.key}',
-          message:
-              'schema: steward/v1 forbids raw string pipelines; declare actions instead.',
-        ),
-      );
-    } else if (entry.value is Map && (entry.value as Map).containsKey('cmd')) {
-      diagnostics.add(
-        ConfigDiagnostic.error(
-          path: 'pipelines.${entry.key}.cmd',
-          message:
-              'schema: steward/v1 forbids legacy pipelines.*.cmd; declare actions.*.command.argv instead.',
         ),
       );
     }

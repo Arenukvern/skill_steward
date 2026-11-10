@@ -23,7 +23,7 @@ class EvalCommand extends Command<void> {
         'name',
         abbr: 'n',
         help:
-            'Run a registered telemetry/dogfood eval from steward.yaml. Legacy path; skill evals are the default.',
+            'Run a steward.yaml telemetry/dogfood eval by name (not the default skill eval route).',
       )
       ..addFlag(
         'json',

@@ -145,7 +145,7 @@ repo:
     );
   });
 
-  test('validateLocalSkills rejects legacy pipeline command under v1', () async {
+  test('validateLocalSkills rejects pipelines key under v1', () async {
     await writeSkillsJson();
     await writeStewardYaml('''
 ${validStewardV1()}
@@ -160,7 +160,7 @@ pipelines:
     expect(
       report.registryWarnings,
       contains(
-        'pipelines.validate.cmd: schema: steward/v1 forbids legacy pipelines.*.cmd; declare actions.*.command.argv instead.',
+        'pipelines: The pipelines key was removed; use schema: steward/v1 with actions.*.command.argv instead.',
       ),
     );
   });
