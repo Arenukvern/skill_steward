@@ -5,6 +5,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
 SERVER_JSON="$ROOT_DIR/packages/steward_cli/server.json"
 DOCKERFILE="$ROOT_DIR/packages/steward_cli/Dockerfile.registry"
+RELEASE_WORKFLOW="$ROOT_DIR/.github/workflows/publish_mcp_registry.yml"
 PKG_JSON="$ROOT_DIR/package.json"
 PUBSPEC="$ROOT_DIR/packages/steward_cli/pubspec.yaml"
 VERSION_DART="$ROOT_DIR/packages/steward_cli/lib/src/steward_version.dart"
@@ -71,5 +72,28 @@ grep -Fq 'dart compile exe bin/steward.dart' "$DOCKERFILE" ||
 
 grep -q 'ENTRYPOINT.*mcp' "$DOCKERFILE" ||
   fail "Dockerfile.registry entrypoint must run steward mcp"
+
+if [[ -f "$RELEASE_WORKFLOW" ]]; then
+  grep -Fq 'id-token: write' "$RELEASE_WORKFLOW" ||
+    fail "publish workflow must request id-token: write for OIDC"
+  grep -Fq 'packages: write' "$RELEASE_WORKFLOW" ||
+    fail "publish workflow must request packages: write for GHCR"
+  grep -Fq 'docker/build-push-action@' "$RELEASE_WORKFLOW" ||
+    fail "publish workflow must build with docker/build-push-action"
+  grep -Fq 'context: .' "$RELEASE_WORKFLOW" ||
+    fail "publish workflow build context must be repository root"
+  grep -Fq 'file: packages/steward_cli/Dockerfile.registry' "$RELEASE_WORKFLOW" ||
+    fail "publish workflow must use packages/steward_cli/Dockerfile.registry"
+  grep -Fq 'MCP_PUBLISHER_VERSION: v1.8.1' "$RELEASE_WORKFLOW" ||
+    fail "publish workflow must pin mcp-publisher v1.8.1"
+  grep -Fq 'MCP_PUBLISHER_SHA256:' "$RELEASE_WORKFLOW" ||
+    fail "publish workflow must pin mcp-publisher sha256"
+  grep -Fq 'mcp-publisher validate' "$RELEASE_WORKFLOW" ||
+    fail "publish workflow must run mcp-publisher validate"
+  grep -Fq 'login github-oidc' "$RELEASE_WORKFLOW" ||
+    fail "publish workflow must login github-oidc"
+  grep -Fq 'ghcr.io/arenukvern/steward-mcp:' "$RELEASE_WORKFLOW" ||
+    fail "publish workflow must push ghcr.io/arenukvern/steward-mcp:<version>"
+fi
 
 echo "check_mcp_registry: manifest and version SSOT are consistent for $version"
