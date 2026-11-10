@@ -50,6 +50,8 @@ if [[ "$pubspec_version" != "$version" ]]; then
   exit 1
 fi
 
+bash packages/steward_cli/tool/contracts/check_mcp_registry.sh
+
 tag="v${version#v}"
 
 if ! grep -Eq "^##[[:space:]]+$version([[:space:]]|$)" CHANGELOG.md; then

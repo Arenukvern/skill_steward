@@ -22,7 +22,8 @@
     "changeset:version": "changeset version && dart run packages/steward_cli/tool/sync_versions.dart",
     "changeset:status": "changeset status",
     "release:tag": "bash scripts/tag_release.sh",
-    "release:verify": "bash scripts/verify_release.sh"
+    "release:verify": "bash scripts/verify_release.sh",
+    "mcp:registry:check": "bash packages/steward_cli/tool/contracts/check_mcp_registry.sh"
   },
   "engines": {
     "node": ">=18",
