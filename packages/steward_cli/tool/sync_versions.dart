@@ -70,7 +70,31 @@ void main() {
 const stewardPackageVersion = '$version';
 ''');
 
+  final serverJsonFile = File(
+    '$stewardCliDirPath${pathSeparator}server.json',
+  );
+  if (serverJsonFile.existsSync()) {
+    final serverJson =
+        jsonDecode(serverJsonFile.readAsStringSync()) as Map<String, dynamic>;
+    serverJson['version'] = version;
+    final packages = serverJson['packages'];
+    if (packages is List) {
+      for (final item in packages) {
+        if (item is! Map) continue;
+        if (item['registryType'] == 'oci' && item['identifier'] is String) {
+          final id = item['identifier'] as String;
+          final colon = id.lastIndexOf(':');
+          if (colon > 0) {
+            item['identifier'] = '${id.substring(0, colon + 1)}$version';
+          }
+        }
+      }
+    }
+    const encoder = JsonEncoder.withIndent('  ');
+    serverJsonFile.writeAsStringSync('${encoder.convert(serverJson)}\n');
+  }
+
   stdout.writeln(
-    'Synced version: packages/steward_cli/pubspec.yaml and steward_version.dart are now at $version',
+    'Synced version: pubspec.yaml, steward_version.dart, and server.json are now at $version',
   );
 }
