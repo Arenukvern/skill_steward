@@ -1,0 +1,126 @@
+name: Publish MCP Registry server
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Released semver (no v prefix; must match package.json on the checked-out ref)
+        required: true
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
+concurrency:
+  group: mcp-registry-publish-${{ github.event.release.tag_name || inputs.version || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Publish steward-mcp to MCP Registry
+    runs-on: ubuntu-latest
+    environment: mcp-registry-publish
+    timeout-minutes: 30
+    steps:
+      - name: Checkout release ref
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.release.tag_name || format('v{0}', inputs.version) }}
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Resolve release version
+        id: version
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${{ github.event_name }}" == "release" ]]; then
+            version="${{ github.event.release.tag_name }}"
+            version="${version#v}"
+          else
+            version="${{ inputs.version }}"
+          fi
+          pkg_version="$(node -p "require('./package.json').version")"
+          if [[ "$version" != "$pkg_version" ]]; then
+            echo "::error::Requested version $version does not match package.json ($pkg_version) on this ref."
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Verify MCP Registry contracts
+        run: pnpm run mcp:registry:check
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and publish OCI image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: packages/steward_cli/Dockerfile.registry
+          push: true
+          tags: ghcr.io/arenukvern/steward-mcp:${{ steps.version.outputs.version }}
+
+      - name: Install pinned mcp-publisher
+        env:
+          MCP_PUBLISHER_VERSION: v1.8.1
+          MCP_PUBLISHER_SHA256: a06c9096dcb9727c13555b6be26c7effa707b01f06a4c561ba7a3635443cf2cc
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL "https://github.com/modelcontextprotocol/registry/releases/download/${MCP_PUBLISHER_VERSION}/mcp-publisher_linux_amd64.tar.gz" \
+            -o mcp-publisher.tar.gz
+          echo "${MCP_PUBLISHER_SHA256}  mcp-publisher.tar.gz" | sha256sum --check --strict -
+          tar xz mcp-publisher -f mcp-publisher.tar.gz
+          chmod +x mcp-publisher
+
+      - name: Validate server manifest with the Registry
+        run: ./mcp-publisher validate packages/steward_cli/server.json
+
+      - name: Authenticate to MCP Registry with GitHub OIDC
+        run: ./mcp-publisher login github-oidc
+
+      - name: Publish server metadata to MCP Registry
+        working-directory: packages/steward_cli
+        run: ../../mcp-publisher publish
+
+      - name: Post-check registry latest version
+        env:
+          EXPECTED_VERSION: ${{ steps.version.outputs.version }}
+          REGISTRY_NAME: io.github.Arenukvern/steward-mcp
+        shell: bash
+        run: |
+          set -euo pipefail
+          encoded="$(node -p "encodeURIComponent(process.env.REGISTRY_NAME)")"
+          export REGISTRY_BODY
+          REGISTRY_BODY="$(curl -fsSL "https://registry.modelcontextprotocol.io/v0.1/servers/${encoded}/versions/latest")"
+          node <<'NODE'
+          const expected = process.env.EXPECTED_VERSION;
+          const payload = JSON.parse(process.env.REGISTRY_BODY);
+          const server = payload.server || payload;
+          const version = server.version;
+          const isLatest = payload._meta?.['io.modelcontextprotocol.registry/official']?.isLatest;
+          if (version !== expected) {
+            throw new Error(`Registry latest version ${version} != release ${expected}`);
+          }
+          if (isLatest === false) {
+            throw new Error('Published version is not marked isLatest');
+          }
+          console.log('Registry confirms latest version', version);
+          NODE

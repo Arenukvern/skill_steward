@@ -139,6 +139,7 @@ jobs:
     timeout-minutes: 15
     permissions:
       contents: write
+      actions: write
     steps:
       - uses: actions/checkout@v5
         with:
@@ -204,3 +205,13 @@ jobs:
           bash scripts/verify_release.sh \
             --repo "${{ github.repository }}" \
             --version "${{ needs.release.outputs.release_version }}"
+
+      # GITHUB_TOKEN tag pushes do not re-fire tag workflows; queue MCP publish
+      # explicitly and rely on release: published as the primary trigger.
+      - name: Queue MCP Registry publish
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          gh workflow run publish_mcp_registry.yml \
+            -f version="${{ needs.release.outputs.release_version }}"
