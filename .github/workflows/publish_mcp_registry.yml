@@ -22,6 +22,7 @@ jobs:
   publish:
     name: Publish steward-mcp to MCP Registry
     runs-on: ubuntu-latest
+    environment: mcp-registry-publish
     timeout-minutes: 30
     steps:
       - name: Checkout release ref
