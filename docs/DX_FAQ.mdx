@@ -367,6 +367,32 @@ curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/vX.Y.Z/ins
 
 **Note:** Hooks/plugins are **not** installed by `npx skills` on Cursor—see `../plugins/README.md` and [ADR 0004](decisions/0004-plugin-packaging-and-install-path).
 
+### MCP Registry (experimental, read-only v1)
+
+Registry name: `io.github.Arenukvern/steward-mcp` (OCI `ghcr.io/arenukvern/steward-mcp:<version>`). First publish ships with the next Changesets release. The MCP surface is **experimental** and **read-only** on `schema: steward/v1` — it lists/inspects typed actions and explains results; it does not execute repository commands.
+
+After `install.sh` (or any install path that puts `steward` on `PATH`):
+
+```jsonc
+// Cursor / Claude Desktop–style mcpServers
+"steward-mcp": {
+  "command": "steward",
+  "args": ["mcp"]
+}
+```
+
+```jsonc
+// VS Code MCP (settings.json) — same stdio contract
+"mcp.servers": {
+  "steward-mcp": {
+    "command": "steward",
+    "args": ["mcp"]
+  }
+}
+```
+
+Manifest: `packages/steward_cli/server.json`. Contract check: `pnpm run mcp:registry:check`.
+
 ## 🔄 Updating installed skills
 
 After Skill Steward merges to `main`, consumers refresh installed `SKILL.md` files with [vercel-labs/skills](https://github.com/vercel-labs/skills) (`npx skills`). While iterating locally, reinstall from `<skill-steward-checkout>` so project/global skills reflect the local checkout. Installed paths depend on agent (e.g. `.agents/skills/`, `.cursor/skills/`, `~/.codex/skills/`); see [AGENTS.md](https://github.com/arenukvern/skill_steward/blob/main/AGENTS.md).

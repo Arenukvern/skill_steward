@@ -177,6 +177,14 @@ steward validate
 
 Skill Steward may ship zero-dependency `steward` binaries for consumer/bootstrap use; see [ADR 0014](../../docs/decisions/0014-distribute-steward-cli-as-binary.md). Product repositories still own their branded harness binaries and release contracts — see skill `release-changelog-harness` -> `references/binary-release-contract.md`.
 
+### MCP Registry (experimental)
+
+- Registry server: `io.github.Arenukvern/steward-mcp`
+- Manifest: [`server.json`](server.json); OCI image: `packages/steward_cli/Dockerfile.registry`
+- **Boundary:** read-only v1 tools (`steward_list_actions`, `steward_inspect_action`, `steward_doctor`, `steward_explain_result`); no action execution over MCP
+- Local stdio after binary install: `steward mcp` (see [DX_FAQ](../../docs/DX_FAQ.mdx#mcp-registry-experimental-read-only-v1))
+- Version drift check: `pnpm run mcp:registry:check` (also runs in `scripts/tag_release.sh`)
+
 ## Decisions
 
 - [ADR 0006 — meta vs product CLIs](../../docs/decisions/0006-guild-harness-meta-vs-product-clis.md)

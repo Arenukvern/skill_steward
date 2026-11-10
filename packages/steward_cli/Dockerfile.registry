@@ -1,0 +1,28 @@
+# MCP Registry OCI image. Build from the repository root:
+#   docker build -f packages/steward_cli/Dockerfile.registry -t steward-mcp:local .
+
+FROM dart:stable AS build
+
+WORKDIR /app
+COPY packages/steward_cli/ packages/steward_cli/
+
+RUN cd packages/steward_cli && \
+    dart pub get && \
+    dart compile exe bin/steward.dart -o /app/steward
+
+FROM debian:bookworm-slim
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends ca-certificates tini && \
+    rm -rf /var/lib/apt/lists/* && \
+    apt-get clean
+
+RUN useradd -r -u 1001 -g root mcpuser
+
+WORKDIR /app
+COPY --from=build --chown=mcpuser:root /app/steward /app/steward
+USER mcpuser
+
+LABEL io.modelcontextprotocol.server.name="io.github.Arenukvern/steward-mcp"
+
+ENTRYPOINT ["/usr/bin/tini", "--", "/app/steward", "mcp"]
