@@ -3,27 +3,103 @@ name: Release
 on:
   push:
     branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: >-
+          Existing tag to build release assets, create or update the GitHub
+          Release, and queue MCP Registry publish (e.g. v0.7.0). Does not
+          create, move, or delete tags.
+        required: true
+        type: string
 
 concurrency:
-  group: release-${{ github.ref }}
+  group: >-
+    ${{ github.event_name == 'workflow_dispatch'
+        && format('release-tag-{0}', github.event.inputs.release_tag)
+        || format('release-{0}', github.ref) }}
   cancel-in-progress: false
 
 jobs:
-  release:
-    name: Release
+  release-finish:
+    name: Finish existing release tag
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     permissions:
-      contents: write      # push tags, create GitHub Releases
-      pull-requests: write # create / update the Version PR
+      contents: read
     outputs:
-      release_ready: ${{ steps.release-info.outputs.release_ready }}
-      release_tag: ${{ steps.release-info.outputs.release_tag }}
-      release_version: ${{ steps.release-info.outputs.release_version }}
+      release_ready: ${{ steps.dispatch-info.outputs.release_ready }}
+      release_tag: ${{ steps.dispatch-info.outputs.release_tag }}
+      release_version: ${{ steps.dispatch-info.outputs.release_version }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: refs/tags/${{ github.event.inputs.release_tag }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+
+      - name: Finish existing release tag
+        id: dispatch-info
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG_INPUT: ${{ github.event.inputs.release_tag }}
+        run: |
+          set -euo pipefail
+          tag="$RELEASE_TAG_INPUT"
+          if [[ ! "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::release_tag must match vX.Y.Z (got: $tag)."
+            exit 1
+          fi
+          git rev-parse -q --verify "refs/tags/$tag" >/dev/null || {
+            echo "::error::Tag $tag does not exist on this repository."
+            exit 1
+          }
+          tag_sha="$(git rev-list -n 1 "$tag")"
+          head_sha="$(git rev-parse HEAD)"
+          if [[ "$tag_sha" != "$head_sha" ]]; then
+            echo "::error::Checked out $head_sha but tag $tag points to $tag_sha."
+            exit 1
+          fi
+          version="${tag#v}"
+          pkg_version="$(node -p "require('./package.json').version")"
+          if [[ "$pkg_version" != "$version" ]]; then
+            echo "::error::Tag $tag has package.json version $pkg_version; expected $version."
+            exit 1
+          fi
+          if ! grep -Eq "^##[[:space:]]+$version([[:space:]]|$)" CHANGELOG.md; then
+            echo "::error::CHANGELOG.md has no section for $version on tag $tag."
+            exit 1
+          fi
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo "::notice::GitHub Release $tag already exists; assets will be rebuilt and re-uploaded."
+          fi
+          {
+            echo "release_ready=true"
+            echo "release_version=$version"
+            echo "release_tag=$tag"
+          } >> "$GITHUB_OUTPUT"
+
+  release:
+    name: Release
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      release_ready: ${{ steps.push-info.outputs.release_ready }}
+      release_tag: ${{ steps.push-info.outputs.release_tag }}
+      release_version: ${{ steps.push-info.outputs.release_version }}
     steps:
       - uses: actions/checkout@v5
         with:
           # Full history so changeset version can diff correctly
           fetch-depth: 0
+          persist-credentials: false
           # Use a PAT if you want CI to re-trigger on the Version PR;
           # GITHUB_TOKEN is fine for most flows.
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -71,7 +147,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Resolve release tag
-        id: release-info
+        id: push-info
         if: steps.changesets.outputs.hasChangesets == 'false'
         run: |
           set -euo pipefail
@@ -92,14 +168,24 @@ jobs:
 
   build-release-assets:
     name: Build release assets (${{ matrix.triple }})
-    needs: release
-    if: needs.release.outputs.release_ready == 'true'
+    needs: [release, release-finish]
+    if: >-
+      !cancelled() && (
+        (needs.release.result == 'success' &&
+          needs.release.outputs.release_ready == 'true') ||
+        (needs.release-finish.result == 'success' &&
+          needs.release-finish.outputs.release_ready == 'true')
+      )
+    env:
+      RELEASE_TAG: ${{ needs.release.outputs.release_tag || needs.release-finish.outputs.release_tag }}
+      RELEASE_VERSION: ${{ needs.release.outputs.release_version || needs.release-finish.outputs.release_version }}
     strategy:
       fail-fast: false
       matrix:
         include:
           - triple: darwin-arm64
-            runner: macos-14
+            # macos-14 arm64 runners retired 2026-11-02; macos-15 is Apple Silicon.
+            runner: macos-15
           - triple: linux-x64
             runner: ubuntu-latest
     runs-on: ${{ matrix.runner }}
@@ -107,7 +193,21 @@ jobs:
     steps:
       - uses: actions/checkout@v5
         with:
-          ref: ${{ needs.release.outputs.release_tag }}
+          ref: refs/tags/${{ env.RELEASE_TAG }}
+          persist-credentials: false
+
+      - name: Assert checkout at release tag
+        env:
+          RELEASE_TAG: ${{ env.RELEASE_TAG }}
+        run: |
+          set -euo pipefail
+          git rev-parse -q --verify "refs/tags/$RELEASE_TAG" >/dev/null
+          tag_sha="$(git rev-list -n 1 "refs/tags/$RELEASE_TAG")"
+          head_sha="$(git rev-parse HEAD)"
+          if [[ "$tag_sha" != "$head_sha" ]]; then
+            echo "::error::Checkout is $head_sha but refs/tags/$RELEASE_TAG is $tag_sha." >&2
+            exit 1
+          fi
 
       - name: Setup Dart SDK
         uses: dart-lang/setup-dart@v1
@@ -119,10 +219,13 @@ jobs:
         run: dart pub get
 
       - name: Build release artifact
+        env:
+          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
+          RELEASE_TRIPLE: ${{ matrix.triple }}
         run: |
           bash scripts/build_release_artifacts.sh \
-            --version "${{ needs.release.outputs.release_version }}" \
-            --triple "${{ matrix.triple }}"
+            --version "$RELEASE_VERSION" \
+            --triple "$RELEASE_TRIPLE"
 
       - name: Upload release tarball
         uses: actions/upload-artifact@v6
@@ -133,8 +236,18 @@ jobs:
 
   github-release:
     name: Create GitHub Release
-    needs: [release, build-release-assets]
-    if: needs.release.outputs.release_ready == 'true'
+    needs: [release, release-finish, build-release-assets]
+    if: >-
+      !cancelled() &&
+      needs.build-release-assets.result == 'success' && (
+        (needs.release.result == 'success' &&
+          needs.release.outputs.release_ready == 'true') ||
+        (needs.release-finish.result == 'success' &&
+          needs.release-finish.outputs.release_ready == 'true')
+      )
+    env:
+      RELEASE_TAG: ${{ needs.release.outputs.release_tag || needs.release-finish.outputs.release_tag }}
+      RELEASE_VERSION: ${{ needs.release.outputs.release_version || needs.release-finish.outputs.release_version }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -143,7 +256,21 @@ jobs:
     steps:
       - uses: actions/checkout@v5
         with:
-          ref: ${{ needs.release.outputs.release_tag }}
+          ref: refs/tags/${{ env.RELEASE_TAG }}
+          persist-credentials: false
+
+      - name: Assert checkout at release tag
+        env:
+          RELEASE_TAG: ${{ env.RELEASE_TAG }}
+        run: |
+          set -euo pipefail
+          git rev-parse -q --verify "refs/tags/$RELEASE_TAG" >/dev/null
+          tag_sha="$(git rev-list -n 1 "refs/tags/$RELEASE_TAG")"
+          head_sha="$(git rev-parse HEAD)"
+          if [[ "$tag_sha" != "$head_sha" ]]; then
+            echo "::error::Checkout is $head_sha but refs/tags/$RELEASE_TAG is $tag_sha." >&2
+            exit 1
+          fi
 
       - name: Download release tarballs
         uses: actions/download-artifact@v6
@@ -152,13 +279,17 @@ jobs:
           merge-multiple: true
 
       - name: Generate checksums
+        env:
+          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
         run: |
+          set -euo pipefail
           cd dist/release
-          sha256sum *.tar.gz > checksums.txt
+          sha256sum -- *.tar.gz > checksums.txt
+          grep -q " steward_${RELEASE_VERSION}_linux-x64.tar.gz$" checksums.txt
 
       - name: Extract release notes
         env:
-          RELEASE_VERSION: ${{ needs.release.outputs.release_version }}
+          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
         run: |
           python3 - <<'PY'
           import os
@@ -181,7 +312,7 @@ jobs:
       - name: Create or update GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_TAG: ${{ needs.release.outputs.release_tag }}
+          RELEASE_TAG: ${{ env.RELEASE_TAG }}
         run: |
           set -euo pipefail
           if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
@@ -201,17 +332,19 @@ jobs:
       - name: Verify release trust contract
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
         run: |
           bash scripts/verify_release.sh \
-            --repo "${{ github.repository }}" \
-            --version "${{ needs.release.outputs.release_version }}"
+            --repo "$GITHUB_REPOSITORY" \
+            --version "$RELEASE_VERSION"
 
       # gh release create uses GITHUB_TOKEN, so tag/release push does not fire
       # dependent workflows; dispatch MCP publish explicitly after assets upload.
       - name: Queue MCP Registry publish
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_VERSION: ${{ needs.release.outputs.release_version }}
+          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
         run: |
           set -euo pipefail
           gh workflow run publish_mcp_registry.yml \
