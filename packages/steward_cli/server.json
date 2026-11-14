@@ -13,6 +13,26 @@
     {
       "registryType": "oci",
       "identifier": "ghcr.io/arenukvern/steward-mcp:0.6.0",
+      "runtimeHint": "docker",
+      "runtimeArguments": [
+        {
+          "type": "named",
+          "name": "-v",
+          "value": "{repo_path}:/workspace:ro",
+          "variables": {
+            "repo_path": {
+              "format": "filepath",
+              "isRequired": true,
+              "description": "Absolute path to the repository root governed by steward.yaml"
+            }
+          }
+        },
+        {
+          "type": "named",
+          "name": "-w",
+          "value": "/workspace"
+        }
+      ],
       "transport": {
         "type": "stdio"
       }
