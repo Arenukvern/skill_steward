@@ -42,9 +42,9 @@ run_negative_fixture_test() {
     cp "$RELEASE_WORKFLOW" "$tmp/publish_mcp_registry.yml"
     sedi_inplace 's/^  id-token: write/#  id-token: write/' "$tmp/publish_mcp_registry.yml"
     sedi_inplace 's/^  packages: write/#  packages: write/' "$tmp/publish_mcp_registry.yml"
-    sedi_inplace 's#^        run: ./mcp-publisher validate #        # run: ./mcp-publisher validate #' "$tmp/publish_mcp_registry.yml"
-    sedi_inplace 's#^        run: ./mcp-publisher login github-oidc#        # run: ./mcp-publisher login github-oidc#' "$tmp/publish_mcp_registry.yml"
-    sedi_inplace 's#^          file: packages/steward_cli/Dockerfile.registry#          # file: packages/steward_cli/Dockerfile.registry#' "$tmp/publish_mcp_registry.yml"
+    sedi_inplace 's|^        run: ./mcp-publisher validate |        # run: ./mcp-publisher validate |' "$tmp/publish_mcp_registry.yml"
+    sedi_inplace 's|^        run: ./mcp-publisher login github-oidc|        # run: ./mcp-publisher login github-oidc|' "$tmp/publish_mcp_registry.yml"
+    sedi_inplace 's|^          file: packages/steward_cli/Dockerfile.registry|          # file: packages/steward_cli/Dockerfile.registry|' "$tmp/publish_mcp_registry.yml"
     if grep -qE '^[[:space:]]+id-token:[[:space:]]*write' "$tmp/publish_mcp_registry.yml"; then
       fail 'negative fixture: commented id-token should not match anchored guard'
     fi
