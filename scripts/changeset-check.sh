@@ -56,4 +56,27 @@ fi
 echo "changeset-check: ok ($count changeset file(s))"
 
 # Fail fast when changeset frontmatter names unknown workspace packages.
+workspace_pkg="$(node -p "require('./package.json').name")"
+shopt -s nullglob
+for cs in .changeset/*.md; do
+  [[ "$(basename "$cs")" == "README.md" ]] && continue
+  names="$(sed -n '/^---$/,/^---$/p' "$cs" | sed -n '2,$p' | head -n -1 | grep -E '^"[^"]+":' || true)"
+  while IFS= read -r line; do
+    [[ -z "$line" ]] && continue
+    pkg="${line#\"}"
+    pkg="${pkg%%\"*}"
+    if [[ "$pkg" != "$workspace_pkg" ]]; then
+      fail_pkg="changeset-check: unknown package \"$pkg\" in $(basename "$cs"); expected \"$workspace_pkg\"."
+      echo "$fail_pkg" >&2
+      exit 1
+    fi
+  done <<<"$names"
+done
+shopt -u nullglob
+
+if git rev-parse --verify "$BASE" >/dev/null 2>&1; then
+  if ! git show-ref --verify --quiet refs/heads/main; then
+    git branch -f main "$BASE" 2>/dev/null || git fetch origin main:main --depth=1
+  fi
+fi
 pnpm exec changeset status
