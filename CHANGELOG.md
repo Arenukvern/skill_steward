@@ -1,5 +1,23 @@
 # skill-steward
 
+## 0.7.0
+
+### Minor Changes
+
+- a15a8ce: Add `steward sync`: diff installed skill copies against the `skills.sh.json` marketplace manifest and prune skills this repository retired (report-only by default, `--prune` to delete, `--global` and repeatable `--path` to widen scope, `--json` for automation with exit 1 on drift). Steward-authored skills from other repos are reported as unrecognized and never pruned, and foreign skills sharing an install directory are untouched.
+- b49753f: Remove pre-v1 `pipelines` parsing, legacy `steward bundle` output, and MCP pipeline execution tools. Use `schema: steward/v1` with typed `actions` instead; see docs/migrations/pre-v1-pipelines-to-steward-v1.mdx.
+
+### Patch Changes
+
+- f7813fd: Stop eval:ax from overwriting committed AX stage history; write ephemeral ax-latest-run.json by default.
+- d25217d: Add AX behavioral eval suite (`steward eval --ax`) with description-router baseline cases under `evals/cases/`.
+- 867964b: Demote repo-quality ecology, product-impact, and multi-repo prose to on-demand references; SKILL.md under 12KB.
+- d92cf03: Narrow guild skill descriptions for routing clarity; fix harness cold-start When-not, dormant eval, and dead dogfood falsifier link.
+- a327f93: Ship portable work-discipline digests in all guild skills, dedupe two-loop restatements, and add research/experiment archetype row.
+- 6e6d95f: Document how consumers remove installed skills that upstream deleted: `npx skills update` never prunes removed skills, so the updating-installed-skills guide now covers `npx skills remove`, direct removal from the universal store and symlinked or plain-copy agent directories, dangling-symlink checks, and the current six-skill guild surface.
+- 3643a1d: Add MCP Registry manifest (`io.github.Arenukvern/steward-mcp`), OCI Dockerfile, version-sync wiring, and install docs. No registry publish until the release workflow lands.
+- 3c7df17: Wire MCP Registry publish as workflow_dispatch from the release job (GITHUB_TOKEN releases do not fire release webhooks).
+
 ## 0.6.0
 
 ### Minor Changes
