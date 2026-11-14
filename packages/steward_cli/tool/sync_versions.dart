@@ -96,7 +96,23 @@ const stewardPackageVersion = '$version';
     serverJsonFile.writeAsStringSync('${encoder.convert(serverJson)}\n');
   }
 
+  const pluginManifestPaths = <String>[
+    '.plugin/plugin.json',
+    '.claude-plugin/plugin.json',
+    '.codex-plugin/plugin.json',
+    '.cursor-plugin/plugin.json',
+  ];
+  const encoder = JsonEncoder.withIndent('  ');
+  for (final relative in pluginManifestPaths) {
+    final manifestFile = File('$rootDirPath$pathSeparator$relative');
+    if (!manifestFile.existsSync()) continue;
+    final manifest =
+        jsonDecode(manifestFile.readAsStringSync()) as Map<String, dynamic>;
+    manifest['version'] = version;
+    manifestFile.writeAsStringSync('${encoder.convert(manifest)}\n');
+  }
+
   stdout.writeln(
-    'Synced version: pubspec.yaml, steward_version.dart, and server.json are now at $version',
+    'Synced version: pubspec.yaml, steward_version.dart, server.json, and plugin manifests are now at $version',
   );
 }
