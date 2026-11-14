@@ -276,7 +276,7 @@ jobs:
       - name: Generate checksums
         run: |
           cd dist/release
-          sha256sum *.tar.gz > checksums.txt
+          sha256sum ./*.tar.gz > checksums.txt
 
       - name: Extract release notes
         env:
