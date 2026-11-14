@@ -139,7 +139,7 @@ const stewardPackageVersion = '$version';
   );
 }
 
-bool _isRootPluginSource(Object? source) {
+bool _isRootPluginSource(final Object? source) {
   if (source == '.') return true;
   if (source is Map) {
     final path = source['path'];
