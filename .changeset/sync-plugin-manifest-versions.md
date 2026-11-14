@@ -2,4 +2,4 @@
 "skill-steward": patch
 ---
 
-Sync root plugin manifests (`.plugin`, `.claude-plugin`, `.codex-plugin`, `.cursor-plugin` `plugin.json`) via `changeset:version` / `sync_versions.dart` so their `version` matches `package.json`.
+Sync root agent plugin `plugin.json` files and matching `marketplace.json` entries for this repo's root plugin (`.plugin`, `.claude-plugin`, `.codex-plugin`, `.cursor-plugin`) via `changeset:version` / `sync_versions.dart` so `version` matches `package.json`.

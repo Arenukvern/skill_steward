@@ -96,6 +96,8 @@ const stewardPackageVersion = '$version';
     serverJsonFile.writeAsStringSync('${encoder.convert(serverJson)}\n');
   }
 
+  final packageName = pkgJson['name'] as String? ?? 'skill-steward';
+
   const pluginManifestPaths = <String>[
     '.plugin/plugin.json',
     '.claude-plugin/plugin.json',
@@ -112,7 +114,36 @@ const stewardPackageVersion = '$version';
     manifestFile.writeAsStringSync('${encoder.convert(manifest)}\n');
   }
 
+  const marketplacePaths = <String>[
+    '.claude-plugin/marketplace.json',
+    '.cursor-plugin/marketplace.json',
+  ];
+  for (final relative in marketplacePaths) {
+    final marketplaceFile = File('$rootDirPath$pathSeparator$relative');
+    if (!marketplaceFile.existsSync()) continue;
+    final marketplace =
+        jsonDecode(marketplaceFile.readAsStringSync()) as Map<String, dynamic>;
+    final plugins = marketplace['plugins'];
+    if (plugins is! List) continue;
+    for (final entry in plugins) {
+      if (entry is! Map<String, dynamic>) continue;
+      if (entry['name'] != packageName) continue;
+      if (!_isRootPluginSource(entry['source'])) continue;
+      entry['version'] = version;
+    }
+    marketplaceFile.writeAsStringSync('${encoder.convert(marketplace)}\n');
+  }
+
   stdout.writeln(
-    'Synced version: pubspec.yaml, steward_version.dart, server.json, and plugin manifests are now at $version',
+    'Synced version: pubspec.yaml, steward_version.dart, server.json, plugin manifests, and marketplace entries are now at $version',
   );
+}
+
+bool _isRootPluginSource(Object? source) {
+  if (source == '.') return true;
+  if (source is Map) {
+    final path = source['path'];
+    if (path == '.' || path == './') return true;
+  }
+  return false;
 }
