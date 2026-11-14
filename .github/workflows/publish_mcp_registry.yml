@@ -1,0 +1,167 @@
+name: Publish MCP Registry server
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Released semver (no v prefix; must match package.json on the release tag)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
+concurrency:
+  group: mcp-registry-publish-${{ inputs.version }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Publish steward-mcp to MCP Registry
+    runs-on: ubuntu-latest
+    environment: mcp-registry-publish
+    timeout-minutes: 30
+    env:
+      RELEASE_VERSION: ${{ inputs.version }}
+    steps:
+      - name: Validate dispatch version
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ ! "${RELEASE_VERSION}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::version must match ^[0-9]+\\.[0-9]+\\.[0-9]+$ (got ${RELEASE_VERSION})."
+            exit 1
+          fi
+
+      - name: Checkout release tag
+        uses: actions/checkout@v5
+        with:
+          ref: refs/tags/v${{ env.RELEASE_VERSION }}
+          persist-credentials: false
+
+      - name: Assert tag matches package.json
+        shell: bash
+        run: |
+          set -euo pipefail
+          pkg_version="$(node -p "require('./package.json').version")"
+          if [[ "$pkg_version" != "${RELEASE_VERSION}" ]]; then
+            echo "::error::Tag v${RELEASE_VERSION} package.json version is $pkg_version."
+            exit 1
+          fi
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Skip when registry version already published
+        id: skip
+        env:
+          REGISTRY_NAME: io.github.Arenukvern/steward-mcp
+        shell: bash
+        run: |
+          set -euo pipefail
+          encoded="$(node -p "encodeURIComponent(process.env.REGISTRY_NAME)")"
+          code="$(curl -sS -o /tmp/registry-version.json -w '%{http_code}' \
+            "https://registry.modelcontextprotocol.io/v0.1/servers/${encoded}/versions/${RELEASE_VERSION}")"
+          if [[ "$code" == "200" ]]; then
+            echo "Registry already has ${REGISTRY_NAME}@${RELEASE_VERSION}; skipping push/publish."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          elif [[ "$code" == "404" ]]; then
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::Unexpected registry status $code for idempotence pre-check." >&2
+            cat /tmp/registry-version.json >&2 || true
+            exit 1
+          fi
+
+      - name: Verify MCP Registry contracts
+        if: steps.skip.outputs.skip != 'true'
+        run: pnpm run mcp:registry:check
+
+      - name: Log in to GHCR
+        if: steps.skip.outputs.skip != 'true'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and publish OCI image
+        if: steps.skip.outputs.skip != 'true'
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: packages/steward_cli/Dockerfile.registry
+          push: true
+          tags: ghcr.io/arenukvern/steward-mcp:${{ env.RELEASE_VERSION }}
+
+      - name: Install pinned mcp-publisher
+        if: steps.skip.outputs.skip != 'true'
+        env:
+          MCP_PUBLISHER_VERSION: v1.8.1
+          MCP_PUBLISHER_SHA256: a06c9096dcb9727c13555b6be26c7effa707b01f06a4c561ba7a3635443cf2cc
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL "https://github.com/modelcontextprotocol/registry/releases/download/${MCP_PUBLISHER_VERSION}/mcp-publisher_linux_amd64.tar.gz" \
+            -o mcp-publisher.tar.gz
+          echo "${MCP_PUBLISHER_SHA256}  mcp-publisher.tar.gz" | sha256sum --check --strict -
+          tar xz mcp-publisher -f mcp-publisher.tar.gz
+          chmod +x mcp-publisher
+
+      - name: Validate server manifest with the Registry
+        if: steps.skip.outputs.skip != 'true'
+        run: ./mcp-publisher validate packages/steward_cli/server.json
+
+      - name: Authenticate to MCP Registry with GitHub OIDC
+        if: steps.skip.outputs.skip != 'true'
+        run: ./mcp-publisher login github-oidc
+
+      - name: Publish server metadata to MCP Registry
+        if: steps.skip.outputs.skip != 'true'
+        working-directory: packages/steward_cli
+        run: ../../mcp-publisher publish
+
+      - name: Post-check registry latest version
+        if: steps.skip.outputs.skip != 'true'
+        env:
+          REGISTRY_NAME: io.github.Arenukvern/steward-mcp
+        shell: bash
+        run: |
+          set -euo pipefail
+          encoded="$(node -p "encodeURIComponent(process.env.REGISTRY_NAME)")"
+          url="https://registry.modelcontextprotocol.io/v0.1/servers/${encoded}/versions/latest"
+          for attempt in 1 2 3 4 5; do
+            if REGISTRY_BODY="$(curl -fsSL "$url")"; then
+              export REGISTRY_BODY
+              if node <<'NODE'
+          const expected = process.env.RELEASE_VERSION;
+          const payload = JSON.parse(process.env.REGISTRY_BODY);
+          const server = payload.server || payload;
+          const version = server.version;
+          const isLatest = payload._meta?.['io.modelcontextprotocol.registry/official']?.isLatest;
+          if (version !== expected) {
+            throw new Error(`Registry latest version ${version} != release ${expected}`);
+          }
+          if (isLatest === false) {
+            throw new Error('Published version is not marked isLatest');
+          }
+          console.log('Registry confirms latest version', version);
+          NODE
+              then
+                exit 0
+              fi
+            fi
+            echo "Post-check attempt $attempt failed; retrying in 10s..."
+            sleep 10
+          done
+          echo "::error::Registry post-check failed after retries." >&2
+          exit 1
