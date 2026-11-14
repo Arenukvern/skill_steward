@@ -56,23 +56,29 @@ fi
 echo "changeset-check: ok ($count changeset file(s))"
 
 # Fail fast when changeset frontmatter names unknown workspace packages.
-workspace_pkg="$(node -p "require('./package.json').name")"
-shopt -s nullglob
-for cs in .changeset/*.md; do
-  [[ "$(basename "$cs")" == "README.md" ]] && continue
-  names="$(sed -n '/^---$/,/^---$/p' "$cs" | sed -n '2,$p' | head -n -1 | grep -E '^"[^"]+":' || true)"
-  while IFS= read -r line; do
-    [[ -z "$line" ]] && continue
-    pkg="${line#\"}"
-    pkg="${pkg%%\"*}"
-    if [[ "$pkg" != "$workspace_pkg" ]]; then
-      fail_pkg="changeset-check: unknown package \"$pkg\" in $(basename "$cs"); expected \"$workspace_pkg\"."
-      echo "$fail_pkg" >&2
-      exit 1
-    fi
-  done <<<"$names"
-done
-shopt -u nullglob
+export CHANGESET_CHECK_WORKSPACE_PKG
+CHANGESET_CHECK_WORKSPACE_PKG="$(node -p "require('./package.json').name")"
+node <<'NODE'
+const fs = require('fs');
+const path = require('path');
+const workspacePkg = process.env.CHANGESET_CHECK_WORKSPACE_PKG;
+const dir = path.join(process.cwd(), '.changeset');
+for (const name of fs.readdirSync(dir)) {
+  if (!name.endsWith('.md') || name === 'README.md') continue;
+  const text = fs.readFileSync(path.join(dir, name), 'utf8');
+  const match = text.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!match) continue;
+  for (const line of match[1].split(/\r?\n/)) {
+    const pkgMatch = line.match(/^"([^"]+)":/);
+    if (pkgMatch && pkgMatch[1] !== workspacePkg) {
+      console.error(
+        `changeset-check: unknown package "${pkgMatch[1]}" in ${name}; expected "${workspacePkg}".`,
+      );
+      process.exit(1);
+    }
+  }
+}
+NODE
 
 if git rev-parse --verify "$BASE" >/dev/null 2>&1; then
   if ! git show-ref --verify --quiet refs/heads/main; then

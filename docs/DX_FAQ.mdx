@@ -391,6 +391,14 @@ After `install.sh` (or any install path that puts `steward` on `PATH`):
 }
 ```
 
+OCI / Docker clients must mount the governed repo at `/workspace` (read-only):
+
+```bash
+docker run --rm -i \
+  -v "$PWD:/workspace:ro" -w /workspace \
+  ghcr.io/arenukvern/steward-mcp:<version>
+```
+
 Manifest: `packages/steward_cli/server.json`. Contract check: `pnpm run mcp:registry:check`.
 
 ## 🔄 Updating installed skills

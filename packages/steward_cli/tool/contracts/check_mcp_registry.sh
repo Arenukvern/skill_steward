@@ -17,13 +17,21 @@ fail() {
   exit 1
 }
 
+sedi_inplace() {
+  if sed --version 2>/dev/null | grep -qi gnu; then
+    sed -i "$@"
+  else
+    sed -i '' "$@"
+  fi
+}
+
 run_negative_fixture_test() {
   local tmp
   tmp="$(mktemp -d)"
   trap 'rm -rf "$tmp"' RETURN
   cp "$DOCKERFILE" "$tmp/Dockerfile.registry"
-  sed -i 's/^LABEL /# LABEL /' "$tmp/Dockerfile.registry"
-  sed -i 's/^ENTRYPOINT /# ENTRYPOINT /' "$tmp/Dockerfile.registry"
+  sedi_inplace 's/^LABEL /# LABEL /' "$tmp/Dockerfile.registry"
+  sedi_inplace 's/^ENTRYPOINT /# ENTRYPOINT /' "$tmp/Dockerfile.registry"
   if grep -qE '^LABEL[[:space:]]+io\.modelcontextprotocol\.server\.name="io\.github\.Arenukvern/steward-mcp"' "$tmp/Dockerfile.registry"; then
     fail 'negative fixture: commented LABEL should not match anchored guard'
   fi
@@ -32,13 +40,25 @@ run_negative_fixture_test() {
   fi
   if [[ -f "$RELEASE_WORKFLOW" ]]; then
     cp "$RELEASE_WORKFLOW" "$tmp/publish_mcp_registry.yml"
-    sed -i 's/^  id-token: write/#  id-token: write/' "$tmp/publish_mcp_registry.yml"
-    sed -i 's/^  packages: write/#  packages: write/' "$tmp/publish_mcp_registry.yml"
+    sedi_inplace 's/^  id-token: write/#  id-token: write/' "$tmp/publish_mcp_registry.yml"
+    sedi_inplace 's/^  packages: write/#  packages: write/' "$tmp/publish_mcp_registry.yml"
+    sedi_inplace 's#^        run: ./mcp-publisher validate #        # run: ./mcp-publisher validate #' "$tmp/publish_mcp_registry.yml"
+    sedi_inplace 's#^        run: ./mcp-publisher login github-oidc#        # run: ./mcp-publisher login github-oidc#' "$tmp/publish_mcp_registry.yml"
+    sedi_inplace 's#^          file: packages/steward_cli/Dockerfile.registry#          # file: packages/steward_cli/Dockerfile.registry#' "$tmp/publish_mcp_registry.yml"
     if grep -qE '^[[:space:]]+id-token:[[:space:]]*write' "$tmp/publish_mcp_registry.yml"; then
       fail 'negative fixture: commented id-token should not match anchored guard'
     fi
     if grep -qE '^[[:space:]]+packages:[[:space:]]*write' "$tmp/publish_mcp_registry.yml"; then
       fail 'negative fixture: commented packages: write should not match anchored guard'
+    fi
+    if grep -qE '^[[:space:]]+run:[[:space:]]+\./mcp-publisher validate ' "$tmp/publish_mcp_registry.yml"; then
+      fail 'negative fixture: commented validate step should not match anchored guard'
+    fi
+    if grep -qE '^[[:space:]]+run:[[:space:]]+\./mcp-publisher login github-oidc' "$tmp/publish_mcp_registry.yml"; then
+      fail 'negative fixture: commented login step should not match anchored guard'
+    fi
+    if grep -qE '^[[:space:]]+file:[[:space:]]+packages/steward_cli/Dockerfile\.registry$' "$tmp/publish_mcp_registry.yml"; then
+      fail 'negative fixture: commented file should not match anchored guard'
     fi
   fi
   local fake_ctx="$tmp/fake_publish.yml"
@@ -116,8 +136,12 @@ grep -qE '^ENTRYPOINT[[:space:]]+.*mcp' "$DOCKERFILE" ||
   fail "Dockerfile.registry entrypoint must run steward mcp"
 grep -Fq 'dart pub get --enforce-lockfile' "$DOCKERFILE" ||
   fail "Dockerfile.registry must use dart pub get --enforce-lockfile"
-grep -Fq 'git' "$DOCKERFILE" ||
-  fail "Dockerfile.registry must install git"
+grep -qE '^[[:space:]]+apt-get install -y --no-install-recommends ca-certificates tini git &&' "$DOCKERFILE" ||
+  fail "Dockerfile.registry must install git via apt-get"
+grep -Fq 'git config --system --add safe.directory /workspace' "$DOCKERFILE" ||
+  fail "Dockerfile.registry must mark /workspace as a safe git directory"
+grep -Fq 'org.opencontainers.image.source="https://github.com/Arenukvern/skill_steward"' "$DOCKERFILE" ||
+  fail "Dockerfile.registry must label org.opencontainers.image.source"
 
 if [[ -f "$RELEASE_WORKFLOW" ]]; then
   grep -qE '^[[:space:]]+id-token:[[:space:]]*write' "$RELEASE_WORKFLOW" ||
@@ -128,15 +152,15 @@ if [[ -f "$RELEASE_WORKFLOW" ]]; then
     fail "publish workflow must build with docker/build-push-action"
   grep -qE '^[[:space:]]+context:[[:space:]]*\.$' "$RELEASE_WORKFLOW" ||
     fail "publish workflow build context must be repository root (exact '.')"
-  grep -Fq 'file: packages/steward_cli/Dockerfile.registry' "$RELEASE_WORKFLOW" ||
+  grep -qE '^[[:space:]]+file:[[:space:]]+packages/steward_cli/Dockerfile\.registry$' "$RELEASE_WORKFLOW" ||
     fail "publish workflow must use packages/steward_cli/Dockerfile.registry"
   grep -Fq 'MCP_PUBLISHER_VERSION: v1.8.1' "$RELEASE_WORKFLOW" ||
     fail "publish workflow must pin mcp-publisher v1.8.1"
   grep -Fq 'MCP_PUBLISHER_SHA256:' "$RELEASE_WORKFLOW" ||
     fail "publish workflow must pin mcp-publisher sha256"
-  grep -Fq 'mcp-publisher validate' "$RELEASE_WORKFLOW" ||
+  grep -qE '^[[:space:]]+run:[[:space:]]+\./mcp-publisher validate ' "$RELEASE_WORKFLOW" ||
     fail "publish workflow must run mcp-publisher validate"
-  grep -Fq 'login github-oidc' "$RELEASE_WORKFLOW" ||
+  grep -qE '^[[:space:]]+run:[[:space:]]+\./mcp-publisher login github-oidc' "$RELEASE_WORKFLOW" ||
     fail "publish workflow must login github-oidc"
   grep -Fq 'ghcr.io/arenukvern/steward-mcp:' "$RELEASE_WORKFLOW" ||
     fail "publish workflow must push ghcr.io/arenukvern/steward-mcp:<version>"

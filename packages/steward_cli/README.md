@@ -183,6 +183,7 @@ Skill Steward may ship zero-dependency `steward` binaries for consumer/bootstrap
 - Manifest: [`server.json`](server.json); OCI image: `packages/steward_cli/Dockerfile.registry`
 - **Boundary:** read-only v1 tools (`steward_list_actions`, `steward_inspect_action`, `steward_doctor`, `steward_explain_result`); no action execution over MCP
 - Local stdio after binary install: `steward mcp` (see [DX_FAQ](../../docs/DX_FAQ.mdx#mcp-registry-experimental-read-only-v1))
+- OCI smoke: `docker run --rm -i -v "$PWD:/workspace:ro" -w /workspace ghcr.io/arenukvern/steward-mcp:<version>`
 - Version drift check: `pnpm run mcp:registry:check` (also runs in `scripts/tag_release.sh`)
 
 ## Decisions

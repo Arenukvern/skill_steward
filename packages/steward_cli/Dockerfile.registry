@@ -17,12 +17,15 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* && \
     apt-get clean
 
+RUN git config --system --add safe.directory /workspace
+
 RUN useradd -r -u 1001 -g root mcpuser
 
 WORKDIR /workspace
 COPY --from=build --chown=mcpuser:root /build/steward /usr/local/bin/steward
 USER mcpuser
 
-LABEL io.modelcontextprotocol.server.name="io.github.Arenukvern/steward-mcp"
+LABEL io.modelcontextprotocol.server.name="io.github.Arenukvern/steward-mcp" \
+    org.opencontainers.image.source="https://github.com/Arenukvern/skill_steward"
 
 ENTRYPOINT ["/usr/bin/tini", "--", "/usr/local/bin/steward", "mcp"]
