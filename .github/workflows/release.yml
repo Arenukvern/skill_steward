@@ -3,9 +3,21 @@ name: Release
 on:
   push:
     branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: >-
+          Existing tag to build release assets, create or update the GitHub
+          Release, and queue MCP Registry publish (e.g. v0.7.0). Does not
+          create, move, or delete tags.
+        required: true
+        type: string
 
 concurrency:
-  group: release-${{ github.ref }}
+  group: >-
+    ${{ github.event_name == 'workflow_dispatch'
+        && format('release-tag-{0}', github.event.inputs.release_tag)
+        || format('release-{0}', github.ref) }}
   cancel-in-progress: false
 
 jobs:
@@ -21,6 +33,14 @@ jobs:
       release_version: ${{ steps.release-info.outputs.release_version }}
     steps:
       - uses: actions/checkout@v5
+        if: github.event_name == 'workflow_dispatch'
+        with:
+          ref: ${{ github.event.inputs.release_tag }}
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/checkout@v5
+        if: github.event_name == 'push'
         with:
           # Full history so changeset version can diff correctly
           fetch-depth: 0
@@ -28,17 +48,67 @@ jobs:
           # GITHUB_TOKEN is fine for most flows.
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - uses: actions/setup-node@v6
+        if: github.event_name == 'workflow_dispatch'
+        with:
+          node-version: "24"
+
+      - name: Finish existing release tag
+        id: release-info
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          tag="${{ github.event.inputs.release_tag }}"
+          if [[ ! "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?(\+[0-9A-Za-z.-]+)?$ ]]; then
+            echo "::error::release_tag must be semver like v0.7.0 (got: $tag)."
+            exit 1
+          fi
+          git rev-parse -q --verify "refs/tags/$tag" >/dev/null || {
+            echo "::error::Tag $tag does not exist on this repository."
+            exit 1
+          }
+          tag_sha="$(git rev-list -n 1 "$tag")"
+          head_sha="$(git rev-parse HEAD)"
+          if [[ "$tag_sha" != "$head_sha" ]]; then
+            echo "::error::Checked out $head_sha but tag $tag points to $tag_sha."
+            exit 1
+          fi
+          version="${tag#v}"
+          pkg_version="$(node -p "require('./package.json').version")"
+          if [[ "$pkg_version" != "$version" ]]; then
+            echo "::error::Tag $tag has package.json version $pkg_version; expected $version."
+            exit 1
+          fi
+          if ! grep -Eq "^##[[:space:]]+$version([[:space:]]|$)" CHANGELOG.md; then
+            echo "::error::CHANGELOG.md has no section for $version on tag $tag."
+            exit 1
+          fi
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo "::notice::GitHub Release $tag already exists; assets will be rebuilt and re-uploaded."
+          fi
+          {
+            echo "release_ready=true"
+            echo "release_version=$version"
+            echo "release_tag=$tag"
+          } >> "$GITHUB_OUTPUT"
+
       - uses: pnpm/action-setup@v6
+        if: github.event_name == 'push'
 
       - uses: actions/setup-node@v6
+        if: github.event_name == 'push'
         with:
           node-version: "24"
           cache: pnpm
 
       - name: Install dependencies
+        if: github.event_name == 'push'
         run: pnpm install --frozen-lockfile
 
       - name: Setup Dart SDK
+        if: github.event_name == 'push'
         uses: dart-lang/setup-dart@v1
         with:
           sdk: stable
@@ -51,6 +121,7 @@ jobs:
       #     → runs `publish` script (tags the release)
       #     → downstream jobs in this workflow build assets and create the GitHub Release
       - name: Create Version PR or tag & GitHub Release
+        if: github.event_name == 'push'
         id: changesets
         uses: changesets/action@v1
         with:
@@ -72,7 +143,7 @@ jobs:
 
       - name: Resolve release tag
         id: release-info
-        if: steps.changesets.outputs.hasChangesets == 'false'
+        if: github.event_name == 'push' && steps.changesets.outputs.hasChangesets == 'false'
         run: |
           set -euo pipefail
           version="$(node -p "require('./package.json').version")"
@@ -99,7 +170,8 @@ jobs:
       matrix:
         include:
           - triple: darwin-arm64
-            runner: macos-14
+            # macos-14 arm64 runners retired 2026-11-02; macos-15 is Apple Silicon.
+            runner: macos-15
           - triple: linux-x64
             runner: ubuntu-latest
     runs-on: ${{ matrix.runner }}
