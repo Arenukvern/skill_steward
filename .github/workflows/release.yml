@@ -21,48 +21,37 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  release:
-    name: Release
+  release-finish:
+    name: Finish existing release tag
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     permissions:
-      contents: write      # push tags, create GitHub Releases
-      pull-requests: write # create / update the Version PR
+      contents: read
     outputs:
-      release_ready: ${{ steps.release-info.outputs.release_ready }}
-      release_tag: ${{ steps.release-info.outputs.release_tag }}
-      release_version: ${{ steps.release-info.outputs.release_version }}
+      release_ready: ${{ steps.dispatch-info.outputs.release_ready }}
+      release_tag: ${{ steps.dispatch-info.outputs.release_tag }}
+      release_version: ${{ steps.dispatch-info.outputs.release_version }}
     steps:
       - uses: actions/checkout@v5
-        if: github.event_name == 'workflow_dispatch'
         with:
-          ref: ${{ github.event.inputs.release_tag }}
+          ref: refs/tags/${{ github.event.inputs.release_tag }}
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - uses: actions/checkout@v5
-        if: github.event_name == 'push'
-        with:
-          # Full history so changeset version can diff correctly
-          fetch-depth: 0
-          # Use a PAT if you want CI to re-trigger on the Version PR;
-          # GITHUB_TOKEN is fine for most flows.
-          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: false
 
       - uses: actions/setup-node@v6
-        if: github.event_name == 'workflow_dispatch'
         with:
           node-version: "24"
 
       - name: Finish existing release tag
-        id: release-info
-        if: github.event_name == 'workflow_dispatch'
+        id: dispatch-info
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG_INPUT: ${{ github.event.inputs.release_tag }}
         run: |
           set -euo pipefail
-          tag="${{ github.event.inputs.release_tag }}"
-          if [[ ! "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?(\+[0-9A-Za-z.-]+)?$ ]]; then
-            echo "::error::release_tag must be semver like v0.7.0 (got: $tag)."
+          tag="$RELEASE_TAG_INPUT"
+          if [[ ! "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::release_tag must match vX.Y.Z (got: $tag)."
             exit 1
           fi
           git rev-parse -q --verify "refs/tags/$tag" >/dev/null || {
@@ -94,21 +83,38 @@ jobs:
             echo "release_tag=$tag"
           } >> "$GITHUB_OUTPUT"
 
+  release:
+    name: Release
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      release_ready: ${{ steps.push-info.outputs.release_ready }}
+      release_tag: ${{ steps.push-info.outputs.release_tag }}
+      release_version: ${{ steps.push-info.outputs.release_version }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # Full history so changeset version can diff correctly
+          fetch-depth: 0
+          persist-credentials: false
+          # Use a PAT if you want CI to re-trigger on the Version PR;
+          # GITHUB_TOKEN is fine for most flows.
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - uses: pnpm/action-setup@v6
-        if: github.event_name == 'push'
 
       - uses: actions/setup-node@v6
-        if: github.event_name == 'push'
         with:
           node-version: "24"
           cache: pnpm
 
       - name: Install dependencies
-        if: github.event_name == 'push'
         run: pnpm install --frozen-lockfile
 
       - name: Setup Dart SDK
-        if: github.event_name == 'push'
         uses: dart-lang/setup-dart@v1
         with:
           sdk: stable
@@ -121,7 +127,6 @@ jobs:
       #     → runs `publish` script (tags the release)
       #     → downstream jobs in this workflow build assets and create the GitHub Release
       - name: Create Version PR or tag & GitHub Release
-        if: github.event_name == 'push'
         id: changesets
         uses: changesets/action@v1
         with:
@@ -142,8 +147,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Resolve release tag
-        id: release-info
-        if: github.event_name == 'push' && steps.changesets.outputs.hasChangesets == 'false'
+        id: push-info
+        if: steps.changesets.outputs.hasChangesets == 'false'
         run: |
           set -euo pipefail
           version="$(node -p "require('./package.json').version")"
@@ -163,8 +168,15 @@ jobs:
 
   build-release-assets:
     name: Build release assets (${{ matrix.triple }})
-    needs: release
-    if: needs.release.outputs.release_ready == 'true'
+    needs: [release, release-finish]
+    if: >-
+      !cancelled() && (
+        needs.release.outputs.release_ready == 'true' ||
+        needs.release-finish.outputs.release_ready == 'true'
+      )
+    env:
+      RELEASE_TAG: ${{ needs.release.outputs.release_tag || needs.release-finish.outputs.release_tag }}
+      RELEASE_VERSION: ${{ needs.release.outputs.release_version || needs.release-finish.outputs.release_version }}
     strategy:
       fail-fast: false
       matrix:
@@ -179,7 +191,21 @@ jobs:
     steps:
       - uses: actions/checkout@v5
         with:
-          ref: ${{ needs.release.outputs.release_tag }}
+          ref: refs/tags/${{ env.RELEASE_TAG }}
+          persist-credentials: false
+
+      - name: Assert checkout at release tag
+        env:
+          RELEASE_TAG: ${{ env.RELEASE_TAG }}
+        run: |
+          set -euo pipefail
+          git rev-parse -q --verify "refs/tags/$RELEASE_TAG" >/dev/null
+          tag_sha="$(git rev-list -n 1 "refs/tags/$RELEASE_TAG")"
+          head_sha="$(git rev-parse HEAD)"
+          if [[ "$tag_sha" != "$head_sha" ]]; then
+            echo "::error::Checkout is $head_sha but refs/tags/$RELEASE_TAG is $tag_sha." >&2
+            exit 1
+          fi
 
       - name: Setup Dart SDK
         uses: dart-lang/setup-dart@v1
@@ -191,10 +217,13 @@ jobs:
         run: dart pub get
 
       - name: Build release artifact
+        env:
+          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
+          RELEASE_TRIPLE: ${{ matrix.triple }}
         run: |
           bash scripts/build_release_artifacts.sh \
-            --version "${{ needs.release.outputs.release_version }}" \
-            --triple "${{ matrix.triple }}"
+            --version "$RELEASE_VERSION" \
+            --triple "$RELEASE_TRIPLE"
 
       - name: Upload release tarball
         uses: actions/upload-artifact@v6
@@ -205,8 +234,15 @@ jobs:
 
   github-release:
     name: Create GitHub Release
-    needs: [release, build-release-assets]
-    if: needs.release.outputs.release_ready == 'true'
+    needs: [release, release-finish, build-release-assets]
+    if: >-
+      !cancelled() && (
+        needs.release.outputs.release_ready == 'true' ||
+        needs.release-finish.outputs.release_ready == 'true'
+      )
+    env:
+      RELEASE_TAG: ${{ needs.release.outputs.release_tag || needs.release-finish.outputs.release_tag }}
+      RELEASE_VERSION: ${{ needs.release.outputs.release_version || needs.release-finish.outputs.release_version }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -215,7 +251,21 @@ jobs:
     steps:
       - uses: actions/checkout@v5
         with:
-          ref: ${{ needs.release.outputs.release_tag }}
+          ref: refs/tags/${{ env.RELEASE_TAG }}
+          persist-credentials: false
+
+      - name: Assert checkout at release tag
+        env:
+          RELEASE_TAG: ${{ env.RELEASE_TAG }}
+        run: |
+          set -euo pipefail
+          git rev-parse -q --verify "refs/tags/$RELEASE_TAG" >/dev/null
+          tag_sha="$(git rev-list -n 1 "refs/tags/$RELEASE_TAG")"
+          head_sha="$(git rev-parse HEAD)"
+          if [[ "$tag_sha" != "$head_sha" ]]; then
+            echo "::error::Checkout is $head_sha but refs/tags/$RELEASE_TAG is $tag_sha." >&2
+            exit 1
+          fi
 
       - name: Download release tarballs
         uses: actions/download-artifact@v6
@@ -230,7 +280,7 @@ jobs:
 
       - name: Extract release notes
         env:
-          RELEASE_VERSION: ${{ needs.release.outputs.release_version }}
+          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
         run: |
           python3 - <<'PY'
           import os
@@ -253,7 +303,7 @@ jobs:
       - name: Create or update GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_TAG: ${{ needs.release.outputs.release_tag }}
+          RELEASE_TAG: ${{ env.RELEASE_TAG }}
         run: |
           set -euo pipefail
           if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
@@ -273,17 +323,19 @@ jobs:
       - name: Verify release trust contract
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
         run: |
           bash scripts/verify_release.sh \
-            --repo "${{ github.repository }}" \
-            --version "${{ needs.release.outputs.release_version }}"
+            --repo "$GITHUB_REPOSITORY" \
+            --version "$RELEASE_VERSION"
 
       # gh release create uses GITHUB_TOKEN, so tag/release push does not fire
       # dependent workflows; dispatch MCP publish explicitly after assets upload.
       - name: Queue MCP Registry publish
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_VERSION: ${{ needs.release.outputs.release_version }}
+          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
         run: |
           set -euo pipefail
           gh workflow run publish_mcp_registry.yml \
