@@ -97,26 +97,11 @@ class MapCommand extends Command<void> {
             }
           }
         }
-      } else if (config.pipelines.isNotEmpty) {
-        write('- **Legacy Pipelines:**');
-        config.pipelines.forEach((final key, final val) {
-          String cmd = '';
-          String desc = '';
-          if (val is String) {
-            cmd = val;
-          } else if (val is Map) {
-            cmd = val['cmd'] as String? ?? '';
-            desc = val['desc'] as String? ?? '';
-          }
-          if (cmd.isNotEmpty) {
-            final descStr = desc.isNotEmpty ? ' : $desc' : '';
-            write('  - `$key` (Run: `$cmd`)$descStr');
-          }
-        });
       } else {
-        write('- **Standard Pipelines:**');
-        write('  - `validate` : Check skills and repository hygiene');
-        write('  - `test`     : Run test/evaluation suite');
+        write(
+          '- **Contract:** declare `schema: steward/v1` and typed `actions` '
+          '(the pre-v1 `pipelines` key was removed).',
+        );
       }
     } else {
       write('_No standard task runner config found in project root._');

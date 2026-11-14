@@ -44,12 +44,14 @@ class BundleCommand extends Command<void> {
     final root = _rootDir?.path ?? findRepoRoot(Directory.current);
     final config = await StewardConfig.load(root);
 
-    if (config.isV1) {
-      await _runV1(root);
-      return;
+    if (!config.isV1) {
+      throw UsageException(
+        'bundle requires schema: steward/v1.',
+        usage,
+      );
     }
 
-    await _runLegacy(root, config);
+    await _runV1(root);
   }
 
   Future<void> _runV1(final String root) async {
@@ -132,89 +134,6 @@ class BundleCommand extends Command<void> {
       );
     }
     return normalized;
-  }
-
-  Future<void> _runLegacy(final String root, final StewardConfig config) async {
-    if (config.skillsDistribution.isEmpty) {
-      throw UsageException(
-        'Missing skills_distribution in steward.yaml.',
-        usage,
-      );
-    }
-
-    final sourceDirName =
-        config.skillsDistribution['source_dir'] as String? ?? 'skills/';
-    final outputName =
-        config.skillsDistribution['output'] as String? ?? 'skills.sh.json';
-
-    final String sourcePath;
-    final String outPath;
-    try {
-      sourcePath = resolveUnderRoot(root, sourceDirName);
-      outPath = resolveUnderRoot(root, outputName);
-    } on Object {
-      throw UsageException(
-        'skills_distribution paths must be repository-relative.',
-        usage,
-      );
-    }
-
-    final sourceDir = Directory(sourcePath);
-    if (!sourceDir.existsSync()) {
-      throw UsageException(
-        'Source directory ${sourceDir.path} does not exist.',
-        usage,
-      );
-    }
-
-    final skills = <String>[];
-    for (final entity in sourceDir.listSync()) {
-      if (entity is Directory) {
-        final name = p.basename(entity.path);
-        if (!name.startsWith('.')) {
-          skills.add(name);
-        }
-      }
-    }
-
-    skills.sort();
-
-    final outMap = {'skills': skills};
-
-    final outFile = File(outPath);
-    await outFile.writeAsString(
-      '${const JsonEncoder.withIndent('  ').convert(outMap)}\n',
-    );
-    _writeln('Successfully bundled ${skills.length} skills into $outputName.');
-
-    final legacyPipelines = config.pipelines.keys
-        .map((final k) {
-          final pipeline = config.pipelines[k];
-          final desc = pipeline is Map ? pipeline['desc'] : '';
-          return '- $k: $desc';
-        })
-        .join('\n');
-    final instructions =
-        'You are operating in a repository governed by Skill Steward.\n'
-        'Prefer deterministic CLI validators, documented skills, and typed actions. '
-        'Do not run complex bash manually, and do not permanently mutate steward.yaml through MCP.\n\n'
-        'Legacy Pipelines (experimental; require explicit human approval):\n'
-        '${legacyPipelines.isEmpty ? '- none' : legacyPipelines}\n\n'
-        'Available Skills:\n${skills.map((final s) => '- $s').join('\n')}';
-
-    final clineFile = File(p.join(root, '.clinerules'));
-    await clineFile.writeAsString('$instructions\n');
-    _writeln('Generated .clinerules');
-
-    final cursorDir = Directory(p.join(root, '.cursor', 'rules'));
-    if (!cursorDir.existsSync()) {
-      cursorDir.createSync(recursive: true);
-    }
-    final cursorFile = File(p.join(cursorDir.path, 'steward.mdc'));
-    final cursorContent =
-        '---\ndescription: Global Steward Governance\nglobs: *\n---\n\n$instructions\n';
-    await cursorFile.writeAsString(cursorContent);
-    _writeln('Generated .cursor/rules/steward.mdc');
   }
 
   Future<List<Map<String, dynamic>>> _compilePluginBundles(
