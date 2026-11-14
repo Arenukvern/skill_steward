@@ -211,7 +211,8 @@ jobs:
       - name: Queue MCP Registry publish
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_VERSION: ${{ needs.release.outputs.release_version }}
         run: |
           set -euo pipefail
           gh workflow run publish_mcp_registry.yml \
-            -f version="${{ needs.release.outputs.release_version }}"
+            -f version="${RELEASE_VERSION}"

@@ -142,7 +142,7 @@ jobs:
           for attempt in 1 2 3 4 5; do
             if REGISTRY_BODY="$(curl -fsSL "$url")"; then
               export REGISTRY_BODY
-              node <<'NODE'
+              if node <<'NODE'
           const expected = process.env.RELEASE_VERSION;
           const payload = JSON.parse(process.env.REGISTRY_BODY);
           const server = payload.server || payload;
@@ -156,7 +156,9 @@ jobs:
           }
           console.log('Registry confirms latest version', version);
           NODE
-              exit 0
+              then
+                exit 0
+              fi
             fi
             echo "Post-check attempt $attempt failed; retrying in 10s..."
             sleep 10
