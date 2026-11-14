@@ -78,6 +78,12 @@ jobs:
       - name: Check docs.page links (docs.json + docs/)
         run: pnpm run docs:check
 
+      - name: Verify MCP Registry manifest contracts
+        run: pnpm run mcp:registry:check
+
+      - name: Smoke build MCP Registry OCI image
+        run: docker build -f packages/steward_cli/Dockerfile.registry -t steward-mcp:ci .
+
   steward-contract-smoke:
     name: Steward contract H2 smoke (not H4)
     needs: validate

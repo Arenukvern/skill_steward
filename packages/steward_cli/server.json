@@ -1,0 +1,41 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.Arenukvern/steward-mcp",
+  "title": "Skill Steward MCP",
+  "description": "Experimental read-only Steward MCP: list/inspect actions, doctor, explain (stdio).",
+  "repository": {
+    "url": "https://github.com/Arenukvern/skill_steward",
+    "source": "github",
+    "subfolder": "packages/steward_cli"
+  },
+  "version": "0.6.0",
+  "packages": [
+    {
+      "registryType": "oci",
+      "identifier": "ghcr.io/arenukvern/steward-mcp:0.6.0",
+      "runtimeHint": "docker",
+      "runtimeArguments": [
+        {
+          "type": "named",
+          "name": "-v",
+          "value": "{repo_path}:/workspace:ro",
+          "variables": {
+            "repo_path": {
+              "format": "filepath",
+              "isRequired": true,
+              "description": "Absolute path to the repository root governed by steward.yaml"
+            }
+          }
+        },
+        {
+          "type": "named",
+          "name": "-w",
+          "value": "/workspace"
+        }
+      ],
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}
