@@ -54,3 +54,6 @@ if [[ "$count" -eq 0 ]]; then
 fi
 
 echo "changeset-check: ok ($count changeset file(s))"
+
+# Fail fast when changeset frontmatter names unknown workspace packages.
+pnpm exec changeset status

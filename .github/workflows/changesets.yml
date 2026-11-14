@@ -2,7 +2,6 @@ name: Changesets
 
 on:
   pull_request:
-    branches: [main, master]
 
 jobs:
   require-changeset:
