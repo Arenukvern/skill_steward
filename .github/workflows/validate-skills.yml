@@ -12,10 +12,17 @@ jobs:
       - uses: actions/checkout@v5
 
       - name: Lint GitHub Actions workflows
+        env:
+          ACTIONLINT_VERSION: v1.7.7
+          ACTIONLINT_SHA256: 023070a287cd8cccd71515fedc843f1985bf96c436b7effaecce67290e7e0757
         run: |
           set -euo pipefail
-          curl -sSfL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash | bash
-          ./actionlint -color
+          curl -fsSL "https://github.com/rhysd/actionlint/releases/download/${ACTIONLINT_VERSION}/actionlint_1.7.7_linux_amd64.tar.gz" \
+            -o actionlint.tar.gz
+          echo "${ACTIONLINT_SHA256}  actionlint.tar.gz" | sha256sum --check --strict -
+          tar xzf actionlint.tar.gz actionlint
+          chmod +x actionlint
+          ./actionlint -color .github/workflows/*.yml
 
       - name: Diff whitespace check
         run: |

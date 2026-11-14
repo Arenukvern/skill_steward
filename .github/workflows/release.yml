@@ -171,8 +171,10 @@ jobs:
     needs: [release, release-finish]
     if: >-
       !cancelled() && (
-        needs.release.outputs.release_ready == 'true' ||
-        needs.release-finish.outputs.release_ready == 'true'
+        (needs.release.result == 'success' &&
+          needs.release.outputs.release_ready == 'true') ||
+        (needs.release-finish.result == 'success' &&
+          needs.release-finish.outputs.release_ready == 'true')
       )
     env:
       RELEASE_TAG: ${{ needs.release.outputs.release_tag || needs.release-finish.outputs.release_tag }}
@@ -236,9 +238,12 @@ jobs:
     name: Create GitHub Release
     needs: [release, release-finish, build-release-assets]
     if: >-
-      !cancelled() && (
-        needs.release.outputs.release_ready == 'true' ||
-        needs.release-finish.outputs.release_ready == 'true'
+      !cancelled() &&
+      needs.build-release-assets.result == 'success' && (
+        (needs.release.result == 'success' &&
+          needs.release.outputs.release_ready == 'true') ||
+        (needs.release-finish.result == 'success' &&
+          needs.release-finish.outputs.release_ready == 'true')
       )
     env:
       RELEASE_TAG: ${{ needs.release.outputs.release_tag || needs.release-finish.outputs.release_tag }}
@@ -274,9 +279,13 @@ jobs:
           merge-multiple: true
 
       - name: Generate checksums
+        env:
+          RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
         run: |
+          set -euo pipefail
           cd dist/release
-          sha256sum ./*.tar.gz > checksums.txt
+          sha256sum -- *.tar.gz > checksums.txt
+          grep -q " steward_${RELEASE_VERSION}_linux-x64.tar.gz$" checksums.txt
 
       - name: Extract release notes
         env:
