@@ -8,11 +8,11 @@
     "source": "github",
     "subfolder": "packages/steward_cli"
   },
-  "version": "0.7.0",
+  "version": "0.7.1",
   "packages": [
     {
       "registryType": "oci",
-      "identifier": "ghcr.io/arenukvern/steward-mcp:0.7.0",
+      "identifier": "ghcr.io/arenukvern/steward-mcp:0.7.1",
       "runtimeHint": "docker",
       "runtimeArguments": [
         {
