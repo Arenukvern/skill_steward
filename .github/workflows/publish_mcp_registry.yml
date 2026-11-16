@@ -7,6 +7,14 @@ on:
         description: Released semver (no v prefix; must match package.json on the release tag)
         required: true
         type: string
+      skip_latest_tag:
+        description: >-
+          Do not push ghcr.io/arenukvern/steward-mcp:latest (use when republishing
+          an older version). By default :latest moves only when version matches
+          package.json on main.
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -86,6 +94,34 @@ jobs:
         if: steps.skip.outputs.skip != 'true'
         run: pnpm run mcp:registry:check
 
+      - name: Resolve GHCR tags
+        if: steps.skip.outputs.skip != 'true'
+        id: ghcr-tags
+        env:
+          SKIP_LATEST: ${{ inputs.skip_latest_tag }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          main_version="$(curl -fsSL "https://raw.githubusercontent.com/${{ github.repository }}/main/package.json" \
+            | node -pe "JSON.parse(fs.readFileSync(0,'utf8')).version")"
+          push_latest=false
+          if [[ "$SKIP_LATEST" != "true" && "${RELEASE_VERSION}" == "$main_version" ]]; then
+            push_latest=true
+          fi
+          tags="ghcr.io/arenukvern/steward-mcp:${RELEASE_VERSION}"
+          if [[ "$push_latest" == "true" ]]; then
+            tags="${tags}"$'\n'"ghcr.io/arenukvern/steward-mcp:latest"
+            echo "::notice::Also pushing :latest (main package.json is ${main_version})."
+          else
+            echo "::notice::Pushing version tag only (main=${main_version}, skip_latest=${SKIP_LATEST})."
+          fi
+          {
+            echo "tags<<EOF"
+            printf '%s\n' "$tags"
+            echo "EOF"
+            echo "push_latest=${push_latest}"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Log in to GHCR
         if: steps.skip.outputs.skip != 'true'
         uses: docker/login-action@v3
@@ -101,7 +137,7 @@ jobs:
           context: .
           file: packages/steward_cli/Dockerfile.registry
           push: true
-          tags: ghcr.io/arenukvern/steward-mcp:${{ env.RELEASE_VERSION }}
+          tags: ${{ steps.ghcr-tags.outputs.tags }}
 
       - name: Install pinned mcp-publisher
         if: steps.skip.outputs.skip != 'true'

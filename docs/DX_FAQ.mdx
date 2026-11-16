@@ -369,7 +369,7 @@ curl -fsSL https://raw.githubusercontent.com/Arenukvern/skill_steward/vX.Y.Z/ins
 
 ### MCP Registry (experimental, read-only v1)
 
-Registry name: `io.github.Arenukvern/steward-mcp` (OCI `ghcr.io/arenukvern/steward-mcp:<version>`). First publish ships with the next Changesets release. The MCP surface is **experimental** and **read-only** on `schema: steward/v1` — it lists/inspects typed actions and explains results; it does not execute repository commands.
+Registry name: `io.github.Arenukvern/steward-mcp` (OCI `ghcr.io/arenukvern/steward-mcp:<version>`; publish also tags `:latest` from the same image when that version is current on `main`). Manifest `server.json` always references the explicit semver, not `:latest`. The MCP surface is **experimental** and **read-only** on `schema: steward/v1` — it lists/inspects typed actions and explains results; it does not execute repository commands.
 
 After `install.sh` (or any install path that puts `steward` on `PATH`):
 

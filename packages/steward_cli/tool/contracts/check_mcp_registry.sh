@@ -258,6 +258,10 @@ if [[ -f "$RELEASE_WORKFLOW" ]]; then
     fail "publish workflow must login github-oidc"
   grep -Fq 'ghcr.io/arenukvern/steward-mcp:' "$RELEASE_WORKFLOW" ||
     fail "publish workflow must push ghcr.io/arenukvern/steward-mcp:<version>"
+  grep -Fq 'ghcr.io/arenukvern/steward-mcp:latest' "$RELEASE_WORKFLOW" ||
+    fail "publish workflow must support ghcr.io/arenukvern/steward-mcp:latest"
+  grep -Fq 'Resolve GHCR tags' "$RELEASE_WORKFLOW" ||
+    fail "publish workflow must gate :latest against main package.json"
 fi
 
 run_negative_fixture_test
