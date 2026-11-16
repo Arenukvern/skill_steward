@@ -25,6 +25,100 @@ sedi_inplace() {
   fi
 }
 
+check_plugin_manifest_versions() {
+  export ROOT_DIR version
+  node <<'NODE'
+const fs = require('fs');
+const path = require('path');
+const root = process.env.ROOT_DIR;
+const expected = process.env.version;
+const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
+const packageName = pkg.name;
+
+function isRootPluginSource(source) {
+  if (source === '.') return true;
+  if (source && typeof source === 'object') {
+    const p = source.path;
+    if (p === '.' || p === './') return true;
+  }
+  return false;
+}
+
+function assertTopLevelVersion(file, label) {
+  const manifest = JSON.parse(fs.readFileSync(file, 'utf8'));
+  if (manifest.version !== expected) {
+    throw new Error(`${label} version ${manifest.version} != package.json ${expected}`);
+  }
+}
+
+function assertMarketplace(file) {
+  const marketplace = JSON.parse(fs.readFileSync(file, 'utf8'));
+  const plugins = marketplace.plugins || [];
+  const hit = plugins.find(
+    (entry) => entry && entry.name === packageName && isRootPluginSource(entry.source),
+  );
+  if (!hit) {
+    throw new Error(`${file}: missing root ${packageName} plugin entry`);
+  }
+  if (hit.version !== expected) {
+    throw new Error(`${file}: root plugin version ${hit.version} != package.json ${expected}`);
+  }
+}
+
+const pluginRelPaths = [
+  '.plugin/plugin.json',
+  '.claude-plugin/plugin.json',
+  '.codex-plugin/plugin.json',
+  '.cursor-plugin/plugin.json',
+];
+for (const rel of pluginRelPaths) {
+  const file = path.join(root, rel);
+  if (!fs.existsSync(file)) {
+    throw new Error(`missing ${rel}`);
+  }
+  assertTopLevelVersion(file, rel);
+}
+for (const rel of ['.claude-plugin/marketplace.json', '.cursor-plugin/marketplace.json']) {
+  const file = path.join(root, rel);
+  if (!fs.existsSync(file)) {
+    throw new Error(`missing ${rel}`);
+  }
+  assertMarketplace(file);
+}
+NODE
+}
+
+run_plugin_version_negative_test() {
+  local tmp rel dir
+  tmp="$(mktemp -d)"
+  trap 'rm -rf "$tmp"' RETURN
+  for rel in \
+    .plugin/plugin.json \
+    .claude-plugin/plugin.json \
+    .codex-plugin/plugin.json \
+    .cursor-plugin/plugin.json \
+    .claude-plugin/marketplace.json \
+    .cursor-plugin/marketplace.json; do
+    dir="$(dirname "$tmp/$rel")"
+    mkdir -p "$dir"
+    cp "$ROOT_DIR/$rel" "$tmp/$rel"
+  done
+  mkdir -p "$tmp/packages/steward_cli"
+  cp "$PKG_JSON" "$tmp/package.json"
+  DRIFT_PLUGIN_JSON="$tmp/.plugin/plugin.json" node <<'NODE'
+const fs = require('fs');
+const file = process.env.DRIFT_PLUGIN_JSON;
+const manifest = JSON.parse(fs.readFileSync(file, 'utf8'));
+manifest.version = '0.0.0-drift-negative';
+fs.writeFileSync(file, `${JSON.stringify(manifest, null, 2)}\n`);
+NODE
+  export ROOT_DIR="$tmp"
+  if check_plugin_manifest_versions 2>/dev/null; then
+    fail 'negative fixture: plugin.json version drift must fail SSOT check'
+  fi
+  echo "check_mcp_registry: plugin version negative fixture ok"
+}
+
 run_negative_fixture_test() {
   local tmp
   tmp="$(mktemp -d)"
@@ -164,8 +258,14 @@ if [[ -f "$RELEASE_WORKFLOW" ]]; then
     fail "publish workflow must login github-oidc"
   grep -Fq 'ghcr.io/arenukvern/steward-mcp:' "$RELEASE_WORKFLOW" ||
     fail "publish workflow must push ghcr.io/arenukvern/steward-mcp:<version>"
+  grep -Fq 'ghcr.io/arenukvern/steward-mcp:latest' "$RELEASE_WORKFLOW" ||
+    fail "publish workflow must support ghcr.io/arenukvern/steward-mcp:latest"
+  grep -Fq 'Resolve GHCR tags' "$RELEASE_WORKFLOW" ||
+    fail "publish workflow must gate :latest against main package.json"
 fi
 
 run_negative_fixture_test
+check_plugin_manifest_versions
+run_plugin_version_negative_test
 
-echo "check_mcp_registry: manifest and version SSOT are consistent for $version"
+echo "check_mcp_registry: manifest, plugin manifests, and version SSOT are consistent for $version"

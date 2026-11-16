@@ -108,10 +108,14 @@ const stewardPackageVersion = '$version';
   for (final relative in pluginManifestPaths) {
     final manifestFile = File('$rootDirPath$pathSeparator$relative');
     if (!manifestFile.existsSync()) continue;
+    final before = manifestFile.readAsStringSync();
     final manifest =
-        jsonDecode(manifestFile.readAsStringSync()) as Map<String, dynamic>;
+        jsonDecode(before) as Map<String, dynamic>;
     manifest['version'] = version;
-    manifestFile.writeAsStringSync('${encoder.convert(manifest)}\n');
+    final after = '${encoder.convert(manifest)}\n';
+    if (after != before) {
+      manifestFile.writeAsStringSync(after);
+    }
   }
 
   const marketplacePaths = <String>[
@@ -121,8 +125,9 @@ const stewardPackageVersion = '$version';
   for (final relative in marketplacePaths) {
     final marketplaceFile = File('$rootDirPath$pathSeparator$relative');
     if (!marketplaceFile.existsSync()) continue;
+    final before = marketplaceFile.readAsStringSync();
     final marketplace =
-        jsonDecode(marketplaceFile.readAsStringSync()) as Map<String, dynamic>;
+        jsonDecode(before) as Map<String, dynamic>;
     final plugins = marketplace['plugins'];
     if (plugins is! List) continue;
     for (final entry in plugins) {
@@ -131,7 +136,10 @@ const stewardPackageVersion = '$version';
       if (!_isRootPluginSource(entry['source'])) continue;
       entry['version'] = version;
     }
-    marketplaceFile.writeAsStringSync('${encoder.convert(marketplace)}\n');
+    final after = '${encoder.convert(marketplace)}\n';
+    if (after != before) {
+      marketplaceFile.writeAsStringSync(after);
+    }
   }
 
   stdout.writeln(
