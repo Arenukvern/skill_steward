@@ -5,7 +5,7 @@
       "name": "skill-steward",
       "source": ".",
       "description": "Engineering stewardship skills for agent-operated repositories.",
-      "version": "0.7.1"
+      "version": "0.7.2"
     }
   ]
 }

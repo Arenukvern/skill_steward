@@ -1,5 +1,12 @@
 # skill-steward
 
+## 0.7.2
+
+### Patch Changes
+
+- 7133cca: CI drift guard: plugin manifests and root marketplace entries must match package.json version (extends `mcp:registry:check`). MCP publish pushes GHCR `:version` and `:latest` (same build) when version matches main; `server.json` stays pinned to the exact version tag.
+- 31d6489: Sync root agent plugin `plugin.json` files and matching `marketplace.json` entries for this repo's root plugin (`.plugin`, `.claude-plugin`, `.codex-plugin`, `.cursor-plugin`) via `changeset:version` / `sync_versions.dart` so `version` matches `package.json`.
+
 ## 0.7.1
 
 ### Patch Changes
