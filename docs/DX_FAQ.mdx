@@ -646,6 +646,11 @@ Skip (maintainer only) → PR title contains [skip changeset]
 
 **When to skip:** typos, comments-only, or internal refactors with zero consumer impact (use `[skip changeset]` in PR title).
 
+**Release troubleshooting (runner acquisition):** GitHub-hosted `macos-15` jobs can cancel with zero steps when no arm64 runner is acquired (~15 min), which skips `github-release` and MCP publish because asset builds did not all succeed. The **`Release runner acquisition retry`** workflow may re-run failed jobs automatically (only when every failed/cancelled job matches that pattern, attempt &lt; 3). Manual fallbacks:
+
+1. On the failed **Release** run in Actions, use **Re-run failed jobs**.
+2. **`workflow_dispatch`** on **Release** with `release_tag` set to the **existing** tag (e.g. `v0.7.2`) to rebuild assets and finish the GitHub Release without moving semver on `main`. **Never** use `release_tag=v0.7.0` — that tag is an orphan on old history and would publish a wrong “latest” release if finished.
+
 **Pre-v1 `pipelines` removal:** MCP pipeline tools, the `pipelines:` steward.yaml key, and the non-v1 bundle path are removed. Migrate to `schema: steward/v1` typed `actions` — see [pre-v1 pipelines migration](migrations/pre-v1-pipelines-to-steward-v1).
 
 ## 🏗️ Harness workshop

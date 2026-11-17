@@ -1,0 +1,138 @@
+name: Release runner acquisition retry
+
+on:
+  workflow_run:
+    workflows: [Release]
+    types: [completed]
+
+permissions:
+  actions: write
+
+jobs:
+  maybe-rerun:
+    name: Retry Release after macOS runner acquisition cancel
+    if: >-
+      (github.event.workflow_run.conclusion == 'cancelled' ||
+        github.event.workflow_run.conclusion == 'failure') &&
+      github.event.workflow_run.run_attempt < 3
+    runs-on: ubuntu-latest
+    steps:
+      - name: Qualify runner acquisition failures and rerun
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          REPOSITORY: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          qualify="$(node <<'NODE'
+          const { execFileSync } = require('child_process');
+
+          const runId = Number(process.env.RUN_ID);
+          const repo = process.env.REPOSITORY;
+          const branch = process.env.HEAD_BRANCH;
+
+          function ghApi(path) {
+            return JSON.parse(
+              execFileSync('gh', ['api', path], {
+                encoding: 'utf8',
+                env: { ...process.env },
+              }),
+            );
+          }
+
+          const { workflow_runs } = ghApi(
+            `/repos/${repo}/actions/workflows/release.yml/runs?branch=${encodeURIComponent(branch)}&per_page=1`,
+          );
+          const newest = workflow_runs[0];
+          if (newest && newest.id !== runId) {
+            console.error(
+              `release_runner_retry: newer Release run ${newest.id} on ${branch} (head ${newest.head_sha}); skip trigger ${runId}.`,
+            );
+            process.stdout.write('skip');
+            process.exit(0);
+          }
+
+          const { jobs } = ghApi(
+            `/repos/${repo}/actions/runs/${runId}/jobs?per_page=100`,
+          );
+
+          const bad = jobs.filter((j) =>
+            j.conclusion === 'cancelled' || j.conclusion === 'failure',
+          );
+
+          if (bad.length === 0) {
+            console.error(
+              `release_runner_retry: run ${runId} has no failed/cancelled jobs; skip.`,
+            );
+            process.stdout.write('skip');
+            process.exit(0);
+          }
+
+          function checkRunId(job) {
+            const url = job.check_run_url;
+            if (!url) return null;
+            return url.split('/').filter(Boolean).pop();
+          }
+
+          function hasNotAcquiredAnnotation(job) {
+            const id = checkRunId(job);
+            if (!id) return false;
+            let anns;
+            try {
+              anns = ghApi(`/repos/${repo}/check-runs/${id}/annotations`);
+            } catch (e) {
+              console.error(
+                `release_runner_retry: annotations for job ${job.name}: ${e.message}`,
+              );
+              return false;
+            }
+            return anns.some((a) =>
+              String(a.message || '').includes('not acquired by Runner'),
+            );
+          }
+
+          function waitedAcquisitionWindow(job) {
+            const start = Date.parse(job.created_at);
+            const end = Date.parse(job.completed_at);
+            if (Number.isNaN(start) || Number.isNaN(end)) return false;
+            return end - start >= 600_000;
+          }
+
+          function isRunnerAcquisitionFailure(job) {
+            if (job.conclusion !== 'cancelled') return false;
+            if (hasNotAcquiredAnnotation(job)) return true;
+            const steps = job.steps ?? [];
+            const runnerId = job.runner_id;
+            const noRunner = runnerId == null || runnerId === 0;
+            if (steps.length === 0 && noRunner && waitedAcquisitionWindow(job)) {
+              return true;
+            }
+            return false;
+          }
+
+          for (const job of bad) {
+            if (!isRunnerAcquisitionFailure(job)) {
+              console.error(
+                `release_runner_retry: job "${job.name}" (conclusion=${job.conclusion}) is not runner-acquisition; no rerun.`,
+              );
+              process.stdout.write('skip');
+              process.exit(0);
+            }
+          }
+
+          console.error(
+            `release_runner_retry: all ${bad.length} failed/cancelled job(s) qualify.`,
+          );
+          process.stdout.write('rerun');
+          NODE
+          )"
+          if [[ "$qualify" != "rerun" ]]; then
+            echo "release_runner_retry: not rerunning (qualify=$qualify)."
+            exit 0
+          fi
+          echo "release_runner_retry: waiting 300s before re-run…"
+          sleep 300
+          gh run rerun "$RUN_ID" --failed --repo "$REPOSITORY"
+          echo "release_runner_retry: dispatched gh run rerun --failed for run $RUN_ID"
