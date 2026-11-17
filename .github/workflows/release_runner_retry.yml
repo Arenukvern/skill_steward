@@ -21,6 +21,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RUN_ID: ${{ github.event.workflow_run.id }}
+          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
           REPOSITORY: ${{ github.repository }}
         shell: bash
         run: |
@@ -28,8 +29,9 @@ jobs:
           qualify="$(node <<'NODE'
           const { execFileSync } = require('child_process');
 
-          const runId = process.env.RUN_ID;
+          const runId = Number(process.env.RUN_ID);
           const repo = process.env.REPOSITORY;
+          const branch = process.env.HEAD_BRANCH;
 
           function ghApi(path) {
             return JSON.parse(
@@ -38,6 +40,18 @@ jobs:
                 env: { ...process.env },
               }),
             );
+          }
+
+          const { workflow_runs } = ghApi(
+            `/repos/${repo}/actions/workflows/release.yml/runs?branch=${encodeURIComponent(branch)}&per_page=1`,
+          );
+          const newest = workflow_runs[0];
+          if (newest && newest.id !== runId) {
+            console.error(
+              `release_runner_retry: newer Release run ${newest.id} on ${branch} (head ${newest.head_sha}); skip trigger ${runId}.`,
+            );
+            process.stdout.write('skip');
+            process.exit(0);
           }
 
           const { jobs } = ghApi(
@@ -70,7 +84,7 @@ jobs:
               anns = ghApi(`/repos/${repo}/check-runs/${id}/annotations`);
             } catch (e) {
               console.error(
-                `release_runner_retry: could not read annotations for job ${job.name}: ${e.message}`,
+                `release_runner_retry: annotations for job ${job.name}: ${e.message}`,
               );
               return false;
             }
@@ -79,23 +93,29 @@ jobs:
             );
           }
 
+          function waitedAcquisitionWindow(job) {
+            const start = Date.parse(job.created_at);
+            const end = Date.parse(job.completed_at);
+            if (Number.isNaN(start) || Number.isNaN(end)) return false;
+            return end - start >= 600_000;
+          }
+
           function isRunnerAcquisitionFailure(job) {
-            if (job.conclusion !== 'cancelled') {
-              return false;
-            }
+            if (job.conclusion !== 'cancelled') return false;
+            if (hasNotAcquiredAnnotation(job)) return true;
             const steps = job.steps ?? [];
             const runnerId = job.runner_id;
             const noRunner = runnerId == null || runnerId === 0;
-            const emptySteps = steps.length === 0;
-            return (
-              hasNotAcquiredAnnotation(job) || (emptySteps && noRunner)
-            );
+            if (steps.length === 0 && noRunner && waitedAcquisitionWindow(job)) {
+              return true;
+            }
+            return false;
           }
 
           for (const job of bad) {
             if (!isRunnerAcquisitionFailure(job)) {
               console.error(
-                `release_runner_retry: job "${job.name}" (conclusion=${job.conclusion}) is not a runner-acquisition cancel; no rerun.`,
+                `release_runner_retry: job "${job.name}" (conclusion=${job.conclusion}) is not runner-acquisition; no rerun.`,
               );
               process.stdout.write('skip');
               process.exit(0);
@@ -103,7 +123,7 @@ jobs:
           }
 
           console.error(
-            `release_runner_retry: all ${bad.length} failed/cancelled job(s) are runner-acquisition failures.`,
+            `release_runner_retry: all ${bad.length} failed/cancelled job(s) qualify.`,
           );
           process.stdout.write('rerun');
           NODE
