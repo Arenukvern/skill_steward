@@ -1,12 +1,13 @@
-# Structure Grammar
+# Structure grammar — the shape of a G1 layer
 
-**Status:** concept · **Audience:** maintainers and agents
+**Canonical:** this file (`repository-governance-lifecycle/references/structure-grammar.md`) · portable mirror: the owner's `generational-architecture` skill
+**Parent pattern:** [Evolutionary simplicity](evolutionary-simplicity.md) · **When to apply:** [Generational architecture ladder](generational-architecture-ladder.md)
+**Source:** ["Flutter app AI-centric architecture for small startups"](https://github.com/Arenukvern/articles/blob/main/articles/2025_feb_flutter_app_architecture/en.md) (Feb 2025), proven in two repository structure cleanups (an ECS simulation game, an AI product, Nov 2026)
+**Status:** concept reference for installed skills
 
-The structure grammar is the shape of a **G1 layer** — the smallest useful visible repo grammar a repository promotes to when people and agents repeatedly ask where truth lives. It is the companion to the [Generational architecture ladder](generational-architecture-ladder): the ladder decides *when* and *how much*; this grammar is *what the layer contains*.
+The structure grammar is the shape of a **G1 layer** — the smallest useful visible repo grammar a repository promotes to when people and agents repeatedly ask where truth lives. The ladder decides *when* and *how much*; this grammar is *what the layer contains*.
 
-Source: ["Flutter app AI-centric architecture for small startups"](https://github.com/Arenukvern/articles/blob/main/articles/2025_feb_flutter_app_architecture/en.md) (Feb 2025), proven in two repository structure cleanups (an ECS simulation game, an AI product, Nov 2026). It is written as patterns: the **mechanisms** are the law, the **names** are the article's Flutter instantiation — translate names, keep mechanisms. One deliberate exception: prefixes themselves are a mechanism, not a name style.
-
-A portable copy of this grammar ships in the owner's `generational-architecture` skill for cross-repo agent use; this doc is the canonical source, the skill reference is the mirror.
+It is written as patterns: the **mechanisms** are the law, the **names** are the article's Flutter instantiation — translate names, keep mechanisms. One deliberate exception: prefixes themselves are a mechanism, not a name style.
 
 ## Why prefixes are the mechanism, not decoration
 
@@ -45,7 +46,7 @@ Two boundary rules:
 - **Domain or facility?** A domain has a manifest row and a domain prefix; shared infrastructure beneath the manifest stays *unprefixed* on purpose (`persistence/`, `camera/`, `content/`). The absence of a prefix is what marks it as not-a-domain. Don't prefix facilities; don't let domains lose their prefix.
 - **Flow too big?** Promote it to a domain (move it up a level) or split it into several flows — never let it remain a deeply nested semi-domain.
 
-**Knowledge files are a rare adjacency, default none.** Most domains need no markdown at all. The canonical owner for explanations is the contract file (plus decision records / FAQ where the repo has them — see [Doc lattice](doc-lattice)); behavior truth is code, schemas and tests, and docs link inward instead of paraphrasing. Write a per-domain `{DOMAIN}_KNOWLEDGE.md` only when a domain holds non-derivable knowledge (invariants, external constraints, hard-won "why"), keep it small and name-aligned with the folder so one search finds it. A file that paraphrases code, tests or the manifest is pollution.
+**Knowledge files are a rare adjacency, default none.** Most domains need no markdown at all. The canonical owner for explanations is the contract file (plus decision records / FAQ where the repo has them — see the [doc lattice](https://docs.page/arenukvern/skill_steward/core/doc-lattice)); behavior truth is code, schemas and tests, and docs link inward instead of paraphrasing. Write a per-domain `{DOMAIN}_KNOWLEDGE.md` only when a domain holds non-derivable knowledge (invariants, external constraints, hard-won "why"), keep it small and name-aligned with the folder so one search finds it. A file that paraphrases code, tests or the manifest is pollution.
 
 ## The laws
 
@@ -130,11 +131,4 @@ A repository can be several archetypes at once (an app with an embedded game, a 
 - Extracting a family cannot be done by globbing its prefix → the prefixes have drifted; fix names before moving code.
 - The contract is stale for more than a release cycle → the grammar is not maintained by habit; promote the mechanical laws to gates.
 
-## Related
-
-- [Generational architecture ladder](generational-architecture-ladder) — when a repo earns this layer, and the promotion guards
-- [Doc lattice](doc-lattice) — the canonical-owner rule this grammar applies to explanations
-- [Evolutionary simplicity](evolutionary-simplicity) — parent pattern
-- [North Star](../NORTH_STAR)
-
-Provenance: from the February 2025 article and the November 2026 structure cleanups of an ECS game repo and an AI-product repo; composed as the G1-content companion to the ladder. Per-folder knowledge files demoted from default to rare adjacency (owner correction, Nov 2026: markdown pollution; behavior SSOT is code and schemas — docs link inward).
+Provenance: from the February 2025 article and the November 2026 structure cleanups; composed as the G1-content companion to the ladder. Per-folder knowledge files demoted from default to rare adjacency (owner correction, Nov 2026: markdown pollution; behavior SSOT is code and schemas — docs link inward).
