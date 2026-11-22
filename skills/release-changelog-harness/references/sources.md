@@ -5,7 +5,9 @@
 | Changesets | https://github.com/changesets/changesets | JS monorepo default generator |
 | Changesets docs | https://github.com/changesets/changesets/blob/main/docs/intro-to-using-changesets.md | Contributor workflow |
 | release-please | https://github.com/googleapis/release-please | Conventional-commit release PRs |
-| Melos versioning | https://melos.invertase.dev/commands/version | Dart monorepo releases |
+| dart_changesets | https://github.com/Arenukvern/dart_changesets | Dart-native changesets engine: intent files, version PR, per-tag OIDC publish trains, dependency wait |
+| dart.dev automated publishing | https://dart.dev/tools/pub/automated-publishing | pub.dev tag-pattern OIDC authorization rules |
+| Melos versioning | https://melos.invertase.dev/commands/version | Dart workspace task-running (not versioning/publish) |
 | release-plz | https://github.com/MarcoIeni/release-plz | Rust workspace releases |
 | Keep a Changelog | https://keepachangelog.com/ | CHANGELOG shape |
 | Semantic Versioning | https://semver.org/ | Version semantics |
