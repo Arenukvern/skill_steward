@@ -7,11 +7,13 @@ license: MIT
 type: governance
 metadata:
   author: skill-steward
-  version: "1.2.0"
+  version: "1.3.0"
   category: harness
 paths:
   - "CHANGELOG.md"
   - ".changeset/**"
+  - ".changesets/**"
+  - "changesets.yaml"
   - "package.json"
   - "pnpm-workspace.yaml"
   - "pubspec.yaml"
@@ -31,7 +33,7 @@ This skill is **meta harness culture** (which tool, which gates, which docs). It
 | Expert lens | Verdict on “use JS Changesets everywhere” |
 |-------------|-------------------------------------------|
 | **JS monorepo maintainer** | Strong default: `.changeset/*.md` + `changeset version` beats hand-editing five `package.json` files. |
-| **Dart / Flutter publisher** | Weak fit as-is: pub uses tags + `CHANGELOG.md`; monorepos often use **Melos** `version` / `changelog`, not npm Changesets. |
+| **Dart / Flutter publisher** | npm Changesets is the wrong runtime, but the *model* now has a native engine: [dart_changesets](https://github.com/Arenukvern/dart_changesets) — verbatim intent-file format, `pub_semver` cascade, per-tag OIDC publish trains with a built-in dependency wait. Production-proven (mcp_flutter 8.0.0, oka 0.12 trains). |
 | **Rust / Go shipper** | Use **release-plz**, **cargo-release**, or **git-cliff**—forcing Changesets adds alien workflow. |
 | **Agent operator** | Wins when notes live as **small structured files in git** agents can read and PR—not prose-only in Slack. |
 | **Multi-repo steward (`~/mcp`)** | One **legibility contract** across siblings; **different generators** per ecosystem is fine. |
@@ -60,8 +62,8 @@ Before picking a tool, agree the repo obeys:
 |----------------|-----------------|-------|
 | `pnpm-workspace.yaml` / npm workspaces | [@changesets/cli](https://github.com/changesets/changesets) | Industry standard for JS monorepos; pair with GitHub Action. |
 | Single Node package, high release cadence | [release-please](https://github.com/googleapis/release-please) or Changesets | release-please = conventional commits → PR; Changesets = explicit human/agent intent files. |
-| Dart monorepo (`melos.yaml`) | [Melos](https://melos.invertase.dev/) `version` + changelog | Align with pub publish order in DX_FAQ. |
-| Single Dart package | `CHANGELOG.md` + git tag + `dart pub publish` | Keep entries agent-editable markdown. |
+| Dart/Flutter workspace (multiple publishable packages) | [dart_changesets](https://github.com/Arenukvern/dart_changesets) | Changesets-style intent files → version PR → one `<package>-v<version>` tag per release → one OIDC publish run per tag; concurrent runs converge via the built-in dependency wait. Melos stays useful for workspace task-running, not versioning/publish. |
+| Single Dart package | [dart_changesets](https://github.com/Arenukvern/dart_changesets) or `CHANGELOG.md` + git tag + `dart pub publish` | dart_changesets also single-packages (dogfooded on itself); manual flow fine at very low cadence. |
 | Rust workspace | [release-plz](https://github.com/MarcoIeni/release-plz) or cargo-release + git-cliff | Prefer automation that opens version PRs. |
 | Product harness w/ binaries | release-please + tag CI + `install.sh` | **Do not** add a second version source; follow [binary-release-contract.md](references/binary-release-contract.md) |
 | Meta + CLI binary (Skill Steward) | Changesets + single Release workflow + `install.sh` | Version PR updates git truth first; the release workflow tags, builds assets, creates/updates GitHub Release, and verifies latest/install trust per [ADR 0014](../../docs/decisions/0014-distribute-steward-cli-as-binary.mdx) |
@@ -88,7 +90,8 @@ Use `repo-quality-system-lifecycle` archetypes (app, library, CLI/tool, plugin, 
 | Multiple publishable JS packages? | Changesets (default) |
 | Single package, commit-msg driven releases? | release-please |
 | Maintainer writes explicit release notes per PR? | Changesets |
-| Pub or Cargo primary? | Ecosystem table above—not Changesets |
+| Dart/Flutter workspace? | [dart_changesets](https://github.com/Arenukvern/dart_changesets) — pub-native cascade + per-tag OIDC publish |
+| Cargo primary? | Ecosystem table above — release-plz, not Changesets |
 
 Record choice in `docs/decisions/NNNN-release-changelog-tooling.md` when more than one option is reasonable.
 
@@ -135,6 +138,20 @@ git commit -am "chore: version packages"
 ```
 
 Publish: project-specific (`changeset publish`, GitHub Action, or npm provenance)—**document exact commands in DX_FAQ**, not here.
+
+#### Dart variant: dart_changesets
+
+Same intent-file shape (directory `.changesets/`, config `changesets.yaml`), Dart-native engine:
+
+```markdown
+---
+'package_name': minor
+---
+
+Short imperative summary agents can quote in release notes.
+```
+
+The engine computes the `pub_semver` cascade and dependent-constraint rewrites, assembles one version PR (`changesets/version-packages`), and on merge pushes one `<package>-v<version>` tag per release — pub.dev's per-tag ref gating then authorizes one OIDC publish run per tag. Concurrent runs converge via the engine's built-in dependency wait (15 min default, `dependency-wait-minutes`); no GitHub environment in the publish path (dart.dev rules). Setup per package: one manual first publish, then pub.dev Admin → Automated publishing with the per-package tag pattern.
 
 For automated Changesets releases, prefer:
 
