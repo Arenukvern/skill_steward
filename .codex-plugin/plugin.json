@@ -1,6 +1,6 @@
 {
   "name": "skill-steward",
-  "version": "0.7.2",
+  "version": "0.8.0",
   "description": "Engineering stewardship skills and repo-quality patterns for agent-operated repositories.",
   "author": {
     "name": "Arenukvern",

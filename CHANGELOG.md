@@ -1,5 +1,15 @@
 # skill-steward
 
+## 0.8.0
+
+### Minor Changes
+
+- b023e59: release-changelog-harness 1.3.0: the Dart/Flutter lens now routes to dart_changesets — the Dart-native changesets engine (intent files, pub_semver cascade, per-tag OIDC publish trains with built-in dependency wait; production-proven on the mcp_flutter 8.0.0 and oka 0.12 trains). Ecosystem router and generator-choice tables gained Dart rows; `.changesets/**` + `changesets.yaml` added to trigger paths; Dart intent-file variant documented alongside the npm shape.
+
+### Patch Changes
+
+- e32e99a: Add `references/structure-grammar.md` — the shape of a G1 layer (role prefixes as the mechanism, layer families, domain anatomy, the seven laws, archetype map, anti-patterns, falsifiers), linked from the Generational architecture concept bridge. Knowledge files are taught as a rare adjacency (default none), not a birth requirement.
+
 ## 0.7.2
 
 ### Patch Changes
